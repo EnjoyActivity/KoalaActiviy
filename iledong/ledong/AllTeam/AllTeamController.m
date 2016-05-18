@@ -20,10 +20,14 @@ typedef enum listType {
     listTypeJoinTeam
 }listType;
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
 @interface AllTeamController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong)NSMutableArray* myStartTeamData;
 @property (nonatomic, strong)NSMutableArray* myJoinTeamData;
+@property (nonatomic, strong)UIImageView* bgImageView;
+@property (nonatomic, strong)UILabel* bgLabel;
 @property (nonatomic, assign)listType tableViewListType;
 
 @end
@@ -52,6 +56,7 @@ typedef enum listType {
 
 //    [_tableView registerNib:[UINib nibWithNibName:@"AllTeamCell" bundle:nil] forCellReuseIdentifier:@"AllTeamCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self initBgImageView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -59,7 +64,7 @@ typedef enum listType {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.tabBarController.tabBar.hidden = NO;
-    [self updateJoinTeamData];
+    [self updateStartTeamData];
 }
 
 #pragma mark -- API
@@ -72,8 +77,17 @@ typedef enum listType {
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
                 self.myStartTeamData = [dic objectForKey:@"result"];
-                if (self.myStartTeamData.count > 0)
+                if (self.myStartTeamData.count > 0) {
+                    self.tableView.hidden = NO;
+                    self.bgImageView.hidden = YES;
+                    self.bgLabel.hidden = YES;
                     [self.tableView reloadData];
+                }
+                else {
+                    self.bgImageView.hidden = NO;
+                    self.bgLabel.hidden = NO;
+                    self.tableView.hidden = YES;
+                }
             }
         } fail:^{
             [Dialog simpleToast:@"获取我的团队失败！" withDuration:1.5];
@@ -90,11 +104,20 @@ typedef enum listType {
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
                 self.myJoinTeamData = [dic objectForKey:@"result"];
-                if (self.myJoinTeamData.count > 0)
+                if (self.myJoinTeamData.count > 0) {
+                    self.tableView.hidden = NO;
+                    self.bgImageView.hidden = YES;
+                    self.bgLabel.hidden = YES;
                     [self.tableView reloadData];
+                }
+                else {
+                    self.bgImageView.hidden = NO;
+                    self.bgLabel.hidden = NO;
+                    self.tableView.hidden = YES;
+                }
             }
          } fail:^{
-             [Dialog simpleToast:@"获取我的团队失败！" withDuration:1.5];
+             [Dialog simpleToast:@"获取我申请的团队失败！" withDuration:1.5];
          }];
     }
 }
@@ -110,7 +133,6 @@ typedef enum listType {
 
     self.tableViewListType = listTypeStartTeam;
     [self updateStartTeamData];
-    
 }
 - (IBAction)TeamAgree:(id)sender
 {
@@ -153,7 +175,6 @@ typedef enum listType {
 }
 
 #pragma mark -- tableViewDelegate
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.tableViewListType == listTypeJoinTeam)
@@ -165,14 +186,15 @@ typedef enum listType {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
-    return cell.frame.size.height;
+    return 85;
+    //UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
+    //return cell.frame.size.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   static NSString *string = @"AllTeamCell";
-    AllTeamCell *cell = [tableView dequeueReusableCellWithIdentifier:string];
+    static NSString *string = @"AllTeamCell";
+    __block AllTeamCell *cell = [tableView dequeueReusableCellWithIdentifier:string];
     if (!cell)
         cell = [[NSBundle mainBundle] loadNibNamed:@"AllTeamCell" owner:self options:nil][0];
     
@@ -184,7 +206,7 @@ typedef enum listType {
         dict = self.myJoinTeamData[indexPath.row];
     else if (self.tableViewListType == listTypeStartTeam)
         dict = self.myStartTeamData[indexPath.row];
-
+    
     cell.nameLabel.text = [dict objectForKey:@"Name"];
     [cell.nameLabel sizeToFit];
     cell.personCountLabel.text = [dict objectForKey:@"MaxPersonNum"];
@@ -192,30 +214,34 @@ typedef enum listType {
     NSString* avatarUrl = [dict objectForKey:@"AvatarUrl"];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-  
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:avatarUrl]];
+        [request setHTTPMethod:@"GET"];
+        NSError *error = nil;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+        if (data == nil)
+            return;
         dispatch_async(dispatch_get_main_queue(), ^{
-            //cell.imageView.image = ;
+            cell.imageView.image = [UIImage imageWithData:data];
             [cell setNeedsLayout];
         });
     });
-
+    
     return cell;
 }
 
 //删除某一行
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCellEditingStyle result = UITableViewCellEditingStyleNone;//默认没有编辑风格
+    UITableViewCellEditingStyle result = UITableViewCellEditingStyleNone;
     if ([tableView isEqual:_tableView])
-    {
-        result = UITableViewCellEditingStyleDelete;//设置编辑风格为删除风格
-    }
+        result = UITableViewCellEditingStyleDelete;
     return result;
 }
 
--(void)setEditing:(BOOL)editing animated:(BOOL)animated{//设置是否显示一个可编辑视图的视图控制器。
+-(void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-    [self.tableView setEditing:editing animated:animated];//切换接收者的进入和退出编辑模式。
+    [self.tableView setEditing:editing animated:animated];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,15 +261,33 @@ typedef enum listType {
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TeamHomeViewController *teamHomeVC = [[TeamHomeViewController alloc] init];
     [self.navigationController pushViewController:teamHomeVC animated:YES];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"删除";
+}
+
+#pragma mark - logic
+- (void)initBgImageView {
+    self.bgImageView = [[UIImageView alloc]initWithFrame:CGRectZero];
+    [self.view addSubview:self.bgImageView];
+
+    NSString* path = [[NSBundle mainBundle]pathForResource:@"img_nodata@2x" ofType:@"png"];
+    self.bgImageView.image = [UIImage imageWithContentsOfFile:path];
+    [self.bgImageView sizeToFit];
+    self.bgImageView.center = CGPointMake(self.view.bounds.size.width/2, 64+(self.view.bounds.size.height-64)/2);
+    
+    self.bgLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.bgImageView.frame.size.height+self.bgImageView.frame.origin.y+10, 0, 0)];
+    [self.view addSubview:self.bgLabel];
+    self.bgLabel.numberOfLines = 0;
+    self.bgLabel.text = @"还没有找到组织～\r\n赶紧去加个队吧！";
+    self.bgLabel.font = [UIFont systemFontOfSize:14.0];
+    self.bgLabel.textColor = UIColorFromRGB(0x999999);
+    [self.bgLabel sizeToFit];
+    self.bgLabel.center = CGPointMake(self.bgImageView.center.x+5, self.bgLabel.center.y);
 }
 
 @end

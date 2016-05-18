@@ -298,6 +298,7 @@
 		905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */; };
 		905516371CEC3E31001C4F51 /* ActivePublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905516311CEC3E31001C4F51 /* ActivePublicViewController.m */; };
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
+		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -764,6 +765,7 @@
 		905516301CEC3E31001C4F51 /* ActivePublicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivePublicViewController.h; sourceTree = "<group>"; };
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
+		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1495,6 +1497,7 @@
 				36BD8BAC1C9F9AAB00F99077 /* ic_triangle@2x.png */,
 				36BD8BAF1C9F9EEA00F99077 /* ic_search@2x.png */,
 				36E1E6DC1C9F84C90085C457 /* ic_home_on@2x.png */,
+				905516391CEC70C5001C4F51 /* img_nodata@2x.png */,
 				36E1E6DD1C9F84C90085C457 /* ic_home@2x.png */,
 				36E1E6DE1C9F84C90085C457 /* ic_mine_on@2x.png */,
 				36E1E6DF1C9F84C90085C457 /* ic_mine@2x.png */,
@@ -1902,6 +1905,7 @@
 				905515F81CEC3CED001C4F51 /* ELCAlbumPickerController.xib in Resources */,
 				7F06F6371C86E34600F67173 /* ActivityMessageViewController.xib in Resources */,
 				3644A9601CD0AAC3000D0218 /* ic_message@2x.png in Resources */,
+				9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */,
 				36BD8BB01C9F9EEB00F99077 /* ic_search@2x.png in Resources */,
 				3629CEC41CDB4C5000BEF297 /* bg_timebox_mid@2x.png in Resources */,
 				3644A9651CD0B26C000D0218 /* FansViewController.xib in Resources */,
