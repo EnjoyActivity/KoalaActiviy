@@ -1,0 +1,63 @@
+//
+//  ILeDong_PrefixHeader.pch
+//  ledong
+//
+//  Created by dongguoju on 16/2/29.
+//  Copyright (c) 2016年 yangqiyao. All rights reserved.
+//
+
+#ifndef ledong_ILeDong_PrefixHeader_pch
+#define ledong_ILeDong_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "AppDelegate.h"
+#import "SDImageCache.h"
+#import "UIImageView+WebCache.h"
+#import "ELCImagePickerController.h"
+#import "SVProgressHUD.h"
+#import "MJRefresh.h"
+#import "Dialog.h"
+#import "FRUtils.h"
+#import "HttpClient.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPRequestOperation.h"
+#import "MBProgressHUD.h"
+#import "MainPageController.h"
+
+
+/**************宏***************/
+
+#define API_BASE_URL            @"http://119.254.209.83:9428/api/"//服务器
+#define API_USER_LOGIN_URL       @"Login/Enter"            //登录
+#define API_VALIDATION_URL       @"Login/GetSMSCode"       //登录验证码
+#define API_USERPROTOCOL_URL       @"Config/Agreement"     //用户协议
+#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我的团队
+#define API_CREATETEAM_URL       @"Team/Create"            //创建团队
+#define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
+
+//#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我的团队
+
+#define IS_IPHONE_4 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)480) < DBL_EPSILON)
+
+#define ColorWithRGB(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define IS_IOS7 ([UIDevice currentDevice].systemVersion.floatValue >= 7.0)
+
+#define kAppDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
+#define kUserDefaults     [NSUserDefaults standardUserDefaults]
+
+#define kCookiesDataKey     @"cookiesData"
+#define kSessionId       @"sessionid"
+#define kUserIdKey       @"userid"
+
+#define kTokenKey        @"token"
+#define kResult          @"result"//获得数据字段
+#define kDuration        2.0f
+#define UserSplashKey   @"UserSplashKey"
+
+
+#define RGB(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define APP_WIDTH  [UIScreen mainScreen].bounds.size.width
+#define APP_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+#endif
