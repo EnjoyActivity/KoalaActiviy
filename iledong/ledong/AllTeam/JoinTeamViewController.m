@@ -12,6 +12,9 @@
 
 @interface JoinTeamViewController ()<UITextViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 @end
 
 @implementation JoinTeamViewController
@@ -27,7 +30,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -35,8 +37,6 @@
 {
     [self.view endEditing:YES];
 }
-
-#pragma mark - ButtonClick
 
 - (IBAction)submitButtonClick:(id)sender
 {
@@ -52,15 +52,13 @@
 
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    self.tipLabel.hidden = YES;
 }
-*/
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if (textView.text.length == 0)
+        self.tipLabel.hidden = NO;
+}
 
 @end

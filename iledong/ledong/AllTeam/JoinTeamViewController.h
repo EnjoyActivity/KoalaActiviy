@@ -9,6 +9,6 @@
 #import "BaseViewController.h"
 
 @interface JoinTeamViewController : BaseViewController
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 
 @end

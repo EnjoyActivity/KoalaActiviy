@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface CreateTeamVController : BaseViewController
+@interface CreateTeamVController : UIViewController
 
 @end
