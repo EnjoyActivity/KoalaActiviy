@@ -21,15 +21,38 @@
 
 - (void)viewDidLoad
 {
-    self.titleName = @"加入团队";
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
-    self.textView.delegate = self;
+    [self setupNavigationBar];
+    [self setupTextView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setupTextView {
+    self.textView.delegate = self;
+    self.textView.frame = CGRectMake(0, 64, APP_WIDTH, self.textView.frame.size.height);
+    self.tipLabel.frame = CGRectMake(10, 64+10, self.tipLabel.frame.size.width, self.tipLabel.frame.size.height);
+}
+
+- (void)setupNavigationBar {
+    self.navigationController.navigationBarHidden = NO;
+    self.tabBarController.tabBar.hidden = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    backItem.tintColor = [UIColor redColor];
+    self.navigationItem.leftBarButtonItem = backItem;
+    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLab setTextColor:[UIColor redColor]];
+    [customLab setText:@"加入团队"];
+    customLab.font = [UIFont systemFontOfSize:16];
+    self.navigationItem.titleView = customLab;
+}
+
+- (void)backBtnClicked {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

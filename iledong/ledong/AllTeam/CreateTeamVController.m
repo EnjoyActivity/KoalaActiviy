@@ -11,7 +11,7 @@
 #define kOrighHeight 64
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
-@interface CreateTeamVController ()<UIScrollViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
+@interface CreateTeamVController ()<UIScrollViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate> {
     @private
     CGFloat _mainScrollViewContentHeight;
     CGFloat _mainScrollViewContentOffsetY;
@@ -78,6 +78,8 @@
     self.addTagTextField.placeholder = @"添加标签";
     self.addTagTextField.font = [UIFont systemFontOfSize:14.0];
     self.addTagTextField.textColor = [UIColor redColor];
+    self.addTagTextField.delegate = self;
+    self.addTagTextField.returnKeyType = UIReturnKeyDone;
     [self.addTagTextField sizeToFit];
     [self.teamOtherInfoView addSubview:self.addTagTextField];
     
@@ -172,24 +174,26 @@
     } completion:nil];
 }
 
-- (void)uploadHeaderImage {
+- (void)uploadHeaderImage:(NSDictionary*)dict {
     if ([HttpClient isLogin]) {
         NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
-        NSDictionary *dic = @{@"token":[HttpClient getTokenStr],};
-                              //@"file":};
-        [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject) {
+        [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
             NSDictionary* dict = (NSDictionary*)responseObject;
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
                 [Dialog alert:@"上传团队头像成功！"];
             }
-            else {
-                [Dialog alert:@"上传团队头像失败！"];
-            }
+//            else {
+//                [Dialog alert:@"上传团队头像失败！"];
+//            }
         } fail:^{
-            [Dialog alert:@"上传团队头像失败！"];
+            //[Dialog alert:@"上传团队头像失败！"];
         }];
     }
+}
+
+- (void)addTagView {
+    
 }
 
 #pragma mark - delegate
@@ -205,9 +209,17 @@
         image = smallImage;
         weakSelf.headerImageView.image = image;
         
-        //API_UPLOAD_HEADERIMAGE_URL
-        
-        
+        NSString* strTemp = [weakSelf getStringWithDate:[NSDate date] format:@"yyyyMMddHHmmss"];
+        NSString* fileName = [NSString stringWithFormat:@"%@.png", strTemp];
+        NSData * imageData = UIImagePNGRepresentation(image);
+        long long length = [imageData length];
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        [dict setValue:[HttpClient getTokenStr] forKey:@"token"];
+        [dict setValue:[NSNumber numberWithLongLong:length] forKey:@"ContentLength"];
+        [dict setValue:@"file" forKey:@"ContentType"];
+        [dict setValue:fileName forKey:@"FileName"];
+        [dict setValue:imageData forKey:@"InputStream"];
+        [weakSelf uploadHeaderImage:dict];
     }];
 }
 
@@ -215,4 +227,92 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (NSString*)getStringWithDate:(NSDate*)_date format:(NSString*)_format{
+    if (!_date || _format.length == 0)
+        return @"";
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:_format];
+    NSString* dateStr = [dateFormatter stringFromDate:_date];
+    return  dateStr;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (textField == self.addTagTextField) {
+        [self.addTagTextField resignFirstResponder];
+        [self addTagView];
+        return YES;
+    }
+    return NO;
+}
+
+    /*
+- (NSString *)postRequestWithURL: (NSString *)url
+                      postParems: (NSMutableDictionary *)postParems
+                     picFilePath: (UIImage *)image
+                     picFileName: (NSString *)picFileName {
+    NSString *TWITTERFON_FORM_BOUNDARY = @"0xKhTmLbOuNdArY";
+    NSString *FORM_FLE_INPUT = @"file";
+    //分界线 --AaB03x
+    NSString *MPboundary=[[NSString alloc]initWithFormat:@"--%@",TWITTERFON_FORM_BOUNDARY];
+    //结束符 AaB03x--
+    NSString *endMPboundary=[[NSString alloc]initWithFormat:@"%@--",MPboundary];
+
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                    timeoutInterval:10];
+    //得到图片的data
+    NSData* data;
+    if (UIImagePNGRepresentation(image))
+        data = UIImagePNGRepresentation(image);
+    else
+        data = UIImageJPEGRepresentation(image, 1.0);
+
+    NSMutableString *body=[[NSMutableString alloc]init];
+    NSArray *keys = [postParems allKeys];
+//    for(int i=0; i<[keys count]; i++) {
+//        //得到当前key
+//        NSString *key=[keys objectAtIndex:i];
+//        //添加分界线，换行
+//        [body appendFormat:@"%@\r\n",MPboundary];
+//        //添加字段名称，换2行
+//        [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key];
+//        //添加字段的值
+//        [body appendFormat:@"%@\r\n",[postParems objectForKey:key]];
+//        
+//        NSLog(@"添加字段的值==%@",[postParems objectForKey:key]);
+//    }
+    
+    [body appendFormat:@"%@\r\n",MPboundary];
+    //声明pic字段，文件名为boris.png
+    [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",FORM_FLE_INPUT,picFileName];
+    //声明上传文件的格式
+    [body appendFormat:@"Content-Type: image/jpge,image/gif, image/jpeg, image/pjpeg, image/pjpeg\r\n\r\n"];
+    
+    NSString *end=[[NSString alloc]initWithFormat:@"\r\n%@",endMPboundary];
+    NSMutableData *myRequestData = [NSMutableData data];
+    
+    //将body字符串转化为UTF8格式的二进制
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData appendData:data];
+    
+    //加入结束符--AaB03x--
+    [myRequestData appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",TWITTERFON_FORM_BOUNDARY];
+    [request setValue:content forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+
+    NSHTTPURLResponse *urlResponese = nil;
+    NSError *error = [[NSError alloc]init];
+    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
+    if([urlResponese statusCode] >=200&&[urlResponese statusCode]<300){
+        NSLog(@"返回结果=====%@",result);
+        return result;
+    }
+    return nil;
+}
+*/
 @end

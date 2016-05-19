@@ -6,9 +6,7 @@
 //  Copyright © 2016年 yangqiyao. All rights reserved.
 //
 
-#import "BaseViewController.h"
-
-@interface JoinTeamViewController : BaseViewController
+@interface JoinTeamViewController : UIViewController
 
 
 @end
