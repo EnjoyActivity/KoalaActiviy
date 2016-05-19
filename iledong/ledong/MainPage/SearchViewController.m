@@ -18,6 +18,7 @@
 {
     NSMutableArray *sctionArr;
 }
+@property (strong, nonatomic) IBOutlet UIButton *searchButton;
 
 @end
 
@@ -30,9 +31,12 @@
     self.tabBarController.tabBar.hidden = YES;
     self.tableView.tableFooterView = _footerView;
     
+    [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
+    
     [self.searchActive setImage:[FRUtils resizeImageWithImageName:@"ic_search_activity"] forState:UIControlStateNormal];
     [self.searchTeam setImage:[FRUtils resizeImageWithImageName:@"ic_search_team"] forState:UIControlStateNormal];
     [self.searchFriend setImage:[FRUtils resizeImageWithImageName:@"ic_search_friend"] forState:UIControlStateNormal];
+    
     self.clearSarchImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
     self.resultTableView.hidden = YES;
     self.textFiled.delegate = self;
@@ -72,6 +76,9 @@
 - (IBAction)gobackButtonClick:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)searchButtonClicked:(id)sender {
+    
 }
 
 - (IBAction)clearSearchButtonClick:(id)sender

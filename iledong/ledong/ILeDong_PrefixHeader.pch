@@ -57,8 +57,11 @@
 #define UserSplashKey   @"UserSplashKey"
 
 
+
 #define RGB(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define APP_WIDTH  [UIScreen mainScreen].bounds.size.width
 #define APP_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+#define WeakObj(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
 
 #endif

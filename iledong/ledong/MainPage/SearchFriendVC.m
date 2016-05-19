@@ -41,11 +41,15 @@ static NSString * const reuseIdentifier = @"friendCCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)clearSearchHistory:(id)sender {
+    
+}
 
 - (IBAction)gobackButtonClick:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 #pragma mark - UITextFieldDelegate
 

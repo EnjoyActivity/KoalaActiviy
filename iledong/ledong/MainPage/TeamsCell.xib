@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R1d-pG-39t">
-                        <rect key="frame" x="195" y="158" width="44" height="44"/>
+                        <rect key="frame" x="187" y="158" width="44" height="44"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="皇家贝里斯足球队" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YUy-8L-80d">
                         <rect key="frame" x="8" y="194" width="144" height="26"/>
