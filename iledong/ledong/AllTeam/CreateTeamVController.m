@@ -7,9 +7,9 @@
 //
 
 #import "CreateTeamVController.h"
+#import "LDDeleteTagView.h"
 
 #define kOrighHeight 64
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @interface CreateTeamVController ()<UIScrollViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate> {
     @private
@@ -35,8 +35,9 @@
 
 @property (strong, nonatomic) NSMutableArray* tagArray;
 @property (strong, nonatomic) UIScrollView* tagScrollView;
-@property (strong, nonatomic) UIView* deleteTagView;
+@property (strong, nonatomic) LDDeleteTagView* deleteTagView;
 @property (strong, nonatomic) NSDictionary* currentDeleteTagDict;
+@property (strong, nonatomic) NSMutableDictionary* parameterDict;
 
 @end
 
@@ -57,6 +58,13 @@
 
 - (void)dealloc {
     [self removeKeyBoardNotification];
+}
+
+- (NSMutableDictionary*)parameterDict {
+    if (!_parameterDict) {
+        _parameterDict = [NSMutableDictionary dictionary];
+    }
+    return _parameterDict;
 }
 
 #pragma mark - draw UI
@@ -91,7 +99,7 @@
     [self.addTagTextField sizeToFit];
     [self.tagScrollView addSubview:self.addTagTextField];
     
-    self.switchCtl.onTintColor = [UIColor redColor];
+    self.switchCtl.onTintColor = UIColorFromRGB(0xD20203);
 }
 
 - (void)addKeyBoardNotification {
@@ -150,7 +158,8 @@
 - (void)keyboardWillShow:(NSNotification *) notif {
     if (_keyboardShow)
         return;
-
+    
+    _keyboardShow = YES;
     NSDictionary *info = [notif userInfo];
     NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGSize keyboardSize = [value CGRectValue].size;
@@ -179,6 +188,7 @@
 
 - (void)keyboardDidHide:(NSNotification *) notif {
     _keyboardShow = NO;
+    [self changeStartBtnBgColor];
     [UIView animateWithDuration:0.5 animations:^{
         [_mainScrollView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentHeight)];
         [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollViewContentOffsetY) animated:YES];
@@ -210,11 +220,12 @@
         if (!self.tagArray)
             self.tagArray = [NSMutableArray array];
         [self.tagArray addObject:tagLabel.text];
+        [self changeStartBtnBgColor];
     }
 
     tagLabel.font = [UIFont systemFontOfSize:14.0];
     tagLabel.textColor = [UIColor whiteColor];
-    tagLabel.backgroundColor = [UIColor redColor];
+    tagLabel.backgroundColor = UIColorFromRGB(0xD20203);
     [tagLabel sizeToFit];
     tagLabel.frame = CGRectMake(tagLabel.frame.origin.x, tagLabel.frame.origin.y, tagLabel.frame.size.width*1.5, tagLabel.frame.size.height+10);
     tagLabel.textAlignment = NSTextAlignmentCenter;
@@ -253,22 +264,12 @@
     self.currentDeleteTagDict = dict;
     //弹出删除框
     if (!self.deleteTagView) {
-        self.deleteTagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 70, 40)];
+        self.deleteTagView = [[LDDeleteTagView alloc]initWithFrame:CGRectMake(0, 0, 70, 40)];
         self.deleteTagView.backgroundColor = [UIColor whiteColor];
         [self.mainScrollView addSubview:self.deleteTagView];
-        UILabel* label = [[UILabel alloc]initWithFrame:self.deleteTagView.bounds];
-        label.text = @"删除";
-        label.font = [UIFont systemFontOfSize:14.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = UIColorFromRGB(0x333333);
-        [self.deleteTagView addSubview:label];
-
         UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
         [tapGes addTarget:self action:@selector(deleteTag)];
         [self.deleteTagView addGestureRecognizer:tapGes];
-        
-        self.deleteTagView.layer.borderColor = UIColorFromRGB(0xDEDEDE).CGColor;
-        self.deleteTagView.layer.borderWidth = 1;
     }
     self.deleteTagView.frame = CGRectMake(0, self.teamOtherInfoView.frame.origin.y+self.teamOtherInfoView.frame.size.height-90, 70, 40);
     self.deleteTagView.center = CGPointMake(centerX.intValue - self.tagScrollView.contentOffset.x, self.deleteTagView.center.y);
@@ -293,6 +294,29 @@
     self.addTagTextField.frame = CGRectMake(15, 16, self.addTagTextField.frame.size.width, self.addTagTextField.frame.size.height);
     for (NSString* str in self.tagArray)
         [self addTagView:str isReDraw:YES];
+}
+
+- (void)changeStartBtnBgColor {
+    if (self.teamNameTextField.text.length > 0 && self.teamIntrodectionTextView.text.length > 0 &&
+        self.maxCountTextField.text.length > 0 && self.tagArray.count > 0) {
+        UIImage* btnBgImg = [self imageWithColor:UIColorFromRGB(0xff615d) size:self.StartBtn.frame.size];
+        [self.StartBtn setBackgroundImage:btnBgImg forState:UIControlStateNormal];
+    }
+    else {
+        self.StartBtn.backgroundColor = UIColorFromRGB(0xDEDEDE);
+    }
+}
+
+- (UIImage*)imageWithColor:(UIColor *)color size:(CGSize)size {
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 #pragma mark - delegate

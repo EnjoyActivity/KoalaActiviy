@@ -228,6 +228,7 @@
 		7F9318F91C8596590061E9EA /* PersonalInfomationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9318F71C8596590061E9EA /* PersonalInfomationViewController.m */; };
 		7F9318FA1C8596590061E9EA /* PersonalInfomationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F9318F81C8596590061E9EA /* PersonalInfomationViewController.xib */; };
 		903CE5421CED48A3003099EB /* img_teamavatar_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */; };
+		903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 903CE5441CEDBB76003099EB /* LDDeleteTagView.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
 		905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515621CEC3CED001C4F51 /* AFHTTPSessionManager.m */; };
@@ -298,11 +299,10 @@
 		905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */; };
 		905516371CEC3E31001C4F51 /* ActivePublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905516311CEC3E31001C4F51 /* ActivePublicViewController.m */; };
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
+		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
-
-		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -633,6 +633,8 @@
 		7F9318F71C8596590061E9EA /* PersonalInfomationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfomationViewController.m; sourceTree = "<group>"; };
 		7F9318F81C8596590061E9EA /* PersonalInfomationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalInfomationViewController.xib; sourceTree = "<group>"; };
 		903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_teamavatar_120@2x.png"; sourceTree = "<group>"; };
+		903CE5431CEDBB76003099EB /* LDDeleteTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDDeleteTagView.h; sourceTree = "<group>"; };
+		903CE5441CEDBB76003099EB /* LDDeleteTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDDeleteTagView.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		9055155F1CEC3CED001C4F51 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -769,13 +771,10 @@
 		905516301CEC3E31001C4F51 /* ActivePublicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivePublicViewController.h; sourceTree = "<group>"; };
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
-
+		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
-
-		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -918,6 +917,8 @@
 				362F85F71CABCAE3006FFE61 /* CreateTeamVController.h */,
 				362F85F81CABCAE3006FFE61 /* CreateTeamVController.m */,
 				362F85F91CABCAE3006FFE61 /* CreateTeamVController.xib */,
+				903CE5431CEDBB76003099EB /* LDDeleteTagView.h */,
+				903CE5441CEDBB76003099EB /* LDDeleteTagView.m */,
 			);
 			name = "团队创建";
 			sourceTree = "<group>";
@@ -2100,6 +2101,7 @@
 				362F85E31CABAEDA006FFE61 /* UserBaseInfoViewController.m in Sources */,
 				3644A9641CD0B26C000D0218 /* FansViewController.m in Sources */,
 				905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */,
+				903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */,
 				905516331CEC3E31001C4F51 /* ActiveTableViewCell.m in Sources */,
 				7F875FEF1C867E1F003C6EBB /* FootprintViewController.m in Sources */,
 				36B2C1C31CBB4863001D842B /* PublishViewController.m in Sources */,

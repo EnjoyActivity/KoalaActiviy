@@ -166,10 +166,10 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tWb-cd-xMz">
                             <rect key="frame" x="0.0" y="60" width="396" height="175"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_teamavatar_120.png" translatesAutoresizingMaskIntoConstraints="NO" id="hAl-pZ-MZU">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="img_teamavatar_120.png" translatesAutoresizingMaskIntoConstraints="NO" id="hAl-pZ-MZU">
                                     <rect key="frame" x="138" y="10" width="120" height="120"/>
                                 </imageView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="422-1X-8Lc">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="422-1X-8Lc">
                                     <rect key="frame" x="143" y="140" width="110" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="110" id="1ly-Jn-ky1"/>
