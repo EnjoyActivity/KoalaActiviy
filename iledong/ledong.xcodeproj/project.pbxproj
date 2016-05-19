@@ -185,7 +185,6 @@
 		626DD47D1C8426B0006BC53C /* AllTeamController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD47B1C8426B0006BC53C /* AllTeamController.m */; };
 		626DD47E1C8426B0006BC53C /* AllTeamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626DD47C1C8426B0006BC53C /* AllTeamController.xib */; };
 		626DD4821C8426D6006BC53C /* MainPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4801C8426D6006BC53C /* MainPageController.m */; };
-		626DD4831C8426D6006BC53C /* MainPageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626DD4811C8426D6006BC53C /* MainPageController.xib */; };
 		626DD4871C8426F9006BC53C /* PersonalCenterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4851C8426F9006BC53C /* PersonalCenterController.m */; };
 		626DD4881C8426F9006BC53C /* PersonalCenterController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626DD4861C8426F9006BC53C /* PersonalCenterController.xib */; };
 		626DD4901C843B30006BC53C /* Dialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD48F1C843B30006BC53C /* Dialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -298,6 +297,9 @@
 		905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */; };
 		905516371CEC3E31001C4F51 /* ActivePublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905516311CEC3E31001C4F51 /* ActivePublicViewController.m */; };
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
+		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
+		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
+		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -563,7 +565,6 @@
 		626DD47C1C8426B0006BC53C /* AllTeamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AllTeamController.xib; sourceTree = "<group>"; };
 		626DD47F1C8426D6006BC53C /* MainPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageController.h; sourceTree = "<group>"; };
 		626DD4801C8426D6006BC53C /* MainPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageController.m; sourceTree = "<group>"; };
-		626DD4811C8426D6006BC53C /* MainPageController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageController.xib; sourceTree = "<group>"; };
 		626DD4841C8426F9006BC53C /* PersonalCenterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterController.h; sourceTree = "<group>"; };
 		626DD4851C8426F9006BC53C /* PersonalCenterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterController.m; sourceTree = "<group>"; };
 		626DD4861C8426F9006BC53C /* PersonalCenterController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterController.xib; sourceTree = "<group>"; };
@@ -764,6 +765,9 @@
 		905516301CEC3E31001C4F51 /* ActivePublicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivePublicViewController.h; sourceTree = "<group>"; };
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
+		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
+		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
+		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1177,9 +1181,9 @@
 		626DD4781C8424DA006BC53C /* MainPage */ = {
 			isa = PBXGroup;
 			children = (
+				EC9A93111CED508600F6009B /* Cell */,
 				626DD47F1C8426D6006BC53C /* MainPageController.h */,
 				626DD4801C8426D6006BC53C /* MainPageController.m */,
-				626DD4811C8426D6006BC53C /* MainPageController.xib */,
 				3664D0581CA1287C00BC6805 /* TeamsCell.h */,
 				3664D0591CA1287C00BC6805 /* TeamsCell.m */,
 				3664D05A1CA1287C00BC6805 /* TeamsCell.xib */,
@@ -1441,6 +1445,7 @@
 			isa = PBXGroup;
 			children = (
 				3629CEC01CDB4C5000BEF297 /* bg_timebox_end@2x.png */,
+				EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */,
 				3629CEC11CDB4C5000BEF297 /* bg_timebox_mid@2x.png */,
 				3629CEC21CDB4C5000BEF297 /* bg_timebox_start@2x.png */,
 				36F194D71CD2F5E30050EE6F /* start.png */,
@@ -1453,6 +1458,7 @@
 				3644A95F1CD0AAC3000D0218 /* ic_message@2x.png */,
 				362E300C1CCF3DE300EBADCF /* user01_44@2x.png */,
 				36ED830D1CC615B800D51ACA /* ic_search_activity@2x.png */,
+				36BD8BAC1C9F9AAB00F99077 /* ic_triangle@2x.png */,
 				36ED830E1CC615B800D51ACA /* ic_search_friend@2x.png */,
 				36ED830F1CC615B800D51ACA /* ic_search_team@2x.png */,
 				361A76471CBC9357002FE6B2 /* img_avatar_100.png */,
@@ -1492,7 +1498,6 @@
 				7F9318EC1C858B910061E9EA /* ic_more4@2x.png */,
 				7F9318F41C8596240061E9EA /* top_back@3x.png */,
 				36BD8BAB1C9F9AAB00F99077 /* ic_scan@2x.png */,
-				36BD8BAC1C9F9AAB00F99077 /* ic_triangle@2x.png */,
 				36BD8BAF1C9F9EEA00F99077 /* ic_search@2x.png */,
 				36E1E6DC1C9F84C90085C457 /* ic_home_on@2x.png */,
 				36E1E6DD1C9F84C90085C457 /* ic_home@2x.png */,
@@ -1780,6 +1785,15 @@
 			path = "活动发布";
 			sourceTree = "<group>";
 		};
+		EC9A93111CED508600F6009B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */,
+				EC9A93141CED519300F6009B /* MainPageActivityCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1867,6 +1881,7 @@
 				363D6BDD1CC7695F008A169A /* TeamTableViewCell.xib in Resources */,
 				626DD4881C8426F9006BC53C /* PersonalCenterController.xib in Resources */,
 				361A76581CBCD46B002FE6B2 /* SearchHotViewController.xib in Resources */,
+				EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */,
 				905515FC1CEC3CED001C4F51 /* Overlay@2x.png in Resources */,
 				3664D0531CA0FA7300BC6805 /* img_4@3x.png in Resources */,
 				3693F28A1CA4DC7900E48BD9 /* SplashViewController.xib in Resources */,
@@ -1877,7 +1892,6 @@
 				36E3E2091CC4879500294509 /* FailureSignViewController.xib in Resources */,
 				7F8F734B1C8FB5F300CCFE41 /* MyWalletDetailTableViewCell.xib in Resources */,
 				36B2C1BC1CBB4845001D842B /* ManageTableViewCell.xib in Resources */,
-				626DD4831C8426D6006BC53C /* MainPageController.xib in Resources */,
 				36FF6F461CA3E3D100387203 /* UserProtocolVC.xib in Resources */,
 				3693F2841CA4D5F200E48BD9 /* parent2_i5.png in Resources */,
 				3693F2851CA4D5F200E48BD9 /* parent3_i5.png in Resources */,
@@ -1922,6 +1936,7 @@
 				3627C5D11CA8DBD400A5D7EB /* scan@3x.png in Resources */,
 				905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */,
 				3627C5D21CA8DBD400A5D7EB /* scan_1@2x.png in Resources */,
+				EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */,
 				36E1E6E61C9F84C90085C457 /* ic_team_on@2x.png in Resources */,
 				3627C5D31CA8DBD400A5D7EB /* scan_1@3x.png in Resources */,
 				362F7E851CC0C67D00C91090 /* ApplyViewController.xib in Resources */,
@@ -1989,6 +2004,7 @@
 				7F875FE61C867D89003C6EBB /* IntergralViewController.xib in Resources */,
 				36E1E6E31C9F84C90085C457 /* ic_home@2x.png in Resources */,
 				3693F2831CA4D5F200E48BD9 /* parent1_i5.png in Resources */,
+				EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */,
 				905516341CEC3E31001C4F51 /* ActiveTableViewCell.xib in Resources */,
 				363BDD0F1CBF6B32001FE507 /* AuditViewController.xib in Resources */,
 				3608E20B1CA23C3200AC23A4 /* AdressCityVC.xib in Resources */,

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TopAdCell" id="EWz-sz-PkS">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8rJ-aX-oVn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="8rJ-aX-oVn" firstAttribute="height" secondItem="EWz-sz-PkS" secondAttribute="height" id="MRH-gN-o6W"/>
+                <constraint firstItem="8rJ-aX-oVn" firstAttribute="centerX" secondItem="EWz-sz-PkS" secondAttribute="centerX" id="X2o-bB-7GC"/>
+                <constraint firstItem="8rJ-aX-oVn" firstAttribute="width" secondItem="EWz-sz-PkS" secondAttribute="width" id="c5c-2C-OeF"/>
+                <constraint firstItem="8rJ-aX-oVn" firstAttribute="centerY" secondItem="EWz-sz-PkS" secondAttribute="centerY" id="f5g-56-8nL"/>
+            </constraints>
+            <point key="canvasLocation" x="224" y="160"/>
+        </collectionViewCell>
+    </objects>
+</document>
