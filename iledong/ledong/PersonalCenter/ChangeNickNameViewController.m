@@ -75,6 +75,9 @@
         [Dialog toast:@"昵称不能为空"];
         return;
     }
+    
+    
+    
     if (self.block) {
         self.block(nameField.text);
     }

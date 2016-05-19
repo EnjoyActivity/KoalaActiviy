@@ -24,6 +24,9 @@
     NSMutableArray *nameArrSection2;
     NSMutableArray *contentArrSection2;
     
+    UIToolbar *toolbar;
+    UIDatePicker *picker;
+    UIView *maskView;
 }
 
 @end
@@ -186,7 +189,7 @@
                 break;
             case 2:
             {
-                
+                [self setupDatePicker];
             }
                 break;
             case 3:
@@ -212,4 +215,60 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)setupDatePicker {
+    picker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, APP_HEIGHT, APP_WIDTH, 150)];
+    picker.datePickerMode = UIDatePickerModeDate;
+    picker.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    picker.backgroundColor = [UIColor whiteColor];
+    
+    toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, APP_HEIGHT, APP_WIDTH, 40)];
+    UIBarButtonItem *preSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    preSpace.width = 20;
+    
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancelBtnClick:)];
+    [cancelBtn setTintColor:RGB(51, 51, 51, 1)];
+    
+    UIBarButtonItem *space = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIBarButtonItem *okBtn = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(okBtnClick:)];
+    [okBtn setTintColor:RGB(51, 51, 51, 1)];
+    
+    UIBarButtonItem *lastSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    lastSpace.width = 20;
+    
+    toolbar.items = @[preSpace,cancelBtn,space,okBtn,lastSpace];
+    
+    maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
+    maskView.backgroundColor = [UIColor blackColor];
+    maskView.alpha = 0.5;
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:maskView];
+    [[UIApplication sharedApplication].keyWindow addSubview:toolbar];
+    [[UIApplication sharedApplication].keyWindow addSubview:picker];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        toolbar.frame = CGRectMake(0, APP_HEIGHT - 190, APP_WIDTH, 40);
+        picker.frame = CGRectMake(0, APP_HEIGHT - 150, APP_WIDTH, 150);
+    }];
+    
+}
+
+#pragma mark - button method
+- (void)cancelBtnClick:(id)sender {
+    [maskView removeFromSuperview];
+    [toolbar removeFromSuperview];
+    [picker removeFromSuperview];
+}
+
+- (void)okBtnClick:(id)sender {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *destDateString = [dateFormatter stringFromDate:picker.date];
+    contentArrSection1[2] = destDateString;
+    [self.tableView reloadData];
+    
+    [maskView removeFromSuperview];
+    [toolbar removeFromSuperview];
+    [picker removeFromSuperview];
+}
 @end
