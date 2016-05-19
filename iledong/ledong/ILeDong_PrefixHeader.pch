@@ -36,6 +36,7 @@
 #define API_STARTTEAMS_URL       @"Team/GetMyStartTeams"    //我的团队
 #define API_CREATETEAM_URL       @"Team/Create"            //创建团队
 #define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
+#define API_UPLOAD_HEADERIMAGE_URL   @"User/UploadAvatarUrl"   //上传头像
 
 //#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我的团队
 
@@ -62,6 +63,10 @@
 #define APP_WIDTH  [UIScreen mainScreen].bounds.size.width
 #define APP_HEIGHT [UIScreen mainScreen].bounds.size.height
 
+<<<<<<< HEAD
 #define WeakObj(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
+=======
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+>>>>>>> origin/master
 
 #endif

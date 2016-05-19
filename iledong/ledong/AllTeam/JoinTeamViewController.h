@@ -6,9 +6,7 @@
 //  Copyright © 2016年 yangqiyao. All rights reserved.
 //
 
-#import "BaseViewController.h"
+@interface JoinTeamViewController : UIViewController
 
-@interface JoinTeamViewController : BaseViewController
-@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end

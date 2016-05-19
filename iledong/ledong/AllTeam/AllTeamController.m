@@ -20,8 +20,6 @@ typedef enum listType {
     listTypeJoinTeam
 }listType;
 
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-
 @interface AllTeamController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong)NSMutableArray* myStartTeamData;
@@ -278,7 +276,7 @@ typedef enum listType {
     NSString* path = [[NSBundle mainBundle]pathForResource:@"img_nodata@2x" ofType:@"png"];
     self.bgImageView.image = [UIImage imageWithContentsOfFile:path];
     [self.bgImageView sizeToFit];
-    self.bgImageView.center = CGPointMake(self.view.bounds.size.width/2, 64+(self.view.bounds.size.height-64)/2);
+    self.bgImageView.center = CGPointMake(APP_WIDTH/2, 64+(APP_HEIGHT-64-60)/2);
     
     self.bgLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.bgImageView.frame.size.height+self.bgImageView.frame.origin.y+10, 0, 0)];
     [self.view addSubview:self.bgLabel];
@@ -287,7 +285,7 @@ typedef enum listType {
     self.bgLabel.font = [UIFont systemFontOfSize:14.0];
     self.bgLabel.textColor = UIColorFromRGB(0x999999);
     [self.bgLabel sizeToFit];
-    self.bgLabel.center = CGPointMake(self.bgImageView.center.x+5, self.bgLabel.center.y);
+    self.bgLabel.center = CGPointMake(self.bgImageView.center.x+10, self.bgLabel.center.y);
 }
 
 @end

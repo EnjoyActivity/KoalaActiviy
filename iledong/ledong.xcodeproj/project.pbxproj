@@ -227,6 +227,8 @@
 		7F9318F51C8596240061E9EA /* top_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F9318F41C8596240061E9EA /* top_back@3x.png */; };
 		7F9318F91C8596590061E9EA /* PersonalInfomationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9318F71C8596590061E9EA /* PersonalInfomationViewController.m */; };
 		7F9318FA1C8596590061E9EA /* PersonalInfomationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F9318F81C8596590061E9EA /* PersonalInfomationViewController.xib */; };
+		903CE5421CED48A3003099EB /* img_teamavatar_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */; };
+		903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 903CE5441CEDBB76003099EB /* LDDeleteTagView.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
 		905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515621CEC3CED001C4F51 /* AFHTTPSessionManager.m */; };
@@ -636,6 +638,9 @@
 		7F9318F61C8596590061E9EA /* PersonalInfomationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfomationViewController.h; sourceTree = "<group>"; };
 		7F9318F71C8596590061E9EA /* PersonalInfomationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfomationViewController.m; sourceTree = "<group>"; };
 		7F9318F81C8596590061E9EA /* PersonalInfomationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalInfomationViewController.xib; sourceTree = "<group>"; };
+		903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_teamavatar_120@2x.png"; sourceTree = "<group>"; };
+		903CE5431CEDBB76003099EB /* LDDeleteTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDDeleteTagView.h; sourceTree = "<group>"; };
+		903CE5441CEDBB76003099EB /* LDDeleteTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDDeleteTagView.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		9055155F1CEC3CED001C4F51 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -776,6 +781,7 @@
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
+
 		EC9A93191CED9D3D00F6009B /* LDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDLocationManager.h; sourceTree = "<group>"; };
 		EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDLocationManager.m; sourceTree = "<group>"; };
 		ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_back@2x.png"; sourceTree = "<group>"; };
@@ -785,6 +791,7 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -927,6 +934,8 @@
 				362F85F71CABCAE3006FFE61 /* CreateTeamVController.h */,
 				362F85F81CABCAE3006FFE61 /* CreateTeamVController.m */,
 				362F85F91CABCAE3006FFE61 /* CreateTeamVController.xib */,
+				903CE5431CEDBB76003099EB /* LDDeleteTagView.h */,
+				903CE5441CEDBB76003099EB /* LDDeleteTagView.m */,
 			);
 			name = "团队创建";
 			sourceTree = "<group>";
@@ -1518,6 +1527,7 @@
 				36E1E6DE1C9F84C90085C457 /* ic_mine_on@2x.png */,
 				36E1E6DF1C9F84C90085C457 /* ic_mine@2x.png */,
 				36E1E6E01C9F84C90085C457 /* ic_team_on@2x.png */,
+				903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */,
 				36E1E6E11C9F84C90085C457 /* ic_team@2x.png */,
 			);
 			name = Image;
@@ -1937,6 +1947,7 @@
 				7F8F19351C88098000570B79 /* LoginAndRegistViewController.xib in Resources */,
 				363D6BE71CC76FFB008A169A /* SearchFriendVC.xib in Resources */,
 				362F7E911CC0D61500C91090 /* img_done@2x.png in Resources */,
+				903CE5421CED48A3003099EB /* img_teamavatar_120@2x.png in Resources */,
 				3664D04E1CA0FA7300BC6805 /* img_2@2x.png in Resources */,
 				362E300D1CCF3DE300EBADCF /* user01_44@2x.png in Resources */,
 				362F7E771CC0BF8800C91090 /* ic_sub_grey@2x.png in Resources */,
@@ -2128,6 +2139,7 @@
 				362F85E31CABAEDA006FFE61 /* UserBaseInfoViewController.m in Sources */,
 				3644A9641CD0B26C000D0218 /* FansViewController.m in Sources */,
 				905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */,
+				903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */,
 				905516331CEC3E31001C4F51 /* ActiveTableViewCell.m in Sources */,
 				7F875FEF1C867E1F003C6EBB /* FootprintViewController.m in Sources */,
 				36B2C1C31CBB4863001D842B /* PublishViewController.m in Sources */,

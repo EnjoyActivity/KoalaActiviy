@@ -6,8 +6,6 @@
 //  Copyright © 2016年 yangqiyao. All rights reserved.
 //
 
-#import "BaseViewController.h"
-
-@interface CreateTeamVController : BaseViewController
+@interface CreateTeamVController : UIViewController
 
 @end
