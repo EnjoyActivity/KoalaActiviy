@@ -12,6 +12,7 @@
 
 @interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate>
 
+
 @end
 
 @implementation AdressCityVC
@@ -20,8 +21,7 @@
 {
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
-    self.searchImage.image = [FRUtils resizeImageWithImageName:@"ic_search_a"];
-    //设置索引字体颜色
+    [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
 //    self.tableView.
 }
@@ -35,6 +35,9 @@
 - (IBAction)gobackButtonClick:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)searchCity:(UIButton *)sender {
+    
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate
@@ -57,6 +60,8 @@
     {
         cell = [[NSBundle mainBundle] loadNibNamed:@"CityTableViewCell" owner:self options:nil][0];
     }
+    UILabel * cityLabel = (UILabel *)[cell viewWithTag:2];
+    cityLabel.text = @"111";
     return cell;
 }
 
@@ -84,6 +89,10 @@
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     return @[ @"热门",@"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
 @end

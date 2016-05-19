@@ -20,8 +20,6 @@ typedef enum listType {
     listTypeJoinTeam
 }listType;
 
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-
 @interface AllTeamController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong)NSMutableArray* myStartTeamData;
@@ -78,7 +76,7 @@ typedef enum listType {
             if (codeNum.intValue == 0) {
                 self.myStartTeamData = [dic objectForKey:@"result"];
                 if (self.myStartTeamData.count > 0) {
-                    self.tableView.hidden = NO;
+                    //self.tableView.hidden = NO;
                     self.bgImageView.hidden = YES;
                     self.bgLabel.hidden = YES;
                     [self.tableView reloadData];
@@ -86,7 +84,7 @@ typedef enum listType {
                 else {
                     self.bgImageView.hidden = NO;
                     self.bgLabel.hidden = NO;
-                    self.tableView.hidden = YES;
+                    //self.tableView.hidden = YES;
                 }
             }
         } fail:^{
@@ -273,21 +271,20 @@ typedef enum listType {
 #pragma mark - logic
 - (void)initBgImageView {
     self.bgImageView = [[UIImageView alloc]initWithFrame:CGRectZero];
-    [self.view addSubview:self.bgImageView];
+    [self.tableView addSubview:self.bgImageView];
 
     NSString* path = [[NSBundle mainBundle]pathForResource:@"img_nodata@2x" ofType:@"png"];
     self.bgImageView.image = [UIImage imageWithContentsOfFile:path];
     [self.bgImageView sizeToFit];
-    self.bgImageView.center = CGPointMake(self.view.bounds.size.width/2, 64+(self.view.bounds.size.height-64)/2);
-    
+    self.bgImageView.center = CGPointMake(self.tableView.bounds.size.width/2, self.tableView.bounds.size.height/2);
     self.bgLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.bgImageView.frame.size.height+self.bgImageView.frame.origin.y+10, 0, 0)];
-    [self.view addSubview:self.bgLabel];
+    [self.tableView addSubview:self.bgLabel];
     self.bgLabel.numberOfLines = 0;
     self.bgLabel.text = @"还没有找到组织～\r\n赶紧去加个队吧！";
     self.bgLabel.font = [UIFont systemFontOfSize:14.0];
     self.bgLabel.textColor = UIColorFromRGB(0x999999);
     [self.bgLabel sizeToFit];
-    self.bgLabel.center = CGPointMake(self.bgImageView.center.x+5, self.bgLabel.center.y);
+    self.bgLabel.center = CGPointMake(self.bgImageView.center.x+10, self.bgLabel.center.y);
 }
 
 @end

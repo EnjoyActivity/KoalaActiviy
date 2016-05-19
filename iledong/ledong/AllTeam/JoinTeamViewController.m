@@ -12,22 +12,47 @@
 
 @interface JoinTeamViewController ()<UITextViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 @end
 
 @implementation JoinTeamViewController
 
 - (void)viewDidLoad
 {
-    self.titleName = @"加入团队";
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
-    self.textView.delegate = self;
+    [self setupNavigationBar];
+    [self setupTextView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (void)setupTextView {
+    self.textView.delegate = self;
+    self.textView.frame = CGRectMake(0, 64, APP_WIDTH, self.textView.frame.size.height);
+    self.tipLabel.frame = CGRectMake(10, 64+10, self.tipLabel.frame.size.width, self.tipLabel.frame.size.height);
+}
+
+- (void)setupNavigationBar {
+    self.navigationController.navigationBarHidden = NO;
+    self.tabBarController.tabBar.hidden = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    backItem.tintColor = [UIColor redColor];
+    self.navigationItem.leftBarButtonItem = backItem;
+    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLab setTextColor:[UIColor redColor]];
+    [customLab setText:@"加入团队"];
+    customLab.font = [UIFont systemFontOfSize:16];
+    self.navigationItem.titleView = customLab;
+}
+
+- (void)backBtnClicked {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -35,8 +60,6 @@
 {
     [self.view endEditing:YES];
 }
-
-#pragma mark - ButtonClick
 
 - (IBAction)submitButtonClick:(id)sender
 {
@@ -52,15 +75,13 @@
 
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    self.tipLabel.hidden = YES;
 }
-*/
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if (textView.text.length == 0)
+        self.tipLabel.hidden = NO;
+}
 
 @end

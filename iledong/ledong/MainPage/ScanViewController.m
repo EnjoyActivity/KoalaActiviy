@@ -10,6 +10,7 @@
 #import "ZHScanView.h"
 
 @interface ScanViewController ()
+@property (strong, nonatomic) IBOutlet UIButton *goBackButton;
 
 @end
 
@@ -21,7 +22,7 @@
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBar.hidden = NO;
-    
+    [self.goBackButton setBackgroundImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
     ZHScanView *scanf = [ZHScanView scanViewWithFrame:CGRectMake(0, 62, APP_WIDTH, APP_HEIGHT)];
 //    scanf.promptMessage = @"您可以直接输入或者选择扫描二维码";
     [self.view addSubview:scanf];
@@ -42,15 +43,8 @@
 - (IBAction)gobackButtonClick:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)openPhoto:(id)sender {
 }
-*/
+
 
 @end

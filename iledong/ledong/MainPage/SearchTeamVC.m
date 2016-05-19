@@ -24,9 +24,12 @@ static NSString * const reuseIdentifier = @"teamCCell";
     [self.collectionView registerNib:[UINib nibWithNibName:@"TeamCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
+    
     self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.contentTableView.tableFooterView = self.footerView;
+    
     self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+    
     self.textField.clearButtonMode = UITextFieldViewModeAlways;
     self.textField.returnKeyType = UIReturnKeySearch;
     self.textField.delegate = self;
@@ -43,6 +46,8 @@ static NSString * const reuseIdentifier = @"teamCCell";
 - (IBAction)gobackButtonClick:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)clearSearchHistory:(id)sender {
 }
 
 #pragma mark - UITextFieldDelegate
@@ -123,14 +128,5 @@ static NSString * const reuseIdentifier = @"teamCCell";
 }
 
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

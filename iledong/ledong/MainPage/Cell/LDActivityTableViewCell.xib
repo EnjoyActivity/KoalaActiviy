@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="328" id="KGk-i7-Jjw" customClass="LDActivityTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="328"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="327.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qHm-sE-oPM">
+                        <rect key="frame" x="-0.5" y="8" width="375" height="211"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="qHm-sE-oPM" secondAttribute="height" multiplier="16:9" id="yKz-ZJ-PkN"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XpI-oc-Kn0">
+                        <rect key="frame" x="-0.5" y="219" width="375" height="100"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="足球 ：多场地 20场次可选 | 已报名：25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFT-UX-D1c">
+                                <rect key="frame" x="18" y="49" width="215" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="20-200元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5a-zu-gD7">
+                                <rect key="frame" x="0.5" y="-219" width="75.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="足球大联.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SDH-zz-j3c">
+                                <rect key="frame" x="301" y="31" width="56" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="朝阳区乐动杯足球联赛" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2NA-NI-U59">
+                                <rect key="frame" x="18" y="18" width="180" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2NA-NI-U59" firstAttribute="leading" secondItem="XpI-oc-Kn0" secondAttribute="leading" constant="18" id="6TN-xv-9Jt"/>
+                            <constraint firstItem="yFT-UX-D1c" firstAttribute="leading" secondItem="XpI-oc-Kn0" secondAttribute="leading" constant="18" id="KcR-kJ-vwq"/>
+                            <constraint firstItem="2NA-NI-U59" firstAttribute="top" secondItem="XpI-oc-Kn0" secondAttribute="top" constant="18" id="P0R-mJ-u6U"/>
+                            <constraint firstAttribute="trailing" secondItem="SDH-zz-j3c" secondAttribute="trailing" constant="18" id="Rpr-rw-XGc"/>
+                            <constraint firstAttribute="height" constant="100" id="Rxx-fm-koc"/>
+                            <constraint firstItem="yFT-UX-D1c" firstAttribute="top" secondItem="2NA-NI-U59" secondAttribute="bottom" constant="9" id="SIv-7E-w3w"/>
+                            <constraint firstItem="SDH-zz-j3c" firstAttribute="top" secondItem="XpI-oc-Kn0" secondAttribute="top" constant="31" id="tXz-fE-78H"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xak-QV-W7w">
+                        <rect key="frame" x="305" y="197.5" width="44" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="m5M-Mv-B5O"/>
+                            <constraint firstAttribute="height" constant="44" id="pIC-TQ-rxA"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="22"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qHm-sE-oPM" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="2p1-yZ-BI0"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="xak-QV-W7w" secondAttribute="trailing" constant="18" id="9S3-LA-s0x"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="XpI-oc-Kn0" secondAttribute="bottom" id="QCb-NE-OgA"/>
+                    <constraint firstItem="XpI-oc-Kn0" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="Wqk-MA-b0m"/>
+                    <constraint firstItem="qHm-sE-oPM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="X9r-FZ-Fgn"/>
+                    <constraint firstItem="XpI-oc-Kn0" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="h80-hd-wvI"/>
+                    <constraint firstItem="qHm-sE-oPM" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="u7p-tF-HUK"/>
+                    <constraint firstItem="XpI-oc-Kn0" firstAttribute="top" secondItem="qHm-sE-oPM" secondAttribute="bottom" id="uPz-ca-tS1"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="xak-QV-W7w" secondAttribute="bottom" constant="78" id="xyh-5w-pSB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="402.5" y="276"/>
+        </tableViewCell>
+    </objects>
+</document>
