@@ -11,12 +11,19 @@
 #import "ModificationPhoneVC.h"
 #import "UserInfoTableViewCell.h"
 #import "FRUtils.h"
+#import "ChangeAvatarViewController.h"
+#import "ChangeNickNameViewController.h"
+#import "ChangeGenderViewController.h"
 
 @interface PersonalInfomationViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    UIImageView *headerImage;
+    UIImage *_image;
+    UIButton *headerImage;
     NSMutableArray *nameArrSection1;
+    NSMutableArray *contentArrSection1;
     NSMutableArray *nameArrSection2;
+    NSMutableArray *contentArrSection2;
+    
 }
 
 @end
@@ -25,11 +32,14 @@
 
 - (void)viewDidLoad {
     self.titleName = @"用户信息";
+    _image = [UIImage imageNamed:@"user02_44"];
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
     nameArrSection1 = [[NSMutableArray alloc] initWithObjects:@"昵称",@"性别",@"生日",@"常住地", nil];
+    contentArrSection1 = [[NSMutableArray alloc] initWithObjects:@"",@"",@"",@"", nil];
     nameArrSection2 = [[NSMutableArray alloc] initWithObjects:@"手机号",@"密码",nil];
+    contentArrSection2 = [[NSMutableArray alloc] initWithObjects:@"",@"",nil];
 
 }
 
@@ -81,10 +91,12 @@
     if (indexPath.section == 0)
     {
         cell.nameLabel.text = nameArrSection1[indexPath.row];
+        cell.contentLabel.text = contentArrSection1[indexPath.row];
     }
     else if (indexPath.section == 1)
     {
         cell.nameLabel.text = nameArrSection2[indexPath.row];
+        cell.contentLabel.text = contentArrSection2[indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -106,11 +118,15 @@
         nameLabel.font = [UIFont systemFontOfSize:15];
         nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
         
-        headerImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 80, 14, 44, 44)];
-        headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
+        headerImage = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 80, 14, 44, 44)];
+//        headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
+        [headerImage setImage:[FRUtils circleImage:_image withParam:1] forState:UIControlStateNormal];
+        [headerImage addTarget:self action:@selector(uploadAvatar:) forControlEvents:UIControlEventTouchUpInside];
+        
         UIButton *headButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 72)];
         [headButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
         [headButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.view.frame.size.width - 40, 0, 0)];
+        [headButton addTarget:self action:@selector(uploadAvatar:) forControlEvents:UIControlEventTouchUpInside];
         
         UIImageView *lineImage = [[UIImageView alloc]
                                   initWithFrame:CGRectMake(18, 71, self.view.frame.size.width - 18, 1)];
@@ -140,11 +156,60 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+            {
+                ChangeNickNameViewController *vc = [[ChangeNickNameViewController alloc]init];
+                vc.block = ^(NSString *name){
+                    contentArrSection1[0] = name;
+                    [self.tableView reloadData];
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 1:
+            {
+                ChangeGenderViewController *vc = [[ChangeGenderViewController alloc]init];
+                vc.block = ^(BOOL isFemale){
+                    if (isFemale) {
+                        contentArrSection1[1] = @"女";
+                    } else {
+                        contentArrSection1[1] = @"男";
+                    }
+                    [self.tableView reloadData];
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 2:
+            {
+                
+            }
+                break;
+            case 3:
+            {
+                
+            }
+                break;
+            default:
+                break;
+        }
+    } else {
+        
+    }
 }
 
-
+#pragma mark - button method
+- (void)uploadAvatar:(UIButton*)sender {
+    ChangeAvatarViewController *vc = [[ChangeAvatarViewController alloc]init];
+    vc.block = ^(UIImage *image){
+        _image = image;
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 @end

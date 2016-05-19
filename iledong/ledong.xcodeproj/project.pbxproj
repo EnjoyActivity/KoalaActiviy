@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E201CED66A300D5C551 /* ChangeAvatarViewController.m */; };
+		20B63E2C1CED791E00D5C551 /* ChangeAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E291CED791E00D5C551 /* ChangeAvatarView.m */; };
+		20B63E351CED883400D5C551 /* ChangeNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E341CED883400D5C551 /* ChangeNickNameViewController.m */; };
+		20B63E381CED8DEB00D5C551 /* ChangeGenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E371CED8DEB00D5C551 /* ChangeGenderViewController.m */; };
 		3608E20A1CA23C3200AC23A4 /* AdressCityVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3608E2081CA23C3200AC23A4 /* AdressCityVC.m */; };
 		3608E20B1CA23C3200AC23A4 /* AdressCityVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3608E2091CA23C3200AC23A4 /* AdressCityVC.xib */; };
 		3608E20D1CA26D9500AC23A4 /* ic_search_a@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3608E20C1CA26D9500AC23A4 /* ic_search_a@2x.png */; };
@@ -312,6 +316,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		20B63E1F1CED66A300D5C551 /* ChangeAvatarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeAvatarViewController.h; sourceTree = "<group>"; };
+		20B63E201CED66A300D5C551 /* ChangeAvatarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeAvatarViewController.m; sourceTree = "<group>"; };
+		20B63E291CED791E00D5C551 /* ChangeAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeAvatarView.m; sourceTree = "<group>"; };
+		20B63E2A1CED791E00D5C551 /* ChangeAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeAvatarView.h; sourceTree = "<group>"; };
+		20B63E331CED883400D5C551 /* ChangeNickNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeNickNameViewController.h; sourceTree = "<group>"; };
+		20B63E341CED883400D5C551 /* ChangeNickNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeNickNameViewController.m; sourceTree = "<group>"; };
+		20B63E361CED8DEB00D5C551 /* ChangeGenderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeGenderViewController.h; sourceTree = "<group>"; };
+		20B63E371CED8DEB00D5C551 /* ChangeGenderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeGenderViewController.m; sourceTree = "<group>"; };
 		3608E2071CA23C3200AC23A4 /* AdressCityVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdressCityVC.h; sourceTree = "<group>"; };
 		3608E2081CA23C3200AC23A4 /* AdressCityVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdressCityVC.m; sourceTree = "<group>"; };
 		3608E2091CA23C3200AC23A4 /* AdressCityVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdressCityVC.xib; sourceTree = "<group>"; };
@@ -786,6 +798,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		20B63E221CED6EC500D5C551 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				20B63E291CED791E00D5C551 /* ChangeAvatarView.m */,
+				20B63E2A1CED791E00D5C551 /* ChangeAvatarView.h */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
 		3608E2161CA2842F00AC23A4 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -1511,12 +1532,19 @@
 		7F9318EE1C85955A0061E9EA /* 个人资料 */ = {
 			isa = PBXGroup;
 			children = (
+				20B63E221CED6EC500D5C551 /* view */,
 				7F9318F61C8596590061E9EA /* PersonalInfomationViewController.h */,
 				7F9318F71C8596590061E9EA /* PersonalInfomationViewController.m */,
 				7F9318F81C8596590061E9EA /* PersonalInfomationViewController.xib */,
 				3656D75C1CD8816600F7C075 /* UserInfoTableViewCell.h */,
 				3656D75D1CD8816600F7C075 /* UserInfoTableViewCell.m */,
 				3656D75E1CD8816600F7C075 /* UserInfoTableViewCell.xib */,
+				20B63E1F1CED66A300D5C551 /* ChangeAvatarViewController.h */,
+				20B63E201CED66A300D5C551 /* ChangeAvatarViewController.m */,
+				20B63E331CED883400D5C551 /* ChangeNickNameViewController.h */,
+				20B63E341CED883400D5C551 /* ChangeNickNameViewController.m */,
+				20B63E361CED8DEB00D5C551 /* ChangeGenderViewController.h */,
+				20B63E371CED8DEB00D5C551 /* ChangeGenderViewController.m */,
 			);
 			name = "个人资料";
 			sourceTree = "<group>";
@@ -2077,6 +2105,7 @@
 				7F06F6301C86D4C300F67173 /* PlayerMessageTableViewCell.m in Sources */,
 				9055161F1CEC3CED001C4F51 /* UIImage+WebP.m in Sources */,
 				9055160D1CEC3CED001C4F51 /* MJRefreshStateHeader.m in Sources */,
+				20B63E351CED883400D5C551 /* ChangeNickNameViewController.m in Sources */,
 				36B2C1BB1CBB4845001D842B /* ManageTableViewCell.m in Sources */,
 				7F875FFB1C868E98003C6EBB /* FriendSpaceTableViewCell.m in Sources */,
 				905516061CEC3CED001C4F51 /* MJRefreshAutoNormalFooter.m in Sources */,
@@ -2120,10 +2149,12 @@
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
 				36B2C1B01CBB481A001D842B /* MemberTableViewCell.m in Sources */,
 				36F194DC1CD335220050EE6F /* CollectTableViewCell.m in Sources */,
+				20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */,
 				9055160A1CEC3CED001C4F51 /* MJRefreshBackStateFooter.m in Sources */,
 				36B2C1DB1CBB86C0001D842B /* UserHeaderViewController.m in Sources */,
 				3693F2891CA4DC7900E48BD9 /* SplashViewController.m in Sources */,
 				905516231CEC3CED001C4F51 /* SVIndefiniteAnimatedView.m in Sources */,
+				20B63E381CED8DEB00D5C551 /* ChangeGenderViewController.m in Sources */,
 				362F7E8E1CC0D59A00C91090 /* PaySuccessViewController.m in Sources */,
 				362F85EF1CABB6C9006FFE61 /* PublicDetailViewController.m in Sources */,
 				905515F11CEC3CED001C4F51 /* ELCAlbumPickerController.m in Sources */,
@@ -2149,6 +2180,7 @@
 				36E3E1F91CC46E4700294509 /* AffirmPayViewController.m in Sources */,
 				905515FD1CEC3CED001C4F51 /* MBProgressHUD+Add.m in Sources */,
 				9055160B1CEC3CED001C4F51 /* MJRefreshGifHeader.m in Sources */,
+				20B63E2C1CED791E00D5C551 /* ChangeAvatarView.m in Sources */,
 				905516271CEC3CED001C4F51 /* SVRadialGradientLayer.m in Sources */,
 				905515EB1CEC3CED001C4F51 /* AFNetworkReachabilityManager.m in Sources */,
 				361A764D1CBCD133002FE6B2 /* HotTeamViewController.m in Sources */,

@@ -26,7 +26,7 @@
     _leftButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_leftButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [_leftButton setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-    [self.leftButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [self.leftButton setImage:[UIImage imageNamed:@"ic_back"] forState:UIControlStateNormal];
     if (_isSetting)
     {
         [_leftButton setImage:[UIImage imageNamed:@"ic_back_gray"] forState:UIControlStateNormal];
