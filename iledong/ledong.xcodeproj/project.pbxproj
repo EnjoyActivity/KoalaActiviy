@@ -951,14 +951,6 @@
 			name = Splash;
 			sourceTree = "<group>";
 		};
-		3693F28C1CA51E0900E48BD9 /* 第三方 */ = {
-			isa = PBXGroup;
-			children = (
-				3627C5C91CA8DBD400A5D7EB /* ZHScanView */,
-			);
-			name = "第三方";
-			sourceTree = "<group>";
-		};
 		36B2C18A1CBB464B001D842B /* 团队管理 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1124,7 +1116,6 @@
 		626DD4511C841FC9006BC53C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3693F28C1CA51E0900E48BD9 /* 第三方 */,
 				626DD4521C841FC9006BC53C /* Info.plist */,
 				626DD4531C841FC9006BC53C /* main.m */,
 				626DD48A1C8434DD006BC53C /* ILeDong_PrefixHeader.pch */,
@@ -1524,6 +1515,7 @@
 		9055155B1CEC3CCE001C4F51 /* OtherFrames */ = {
 			isa = PBXGroup;
 			children = (
+				3627C5C91CA8DBD400A5D7EB /* ZHScanView */,
 				9055155C1CEC3CED001C4F51 /* AFNetworking */,
 				905515701CEC3CED001C4F51 /* ELCImagePicker */,
 				905515881CEC3CED001C4F51 /* MBProgressHUD */,
@@ -1827,8 +1819,9 @@
 		626DD4461C841FC9006BC53C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = LD;
 				LastUpgradeCheck = 0630;
-				ORGANIZATIONNAME = yangqiyao;
+				ORGANIZATIONNAME = LeDong;
 				TargetAttributes = {
 					626DD44D1C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;

@@ -13,8 +13,9 @@
 {
     NSArray *imageArr;
     UIButton *loginButton;
+    UIScrollView *_scrollView;
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+//@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @end
 
 @implementation SplashViewController
@@ -25,18 +26,20 @@
     
     imageArr = [[NSArray alloc] initWithObjects:@"start", nil];
     
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
+    [self.view addSubview:_scrollView];
     _scrollView.pagingEnabled = YES;
     _scrollView.contentOffset = CGPointZero;
-    _scrollView.contentSize = CGSizeMake(APP_WIDTH * imageArr.count, 0);
+    _scrollView.backgroundColor = [UIColor redColor];
     for (int i = 0; i < [imageArr count]; i++)
     {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(APP_WIDTH * i, 0, APP_WIDTH, _scrollView.frame.size.height)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height)];
         imageView.image = [UIImage imageNamed:imageArr[i]];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+//        imageView.contentMode = UIViewContentModeScaleAspectFit;
         [_scrollView addSubview:imageView];
     }
     _scrollView.showsHorizontalScrollIndicator = FALSE;
-    
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * imageArr.count, 0);
     
     loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginButton setFrame:CGRectMake(0 , 0, 100, 30)];
