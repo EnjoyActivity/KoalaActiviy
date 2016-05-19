@@ -23,7 +23,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = YES;
     self.tabBarController.tabBar.hidden = YES;
     self.phoneNum.delegate = self;
     self.putNumber.delegate = self;
@@ -40,6 +39,11 @@
     [self.gobackButton setImage:[UIImage imageNamed:@"ic_close"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
     [self.gobackButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)dismiss
@@ -74,9 +78,10 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
     NSDictionary *parameters = @{@"phone": self.phoneNum.text};
     NSString *str = [API_BASE_URL stringByAppendingString:API_VALIDATION_URL];
+    [Dialog progressToast:@""];
     [manager GET:str parameters:parameters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject)
     {
-        if ([[responseObject objectForKey:@"code"] intValue] == 1)
+        if ([[responseObject objectForKey:@"code"] intValue] == 0)
         {
             NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(sendButtonSet:) userInfo:nil repeats:YES];
             [timer fire];

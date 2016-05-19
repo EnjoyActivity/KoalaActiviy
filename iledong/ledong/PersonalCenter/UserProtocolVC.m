@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad
 {
+    self.navigationController.navigationBarHidden = NO;
     self.titleName = @"用户协议";
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
