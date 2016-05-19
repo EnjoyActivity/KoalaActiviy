@@ -76,12 +76,39 @@
         return;
     }
     
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+        NSDictionary* temp = (NSDictionary*)jsonObject;
+        if ([[temp objectForKey:@"code"]intValue]!=0) {
+            [Dialog toast:[temp objectForKey:@"msg"]];
+            return;
+        }
+        NSMutableDictionary *postDic = [temp objectForKey:@"result"];
+        [postDic setObject:nameField.text forKey:@"NickName"];
+        [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+            NSDictionary* temp = (NSDictionary*)jsonObject;
+            if ([[temp objectForKey:@"code"]intValue]!=0) {
+                [Dialog toast:[temp objectForKey:@"msg"]];
+                return;
+            }
+            if (self.block) {
+                self.block(nameField.text);
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }fail:^{
+            [Dialog toast:@"网络失败，请稍后再试"];
+        }];
+        
+    }fail:^{
+        [Dialog toast:@"网络失败，请稍后再试"];
+    }];
     
     
-    if (self.block) {
-        self.block(nameField.text);
-    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

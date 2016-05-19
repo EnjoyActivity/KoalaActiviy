@@ -50,9 +50,15 @@
 {
     self.tabBarController.tabBar.hidden = NO;
     self.navigationController.navigationBarHidden = YES;
-    if (![HttpClient isLogin]) {
-         [FRUtils presentToLoginViewControllerWithRootViewController:self];
-    }
+    
+//    if (![HttpClient isLogin]) {
+//        LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
+//        loginView.isPersonalCenterPage = YES;
+//        loginView.block = ^{
+//            self.tabBarController.selectedIndex = 0;
+//        };
+//        [self presentViewController:loginView animated:YES completion:nil];
+//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -82,6 +88,7 @@
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
+    
 }
 
 

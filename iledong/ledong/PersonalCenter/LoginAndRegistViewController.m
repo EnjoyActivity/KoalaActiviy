@@ -44,8 +44,13 @@
 
 - (void)dismiss
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
     
+    [self dismissViewControllerAnimated:YES completion:nil];
+    if (_isPersonalCenterPage) {
+        if (_block) {
+            _block();
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,7 +116,8 @@
     [HttpClient loginOrRegistWithUrl:str parameters:parameters success:^(id json)
     {
         NSLog(@"登陆成功！");
-        [self dismiss];
+//        [self dismiss];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
     } fail:^{
         [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];
