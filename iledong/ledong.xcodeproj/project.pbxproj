@@ -300,6 +300,8 @@
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
+
+		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -765,9 +767,13 @@
 		905516301CEC3E31001C4F51 /* ActivePublicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivePublicViewController.h; sourceTree = "<group>"; };
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
+
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
+
+		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -953,14 +959,6 @@
 			name = Splash;
 			sourceTree = "<group>";
 		};
-		3693F28C1CA51E0900E48BD9 /* 第三方 */ = {
-			isa = PBXGroup;
-			children = (
-				3627C5C91CA8DBD400A5D7EB /* ZHScanView */,
-			);
-			name = "第三方";
-			sourceTree = "<group>";
-		};
 		36B2C18A1CBB464B001D842B /* 团队管理 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1126,7 +1124,6 @@
 		626DD4511C841FC9006BC53C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3693F28C1CA51E0900E48BD9 /* 第三方 */,
 				626DD4521C841FC9006BC53C /* Info.plist */,
 				626DD4531C841FC9006BC53C /* main.m */,
 				626DD48A1C8434DD006BC53C /* ILeDong_PrefixHeader.pch */,
@@ -1500,6 +1497,7 @@
 				36BD8BAB1C9F9AAB00F99077 /* ic_scan@2x.png */,
 				36BD8BAF1C9F9EEA00F99077 /* ic_search@2x.png */,
 				36E1E6DC1C9F84C90085C457 /* ic_home_on@2x.png */,
+				905516391CEC70C5001C4F51 /* img_nodata@2x.png */,
 				36E1E6DD1C9F84C90085C457 /* ic_home@2x.png */,
 				36E1E6DE1C9F84C90085C457 /* ic_mine_on@2x.png */,
 				36E1E6DF1C9F84C90085C457 /* ic_mine@2x.png */,
@@ -1526,6 +1524,7 @@
 		9055155B1CEC3CCE001C4F51 /* OtherFrames */ = {
 			isa = PBXGroup;
 			children = (
+				3627C5C91CA8DBD400A5D7EB /* ZHScanView */,
 				9055155C1CEC3CED001C4F51 /* AFNetworking */,
 				905515701CEC3CED001C4F51 /* ELCImagePicker */,
 				905515881CEC3CED001C4F51 /* MBProgressHUD */,
@@ -1838,8 +1837,9 @@
 		626DD4461C841FC9006BC53C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = LD;
 				LastUpgradeCheck = 0630;
-				ORGANIZATIONNAME = yangqiyao;
+				ORGANIZATIONNAME = LeDong;
 				TargetAttributes = {
 					626DD44D1C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -1916,6 +1916,7 @@
 				905515F81CEC3CED001C4F51 /* ELCAlbumPickerController.xib in Resources */,
 				7F06F6371C86E34600F67173 /* ActivityMessageViewController.xib in Resources */,
 				3644A9601CD0AAC3000D0218 /* ic_message@2x.png in Resources */,
+				9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */,
 				36BD8BB01C9F9EEB00F99077 /* ic_search@2x.png in Resources */,
 				3629CEC41CDB4C5000BEF297 /* bg_timebox_mid@2x.png in Resources */,
 				3644A9651CD0B26C000D0218 /* FansViewController.xib in Resources */,

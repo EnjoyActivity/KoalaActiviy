@@ -10,4 +10,10 @@
 
 @interface AllTeamCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *activeCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *personCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *attentionCountLabel;
+
 @end

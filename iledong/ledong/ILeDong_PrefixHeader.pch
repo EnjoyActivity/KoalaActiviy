@@ -32,7 +32,8 @@
 #define API_USER_LOGIN_URL       @"Login/Enter"            //登录
 #define API_VALIDATION_URL       @"Login/GetSMSCode"       //登录验证码
 #define API_USERPROTOCOL_URL       @"Config/Agreement"     //用户协议
-#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我的团队
+#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我申请的团队
+#define API_STARTTEAMS_URL       @"Team/GetMyStartTeams"    //我的团队
 #define API_CREATETEAM_URL       @"Team/Create"            //创建团队
 #define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
 
