@@ -30,9 +30,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *teamNameTextField;
 @property (weak, nonatomic) IBOutlet UITextView *teamIntrodectionTextView;
 @property (weak, nonatomic) IBOutlet UITextField *maxCountTextField;
-@property (strong, nonatomic) IBOutlet UITextField *addTagTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *switchCtl;
+@property (strong, nonatomic) IBOutlet UITextField *addTagTextField;
 
+@property (strong, nonatomic) NSMutableArray* tagArray;
+@property (strong, nonatomic) UIScrollView* tagScrollView;
+@property (strong, nonatomic) UIView* deleteTagView;
+@property (strong, nonatomic) NSDictionary* currentDeleteTagDict;
 
 @end
 
@@ -74,14 +78,18 @@
 - (void)layoutSubView {
     self.uploadHeaderImgBtn.layer.borderWidth = 1.0;
     self.uploadHeaderImgBtn.layer.borderColor = UIColorFromRGB(0xDEDEDE).CGColor;
-    self.addTagTextField = [[UITextField alloc]initWithFrame:CGRectMake(15, self.teamOtherInfoView.bounds.size.height - 30, 0, 0)];
+    
+    self.tagScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.teamOtherInfoView.frame.size.height-50, APP_WIDTH, 50)];
+    [self.teamOtherInfoView addSubview:self.tagScrollView];
+
+    self.addTagTextField = [[UITextField alloc]initWithFrame:CGRectMake(15, 16, 0, 0)];
     self.addTagTextField.placeholder = @"添加标签";
     self.addTagTextField.font = [UIFont systemFontOfSize:14.0];
     self.addTagTextField.textColor = [UIColor redColor];
     self.addTagTextField.delegate = self;
     self.addTagTextField.returnKeyType = UIReturnKeyDone;
     [self.addTagTextField sizeToFit];
-    [self.teamOtherInfoView addSubview:self.addTagTextField];
+    [self.tagScrollView addSubview:self.addTagTextField];
     
     self.switchCtl.onTintColor = [UIColor redColor];
 }
@@ -157,8 +165,11 @@
         y = self.teamIntroductionView.frame.origin.y - kOrighHeight;
     else if ([self.maxCountTextField isFirstResponder])
         y = self.teamOtherInfoView.frame.origin.y - kOrighHeight;
-    else if ([self.addTagTextField isFirstResponder])
+    else if ([self.addTagTextField isFirstResponder]) {
         y = self.teamAuditView.frame.origin.y - kOrighHeight - 80;
+        self.deleteTagView.hidden = YES;
+        self.tagScrollView.scrollEnabled = YES;
+    }
     CGFloat sizeHeigth = _mainScrollViewContentHeight + keyboardSize.height;
     [UIView animateWithDuration:0.5 animations:^{
         [self.mainScrollView setContentSize:CGSizeMake(APP_WIDTH, sizeHeigth)];
@@ -192,8 +203,96 @@
     }
 }
 
-- (void)addTagView {
+- (void)addTagView:(NSString*)str isReDraw:(BOOL)isReDraw {
+    UILabel* tagLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.addTagTextField.frame.origin.x, 10, 0, 0)];
+    tagLabel.text = str;
+    if (!isReDraw) {
+        if (!self.tagArray)
+            self.tagArray = [NSMutableArray array];
+        [self.tagArray addObject:tagLabel.text];
+    }
+
+    tagLabel.font = [UIFont systemFontOfSize:14.0];
+    tagLabel.textColor = [UIColor whiteColor];
+    tagLabel.backgroundColor = [UIColor redColor];
+    [tagLabel sizeToFit];
+    tagLabel.frame = CGRectMake(tagLabel.frame.origin.x, tagLabel.frame.origin.y, tagLabel.frame.size.width*1.5, tagLabel.frame.size.height+10);
+    tagLabel.textAlignment = NSTextAlignmentCenter;
+    tagLabel.layer.cornerRadius = tagLabel.frame.size.height/2;
+    tagLabel.layer.masksToBounds = YES;
+    [self.tagScrollView addSubview:tagLabel];
     
+    tagLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
+    NSDictionary* dict = @{@"index":[NSNumber numberWithInteger:self.tagArray.count-1],
+                           @"centerX":[NSNumber numberWithInt:tagLabel.center.x]};
+    objc_setAssociatedObject(tapGes, @"tapGesData", dict, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [tapGes addTarget:self action:@selector(deleteTagClicked:)];
+    [tagLabel addGestureRecognizer:tapGes];
+    
+    self.addTagTextField.frame = CGRectMake(tagLabel.frame.origin.x+tagLabel.frame.size.width + 15, self.addTagTextField.frame.origin.y, self.addTagTextField.frame.size.width, self.addTagTextField.frame.size.height);
+    self.addTagTextField.text = @"";
+    
+    self.tagScrollView.contentSize = CGSizeMake(self.addTagTextField.frame.origin.x+self.addTagTextField.frame.size.width+10, self.tagScrollView.contentSize.height);
+    //self.tagScrollView.contentOffset = CGPointMake(tagLabel.frame.origin.x-10, self.tagScrollView.contentOffset.y);
+}
+
+- (void)deleteTagClicked:(UITapGestureRecognizer*)tapGes {
+    NSDictionary* dict = objc_getAssociatedObject(tapGes, @"tapGesData");
+    NSNumber* centerX = [dict objectForKey:@"centerX"];
+    NSNumber* indexNum = [dict objectForKey:@"index"];
+    if (self.deleteTagView && !self.deleteTagView.hidden) {
+        NSNumber* tempNum = [self.currentDeleteTagDict objectForKey:@"index"];
+        if (tempNum.integerValue == indexNum.integerValue) {
+            self.deleteTagView.hidden = YES;
+            self.tagScrollView.scrollEnabled = YES;
+            return;
+        }
+    }
+
+    self.currentDeleteTagDict = dict;
+    //弹出删除框
+    if (!self.deleteTagView) {
+        self.deleteTagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 70, 40)];
+        self.deleteTagView.backgroundColor = [UIColor whiteColor];
+        [self.mainScrollView addSubview:self.deleteTagView];
+        UILabel* label = [[UILabel alloc]initWithFrame:self.deleteTagView.bounds];
+        label.text = @"删除";
+        label.font = [UIFont systemFontOfSize:14.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = UIColorFromRGB(0x333333);
+        [self.deleteTagView addSubview:label];
+
+        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
+        [tapGes addTarget:self action:@selector(deleteTag)];
+        [self.deleteTagView addGestureRecognizer:tapGes];
+        
+        self.deleteTagView.layer.borderColor = UIColorFromRGB(0xDEDEDE).CGColor;
+        self.deleteTagView.layer.borderWidth = 1;
+    }
+    self.deleteTagView.frame = CGRectMake(0, self.teamOtherInfoView.frame.origin.y+self.teamOtherInfoView.frame.size.height-90, 70, 40);
+    self.deleteTagView.center = CGPointMake(centerX.intValue - self.tagScrollView.contentOffset.x, self.deleteTagView.center.y);
+    if (self.deleteTagView.frame.origin.x <= 0) {
+        self.deleteTagView.frame = CGRectMake(5, self.teamOtherInfoView.frame.origin.y+self.teamOtherInfoView.frame.size.height-90, 70, 40);
+    }
+    self.deleteTagView.hidden = NO;
+    self.tagScrollView.scrollEnabled = NO;
+}
+
+- (void)deleteTag {
+    self.deleteTagView.hidden = YES;
+    self.tagScrollView.scrollEnabled = YES;
+    NSNumber* indexNum = [self.currentDeleteTagDict objectForKey:@"index"];
+    //删除该数据，并重绘标签栏
+    [self.tagArray removeObjectAtIndex:indexNum.intValue];
+    for (UIView* view in self.tagScrollView.subviews) {
+        if (view == self.addTagTextField)
+            continue;
+        [view removeFromSuperview];
+    }
+    self.addTagTextField.frame = CGRectMake(15, 16, self.addTagTextField.frame.size.width, self.addTagTextField.frame.size.height);
+    for (NSString* str in self.tagArray)
+        [self addTagView:str isReDraw:YES];
 }
 
 #pragma mark - delegate
@@ -239,11 +338,12 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     if (textField == self.addTagTextField) {
         [self.addTagTextField resignFirstResponder];
-        [self addTagView];
+        [self addTagView:self.addTagTextField.text isReDraw:NO];
         return YES;
     }
     return NO;
 }
+
 
     /*
 - (NSString *)postRequestWithURL: (NSString *)url
