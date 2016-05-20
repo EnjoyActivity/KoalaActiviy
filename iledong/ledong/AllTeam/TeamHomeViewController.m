@@ -8,6 +8,7 @@
 
 #import "TeamHomeViewController.h"
 #import "FRUtils.h"
+#import "TeamManagerTableViewController.h"
 #import "TeamHomeTableViewCell.h"
 
 @interface TeamHomeViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -44,6 +45,7 @@
     
     [self.rightButton setImage:[UIImage imageNamed:@"ic_manage"] forState:UIControlStateNormal];
     [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 40, 0, 0)];
+    [self.rightButton addTarget:self action:@selector(manageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
 
 }
 - (void)didReceiveMemoryWarning {
@@ -53,18 +55,25 @@
 #pragma mark - buttonClick
 
 - (IBAction)memberButton:(id)sender {
+    
 }
 - (IBAction)fansButton:(id)sender {
+    
 }
 
 - (IBAction)publicButton:(id)sender {
+    
 }
 - (IBAction)footButton:(id)sender {
+    
 }
 
+- (void)manageBtnClicked {
+    TeamManagerTableViewController* VC = [[TeamManagerTableViewController alloc]init];
+    [self.navigationController pushViewController:VC animated:YES];
+}
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 100;
@@ -85,23 +94,5 @@
     }
     return cell;
 }
-
-
-
-
-
-
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

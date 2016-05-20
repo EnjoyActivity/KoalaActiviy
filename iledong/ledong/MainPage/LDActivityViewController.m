@@ -45,8 +45,18 @@ static NSString * const locationIdentifier = @"LocationCell";
     
     locationArray = @[@"全部地区",@"附近",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去"];
     [self setUpFilterView];
-//    [self setUpUI];
+    [self setUpUI];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -138,7 +148,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 #pragma mark - UI
 
 - (void)setUpUI {
-    activityTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT - 64-50) style:UITableViewStylePlain];
+    activityTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 104, APP_WIDTH, APP_HEIGHT - 104) style:UITableViewStylePlain];
     activityTableView.delegate = self;
     activityTableView.dataSource = self;
     activityTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -195,7 +205,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (UITableView *)locationTableview {
     if (!_locationTableview) {
-        _locationTableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 111, APP_WIDTH, APP_HEIGHT - 161) style:UITableViewStylePlain];
+        _locationTableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 104, APP_WIDTH, APP_HEIGHT - 104) style:UITableViewStylePlain];
         _locationTableview.backgroundColor = [UIColor whiteColor];
         _locationTableview.delegate = self;
         _locationTableview.dataSource = self;

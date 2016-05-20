@@ -10,9 +10,9 @@
 
 @interface TeamTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *contentName;
-@property (weak, nonatomic) IBOutlet UILabel *resultName;
-@property (weak, nonatomic) IBOutlet UILabel *resultNum;
-@property (weak, nonatomic) IBOutlet UIImageView *headerImage;
+@property (strong, nonatomic) IBOutlet UIImageView *headImageView;
+
+@property (strong, nonatomic) IBOutlet UILabel *teamName;
+@property (strong, nonatomic) IBOutlet UILabel *teamMember;
 
 @end

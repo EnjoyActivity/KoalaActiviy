@@ -12,11 +12,22 @@
 #import "SearchActiveVC.h"
 #import "SearchTeamVC.h"
 #import "SearchFriendVC.h"
+#import "TeamTableViewCell.h"
+#import "FriendTableViewCell.h"
+
+static NSString * historyCell = @"HistoryCell";
+static NSString * activityCell = @"ActivityCell";
+static NSString * teamCell = @"teamCell";
+static NSString * friendCell = @"friendCell";
 
 
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
-    NSMutableArray *sctionArr;
+    NSArray *sectionTitleArray;
+    NSMutableArray * historyArray;
+    NSMutableArray * activityArray;
+    NSMutableArray * teamArray;
+    NSMutableArray * friendArray;
 }
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 
@@ -29,23 +40,22 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.hidden = YES;
     self.tabBarController.tabBar.hidden = YES;
-    self.tableView.tableFooterView = _footerView;
-    
-    [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
-    
-    [self.searchActive setImage:[FRUtils resizeImageWithImageName:@"ic_search_activity"] forState:UIControlStateNormal];
-    [self.searchTeam setImage:[FRUtils resizeImageWithImageName:@"ic_search_team"] forState:UIControlStateNormal];
-    [self.searchFriend setImage:[FRUtils resizeImageWithImageName:@"ic_search_friend"] forState:UIControlStateNormal];
-    
-    self.clearSarchImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+
+    [self setUpUI];
+  
     self.resultTableView.hidden = YES;
     self.textFiled.delegate = self;
-    self.textFiled.clearButtonMode = UITextFieldViewModeAlways;
-    self.textFiled.returnKeyType = UIReturnKeySearch;
-    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.textFiled.clearButtonMode = UITextFieldViewModeAlways;
+//    self.textFiled.returnKeyType = UIReturnKeySearch;
+//    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    sctionArr = [[NSMutableArray alloc] initWithObjects:@"活动",@"团队",@"好友", nil];
+    sectionTitleArray = @[@"活动",@"团队",@"好友"];
+    historyArray = [NSMutableArray array];
+    activityArray = [NSMutableArray array];
+    teamArray =[NSMutableArray array];
+    friendArray = [NSMutableArray array];
+    
     
 }
 
@@ -83,8 +93,32 @@
 
 - (IBAction)clearSearchButtonClick:(id)sender
 {
+    [historyArray removeAllObjects];
+    [self.tableView reloadData];
     
 }
+
+- (void)getMoreActivityInfo:(UIButton *)sender {
+    NSInteger tag = sender.tag-100;
+    switch (tag) {
+        case 0:
+        {
+            
+        }
+            break;
+        case 1:
+        {
+            
+        }
+            break;
+        case 2:
+        {
+            
+        }
+            break;
+    }
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -100,7 +134,7 @@
     [self.view endEditing:YES];
 }
 
-#pragma mark - UITableViewDelegate && UITableViewDataSource
+#pragma mark - UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -120,36 +154,62 @@
     {
         return 3;
     }
-    return 0;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    if ([tableView isEqual:self.tableView]) {
+        return historyArray.count;
+    }
+    else {
+        switch (section) {
+            case 0:
+            {
+                return activityArray.count;
+            }
+                break;
+            case 1:
+            {
+                return teamArray.count;
+            }
+                break;
+            default:
+            {
+                return friendArray.count;
+            }
+                break;
+        }
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.tableView)
     {
-        static NSString *dentifier = @"searchCell";
-        SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:dentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil][0];
-        }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
+        UILabel * label = (UILabel *)[cell viewWithTag:2];
+        label.text = historyArray[indexPath.row];
         return cell;
     }
     else
     {
-        static NSString *identifier = @"reslutCell";
-        SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil][1];
+        if (indexPath.section == 0) {
+            SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
+            cell.activityName.text = @"dasda";
+            cell.activityPrice.text = @"ewqq";
+            return cell;
         }
-        cell.resultName.text = @"woca";
-        return cell;
-        
+        else if (indexPath.section == 1) {
+            TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"teamCell" forIndexPath:indexPath];
+            cell.teamName.text = @"hahahahh";
+            return cell;
+        }
+        else {
+            FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
+            cell.friendName.text = @"oooo";
+            return cell;
+        }
     }
 }
 
@@ -173,41 +233,96 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *nameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(18, 10, 40, 20)];
-    title.font = [UIFont systemFontOfSize:15];
-    title.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1];
-    title.text = sctionArr[section];
-    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(18, 39, self.view.frame.size.width, 1)];
-    lineImageView.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
-    nameView.backgroundColor = [UIColor whiteColor];
-    [nameView addSubview:lineImageView];
-    [nameView addSubview:title];
-    return nameView;
+    if ([tableView isEqual:self.contentView]) {
+        return nil;
+    }
+    return [self viewForHeader:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 49)];
+    if ([tableView isEqual:self.contentView]) {
+        return nil;
+    }
+    return [self viewForFooter:section];
+}
+
+#pragma mark - UitableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.tableView]) {
+        
+    }
+    else {
+        
+    }
+}
+
+
+#pragma mark - UI
+
+- (void)setUpUI {
+    self.tableView.tableFooterView = _footerView;
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];
+    
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"SearchTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ActivityCell"];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"TeamTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"FriendTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
+    
+    [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
+    
+    [self.searchActive setImage:[FRUtils resizeImageWithImageName:@"ic_search_activity"] forState:UIControlStateNormal];
+    [self.searchTeam setImage:[FRUtils resizeImageWithImageName:@"ic_search_team"] forState:UIControlStateNormal];
+    [self.searchFriend setImage:[FRUtils resizeImageWithImageName:@"ic_search_friend"] forState:UIControlStateNormal];
+    
+    self.clearSarchImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+}
+
+- (UIView *)viewForFooter:(NSInteger)section {
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 49)];
     footerView.backgroundColor = [UIColor whiteColor];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
+    button.tag = section+100;
+    [button addTarget:self action:@selector(getMoreActivityInfo:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 200, 40)];
-    UIImageView *bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 9)];
-    bgImage.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
-    nameLabel.text = [NSString stringWithFormat:@"查看更多相关%@",sctionArr[section]];
+    CALayer * lineLayer = [CALayer layer];
+    lineLayer.frame = CGRectMake(0, 40, APP_WIDTH, 9);
+    lineLayer.backgroundColor = RGB(242.0, 243.0, 244.0, 1.0).CGColor;
+//    UIImageView *bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, APP_WIDTH, 9)];
+//    bgImage.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
+    nameLabel.text = [NSString stringWithFormat:@"查看更多相关%@",sectionTitleArray[section]];
     nameLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1];
     nameLabel.font = [UIFont systemFontOfSize:15];
     
     [button setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [button setImageEdgeInsets:UIEdgeInsetsMake(0,  self.view.frame.size.width - 35, 0,0)];
-//    [button setBackgroundImage:[self imageWithColor:[UIColor grayColor]] forState:UIControlStateHighlighted];
-    [footerView addSubview:nameLabel];
-    [footerView addSubview:bgImage];
-    [footerView addSubview:button];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(0,  APP_WIDTH - 35, 0,0)];
     
+    //    [button setBackgroundImage:[self imageWithColor:[UIColor grayColor]] forState:UIControlStateHighlighted];
+    [footerView addSubview:nameLabel];
+//    [footerView addSubview:bgImage];
+    [footerView.layer addSublayer:lineLayer];
+    [footerView addSubview:button];
     return footerView;
 }
 
-
-
+- (UIView *)viewForHeader:(NSInteger)section {
+    UIView *nameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(18, 10, 40, 20)];
+    title.font = [UIFont systemFontOfSize:15];
+    title.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1];
+    title.text = sectionTitleArray[section];
+    CALayer * lineLayer = [CALayer layer];
+    lineLayer.frame = CGRectMake(18, 39, APP_WIDTH, 1);
+    lineLayer.backgroundColor = RGB(242.0, 243.0, 244.0, 1.0).CGColor;
+//    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(18, 39, APP_WIDTH, 1)];
+//    lineImageView.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
+    nameView.backgroundColor = [UIColor whiteColor];
+//    [nameView addSubview:lineImageView];
+    [nameView.layer addSublayer:lineLayer];
+    [nameView addSubview:title];
+    
+    return nameView;
+}
 @end

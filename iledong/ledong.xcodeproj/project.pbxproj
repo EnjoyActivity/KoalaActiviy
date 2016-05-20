@@ -322,15 +322,24 @@
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
+
+		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
+		90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90FB7D691CEEECB50055B493 /* ic_new@2x.png */; };
 		EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */; };
 		EC33E0A11CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */; };
 		EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */; };
 		EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */; };
 		EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */; };
+
+		EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */; };
+		EC7CB2931CEEF19D008258B1 /* LDTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */; };
+		EC7CB2941CEEF19D008258B1 /* LDTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */; };
+>>>>>>> origin/master
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
 		EC9A931B1CED9D3D00F6009B /* LDLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */; };
+		EC9ECC161CEED42600A613EA /* SearchHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9ECC151CEED42600A613EA /* SearchHistoryCell.xib */; };
 		ECBB8A471CEDAD6A007D4756 /* ic_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */; };
 		ECBB8A4B1CEDB97A007D4756 /* LDActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A491CEDB97A007D4756 /* LDActivityTableViewCell.m */; };
 		ECBB8A4C1CEDB97A007D4756 /* LDActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */; };
@@ -846,17 +855,30 @@
 		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
+
+		90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamManagerTableViewController.h; sourceTree = "<group>"; };
+		90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamManagerTableViewController.m; sourceTree = "<group>"; };
+		90FB7D691CEEECB50055B493 /* ic_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_new@2x.png"; sourceTree = "<group>"; };
+
 		EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey@2x.png"; sourceTree = "<group>"; };
 		EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey_up@2x.png"; sourceTree = "<group>"; };
 		EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityLocationCell.xib; sourceTree = "<group>"; };
 		EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainSearchResultCell.xib; sourceTree = "<group>"; };
 		EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainSearchTableViewCell.h; sourceTree = "<group>"; };
 		EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainSearchTableViewCell.m; sourceTree = "<group>"; };
+
+		EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamViewController.h; sourceTree = "<group>"; };
+		EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDTeamViewController.m; sourceTree = "<group>"; };
+		EC7CB2901CEEF19D008258B1 /* LDTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamTableViewCell.h; sourceTree = "<group>"; };
+		EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDTeamTableViewCell.m; sourceTree = "<group>"; };
+		EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamTableViewCell.xib; sourceTree = "<group>"; };
+
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
 		EC9A93191CED9D3D00F6009B /* LDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDLocationManager.h; sourceTree = "<group>"; };
 		EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDLocationManager.m; sourceTree = "<group>"; };
+		EC9ECC151CEED42600A613EA /* SearchHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchHistoryCell.xib; sourceTree = "<group>"; };
 		ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_back@2x.png"; sourceTree = "<group>"; };
 		ECBB8A481CEDB97A007D4756 /* LDActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityTableViewCell.h; sourceTree = "<group>"; };
 		ECBB8A491CEDB97A007D4756 /* LDActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityTableViewCell.m; sourceTree = "<group>"; };
@@ -952,6 +974,8 @@
 				362F49161CD20105000777F0 /* TeamHomeTableViewCell.h */,
 				362F49171CD20105000777F0 /* TeamHomeTableViewCell.m */,
 				362F49181CD20105000777F0 /* TeamHomeTableViewCell.xib */,
+				90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */,
+				90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */,
 			);
 			name = "团队";
 			sourceTree = "<group>";
@@ -1329,6 +1353,8 @@
 				ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */,
 				ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */,
 				ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */,
+				EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */,
+				EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */,
 				3664D0581CA1287C00BC6805 /* TeamsCell.h */,
 				3664D0591CA1287C00BC6805 /* TeamsCell.m */,
 				3664D05A1CA1287C00BC6805 /* TeamsCell.xib */,
@@ -1647,6 +1673,7 @@
 				7F9318EA1C858A010061E9EA /* flat_classmanage@2x.png */,
 				EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */,
 				ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */,
+				90FB7D691CEEECB50055B493 /* ic_new@2x.png */,
 				EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */,
 				7F9318EC1C858B910061E9EA /* ic_more4@2x.png */,
 				7F9318F41C8596240061E9EA /* top_back@3x.png */,
@@ -1957,10 +1984,14 @@
 				ECBB8A481CEDB97A007D4756 /* LDActivityTableViewCell.h */,
 				ECBB8A491CEDB97A007D4756 /* LDActivityTableViewCell.m */,
 				ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */,
+				EC7CB2901CEEF19D008258B1 /* LDTeamTableViewCell.h */,
+				EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */,
+				EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */,
 				EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */,
 				EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */,
 				EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */,
 				EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */,
+				EC9ECC151CEED42600A613EA /* SearchHistoryCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2112,6 +2143,7 @@
 				3664D0521CA0FA7300BC6805 /* img_4@2x.png in Resources */,
 				36B2C1D11CBB4FA4001D842B /* ic_female_on@2x.png in Resources */,
 				36F194D81CD2F5E30050EE6F /* start.png in Resources */,
+				90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */,
 				362F7E741CC0BF7800C91090 /* ic_add@2x.png in Resources */,
 				3627C2F81CA8C7E400A5D7EB /* SearchViewController.xib in Resources */,
 				7F9318EB1C858A010061E9EA /* flat_classmanage@2x.png in Resources */,
@@ -2183,6 +2215,7 @@
 				361A76461CBC8B04002FE6B2 /* btn_white@2x.png in Resources */,
 				362F7E781CC0BF8800C91090 /* ic_sub@2x.png in Resources */,
 				362F85E41CABAEDA006FFE61 /* UserBaseInfoViewController.xib in Resources */,
+				EC7CB2941CEEF19D008258B1 /* LDTeamTableViewCell.xib in Resources */,
 				905515FA1CEC3CED001C4F51 /* ELCAssetTablePicker.xib in Resources */,
 				36E3E1FE1CC476F100294509 /* ic_unionpay@2x.png in Resources */,
 				36ED83121CC615B800D51ACA /* ic_search_team@2x.png in Resources */,
@@ -2198,6 +2231,7 @@
 				905516341CEC3E31001C4F51 /* ActiveTableViewCell.xib in Resources */,
 				363BDD0F1CBF6B32001FE507 /* AuditViewController.xib in Resources */,
 				3608E20B1CA23C3200AC23A4 /* AdressCityVC.xib in Resources */,
+				EC9ECC161CEED42600A613EA /* SearchHistoryCell.xib in Resources */,
 				7F875FFC1C868E98003C6EBB /* FriendSpaceTableViewCell.xib in Resources */,
 				EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */,
 				362F491C1CD20B0B000777F0 /* hd002_72.png in Resources */,
@@ -2295,6 +2329,7 @@
 				905516331CEC3E31001C4F51 /* ActiveTableViewCell.m in Sources */,
 				7F875FEF1C867E1F003C6EBB /* FootprintViewController.m in Sources */,
 				36B2C1C31CBB4863001D842B /* PublishViewController.m in Sources */,
+				EC7CB2931CEEF19D008258B1 /* LDTeamTableViewCell.m in Sources */,
 				7F8F73441C8FB1B300CCFE41 /* MyWalletViewController.m in Sources */,
 				905516051CEC3CED001C4F51 /* MJRefreshAutoGifFooter.m in Sources */,
 				363D6BE61CC76FFB008A169A /* SearchFriendVC.m in Sources */,
@@ -2314,6 +2349,7 @@
 				3608E20A1CA23C3200AC23A4 /* AdressCityVC.m in Sources */,
 				3627C5D41CA8DBD400A5D7EB /* ZHScanView.m in Sources */,
 				7F06F6361C86E34600F67173 /* ActivityMessageViewController.m in Sources */,
+				EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */,
 				EC9A931B1CED9D3D00F6009B /* LDLocationManager.m in Sources */,
 				626DD4901C843B30006BC53C /* Dialog.m in Sources */,
 				905516041CEC3CED001C4F51 /* MJRefreshHeader.m in Sources */,
@@ -2322,6 +2358,7 @@
 				905516171CEC3CED001C4F51 /* SDWebImageDecoder.m in Sources */,
 				363D6BCD1CC71584008A169A /* HotCollectionViewCell.m in Sources */,
 				62091BC61C8FC5CB00DB9804 /* SignUpDetailViewController.m in Sources */,
+				90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */,
 				361A76621CBCEF66002FE6B2 /* GoodActivTableViewCell.m in Sources */,
 				9055161D1CEC3CED001C4F51 /* UIImage+GIF.m in Sources */,
 				363D6BEB1CC77227008A169A /* FriendTableViewCell.m in Sources */,
