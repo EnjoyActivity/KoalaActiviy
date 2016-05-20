@@ -8,6 +8,7 @@
 
 #import "ActiveViewController.h"
 #import "ActiveTableViewCell.h"
+#import "ActivityReleaseViewController.h"
 
 @interface ActiveViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -25,10 +26,15 @@
     [customLab setText:@"活动管理"];
     customLab.font = [UIFont systemFontOfSize:16];
     self.navigationItem.titleView = customLab;
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    [self.rightButton setImage:[UIImage imageNamed:@"ic_new"] forState:UIControlStateNormal];
-    [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 40, 0, 0)];
-    [self.rightButton addTarget:self action:@selector(startActivityBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_new"] style:UIBarButtonItemStylePlain target:self action:@selector(startActivityBtnClicked)];
+    rightButton.tintColor = [UIColor redColor];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    backItem.tintColor = [UIColor redColor];
+    self.navigationItem.leftBarButtonItem = backItem;
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
@@ -93,7 +99,12 @@
 }
 
 - (void)startActivityBtnClicked {
-    
+    ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+    [self.navigationController pushViewController:VC animated:YES];
+}
+
+- (void)backBtnClicked {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

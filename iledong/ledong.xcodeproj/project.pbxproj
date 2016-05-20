@@ -319,18 +319,16 @@
 		905516351CEC3E31001C4F51 /* ActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055162D1CEC3E31001C4F51 /* ActiveViewController.m */; };
 		905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */; };
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
+		90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
-
 		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
 		90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90FB7D691CEEECB50055B493 /* ic_new@2x.png */; };
 		90FB7D6D1CEF03730055B493 /* ActivityReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D6C1CEF03730055B493 /* ActivityReleaseViewController.m */; };
-		90FB7D701CEF05A60055B493 /* NonLeagueTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D6F1CEF05A60055B493 /* NonLeagueTableView.m */; };
 		EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */; };
 		EC33E0A11CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */; };
 		EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */; };
 		EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */; };
 		EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */; };
-
 		EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */; };
 		EC7CB2931CEEF19D008258B1 /* LDTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */; };
 		EC7CB2941CEEF19D008258B1 /* LDTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */; };
@@ -849,30 +847,25 @@
 		9055162D1CEC3E31001C4F51 /* ActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveViewController.m; sourceTree = "<group>"; };
 		9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActiveViewController.xib; sourceTree = "<group>"; };
 		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
+		90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_location@2x.png"; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
-
 		90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamManagerTableViewController.h; sourceTree = "<group>"; };
 		90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamManagerTableViewController.m; sourceTree = "<group>"; };
 		90FB7D691CEEECB50055B493 /* ic_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_new@2x.png"; sourceTree = "<group>"; };
 		90FB7D6B1CEF03730055B493 /* ActivityReleaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityReleaseViewController.h; sourceTree = "<group>"; };
 		90FB7D6C1CEF03730055B493 /* ActivityReleaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityReleaseViewController.m; sourceTree = "<group>"; };
-		90FB7D6E1CEF05A60055B493 /* NonLeagueTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonLeagueTableView.h; sourceTree = "<group>"; };
-		90FB7D6F1CEF05A60055B493 /* NonLeagueTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonLeagueTableView.m; sourceTree = "<group>"; };
-
 		EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey@2x.png"; sourceTree = "<group>"; };
 		EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey_up@2x.png"; sourceTree = "<group>"; };
 		EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityLocationCell.xib; sourceTree = "<group>"; };
 		EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainSearchResultCell.xib; sourceTree = "<group>"; };
 		EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainSearchTableViewCell.h; sourceTree = "<group>"; };
 		EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainSearchTableViewCell.m; sourceTree = "<group>"; };
-
 		EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamViewController.h; sourceTree = "<group>"; };
 		EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDTeamViewController.m; sourceTree = "<group>"; };
 		EC7CB2901CEEF19D008258B1 /* LDTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamTableViewCell.h; sourceTree = "<group>"; };
 		EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDTeamTableViewCell.m; sourceTree = "<group>"; };
 		EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamTableViewCell.xib; sourceTree = "<group>"; };
-
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
@@ -1671,6 +1664,7 @@
 				36E3E1FD1CC476F100294509 /* ic_wechatpay@2x.png */,
 				3664D04B1CA0FA7300BC6805 /* img_6@3x.png */,
 				7F9318EA1C858A010061E9EA /* flat_classmanage@2x.png */,
+				90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */,
 				EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */,
 				ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */,
 				90FB7D691CEEECB50055B493 /* ic_new@2x.png */,
@@ -1971,8 +1965,6 @@
 			children = (
 				90FB7D6B1CEF03730055B493 /* ActivityReleaseViewController.h */,
 				90FB7D6C1CEF03730055B493 /* ActivityReleaseViewController.m */,
-				90FB7D6E1CEF05A60055B493 /* NonLeagueTableView.h */,
-				90FB7D6F1CEF05A60055B493 /* NonLeagueTableView.m */,
 			);
 			path = "活动发布";
 			sourceTree = "<group>";
@@ -2149,6 +2141,7 @@
 				7F9318EB1C858A010061E9EA /* flat_classmanage@2x.png in Resources */,
 				3664D04C1CA0FA7300BC6805 /* img_1@2x.png in Resources */,
 				7F06F6251C86C28800F67173 /* MyMessageViewController.xib in Resources */,
+				90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */,
 				7F875FF61C868D1C003C6EBB /* PlayerTableViewCell.xib in Resources */,
 				3627C5D11CA8DBD400A5D7EB /* scan@3x.png in Resources */,
 				905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */,
@@ -2366,7 +2359,6 @@
 				9055161C1CEC3CED001C4F51 /* UIButton+WebCache.m in Sources */,
 				361A76571CBCD46B002FE6B2 /* SearchHotViewController.m in Sources */,
 				20B63E591CEDC02B00D5C551 /* SBJsonStreamParserAdapter.m in Sources */,
-				90FB7D701CEF05A60055B493 /* NonLeagueTableView.m in Sources */,
 				361001311CD1DB69002C0FCF /* TeamHomeViewController.m in Sources */,
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,

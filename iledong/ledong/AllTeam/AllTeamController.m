@@ -77,6 +77,7 @@ typedef enum listType {
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
                 NSArray* array = [dict objectForKey:@"result"];
+                NSLog(@"%@",array[0]);
                 self.myStartTeamData = [NSMutableArray arrayWithArray:array];
                 if (self.myStartTeamData.count > 0) {
                     self.bgImageView.hidden = YES;
@@ -123,25 +124,21 @@ typedef enum listType {
 }
 
 #pragma mark -- UIButtonClick
-- (IBAction)myTeamButton:(id)sender
-{
+- (IBAction)myTeamButton:(id)sender {
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
     [self.teamAgree setTitleColor:[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1] forState:UIControlStateNormal];
-//    self.footerView.hidden = NO;
-
     self.tableViewListType = listTypeStartTeam;
     [self updateStartTeamData];
 }
-- (IBAction)TeamAgree:(id)sender
-{
+
+- (IBAction)TeamAgree:(id)sender {
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];
     [self.teamAgree setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    self.footerView.hidden = YES;
-    
+
     self.tableViewListType = listTypeJoinTeam;
     [self updateJoinTeamData];
 }
@@ -204,12 +201,12 @@ typedef enum listType {
     cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
     [cell.personCountLabel sizeToFit];
     
-    cell.teamActiveCountLabel.text = @"团队活跃度 200";
-    cell.payAttentionCountLabel.text = @"2100人关注";
+    NSNumber* livenessNum = [dict objectForKey:@"Liveness"];
+    cell.teamActiveCountLabel.text = [NSString stringWithFormat:@"团队活跃度 %d", livenessNum.intValue];
+    NSNumber* concernNum  = [dict objectForKey:@"Concern"];
+    cell.payAttentionCountLabel.text = [NSString stringWithFormat:@"%d人关注", concernNum.intValue];
     [cell.teamActiveCountLabel sizeToFit];
     [cell.payAttentionCountLabel sizeToFit];
-    //cell.teamActiveCountLabel.hidden = YES;
-    //cell.payAttentionCountLabel.hidden = YES;
 
     NSString* avatarUrl = [dict objectForKey:@"AvatarUrl"];
     if (avatarUrl.length > 0) {
@@ -249,6 +246,7 @@ typedef enum listType {
     if (editingStyle == UITableViewCellEditingStyleDelete &&
         self.tableViewListType == listTypeJoinTeam) {
         if (indexPath.row < [self.myJoinTeamData count]) {
+            [self exitTeam:self.myJoinTeamData[indexPath.row]];
             [self.myJoinTeamData removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         }
@@ -256,6 +254,7 @@ typedef enum listType {
     else if (editingStyle == UITableViewCellEditingStyleDelete &&
              self.tableViewListType == listTypeStartTeam) {
         if (indexPath.row < [self.myStartTeamData count]) {
+            [self exitTeam:self.myStartTeamData[indexPath.row]];
             [self.myStartTeamData removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         }
@@ -272,6 +271,22 @@ typedef enum listType {
 }
 
 #pragma mark - logic
+- (void)exitTeam:(NSDictionary*)dict {
+    NSString* teamId = [dict objectForKey:@"Id"];
+    NSString* token = [HttpClient getTokenStr];
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_EXIT_TEAM_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:@{@"teamid":teamId,@"token":token} success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* result = [dict objectForKey:@"Result"];
+        if (!result.boolValue) {
+            NSString* str = [dict objectForKey:@"Message"];
+            [Dialog alert:str];
+        }
+    } fail:^{
+        [Dialog alert:@"退出团队失败"];
+    }];
+}
+
 - (void)initBgImageView {
     self.bgImageView = [[UIImageView alloc]initWithFrame:CGRectZero];
     [self.tableView addSubview:self.bgImageView];
