@@ -18,6 +18,7 @@
 #import "FRUtils.h"
 #import "FansViewController.h"
 #import "MyCollectionViewController.h"
+#import "ChangeGenderViewController.h"
 
 
 @interface PersonalCenterController ()
@@ -43,22 +44,35 @@
 //        [myBar insertSubview:bgView atIndex:0];
 //        self.tabBar.opaque = YES;
         dataArr = @[@"我的活动",@"我的荣誉",@"我的收藏",@"我的优惠券"];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showGuide:) name:@"ShowGuideNotification" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshUserInfo:) name:@"RefreshUserinfo" object:nil];
+        
+        
     }
     return self;
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     self.tabBarController.tabBar.hidden = NO;
     self.navigationController.navigationBarHidden = YES;
-    
-//    if (![HttpClient isLogin]) {
-//        LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
-//        loginView.isPersonalCenterPage = YES;
-//        loginView.block = ^{
-//            self.tabBarController.selectedIndex = 0;
-//        };
-//        [self presentViewController:loginView animated:YES completion:nil];
-//    }
+
+    if (![HttpClient isLogin]) {
+        LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
+        loginView.isPersonalCenterPage = YES;
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
+        [self presentViewController:nav animated:YES completion:nil];
+    } else {
+        [FRUtils queryUserInfoFromWeb:^{
+            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+            }
+        }failBlock:nil];
+    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -88,6 +102,15 @@
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
+    
+    _nameLabel.text = [FRUtils getNickName];
+    _signatureLabel.text = [FRUtils getSign];
+    NSString *avatarUrl = [FRUtils getAvatarUrl];
+    if (!avatarUrl||avatarUrl.length == 0) {
+        _headerImage.image = [UIImage imageNamed:@"img_avatar_44"];
+    } else {
+        _headerImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+    }
     
 }
 
@@ -233,7 +256,25 @@
 {
 }
 
+//通知
+- (void)showGuide:(NSNotification *)notification {
+    self.tabBarController.tabBar.hidden = YES;
+    self.navigationController.navigationBarHidden = NO;
+    ChangeGenderViewController *vc = [[ChangeGenderViewController alloc]init];
+    vc.isGuide = YES;
+    [self.navigationController pushViewController:vc animated:NO];
+}
 
+- (void)refreshUserInfo:(NSNotification *)notification {
+    _nameLabel.text = [FRUtils getNickName];
+    _signatureLabel.text = [FRUtils getSign];
+    NSString *avatarUrl = [FRUtils getAvatarUrl];
+    if (!avatarUrl||avatarUrl.length == 0) {
+        _headerImage.image = [UIImage imageNamed:@"img_avatar_44"];
+    } else {
+        _headerImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+    }
+}
 
 
 

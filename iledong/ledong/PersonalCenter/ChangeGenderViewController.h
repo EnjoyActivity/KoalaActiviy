@@ -15,4 +15,6 @@ typedef void (^ChangeGenderBlock)(BOOL isFemale);
 
 @property (nonatomic,assign)BOOL isFemale;
 
+@property (nonatomic,assign) BOOL isGuide;
+
 @end

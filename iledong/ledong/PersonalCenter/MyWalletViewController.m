@@ -96,6 +96,7 @@
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     cell.detailTextLabel.textColor = RGB(153, 153, 153, 1);
     cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

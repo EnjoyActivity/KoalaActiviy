@@ -22,9 +22,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"个人头像";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
+    NSString *avatarUrl = [FRUtils getAvatarUrl];
+    if (!avatarUrl||avatarUrl.length == 0) {
+        headImage = [UIImage imageNamed:@"img_avatar_44"];
+    } else {
+        headImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+    }
     [self setupUI];
 }
 
@@ -37,7 +44,8 @@
     headerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 50, 156 - 32, 100, 100)];
     headerImageView.layer.cornerRadius = 50;
     headerImageView.clipsToBounds = YES;
-    headerImageView.backgroundColor = [UIColor purpleColor];
+    headerImageView.image = headImage;
+//    headerImageView.backgroundColor = [UIColor purpleColor];
     
     UIButton *uploadBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 64, CGRectGetMaxY(headerImageView.frame) + 40, 128, 40)];
     [uploadBtn setTitle:@"上传头像" forState:UIControlStateNormal];
@@ -70,7 +78,11 @@
     //完成
     UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
-    [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    if (_isGuide) {
+        [doneBtn setTitle:@"下一步" forState:UIControlStateNormal];
+    } else {
+        [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    }
     [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -103,29 +115,24 @@
 }
 
 - (void)doneBtnClick:(UIButton*)sender {
-    if (self.block) {
-        self.block(headImage);
+    NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
+    [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+    NSString *url;
+    if (_isGuide) {
+        [postDic setObject:[FRUtils getNickName]  forKey:@"NickName"];
+        [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
+        [postDic setObject:[FRUtils getPhoneNum] forKey:@"Phone"];
+        [postDic setObject:[FRUtils getSign] forKey:@"Sign"];
+        [postDic setObject:[FRUtils getRemark] forKey:@"Remark"];
+        [postDic setObject:[FRUtils getinterest] forKey:@"Interest"];
+        [postDic setObject:[FRUtils getAvatarUrl] forKey:@"AvatarUrl"];
+        
+        url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
+    } else {
+        url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"];
     }
-    [self.navigationController popViewControllerAnimated:YES];
     
-//    [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
-//        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-//        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-//        NSDictionary* temp = (NSDictionary*)jsonObject;
-//        if ([[temp objectForKey:@"code"]intValue]!=0) {
-//            [Dialog toast:[temp objectForKey:@"msg"]];
-//            return;
-//        }
-//        if (self.block) {
-//            self.block(headImage);
-//        }
-//        [self.navigationController popViewControllerAnimated:YES];
-//        
-//    }fail:^{
-//        [Dialog toast:@"网络失败，请稍后再试"];
-//    }];
-    
-    [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"] parameters:@{@"token":[HttpClient getTokenStr]} withImages:@[headImage] success:^(id response){
+    [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[headImage] success:^(id response){
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
         NSDictionary* temp = (NSDictionary*)jsonObject;
@@ -136,12 +143,14 @@
         if (self.block) {
             self.block(headImage);
         }
+        [FRUtils setAvatarUrl:[temp objectForKey:@"result"]];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
         [self.navigationController popViewControllerAnimated:YES];
     }fail:^{
-        
+        [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
     }];
-
 }
+
 
 - (void)onTakePhotoBtnClicked {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {

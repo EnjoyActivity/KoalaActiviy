@@ -13,4 +13,6 @@ typedef void (^ChangeNickNameBlock)(NSString *name);
 @interface ChangeNickNameViewController : BaseViewController
 
 @property (nonatomic,strong)ChangeNickNameBlock block;
+
+@property (nonatomic,assign) BOOL isGuide;
 @end

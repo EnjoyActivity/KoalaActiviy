@@ -8,7 +8,6 @@
 
 #import "BaseViewController.h"
 
-typedef void (^jumpToHomePage)();
 
 @interface LoginAndRegistViewController : BaseViewController
 
@@ -19,8 +18,6 @@ typedef void (^jumpToHomePage)();
 @property (weak, nonatomic) IBOutlet UIImageView *btnImage;
 @property (weak, nonatomic) IBOutlet UILabel *agreeLabel;
 @property (assign,nonatomic) BOOL isPersonalCenterPage;
-
-@property (strong,nonatomic) jumpToHomePage block;
 
 @property (nonatomic) UITabBarController *tabbarController;
 

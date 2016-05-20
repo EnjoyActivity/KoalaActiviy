@@ -74,10 +74,10 @@
         NSLog(@"%@",responseObject);
         if ([[responseObject objectForKey:@"code"] intValue] == 0)
         {
-            success(responseObject);
             NSUserDefaults *kTokenValue = [NSUserDefaults standardUserDefaults];
             [kTokenValue setObject: [responseObject objectForKey:kResult] forKey: @"kToken"];
             [kTokenValue synchronize];
+            success(responseObject);
         }
         else
         {
@@ -105,8 +105,8 @@
 
 + (BOOL)isLogin
 {
-      NSString *data = [HttpClient getTokenStr];
-    if (data)
+    NSString *data = [HttpClient getTokenStr];
+    if (data&&data.length!=0)
     {
         return YES;
     }

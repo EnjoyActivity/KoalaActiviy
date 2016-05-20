@@ -427,5 +427,177 @@ static FRUtils *instance = nil;
 //    return userId;
 //}
 
++ (void)queryUserInfoFromWeb:(void(^)())success  failBlock:(void(^)())fail {
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+//        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+//        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+//        NSDictionary* temp = (NSDictionary*)jsonObject;
+        if ([[json objectForKey:@"code"]intValue]!=0) {
+            [Dialog toast:[json objectForKey:@"msg"]];
+            return;
+        }
+        [FRUtils saveUserInfo:json];
+        if (success) {
+            success();
+        }
+        
+    }fail:^{
+        if (fail) {
+            fail();
+        }
+//        [Dialog toast:@"网络失败，请稍后再试"];
+    }];
 
+}
+
++ (void)saveUserInfo:(id)json {
+    NSDictionary* temp = (NSDictionary*)json;
+    
+    NSDictionary *result = [temp objectForKey:@"result"];
+    
+    NSString *nickName = [result objectForKey:@"NickName"];
+    if (!nickName||[nickName isKindOfClass:[NSNull class]]||nickName.length == 0) {
+        [FRUtils setNickName:@""];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+    } else {
+        [FRUtils setNickName:nickName];
+    }
+    
+    NSString *phone = [result objectForKey:@"Phone"];
+    if (!phone||[phone isKindOfClass:[NSNull class]]||phone.length == 0) {
+        [FRUtils setPhoneNum:@""];
+    } else {
+        [FRUtils setPhoneNum:phone];
+    }
+    
+    NSString *interest = [result objectForKey:@"Interest"];
+    if (!interest||[interest isKindOfClass:[NSNull class]]||interest.length == 0) {
+        [FRUtils setInterest:@""];
+    } else {
+        [FRUtils setInterest:interest];
+    }
+    
+    NSString *remark = [result objectForKey:@"Remark"];
+    if (!remark||[remark isKindOfClass:[NSNull class]]||remark.length == 0) {
+        [FRUtils setRemark:@""];
+    } else {
+        [FRUtils setRemark:remark];
+    }
+    
+    NSString *sign = [result objectForKey:@"Sign"];
+    if (!sign||[sign isKindOfClass:[NSNull class]]||sign.length == 0) {
+        [FRUtils setSign:@""];
+    } else {
+        [FRUtils setSign:sign];
+    }
+    
+    NSInteger score = [[result objectForKey:@"Score"]integerValue];
+    if (!score) {
+        [FRUtils setScore:0];
+    } else {
+        [FRUtils setScore:score];
+    }
+    
+    NSString *avatar = [result objectForKey:@"AvatarUrl"];
+    if (!avatar||[avatar isKindOfClass:[NSNull class]]||avatar.length == 0) {
+        [FRUtils setAvatarUrl:@""];
+    } else {
+        [FRUtils setAvatarUrl:avatar];
+    }
+    NSString *sex = [result objectForKey:@"Sex"];
+    if ([sex isEqualToString:@"男"]) {
+        [FRUtils setGender:1];
+    } else if ([sex isEqualToString:@"女"]){
+        [FRUtils setGender:0];
+    } else {
+        [FRUtils setGender:2];
+    }
+}
+
++ (BOOL)isFirstLogin {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs boolForKey:[FRUtils getPhoneNum]];
+}
++ (void)setIsFirstLogin {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setBool:YES forKey:@"gender"];
+}
+
+//get
++ (NSString*)getPhoneNum {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"phoneNum"];
+}
++ (NSString*)getNickName {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"nickName"];
+}
+
++ (NSInteger)getGender {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs integerForKey:@"gender"];
+}
+
++ (NSString*)getAvatarUrl {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"avatarUrl"];
+}
++ (NSInteger)getScore {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs integerForKey:@"score"];
+}
+
++ (NSString*)getRemark {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"remark"];
+}
++ (NSString*)getSign {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"sign"];
+}
++ (NSString*)getinterest {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"interest"];
+}
++ (NSString*)getBirthday {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"birthday"];
+}
+//set
++ (void)setNickName:(NSString*)name {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:name forKey:@"nickName"];
+}
++ (void)setPhoneNum:(NSString*)phone {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:phone forKey:@"phoneNum"];
+}
++ (void)setGender:(NSInteger)gender {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setInteger:gender forKey:@"gender"];
+}
++ (void)setScore:(NSInteger)score {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setInteger:score forKey:@"score"];
+}
++ (void)setSign:(NSString*)sign {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:sign forKey:@"sign"];
+}
++ (void)setInterest:(NSString*)interest {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:interest forKey:@"interest"];
+}
++ (void)setRemark:(NSString*)remark {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:remark forKey:@"remark"];
+}
++ (void)setAvatarUrl:(NSString*)url {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:url forKey:@"avatarUrl"];
+}
++ (void)setBirthday:(NSString *)birth {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:birth forKey:@"birthday"];
+}
 @end

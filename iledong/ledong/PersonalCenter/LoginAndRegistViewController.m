@@ -9,6 +9,7 @@
 #import "LoginAndRegistViewController.h"
 #import "UserProtocolVC.h"
 #import "MainPageController.h"
+#import "ChangeGenderViewController.h"
 
 
 @interface LoginAndRegistViewController ()<UITextFieldDelegate>
@@ -48,13 +49,10 @@
 
 - (void)dismiss
 {
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
     if (_isPersonalCenterPage) {
-        if (_block) {
-            _block();
-        }
+        [AppDelegate showMainView];
     }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,6 +104,16 @@
 {
     [self.phoneNum resignFirstResponder];
     [self.putNumber resignFirstResponder];
+    
+//    [FRUtils setPhoneNum:self.phoneNum.text];//保存手机号
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//    NSUserDefaults *kTokenValue = [NSUserDefaults standardUserDefaults];
+//    [kTokenValue setObject:@"123" forKey: @"kToken"];
+//    if (![FRUtils isFirstLogin]) {
+//        [FRUtils setIsFirstLogin];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuide" object:nil];
+//    }
+    
     if ([self.phoneNum.text isEqualToString:@""]||[self.putNumber.text isEqualToString:@""])
     {
         [Dialog simpleToast:@"手机号或验证码不能为空！" withDuration:1.5];
@@ -121,11 +129,18 @@
     [HttpClient loginOrRegistWithUrl:str parameters:parameters success:^(id json)
     {
         NSLog(@"登陆成功！");
-//        [self dismiss];
+        [FRUtils queryUserInfoFromWeb:^{
+            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+            }
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+        }failBlock:nil];
         [self dismissViewControllerAnimated:YES completion:nil];
-        
     } fail:^{
-        [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];
+        });
+        
     }];
 }
 
@@ -166,4 +181,5 @@
     }
     
 }
+
 @end

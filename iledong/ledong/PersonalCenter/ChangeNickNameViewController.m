@@ -7,6 +7,7 @@
 //
 
 #import "ChangeNickNameViewController.h"
+#import "ChangeAvatarViewController.h"
 
 @interface ChangeNickNameViewController ()
 {
@@ -19,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"设置昵称";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
@@ -47,25 +49,29 @@
     UILabel *underLine = [[UILabel alloc]initWithFrame:CGRectMake(18, CGRectGetMaxY(nameField.frame), APP_WIDTH - 36, 0.5)];
     underLine.backgroundColor = RGB(222, 222, 222, 1);
     
-    //昵称已被占用
-    UILabel *nameUsedLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-    nameUsedLabel.textColor = RGB(227, 26, 26, 1);
-    nameUsedLabel.text = @"该昵称已被占用!";
-    nameUsedLabel.font = [UIFont systemFontOfSize:12];
-    [nameUsedLabel sizeToFit];
-    CGSize size = nameUsedLabel.frame.size;
-    nameUsedLabel.frame = CGRectMake(APP_WIDTH - 18 - size.width, underLine.frame.origin.y + 6, size.width, size.height);
+//    //昵称已被占用
+//    UILabel *nameUsedLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+//    nameUsedLabel.textColor = RGB(227, 26, 26, 1);
+//    nameUsedLabel.text = @"该昵称已被占用!";
+//    nameUsedLabel.font = [UIFont systemFontOfSize:12];
+//    [nameUsedLabel sizeToFit];
+//    CGSize size = nameUsedLabel.frame.size;
+//    nameUsedLabel.frame = CGRectMake(APP_WIDTH - 18 - size.width, underLine.frame.origin.y + 6, size.width, size.height);
     //完成
     UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
-    [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    if (_isGuide) {
+        [doneBtn setTitle:@"下一步" forState:UIControlStateNormal];
+    } else {
+        [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    }
     [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:tipLabel];
     [self.view addSubview:nameField];
     [self.view addSubview:underLine];
-    [self.view addSubview:nameUsedLabel];
+//    [self.view addSubview:nameUsedLabel];
     [self.view addSubview:doneBtn];
 }
 
@@ -76,39 +82,47 @@
         return;
     }
     
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
-        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-        NSDictionary* temp = (NSDictionary*)jsonObject;
-        if ([[temp objectForKey:@"code"]intValue]!=0) {
-            [Dialog toast:[temp objectForKey:@"msg"]];
-            return;
-        }
-        NSMutableDictionary *postDic = [temp objectForKey:@"result"];
-        [postDic setObject:nameField.text forKey:@"NickName"];
-        [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
-            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-            NSDictionary* temp = (NSDictionary*)jsonObject;
+    if (_isGuide) {
+        [FRUtils setNickName:nameField.text];
+        ChangeAvatarViewController *vc = [[ChangeAvatarViewController alloc]init];
+        vc.isGuide = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        
+        [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+//            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+//            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+            NSDictionary* temp = (NSDictionary*)json;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
                 [Dialog toast:[temp objectForKey:@"msg"]];
                 return;
             }
-            if (self.block) {
-                self.block(nameField.text);
-            }
-            [self.navigationController popViewControllerAnimated:YES];
+            NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
+            [postDic setObject:nameField.text forKey:@"NickName"];
+            [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+            [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+//                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+//                id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+                NSDictionary* temp = (NSDictionary*)json;
+                if ([[temp objectForKey:@"code"]intValue]!=0) {
+                    [Dialog toast:[temp objectForKey:@"msg"]];
+                    return;
+                }
+                if (self.block) {
+                    self.block(nameField.text);
+                }
+                [FRUtils setNickName:nameField.text];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }fail:^{
+                [Dialog toast:@"网络失败，请稍后再试"];
+            }];
             
         }fail:^{
             [Dialog toast:@"网络失败，请稍后再试"];
         }];
-        
-    }fail:^{
-        [Dialog toast:@"网络失败，请稍后再试"];
-    }];
-    
-    
+    }
 }
 
 
