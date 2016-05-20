@@ -27,8 +27,8 @@
 {
     [self.aboutUsButton setTitle:@"联系我们" forState:UIControlStateNormal];
     [self.clearButton setTitle:@"清除缓存" forState:UIControlStateNormal];
-    [self.aboutUsButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, APP_WIDTH - 80)];
-    [self.clearButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, APP_WIDTH - 90)];
+    [self.aboutUsButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, APP_WIDTH - 80)];
+    [self.clearButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, APP_WIDTH - 90)];
     [self.aboutUsButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
     [self.aboutUsButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 38, 0, 0)];
     

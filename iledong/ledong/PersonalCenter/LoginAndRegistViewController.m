@@ -48,7 +48,13 @@
 
 - (void)dismiss
 {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
+    if (_isPersonalCenterPage) {
+        if (_block) {
+            _block();
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,6 +89,7 @@
     {
         if ([[responseObject objectForKey:@"code"] intValue] == 0)
         {
+            NSLog(@"%@",responseObject);
             NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(sendButtonSet:) userInfo:nil repeats:YES];
             [timer fire];
             [Dialog simpleToast:@"验证码已发送！" withDuration:1.5];
@@ -115,7 +122,8 @@
     [HttpClient loginOrRegistWithUrl:str parameters:parameters success:^(id json)
     {
         NSLog(@"登陆成功！");
-        [self dismiss];
+//        [self dismiss];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
     } fail:^{
         [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];

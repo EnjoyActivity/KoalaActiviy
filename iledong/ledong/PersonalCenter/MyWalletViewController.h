@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface MyWalletViewController : BaseViewController
+@interface MyWalletViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource>
 
 @end

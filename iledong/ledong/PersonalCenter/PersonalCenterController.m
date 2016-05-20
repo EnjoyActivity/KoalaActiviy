@@ -21,6 +21,10 @@
 
 
 @interface PersonalCenterController ()
+{
+    NSArray *dataArr;
+}
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -38,6 +42,7 @@
 //        bgView.backgroundColor = [UIColor whiteColor];
 //        [myBar insertSubview:bgView atIndex:0];
 //        self.tabBar.opaque = YES;
+        dataArr = @[@"我的活动",@"我的荣誉",@"我的收藏",@"我的优惠券"];
     }
     return self;
 }
@@ -45,10 +50,23 @@
 {
     self.tabBarController.tabBar.hidden = NO;
     self.navigationController.navigationBarHidden = YES;
+    
+//    if (![HttpClient isLogin]) {
+//        LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
+//        loginView.isPersonalCenterPage = YES;
+//        loginView.block = ^{
+//            self.tabBarController.selectedIndex = 0;
+//        };
+//        [self presentViewController:loginView animated:YES completion:nil];
+//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
+    self.tableView.indicatorStyle = UITableViewCellAccessoryDisclosureIndicator;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc]init];
     
     self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
     self.signingImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
@@ -62,49 +80,108 @@
     [self.footPrintBtn setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     [self.fansButton setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     
-    //活动、收藏、优惠、荣誉button设置
-    [self.activeButton setTitle:@"我的活动" forState:UIControlStateNormal];
-    [self.honorButton setTitle:@"我的荣誉" forState:UIControlStateNormal];
-    [self.collectButton setTitle:@"我的收藏" forState:UIControlStateNormal];
-    [self.chepButton setTitle:@"我的优惠券" forState:UIControlStateNormal];
-    [self.activeButton setTitleEdgeInsets:UIEdgeInsetsMake(0,0, 0, APP_WIDTH - 80)];
-    [self.honorButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, APP_WIDTH - 80)];
-    [self.chepButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, APP_WIDTH - 90)];
-    [self.collectButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, APP_WIDTH - 80)];
-    
-    [self.activeButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.personalInfoBtn setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.honorButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.chepButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.collectButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.activeButton setImageEdgeInsets:UIEdgeInsetsMake(0,APP_WIDTH - 28, 0, 0)];
-    [self.personalInfoBtn setImageEdgeInsets:UIEdgeInsetsMake(0,APP_WIDTH - 38, 0, 0)];
-    [self.collectButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 28, 0, 0)];
-    [self.honorButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 28, 0, 0)];
-    [self.chepButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 28, 0, 0)];
-    // 设置、钱包设置
-    [self.setButton setTitle:@"设置" forState:UIControlStateNormal];
-    [self.walletButton setTitle:@"我的钱包" forState:UIControlStateNormal];
-    [self.setButton setTitleEdgeInsets:UIEdgeInsetsMake(0,0, 0, APP_WIDTH - 50)];
-    [self.walletButton setTitleEdgeInsets:UIEdgeInsetsMake(0,0, 0, APP_WIDTH - 80)];
-    [self.setButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.walletButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
-    [self.setButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 30, 0, 0)];
-    [self.walletButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 30, 0, 0)];
     
     [self.messageButton setImage:[UIImage imageNamed:@"ic_message"] forState:UIControlStateNormal];
     [self.messageButton setImageEdgeInsets:UIEdgeInsetsMake(-20, 150, 0, 0)];
     [self.messageButton setTitle:@"160条新消息" forState:UIControlStateNormal];
     [self.messageButton setTitleEdgeInsets:UIEdgeInsetsMake(-20, 0, 0, 0)];
     
-    CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.buttonView.frame.size.height + 100;
+    CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
+    
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+#pragma mark - <UITableViewDataSource,UITableViewDelegate>
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50.0f;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section==0) {
+        return 0;
+    }
+    return 9;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 3;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 4;
+    }
+    return 1;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
+    }
+    if (indexPath.section == 0) {
+        cell.textLabel.text = dataArr[indexPath.row];
+    } else if (indexPath.section == 1){
+        cell.textLabel.text = @"我的钱包";
+    } else {
+        cell.textLabel.text = @"设置";
+    }
+    cell.textLabel.textColor = RGB(51, 51, 51, 1);
+    cell.textLabel.font = [UIFont systemFontOfSize:15];
+    cell.detailTextLabel.textColor = RGB(153, 153, 153, 1);
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+            {
+
+            }
+                break;
+            case 1:
+            {
+            }
+                break;
+            case 2:
+            {
+                MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc] init];
+                [self.navigationController pushViewController:myCollectionVC animated:YES];
+            }
+                break;
+            case 3:
+            {
+
+            }
+                break;
+            default:
+                break;
+        }
+    } else if (indexPath.section == 1) {
+        // 点击进入钱包
+        MyWalletViewController *myWalletViewController = [[MyWalletViewController alloc] init];
+        [self.navigationController pushViewController:myWalletViewController animated:YES];
+    } else {
+        // 进入我的设置
+        MySettingViewController *mySettingViewController = [[MySettingViewController alloc] init];
+        [self.navigationController pushViewController:mySettingViewController animated:YES];
+    }
+}
+
 
 #pragma mark - button click
 
@@ -151,36 +228,11 @@
     MyMessageViewController *myMessageViewController = [[MyMessageViewController alloc] init];
     [self.navigationController pushViewController:myMessageViewController animated:YES];
 }
-- (IBAction)mySettingButtonClick:(id)sender
-{
-    // 进入我的设置
-    MySettingViewController *mySettingViewController = [[MySettingViewController alloc] init];
-    [self.navigationController pushViewController:mySettingViewController animated:YES];
-}
 
-- (IBAction)myWalletButtonClick:(id)sender
-{
-    // 点击进入钱包
-    MyWalletViewController *myWalletViewController = [[MyWalletViewController alloc] init];
-    [self.navigationController pushViewController:myWalletViewController animated:YES];
-}
 - (IBAction)signButtonClick:(id)sender
 {
 }
-- (IBAction)activeButtonClick:(id)sender
-{
-}
-- (IBAction)honorButtonClick:(id)sender
-{
-}
-- (IBAction)collectButtonClick:(id)sender
-{
-    MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc] init];
-    [self.navigationController pushViewController:myCollectionVC animated:YES];
-}
-- (IBAction)cheapButtonClick:(id)sender
-{
-}
+
 
 
 

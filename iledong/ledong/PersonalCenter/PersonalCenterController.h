@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PersonalCenterController : UIViewController
+@interface PersonalCenterController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIButton *personalInfoBtn;// 进入个人资料Button
 @property (weak, nonatomic) IBOutlet UIButton *footPrintBtn;// 足迹

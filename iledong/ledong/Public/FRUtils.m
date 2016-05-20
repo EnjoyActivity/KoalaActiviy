@@ -63,7 +63,7 @@ static FRUtils *instance = nil;
 //圆形imageview
 + (UIImage*)circleImage:(UIImage*) image withParam:(CGFloat) inset
 {
-    UIGraphicsBeginImageContext(image.size);
+    UIGraphicsBeginImageContextWithOptions(image.size, NO ,[UIScreen mainScreen].scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 2);
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
