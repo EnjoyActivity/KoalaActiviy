@@ -55,6 +55,14 @@
     tabbarController.tabBar.tintColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
     tabbarController.tabBar.barTintColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    if ([HttpClient isLogin]) {
+        [FRUtils queryUserInfoFromWeb:^{
+            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+            }
+        }failBlock:nil];
+    }
     return YES;
 }
 
@@ -78,6 +86,21 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
++ (void)showMainView {
+    MainPageController *main = [[MainPageController  alloc]init];
+    UINavigationController *mainNavigation = [[UINavigationController alloc]initWithRootViewController:main];
+    AllTeamController *team = [[AllTeamController alloc]init];
+    UINavigationController *teamNavigation = [[UINavigationController alloc]initWithRootViewController:team];
+    PersonalCenterController *center = [[PersonalCenterController alloc]init];
+    UINavigationController *centerNavigation = [[UINavigationController alloc]initWithRootViewController:center];
+    UITabBarController *tabbarController = [[UITabBarController alloc]init];
+    tabbarController.viewControllers = @[mainNavigation,teamNavigation,centerNavigation];
+    tabbarController.tabBar.tintColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
+    tabbarController.tabBar.barTintColor = [UIColor whiteColor];
+//    self.window.rootViewController = tabbarController;
+    [[[[UIApplication sharedApplication] windows] objectAtIndex:0] setRootViewController:tabbarController];
 }
 
 @end

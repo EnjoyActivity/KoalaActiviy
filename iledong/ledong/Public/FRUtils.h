@@ -67,6 +67,26 @@ typedef enum : NSUInteger
 
 + (void)presentToLoginViewControllerWithRootViewController:(UIViewController *)viewController;
 
++ (void)queryUserInfoFromWeb:(void(^)())success  failBlock:(void(^)())fail;
++ (void)saveUserInfo:(id)json;
 
++ (NSString*)getPhoneNum;
++ (NSString*)getNickName;
++ (NSInteger)getGender;
++ (NSString*)getAvatarUrl;
++ (NSInteger)getScore;//分数
++ (NSString*)getRemark;//描述
++ (NSString*)getSign;//签名
++ (NSString*)getinterest;//爱好
++ (NSString*)getBirthday;
 
++ (void)setPhoneNum:(NSString*)phone;
++ (void)setNickName:(NSString*)name;
++ (void)setGender:(NSInteger)gender;
++ (void)setScore:(NSInteger)score;
++ (void)setSign:(NSString*)sign;
++ (void)setInterest:(NSString*)interest;
++ (void)setRemark:(NSString*)remark;
++ (void)setAvatarUrl:(NSString*)url;
++ (void)setBirthday:(NSString*)birth;
 @end

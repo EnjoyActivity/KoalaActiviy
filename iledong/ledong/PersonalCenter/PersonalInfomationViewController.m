@@ -14,6 +14,8 @@
 #import "ChangeAvatarViewController.h"
 #import "ChangeNickNameViewController.h"
 #import "ChangeGenderViewController.h"
+#import "LoginAndRegistViewController.h"
+#import "AppDelegate.h"
 
 @interface PersonalInfomationViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -35,12 +37,17 @@
 
 - (void)viewDidLoad {
     self.titleName = @"用户信息";
-    _image = [UIImage imageNamed:@"user02_44"];
+    NSString *avatarUrl = [FRUtils getAvatarUrl];
+    if (!avatarUrl||avatarUrl.length == 0) {
+        _image = [UIImage imageNamed:@"img_avatar_44"];
+    } else {
+        _image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+    }
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
     nameArrSection1 = [[NSMutableArray alloc] initWithObjects:@"昵称",@"性别",@"生日",@"常住地", nil];
-    contentArrSection1 = [[NSMutableArray alloc] initWithObjects:@"",@"",@"",@"", nil];
+    contentArrSection1 = [[NSMutableArray alloc] initWithObjects:[FRUtils getNickName],[FRUtils getGender]?@"男":@"女",@"",@"", nil];
     nameArrSection2 = [[NSMutableArray alloc] initWithObjects:@"手机号",@"密码",nil];
     contentArrSection2 = [[NSMutableArray alloc] initWithObjects:@"",@"",nil];
 
@@ -60,6 +67,9 @@
 #pragma mark - buttonClick
 
 - (IBAction)exitButtonClick:(id)sender {
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:@"" forKey:@"kToken"];
+    [AppDelegate showMainView];
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate
@@ -170,6 +180,7 @@
                     contentArrSection1[0] = name;
                     [self.tableView reloadData];
                 };
+                vc.isGuide = NO;
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
@@ -184,6 +195,7 @@
                     }
                     [self.tableView reloadData];
                 };
+                vc.isGuide = NO;
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
@@ -212,6 +224,7 @@
         _image = image;
         [self.tableView reloadData];
     };
+    vc.isGuide = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -265,6 +278,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *destDateString = [dateFormatter stringFromDate:picker.date];
     contentArrSection1[2] = destDateString;
+    [FRUtils setBirthday:destDateString];
     [self.tableView reloadData];
     
     [maskView removeFromSuperview];

@@ -15,4 +15,6 @@ typedef void (^ChangeAvatarBlock)(UIImage *image);
 
 @property (nonatomic,strong) ChangeAvatarBlock block;
 
+@property (nonatomic,assign) BOOL isGuide;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ChangeGenderViewController.h"
+#import "ChangeNickNameViewController.h"
 
 @interface ChangeGenderViewController ()
 {
@@ -19,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"您的性别";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
@@ -70,7 +72,12 @@
     //完成
     UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
-    [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    if (_isGuide) {
+        [doneBtn setTitle:@"下一步" forState:UIControlStateNormal];
+    } else {
+        [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
+    }
+    
     [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -82,23 +89,17 @@
 
 #pragma mark - button method
 - (void)doneBtnClick:(UIButton*)sender {
-    
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
-        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-        NSDictionary* temp = (NSDictionary*)jsonObject;
-        if ([[temp objectForKey:@"code"]intValue]!=0) {
-            [Dialog toast:[temp objectForKey:@"msg"]];
-            return;
-        }
-        NSMutableDictionary *postDic = [temp objectForKey:@"result"];
+    if (_isGuide) {
         if (_isFemale) {
-            [postDic setObject:@0 forKey:@"NickName"];
+            [FRUtils setGender:0];
         } else {
-            [postDic setObject:@1 forKey:@"NickName"];
+            [FRUtils setGender:1];
         }
-        [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+        ChangeNickNameViewController *vc = [[ChangeNickNameViewController alloc]init];
+        vc.isGuide = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
             NSDictionary* temp = (NSDictionary*)jsonObject;
@@ -106,19 +107,38 @@
                 [Dialog toast:[temp objectForKey:@"msg"]];
                 return;
             }
-            if (self.block) {
-                self.block(_isFemale);
+            NSMutableDictionary *postDic = [temp objectForKey:@"result"];
+            if (_isFemale) {
+                [postDic setObject:@0 forKey:@"NickName"];
+            } else {
+                [postDic setObject:@1 forKey:@"NickName"];
             }
-            [self.navigationController popViewControllerAnimated:YES];
+            [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+            [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+                NSDictionary* temp = (NSDictionary*)json;
+                if ([[temp objectForKey:@"code"]intValue]!=0) {
+                    [Dialog toast:[temp objectForKey:@"msg"]];
+                    return;
+                }
+                if (self.block) {
+                    self.block(_isFemale);
+                }
+                if (_isFemale) {
+                    [FRUtils setGender:0];
+                } else {
+                    [FRUtils setGender:1];
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }fail:^{
+                [Dialog toast:@"网络失败，请稍后再试"];
+            }];
             
         }fail:^{
             [Dialog toast:@"网络失败，请稍后再试"];
         }];
-        
-    }fail:^{
-        [Dialog toast:@"网络失败，请稍后再试"];
-    }];
 
+    }
 }
 
 - (void)chooseMale:(id)sender {
