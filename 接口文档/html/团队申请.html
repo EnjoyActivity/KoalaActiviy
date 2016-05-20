@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head>
-<title> 团队创建.md---小书匠,在线编辑器,MARKDOWN,Evernote,文件版本</title>
+<title> 我参加的团队.md---小书匠,在线编辑器,MARKDOWN,Evernote,文件版本</title>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -756,9 +756,9 @@ text{
 </head><body>
 <div><div class="preview" id="wmd-preview">
 
-	<div class="preview"><h1 id="e88eb7e58f96e5be85e5aea1e6a0b8e79a84e58897e8a1a8efbc88e78ea9e5aeb6e585a5e59ba2efbc89"><a name="e88eb7e58f96e5be85e5aea1e6a0b8e79a84e58897e8a1a8efbc88e78ea9e5aeb6e585a5e59ba2efbc89"></a>获取待审核的列表（玩家入团）</h1>
+	<div class="preview"><h1 id="e88eb7e58f96e59ba2e9989fe794b3e8afb7e68891e794b3e8afb7e58aa0e585a5e79a84e59ba2e9989fe38081e68891e5889be5bbbae79a84e59ba2e9989f"><a name="e88eb7e58f96e59ba2e9989fe794b3e8afb7e68891e794b3e8afb7e58aa0e585a5e79a84e59ba2e9989fe38081e68891e5889be5bbbae79a84e59ba2e9989f"></a>获取团队申请(我申请加入的团队、我创建的团队)</h1>
 <h2 id="url"><a name="url"></a>URL</h2>
-<p><a href="..">BASE_URL</a> + <code>ApplyAudit/GetAuditList</code></p>
+<p><a href="..">BASE_URL</a> + <code>Team/GetTeamApply</code></p>
 <h2 id="httpe8afb7e6b182e696b9e5bc8f"><a name="httpe8afb7e6b182e696b9e5bc8f"></a>HTTP请求方式</h2>
 <p>POST/GET</p>
 <h2 id="e694afe68c81e6a0bce5bc8f"><a name="e694afe68c81e6a0bce5bc8f"></a>支持格式</h2>
@@ -782,18 +782,6 @@ text{
 <td>string</td>
 <td>身份Token</td>
 </tr>
-<tr>
-<td>page</td>
-<td style="text-align:center">true</td>
-<td>int</td>
-<td>当前查询第几页</td>
-</tr>
-<tr>
-<td>rows</td>
-<td style="text-align:center">true</td>
-<td>int</td>
-<td>每页显示行数</td>
-</tr>
 </tbody>
 </table>
 <h2 id="e8bf94e59b9ee7bb93e69e9c"><a name="e8bf94e59b9ee7bb93e69e9c"></a>返回结果</h2>
@@ -801,23 +789,19 @@ text{
 <pre class="xiaoshujiang_code_container"><code class="nohighlight hljs">{
     "msg": "系统处理成功",
     "code": 0,
-    "result": {
-        "TotalRows": 1,
-        "Data": [
-            {
-                "Id": 14,
-                "OwnerId": 4,
-                "TeamId": 14,
-                "Type": 1,
-                "Message": "我是梅西，请求加入四川全兴！！！",
-                "CreateTime": "/Date(1461854635000)/",
-                "AuditUserId": 0,
-                "AuditTime": null,
-                "AuditResult": 0,
-                "State": 0
-            }
-        ]
-    }
+    "result": [
+        {
+            "Id": 15,   //团队ID
+            "Name": "广州恒大淘宝俱乐部",  //团队名称
+            "AvatarUrl": "",  //团队图标
+            "Intro": "广州恒大淘宝俱乐部-the king of china", //团队介绍
+            "Liveness": 3, //活跃度
+            "Concern": 66, //关注度
+            "UserType": 0, //0:团长;1:副团长;2:普通成员
+            "ApplyType": 0  //0:创建团队的申请，1：个人入团的申请
+        },
+        ...
+    ]
 }
 </code></pre>
 <h2 id="e8bf94e59b9ee5ad97e6aeb5e8afb4e6988e"><a name="e8bf94e59b9ee5ad97e6aeb5e8afb4e6988e"></a>返回字段说明</h2>
@@ -831,54 +815,24 @@ text{
 </thead>
 <tbody>
 <tr>
-<td>msg</td>
-<td>string</td>
-<td>请求状态信息</td>
+<td>Result</td>
+<td>bool</td>
+<td>退出是否成功</td>
 </tr>
 <tr>
-<td>code</td>
+<td>Message</td>
+<td>string</td>
+<td>退出失败原因</td>
+</tr>
+<tr>
+<td>Code</td>
 <td>int</td>
-<td>请求状态结果码，<a href="../%E7%8A%B6%E6%80%81%E7%BB%93%E6%9E%9C%E7%A0%81/index.html">查看状态码</a></td>
+<td>-忽略-</td>
 </tr>
 <tr>
-<td>result</td>
+<td>Data</td>
 <td>object</td>
-<td>数据信息</td>
-</tr>
-<tr>
-<td>result.TotalRows</td>
-<td>int</td>
-<td>总行数</td>
-</tr>
-<tr>
-<td>result.Data</td>
-<td>object</td>
-<td>审核信息</td>
-</tr>
-<tr>
-<td><a href="http://result.Data.Id">result.Data.Id</a></td>
-<td>string</td>
-<td>主键ID</td>
-</tr>
-<tr>
-<td>result.Data.OwnerId</td>
-<td>string</td>
-<td>申请人ID</td>
-</tr>
-<tr>
-<td>result.Data.TeamId</td>
-<td>string</td>
-<td>待加入的团队ID</td>
-</tr>
-<tr>
-<td>result.Data.Message</td>
-<td>string</td>
-<td>申请宣言</td>
-</tr>
-<tr>
-<td>result.Data.CreateTime</td>
-<td>string</td>
-<td>申请时间</td>
+<td>-忽略-</td>
 </tr>
 </tbody>
 </table>
