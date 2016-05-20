@@ -25,22 +25,20 @@ static NSString * const reuseIdentifier = @"friendCCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerNib:[UINib nibWithNibName:@"FriendCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
     
     [self.resultTableView registerNib:[UINib nibWithNibName:@"FriendTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
     
     [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
-    self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.contentTableView.tableFooterView = self.footerView;
+    
     self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
-    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-    self.textField.returnKeyType = UIReturnKeySearch;
+//    self.textField.clearButtonMode = UITextFieldViewModeAlways;
+//    self.textField.returnKeyType = UIReturnKeySearch;
     self.textField.delegate = self;
-    self.resultTableView.hidden = YES;
-    self.resultTableView.tableHeaderView = self.headerView;
-    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.resultTableView.tableHeaderView = self.headerView;
+//    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 }
 
@@ -64,8 +62,7 @@ static NSString * const reuseIdentifier = @"friendCCell";
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    self.contentView.hidden = YES;
-    self.resultTableView.hidden = NO;
+    [self.view addSubview:self.resultTableView];
     return YES;
 }
 
@@ -131,5 +128,17 @@ static NSString * const reuseIdentifier = @"friendCCell";
 
 
 
+#pragma mark - UI
 
+- (UITableView *)resultTableView {
+    if (!_resultTableView) {
+        _resultTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 66, APP_WIDTH, APP_HEIGHT-66) style:UITableViewStylePlain];
+        _resultTableView.delegate = self;
+        _resultTableView.dataSource = self;
+        _resultTableView.backgroundColor = [UIColor whiteColor];
+        _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _resultTableView.tableHeaderView = self.headerView;
+    }
+    return _resultTableView;
+}
 @end

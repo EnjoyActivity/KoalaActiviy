@@ -141,10 +141,10 @@ static NSString * const teamCell = @"teamCell";
 
     [self.view addSubview:teamtableView];
     
-    [self filterView];
+    [self addFilterView];
 }
 
-- (void)filterView {
+- (void)addFilterView {
     filterView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, APP_HEIGHT, 36)];
     filterView.backgroundColor = [UIColor whiteColor];
     
