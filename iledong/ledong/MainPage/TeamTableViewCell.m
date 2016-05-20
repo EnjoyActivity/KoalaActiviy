@@ -11,12 +11,12 @@
 @implementation TeamTableViewCell
 
 - (void)awakeFromNib {
-    self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_100"] withParam:1];
+    self.headImageView.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_100"] withParam:1];
     NSString *lenghtStr = @"皇家贝里斯足球联赛";
     NSMutableAttributedString *Str = [[NSMutableAttributedString alloc] initWithString:lenghtStr];
     NSRange redRange = [lenghtStr rangeOfString:@"足球"];
     [Str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:redRange];
-    self.resultName.attributedText = Str;
+    self.teamName.attributedText = Str;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

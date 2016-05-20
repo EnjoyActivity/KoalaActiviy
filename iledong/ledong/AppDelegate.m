@@ -58,9 +58,7 @@
     
     if ([HttpClient isLogin]) {
         [FRUtils queryUserInfoFromWeb:^{
-            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
-            }
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
         }failBlock:nil];
     }
     return YES;

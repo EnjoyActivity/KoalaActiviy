@@ -13,7 +13,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.resultHeaderImage.image = [FRUtils resizeImageWithImageName:@"img_avatar_100"];
+    self.headImageView.image = [FRUtils resizeImageWithImageName:@"img_avatar_100"];
     // Initialization code
 }
 
