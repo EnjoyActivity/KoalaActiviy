@@ -15,6 +15,8 @@
 #import "JoinTeamViewController.h"
 #import "TeamHomeViewController.h"
 
+#define kCell       @"AllTeamCell"
+
 typedef enum listType {
     listTypeStartTeam = 0,
     listTypeJoinTeam
@@ -51,8 +53,8 @@ typedef enum listType {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-//    [_tableView registerNib:[UINib nibWithNibName:@"AllTeamCell" bundle:nil] forCellReuseIdentifier:@"AllTeamCell"];
+ 
+    [self.tableView registerClass:[AllTeamCell class] forCellReuseIdentifier:kCell];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self initBgImageView];
 }
@@ -74,9 +76,9 @@ typedef enum listType {
             NSDictionary* dict = (NSDictionary*)responseObject;
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
-                self.myStartTeamData = [dic objectForKey:@"result"];
+                NSArray* array = [dict objectForKey:@"result"];
+                self.myStartTeamData = [NSMutableArray arrayWithArray:array];
                 if (self.myStartTeamData.count > 0) {
-                    //self.tableView.hidden = NO;
                     self.bgImageView.hidden = YES;
                     self.bgLabel.hidden = YES;
                     [self.tableView reloadData];
@@ -84,7 +86,6 @@ typedef enum listType {
                 else {
                     self.bgImageView.hidden = NO;
                     self.bgLabel.hidden = NO;
-                    //self.tableView.hidden = YES;
                 }
             }
         } fail:^{
@@ -101,7 +102,8 @@ typedef enum listType {
             NSDictionary* dict = (NSDictionary*)responseObject;
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
-                self.myJoinTeamData = [dic objectForKey:@"result"];
+                NSArray* array = [dict objectForKey:@"result"];
+                self.myJoinTeamData = [NSMutableArray arrayWithArray:array];
                 if (self.myJoinTeamData.count > 0) {
                     self.tableView.hidden = NO;
                     self.bgImageView.hidden = YES;
@@ -182,49 +184,50 @@ typedef enum listType {
     return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 85;
-    //UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
-    //return cell.frame.size.height;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 100;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *string = @"AllTeamCell";
-    __block AllTeamCell *cell = [tableView dequeueReusableCellWithIdentifier:string];
-    if (!cell)
-        cell = [[NSBundle mainBundle] loadNibNamed:@"AllTeamCell" owner:self options:nil][0];
-    
-    cell.activeCountLabel.hidden = YES;
-    cell.attentionCountLabel.hidden = YES;
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    AllTeamCell *cell = [tableView dequeueReusableCellWithIdentifier:kCell forIndexPath:indexPath];
     NSDictionary* dict = nil;
     if (self.tableViewListType == listTypeJoinTeam)
         dict = self.myJoinTeamData[indexPath.row];
     else if (self.tableViewListType == listTypeStartTeam)
         dict = self.myStartTeamData[indexPath.row];
-    
-    cell.nameLabel.text = [dict objectForKey:@"Name"];
-    [cell.nameLabel sizeToFit];
-    cell.personCountLabel.text = [dict objectForKey:@"MaxPersonNum"];
+
+    NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
+    cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
+    cell.teamNameLabel.text = [dict objectForKey:@"Name"];
+    [cell.teamNameLabel sizeToFit];
+    NSNumber* maxPersonNum = [dict objectForKey:@"MaxPersonNum"];
+    cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
     [cell.personCountLabel sizeToFit];
+    
+    cell.teamActiveCountLabel.text = @"团队活跃度 200";
+    cell.payAttentionCountLabel.text = @"2100人关注";
+    [cell.teamActiveCountLabel sizeToFit];
+    [cell.payAttentionCountLabel sizeToFit];
+    //cell.teamActiveCountLabel.hidden = YES;
+    //cell.payAttentionCountLabel.hidden = YES;
+
     NSString* avatarUrl = [dict objectForKey:@"AvatarUrl"];
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:avatarUrl]];
-        [request setHTTPMethod:@"GET"];
-        NSError *error = nil;
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-        if (data == nil)
-            return;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.imageView.image = [UIImage imageWithData:data];
-            [cell setNeedsLayout];
+    if (avatarUrl.length > 0) {
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:[NSURL URLWithString:avatarUrl]];
+            [request setHTTPMethod:@"GET"];
+            NSError *error = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+            if (data == nil)
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.imageView.image = [UIImage imageWithData:data];
+                [cell setNeedsLayout];
+            });
         });
-    });
-    
+    }
+
     return cell;
 }
 

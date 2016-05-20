@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface LDActivityTableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIImageView *adImageView;
+@property (strong, nonatomic) IBOutlet UILabel *activityDetail;
+@property (strong, nonatomic) IBOutlet UILabel *activityPrice;
+@property (strong, nonatomic) IBOutlet UILabel *activityOwer;
+@property (strong, nonatomic) IBOutlet UILabel *activityName;
+@property (strong, nonatomic) IBOutlet UIImageView *headImageView;
 
 @end

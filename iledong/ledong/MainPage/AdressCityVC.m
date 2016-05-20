@@ -9,9 +9,13 @@
 #import "AdressCityVC.h"
 #import "FRUtils.h"
 #import "CityTableViewCell.h"
+#import "LDLocationManager.h"
+
 
 @interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate>
-
+{
+        LDLocationManager * location;
+}
 
 @end
 
@@ -23,6 +27,8 @@
     self.tabBarController.tabBar.hidden = YES;
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
+    [self getLocationInfo];
+
 //    self.tableView.
 }
 
@@ -30,7 +36,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - location
 
+- (void)getLocationInfo {
+    @WeakObj(self);
+    location = [[LDLocationManager alloc] init];
+    [location getLocationSuccess:^(NSDictionary * locationInfo) {
+        [selfWeak loadUserLocationInfo:locationInfo];
+    } fail:^(NSError * error) {
+        
+    }];
+}
+
+- (void)loadUserLocationInfo:(NSDictionary *)dic {
+    NSString * city = dic[@"city"];
+    double  longitude = [dic[@"longitude"] doubleValue];
+    double latitude = [dic[@"latitude"] doubleValue];
+    NSString * areaCode = dic[@"areaCode"];
+    
+}
 #pragma mark - ButtonClick
 - (IBAction)gobackButtonClick:(id)sender
 {
