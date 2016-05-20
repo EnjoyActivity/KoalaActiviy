@@ -20,7 +20,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.titleName = @"活动管理";
+    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLab setTextColor:[UIColor redColor]];
+    [customLab setText:@"活动管理"];
+    customLab.font = [UIFont systemFontOfSize:16];
+    self.navigationItem.titleView = customLab;
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self.rightButton setImage:[UIImage imageNamed:@"ic_new"] forState:UIControlStateNormal];
     [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 40, 0, 0)];
@@ -35,13 +39,17 @@
 }
 
 #pragma mark -- UITableViewDataSource,UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 150;
+    if (indexPath.section == 0) {
+        return 140;
     }
     else {
         return 100;
@@ -50,7 +58,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -61,7 +69,7 @@
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
 
     cell.activityImageView.image = [UIImage imageNamed:@"img_1"];
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         cell.activityName.text = @"朝阳区乐动杯足球联赛";
         cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
         cell.activityState.text = @"进行中";
