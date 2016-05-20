@@ -16,6 +16,7 @@
     CGFloat _mainScrollViewContentHeight;
     CGFloat _mainScrollViewContentOffsetY;
     BOOL _keyboardShow;
+    BOOL _tagTextFieldDone;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -84,6 +85,7 @@
 }
 
 - (void)layoutSubView {
+    _tagTextFieldDone = NO;
     self.uploadHeaderImgBtn.layer.borderWidth = 1.0;
     self.uploadHeaderImgBtn.layer.borderColor = UIColorFromRGB(0xDEDEDE).CGColor;
     
@@ -189,6 +191,10 @@
 - (void)keyboardDidHide:(NSNotification *) notif {
     _keyboardShow = NO;
     [self changeStartBtnBgColor];
+//    if ([self.addTagTextField isFirstResponder] && !_tagTextFieldDone)
+//        [self addTagView:self.addTagTextField.text isReDraw:NO];
+    
+    _tagTextFieldDone = NO;
     [UIView animateWithDuration:0.5 animations:^{
         [_mainScrollView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentHeight)];
         [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollViewContentOffsetY) animated:YES];
@@ -363,6 +369,7 @@
     if (textField == self.addTagTextField) {
         [self.addTagTextField resignFirstResponder];
         [self addTagView:self.addTagTextField.text isReDraw:NO];
+        _tagTextFieldDone = YES;
         return YES;
     }
     return NO;
