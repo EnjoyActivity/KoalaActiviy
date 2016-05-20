@@ -62,7 +62,7 @@ typedef enum listType {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:YES];//有动画的隐藏
     self.tabBarController.tabBar.hidden = NO;
     [self updateStartTeamData];
 }
@@ -268,7 +268,7 @@ typedef enum listType {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"删除";
+    return @"退出";
 }
 
 #pragma mark - logic

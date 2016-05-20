@@ -323,6 +323,7 @@
 		EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */; };
 		EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
+		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
@@ -840,6 +841,8 @@
 		EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainSearchTableViewCell.m; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
+		90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamManagerTableViewController.h; sourceTree = "<group>"; };
+		90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamManagerTableViewController.m; sourceTree = "<group>"; };
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
@@ -940,6 +943,8 @@
 				362F49161CD20105000777F0 /* TeamHomeTableViewCell.h */,
 				362F49171CD20105000777F0 /* TeamHomeTableViewCell.m */,
 				362F49181CD20105000777F0 /* TeamHomeTableViewCell.xib */,
+				90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */,
+				90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */,
 			);
 			name = "团队";
 			sourceTree = "<group>";
@@ -2298,6 +2303,7 @@
 				905516171CEC3CED001C4F51 /* SDWebImageDecoder.m in Sources */,
 				363D6BCD1CC71584008A169A /* HotCollectionViewCell.m in Sources */,
 				62091BC61C8FC5CB00DB9804 /* SignUpDetailViewController.m in Sources */,
+				90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */,
 				361A76621CBCEF66002FE6B2 /* GoodActivTableViewCell.m in Sources */,
 				9055161D1CEC3CED001C4F51 /* UIImage+GIF.m in Sources */,
 				363D6BEB1CC77227008A169A /* FriendTableViewCell.m in Sources */,
