@@ -2321,11 +2321,11 @@
 				905515F11CEC3CED001C4F51 /* ELCAlbumPickerController.m in Sources */,
 				905516211CEC3CED001C4F51 /* UIImageView+WebCache.m in Sources */,
 				36B2C1C91CBB4E0B001D842B /* SexViewController.m in Sources */,
-<<<<<<< HEAD
+
 				EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */,
-=======
+
 				20B63E5C1CEDC02B00D5C551 /* SBJsonStreamWriterAccumulator.m in Sources */,
->>>>>>> origin/master
+
 				626DD4871C8426F9006BC53C /* PersonalCenterController.m in Sources */,
 				905516221CEC3CED001C4F51 /* UIView+WebCacheOperation.m in Sources */,
 				905516201CEC3CED001C4F51 /* UIImageView+HighlightedWebCache.m in Sources */,
