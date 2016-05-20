@@ -7,15 +7,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchFriendVC">
             <connections>
-                <outlet property="collectionView" destination="Kz6-mL-L5i" id="6R4-h2-pVA"/>
                 <outlet property="contentTableView" destination="AMf-L7-ASs" id="7I9-HI-mYh"/>
-                <outlet property="contentView" destination="mku-KR-Y2x" id="mp0-T9-Hrz"/>
                 <outlet property="footerImage" destination="oa8-Uy-j2n" id="mbh-BA-qjF"/>
                 <outlet property="footerView" destination="Nw6-Gb-INt" id="teh-3d-MTa"/>
                 <outlet property="gobackButton" destination="0hp-7n-edd" id="xRn-gf-4QN"/>
                 <outlet property="headerLabel" destination="Z4v-AK-GkT" id="dFl-3s-Dpm"/>
                 <outlet property="headerView" destination="mKU-Nu-h3e" id="ggn-O5-Ezi"/>
-                <outlet property="resultTableView" destination="yym-1F-np4" id="42T-zq-5Yw"/>
                 <outlet property="textField" destination="blW-73-4cU" id="L4A-8k-gcc"/>
                 <outlet property="view" destination="YJR-I8-NGO" id="nC5-mU-aNq"/>
             </connections>
@@ -50,19 +47,13 @@
                     <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="搜活动" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eB9-sh-D8T">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="搜玩家" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eB9-sh-D8T">
                             <rect key="frame" x="30" y="11" width="42" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.89019607840000003" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="足球" textAlignment="natural" minimumFontSize="17" id="blW-73-4cU">
-                            <rect key="frame" x="79" y="7" width="222" height="30"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0hp-7n-edd">
                             <rect key="frame" x="0.0" y="0.0" width="62" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -70,74 +61,48 @@
                                 <action selector="gobackButtonClick:" destination="-1" eventType="touchUpInside" id="i9f-bR-iQM"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gwY-jU-aLx">
+                            <rect key="frame" x="274" y="8" width="30" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="取消">
+                                <color key="titleColor" red="0.87450980392156863" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="搜索玩家昵称" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" id="blW-73-4cU">
+                            <rect key="frame" x="80" y="7" width="186" height="30"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="mku-KR-Y2x">
-                    <rect key="frame" x="0.0" y="67" width="320" height="501"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="热门搜索" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fJ0-WV-pnx">
-                            <rect key="frame" x="18" y="5" width="52" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" id="Kz6-mL-L5i">
-                            <rect key="frame" x="18" y="30" width="288" height="70"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="2" id="VTT-gt-syX">
-                                <size key="itemSize" width="94" height="30"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="iuV-L6-uoo"/>
-                                <outlet property="delegate" destination="-1" id="NqG-l6-7RP"/>
-                            </connections>
-                        </collectionView>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="AMf-L7-ASs">
-                            <rect key="frame" x="0.0" y="165" width="320" height="336"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="EvC-30-rfP"/>
-                                <outlet property="delegate" destination="-1" id="PMM-qu-bck"/>
-                            </connections>
-                        </tableView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最近搜索" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V4B-gR-2qJ">
-                            <rect key="frame" x="18" y="136" width="103" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RYb-YC-Jvp">
-                            <rect key="frame" x="18" y="164" width="301" height="1"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.94901960780000005" green="0.95294117649999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="yym-1F-np4">
-                    <rect key="frame" x="0.0" y="67" width="320" height="501"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最近搜索" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V4B-gR-2qJ">
+                    <rect key="frame" x="18" y="76" width="103" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="AMf-L7-ASs">
+                    <rect key="frame" x="0.0" y="110" width="320" height="459"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="7F6-lw-wqx"/>
-                        <outlet property="delegate" destination="-1" id="I5t-m5-auU"/>
+                        <outlet property="dataSource" destination="-1" id="EvC-30-rfP"/>
+                        <outlet property="delegate" destination="-1" id="PMM-qu-bck"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" id="enh-Iw-8sM">
+                    <rect key="frame" x="18" y="107" width="350" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="247" y="250"/>
+            <point key="canvasLocation" x="226" y="250"/>
         </view>
         <view contentMode="scaleToFill" id="Nw6-Gb-INt">
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>

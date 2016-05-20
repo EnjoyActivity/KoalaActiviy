@@ -443,33 +443,12 @@ static CGFloat const teamCollectionHeight = 280;
     UICollectionViewFlowLayout * topAdLayout = [self flowLayoutItemSize:CGSizeMake(APP_WIDTH, 280) lineSpace:0];
     topAdCollectionView = [self collectionViewFrame:CGRectMake(0, 0, APP_WIDTH, 280) layOut:topAdLayout nibName:@"MainPageTopAdCell" identifier:topAdCellIdentifier];
     
-//    topAdCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 280) collectionViewLayout:topAdLayout];
-//    topAdCollectionView.backgroundColor = [UIColor whiteColor];
-//    [topAdCollectionView registerNib:[UINib nibWithNibName:@"MainPageTopAdCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:topAdCellIdentifier];
-//    topAdCollectionView.delegate = self;
-//    topAdCollectionView.dataSource = self;
-    topAdCollectionView.pagingEnabled = YES;
-    
     UICollectionViewFlowLayout * activityLayout = [self flowLayoutItemSize:CGSizeMake(180, 180) lineSpace:7];
     activityCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(topAdCollectionView.frame)+55, APP_WIDTH, 180) layOut:activityLayout nibName:@"MainPageActivityCell" identifier:activityCellIdentifier];
     
-//    activityCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topAdCollectionView.frame)+55, APP_WIDTH, 180) collectionViewLayout:activityLayout];
-//    [activityCollectionView registerNib:[UINib nibWithNibName:@"MainPageActivityCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:activityCellIdentifier];
-//    activityCollectionView.backgroundColor = [UIColor whiteColor];
-//    activityCollectionView.delegate =self;
-//    activityCollectionView.dataSource = self;
 
-    
-    
     UICollectionViewFlowLayout * hotTeamLayout = [self flowLayoutItemSize:CGSizeMake(240, 280) lineSpace:6];
     hotTeamCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(activityCollectionView.frame)+55, APP_WIDTH, 280) layOut:hotTeamLayout nibName:@"TeamsCell" identifier:hotTeamIdentifier];
-    
-//    hotTeamCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(activityCollectionView.frame)+55, APP_WIDTH, 280) collectionViewLayout:hotTeamLayout];
-//    [hotTeamCollectionView registerNib:[UINib nibWithNibName:@"TeamsCell" bundle:nil] forCellWithReuseIdentifier:hotTeamIdentifier];
-//    hotTeamCollectionView.backgroundColor = [UIColor whiteColor];
-//    hotTeamCollectionView.delegate = self;
-//    hotTeamCollectionView.dataSource = self;
-
     
     [mainScrollView addSubview:topAdCollectionView];
     [mainScrollView addSubview:activityCollectionView];

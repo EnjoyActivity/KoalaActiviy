@@ -34,7 +34,7 @@ static NSString * const locationIdentifier = @"LocationCell";
     [self.backButton setImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
     [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
     
-    [self.activityButton setTitle:@"精彩活动 足球 " forState:UIControlStateNormal];
+    [self.activityButton setTitle:@"精彩活动 " forState:UIControlStateNormal];
 
     [self.activityButton setImage:[UIImage imageNamed:@"ic_triangle_grey@2x"] forState:UIControlStateNormal];
     self.activityButton.transform = CGAffineTransformMakeScale(-1,1);
@@ -99,9 +99,6 @@ static NSString * const locationIdentifier = @"LocationCell";
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return height;
-//}
 #pragma mark - ButtonAction
 - (IBAction)backButtonClicked:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -153,8 +150,14 @@ static NSString * const locationIdentifier = @"LocationCell";
     activityTableView.dataSource = self;
     activityTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [activityTableView registerNib:[UINib nibWithNibName:@"LDActivityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"activityCell"];
-    activityTableView.estimatedRowHeight = 280;
-    activityTableView.rowHeight = UITableViewAutomaticDimension;
+    CGFloat height = APP_WIDTH*9/16;
+    NSString * sysVersion = [UIDevice currentDevice].systemVersion;
+    if ([sysVersion floatValue] < 8.0) {
+        activityTableView.rowHeight = height + 110;
+    } else {
+        activityTableView.estimatedRowHeight = 280;
+        activityTableView.rowHeight = UITableViewAutomaticDimension;
+    }
     [self.view addSubview:activityTableView];
 }
 
