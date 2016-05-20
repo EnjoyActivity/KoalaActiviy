@@ -300,6 +300,11 @@
 		905516371CEC3E31001C4F51 /* ActivePublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905516311CEC3E31001C4F51 /* ActivePublicViewController.m */; };
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
+		EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */; };
+		EC33E0A11CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */; };
+		EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */; };
+		EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */; };
+		EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */; };
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
@@ -778,10 +783,15 @@
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
 		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
+		EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey@2x.png"; sourceTree = "<group>"; };
+		EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_triangle_grey_up@2x.png"; sourceTree = "<group>"; };
+		EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityLocationCell.xib; sourceTree = "<group>"; };
+		EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainSearchResultCell.xib; sourceTree = "<group>"; };
+		EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainSearchTableViewCell.h; sourceTree = "<group>"; };
+		EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainSearchTableViewCell.m; sourceTree = "<group>"; };
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
-
 		EC9A93191CED9D3D00F6009B /* LDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDLocationManager.h; sourceTree = "<group>"; };
 		EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDLocationManager.m; sourceTree = "<group>"; };
 		ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_back@2x.png"; sourceTree = "<group>"; };
@@ -791,7 +801,6 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1516,7 +1525,9 @@
 				36E3E1FD1CC476F100294509 /* ic_wechatpay@2x.png */,
 				3664D04B1CA0FA7300BC6805 /* img_6@3x.png */,
 				7F9318EA1C858A010061E9EA /* flat_classmanage@2x.png */,
+				EC33E0A01CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png */,
 				ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */,
+				EC33E09E1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png */,
 				7F9318EC1C858B910061E9EA /* ic_more4@2x.png */,
 				7F9318F41C8596240061E9EA /* top_back@3x.png */,
 				36BD8BAB1C9F9AAB00F99077 /* ic_scan@2x.png */,
@@ -1818,6 +1829,10 @@
 				ECBB8A481CEDB97A007D4756 /* LDActivityTableViewCell.h */,
 				ECBB8A491CEDB97A007D4756 /* LDActivityTableViewCell.m */,
 				ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */,
+				EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */,
+				EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */,
+				EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */,
+				EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2024,9 +2039,11 @@
 				3629CEC31CDB4C5000BEF297 /* bg_timebox_end@2x.png in Resources */,
 				362F85FB1CABCAE3006FFE61 /* CreateTeamVController.xib in Resources */,
 				7F8F192A1C87E12100570B79 /* MyCollectionViewController.xib in Resources */,
+				EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */,
 				361A76481CBC9357002FE6B2 /* img_avatar_100.png in Resources */,
 				626DD45F1C841FC9006BC53C /* Images.xcassets in Resources */,
 				3608E20D1CA26D9500AC23A4 /* ic_search_a@2x.png in Resources */,
+				EC33E0A11CEDF96000ADAB7E /* ic_triangle_grey_up@2x.png in Resources */,
 				ECBB8A4C1CEDB97A007D4756 /* LDActivityTableViewCell.xib in Resources */,
 				3664D0571CA0FA7300BC6805 /* img_6@3x.png in Resources */,
 				362F85F51CABB858006FFE61 /* PublicTableViewCell.xib in Resources */,
@@ -2048,10 +2065,12 @@
 				36E1E6E31C9F84C90085C457 /* ic_home@2x.png in Resources */,
 				3693F2831CA4D5F200E48BD9 /* parent1_i5.png in Resources */,
 				EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */,
+				EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */,
 				905516341CEC3E31001C4F51 /* ActiveTableViewCell.xib in Resources */,
 				363BDD0F1CBF6B32001FE507 /* AuditViewController.xib in Resources */,
 				3608E20B1CA23C3200AC23A4 /* AdressCityVC.xib in Resources */,
 				7F875FFC1C868E98003C6EBB /* FriendSpaceTableViewCell.xib in Resources */,
+				EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */,
 				362F491C1CD20B0B000777F0 /* hd002_72.png in Resources */,
 				3664D04F1CA0FA7300BC6805 /* img_2@3x.png in Resources */,
 				36B2C1C41CBB4863001D842B /* PublishViewController.xib in Resources */,
@@ -2188,6 +2207,7 @@
 				905515F11CEC3CED001C4F51 /* ELCAlbumPickerController.m in Sources */,
 				905516211CEC3CED001C4F51 /* UIImageView+WebCache.m in Sources */,
 				36B2C1C91CBB4E0B001D842B /* SexViewController.m in Sources */,
+				EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */,
 				626DD4871C8426F9006BC53C /* PersonalCenterController.m in Sources */,
 				905516221CEC3CED001C4F51 /* UIView+WebCacheOperation.m in Sources */,
 				905516201CEC3CED001C4F51 /* UIImageView+HighlightedWebCache.m in Sources */,

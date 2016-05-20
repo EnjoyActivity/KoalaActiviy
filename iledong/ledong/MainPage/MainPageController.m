@@ -11,7 +11,9 @@
 #import "SearchViewController.h"
 #import "ScanViewController.h"
 #import "FRUtils.h"
-#import "LDLocationManager.h"
+#import "LDActivityViewController.h"
+//#import "GoodActivViewController.h"
+//#import "HotTeamViewController.h"
 
 static NSString * const topAdCellIdentifier = @"TopAdCell";
 static NSString * const activityCellIdentifier = @"ActivityCell";
@@ -54,7 +56,7 @@ static CGFloat const teamCollectionHeight = 280;
     CALayer * activityProgressLayer;
     CALayer * hotTeamProgressLayer;
     
-    LDLocationManager * location;
+
     
 }
 
@@ -75,8 +77,7 @@ static CGFloat const teamCollectionHeight = 280;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self getLocationInfo];
-
+ 
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBarHidden = YES;
     
@@ -112,31 +113,15 @@ static CGFloat const teamCollectionHeight = 280;
 {
     [super viewWillDisappear:animated];
  
-}
-
-#pragma mark - location
-
-- (void)getLocationInfo {
-    @WeakObj(self);
-    location = [[LDLocationManager alloc] init];
-    [location getLocationSuccess:^(NSDictionary * locationInfo) {
-        [selfWeak loadUserLocationInfo:locationInfo];
-    } fail:^(NSError * error) {
-        
-    }];
+    [self adTimerStop];
+    [self activityTimerStop];
+    [self teamTimerStop];
 }
 
 
 #pragma mark - netWork
 
-- (void)loadUserLocationInfo:(NSDictionary *)dic {
-    NSString * city = dic[@"city"];
-    double  longitude = [dic[@"longitude"] doubleValue];
-    double latitude = [dic[@"latitude"] doubleValue];
-    NSString * areaCode = dic[@"areaCode"];
 
-    
-}
 
 #pragma mark - ButtonClick
 
@@ -196,10 +181,14 @@ static CGFloat const teamCollectionHeight = 280;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([collectionView isEqual:topAdCollectionView]) {
         NSLog(@"ad: %ld",(long)indexPath.row);
+        
     } else if ([collectionView isEqual:activityCollectionView]) {
         NSLog(@"activity: %ld",(long)indexPath.row);
+        LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
+        [self.navigationController pushViewController:activityVC animated:YES];
     } else if ([collectionView isEqual:hotTeamCollectionView]) {
-        NSLog(@"team: %ld",(long)indexPath.row);
+//        HotTeamViewController * teamVc = [[HotTeamViewController alloc] init];
+//        [self.navigationController pushViewController:teamVc animated:YES];
     }
 }
 
