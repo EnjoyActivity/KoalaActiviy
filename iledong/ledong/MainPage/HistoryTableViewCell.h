@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *contentName;
-@property (weak, nonatomic) IBOutlet UILabel *resultName;
-@property (weak, nonatomic) IBOutlet UILabel *resultNum;
-@property (weak, nonatomic) IBOutlet UIImageView *resultImage;
+@property (strong, nonatomic) IBOutlet UIImageView *activityImageView;
+@property (strong, nonatomic) IBOutlet UILabel *activityName;
+@property (strong, nonatomic) IBOutlet UILabel *activityMember;
 
 @end

@@ -9,6 +9,10 @@
 #import "SearchFriendVC.h"
 #import "FriendCollectionViewCell.h"
 #import "FriendTableViewCell.h"
+//#import "TeamTableViewCell.h"
+
+static NSString * historyCell = @"HistoryCell";
+static NSString * friendCell = @"friendCell";
 
 @interface SearchFriendVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
 
@@ -22,6 +26,10 @@ static NSString * const reuseIdentifier = @"friendCCell";
     [super viewDidLoad];
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"FriendCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
+    
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"FriendTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
+    
     [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
     self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -95,22 +103,15 @@ static NSString * const reuseIdentifier = @"friendCCell";
 {
     if (tableView == self.contentTableView)
     {
-        static NSString *frienIdentifier = @"frienCell";
-        FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:frienIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"FriendTableViewCell" owner:self options:nil][0];
-        }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
+        UILabel * label = (UILabel *)[cell viewWithTag:2];
+        label.text = @"history";
         return cell;
     }
     else
     {
-        static NSString *resultIdentifier = @"friendResultCell";
-        FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resultIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"FriendTableViewCell" owner:self options:nil][1];
-        }
+        FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
+        cell.friendName.text = @"hahahahh";
         return cell;
     }
 }
@@ -129,14 +130,6 @@ static NSString * const reuseIdentifier = @"friendCCell";
 }
 
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

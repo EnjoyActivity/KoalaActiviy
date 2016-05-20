@@ -12,6 +12,7 @@
 #import "ScanViewController.h"
 #import "FRUtils.h"
 #import "LDActivityViewController.h"
+#import "LDTeamViewController.h"
 //#import "GoodActivViewController.h"
 //#import "HotTeamViewController.h"
 
@@ -187,8 +188,8 @@ static CGFloat const teamCollectionHeight = 280;
         LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
         [self.navigationController pushViewController:activityVC animated:YES];
     } else if ([collectionView isEqual:hotTeamCollectionView]) {
-//        HotTeamViewController * teamVc = [[HotTeamViewController alloc] init];
-//        [self.navigationController pushViewController:teamVc animated:YES];
+        LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
+        [self.navigationController pushViewController:teamVc animated:YES];
     }
 }
 

@@ -10,6 +10,8 @@
 #import "TeamTableViewCell.h"
 #import "TeamCollectionViewCell.h"
 
+static NSString * historyCell = @"HistoryCell";
+
 @interface SearchTeamVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
 
 @end
@@ -22,11 +24,15 @@ static NSString * const reuseIdentifier = @"teamCCell";
     [super viewDidLoad];
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"TeamCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    
     [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
     
     self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.contentTableView.tableFooterView = self.footerView;
+    
+    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"TeamTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"teamCell"];
     
     self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
     
@@ -94,22 +100,15 @@ static NSString * const reuseIdentifier = @"teamCCell";
 {
     if (tableView == self.contentTableView)
     {
-        static NSString *teamIdentifier = @"teamCell";
-        TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"TeamTableViewCell" owner:self options:nil][0];
-        }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell];
+        UILabel * label = (UILabel *)[cell viewWithTag:2];
+        label.text = @"history";
         return cell;
     }
     else
     {
-        static NSString *resultIdentifier = @"teamResultCell";
-        TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resultIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"TeamTableViewCell" owner:self options:nil][1];
-        }
+        TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"teamCell" forIndexPath:indexPath];
+        cell.teamName.text = @"hahahahh";
         return cell;
     }
 }

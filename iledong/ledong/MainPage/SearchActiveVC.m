@@ -10,6 +10,10 @@
 #import "HistoryTableViewCell.h"
 #import "HotCollectionViewCell.h"
 
+static NSString * historyCell = @"HistoryCell";
+static NSString * activityCell = @"ActivityCell";
+
+
 @interface SearchActiveVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
 
 @end
@@ -20,20 +24,9 @@ static NSString * const reuseIdentifier = @"hotCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setUpUI];
     
-    [self.collectionView registerNib:[UINib nibWithNibName:@"HotCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
-    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
-    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.historyTableView.tableFooterView = self.footerView;
-    self.btnImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
-    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-    self.textField.returnKeyType = UIReturnKeySearch;
-    self.textField.delegate = self;
-    self.resultTableView.hidden = YES;
-    self.resultTableView.tableHeaderView = self.headerView;
-    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+  
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,22 +87,15 @@ static NSString * const reuseIdentifier = @"hotCCell";
 {
     if (tableView == self.historyTableView)
     {
-        static NSString *historyIdentifier = @"historyCell";
-        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"HistoryTableViewCell" owner:self options:nil][0];
-        }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
+        UILabel * label = (UILabel *)[cell viewWithTag:2];
+        label.text = @"history";
         return cell;
     }
     else
     {
-        static NSString *resultIdentifier = @"activeResultCell";
-        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resultIdentifier];
-        if (!cell)
-        {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"HistoryTableViewCell" owner:self options:nil][1];
-        }
+        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
+        cell.activityName.text = @"sdasd";
         return cell;
     }
 }
@@ -127,14 +113,25 @@ static NSString * const reuseIdentifier = @"hotCCell";
     return cell;
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - UI
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)setUpUI {
+    [self.collectionView registerNib:[UINib nibWithNibName:@"HotCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.historyTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
+
+    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
+    
+    //    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.historyTableView.tableFooterView = self.footerView;
+    self.btnImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+    //    self.textField.clearButtonMode = UITextFieldViewModeAlways;
+    //    self.textField.returnKeyType = UIReturnKeySearch;
+    self.textField.delegate = self;
+    self.resultTableView.hidden = YES;
+    self.resultTableView.tableHeaderView = self.headerView;
+    //    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
 }
-*/
-
 @end
