@@ -16,6 +16,7 @@
 #import "ChangeGenderViewController.h"
 #import "LoginAndRegistViewController.h"
 #import "AppDelegate.h"
+#import "ModificationPhoneVC.h"
 
 @interface PersonalInfomationViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -213,7 +214,11 @@
                 break;
         }
     } else {
-        
+        if (indexPath.row == 0) {//手机
+            ModificationPhoneVC *vc = [[ModificationPhoneVC alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+
+        }
     }
 }
 

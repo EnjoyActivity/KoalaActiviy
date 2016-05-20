@@ -19,6 +19,7 @@
 #import "FansViewController.h"
 #import "MyCollectionViewController.h"
 #import "ChangeGenderViewController.h"
+#import "ActivityMessageViewController.h"
 
 
 @interface PersonalCenterController ()
@@ -99,6 +100,7 @@
     [self.messageButton setImageEdgeInsets:UIEdgeInsetsMake(-20, 150, 0, 0)];
     [self.messageButton setTitle:@"160条新消息" forState:UIControlStateNormal];
     [self.messageButton setTitleEdgeInsets:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    self.messageButton.hidden = YES;
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
@@ -173,7 +175,9 @@
         switch (indexPath.row) {
             case 0:
             {
-
+                // 进入我的活动
+                ActivityMessageViewController *activityMessageViewController = [[ActivityMessageViewController alloc] init];
+                [self.navigationController pushViewController:activityMessageViewController animated:YES];
             }
                 break;
             case 1:

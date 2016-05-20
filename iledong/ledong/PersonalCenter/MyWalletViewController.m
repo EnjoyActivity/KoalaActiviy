@@ -7,6 +7,7 @@
 //
 
 #import "MyWalletViewController.h"
+#import "TradeDetailViewController.h"
 #import "MyWalletDetailTableViewCell.h"
 
 @interface MyWalletViewController ()
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *bankLabel;
 @property (strong, nonatomic) IBOutlet UIView *containView;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UILabel *headSpaceLabel;
 
 @end
 
@@ -29,14 +31,16 @@
     [super viewDidLoad];
     self.rightButton.hidden = NO;
     [self.rightButton setTitle:@"查看明细" forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(checkDetail:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationController.navigationBarHidden = NO;
     self.tabBarController.tabBar.hidden = YES;
     
     dataArrSection1 = @[@"工商银行",@"添加银行卡...",@"微信钱包"];
     contentArrSection1 = @[@"尾号9999",@"",@"未绑定"];
     
+    _headSpaceLabel.backgroundColor = RGB(240, 240, 240, 1);
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 36)];
-    header.backgroundColor = RGB(222, 222, 222, 1);
+    header.backgroundColor = RGB(240, 240, 240, 1);
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, APP_WIDTH - 15, 36)];
     label.textColor = RGB(153, 153, 153, 1);
     label.font = [UIFont systemFontOfSize:15];
@@ -45,11 +49,9 @@
     
     self.tableView.tableHeaderView = header;
     self.tableView.tableFooterView = [[UIView alloc]init];
-    self.tableView.backgroundColor = RGB(222, 222, 222, 1);
+    self.tableView.backgroundColor = RGB(240, 240, 240, 1);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
-    
 }
 
 #pragma mark - setup ui
@@ -97,6 +99,7 @@
     cell.detailTextLabel.textColor = RGB(153, 153, 153, 1);
     cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -111,6 +114,11 @@
 }
 
 - (IBAction)recharge:(id)sender {
+}
+
+- (void)checkDetail:(id)sender {
+    TradeDetailViewController *vc = [[TradeDetailViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

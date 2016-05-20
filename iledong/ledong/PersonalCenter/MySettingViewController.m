@@ -44,6 +44,19 @@
 }
 
 - (IBAction)clearButtonClick:(id)sender {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *directory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:directory error:nil];
+    for (NSString *file in files) {
+        BOOL isDir = NO;
+        NSString *filePath = [directory stringByAppendingString:[NSString stringWithFormat:@"/%@",file]];
+        if ([fileManager fileExistsAtPath:filePath isDirectory:&isDir]) {
+            [fileManager removeItemAtPath:filePath error:nil];
+        }
+    }
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    
+    [Dialog toast:@"清除成功"];
 }
 
 - (void)didReceiveMemoryWarning {
