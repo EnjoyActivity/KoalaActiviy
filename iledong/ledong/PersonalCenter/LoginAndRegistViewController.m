@@ -89,6 +89,7 @@
     {
         if ([[responseObject objectForKey:@"code"] intValue] == 0)
         {
+            NSLog(@"%@",responseObject);
             NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(sendButtonSet:) userInfo:nil repeats:YES];
             [timer fire];
             [Dialog simpleToast:@"验证码已发送！" withDuration:1.5];

@@ -192,7 +192,6 @@
 		36FF6F451CA3E3D100387203 /* UserProtocolVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FF6F431CA3E3D100387203 /* UserProtocolVC.m */; };
 		36FF6F461CA3E3D100387203 /* UserProtocolVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36FF6F441CA3E3D100387203 /* UserProtocolVC.xib */; };
 		62091BC61C8FC5CB00DB9804 /* SignUpDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62091BC41C8FC5CB00DB9804 /* SignUpDetailViewController.m */; };
-		620FC9461C96BCC800CC2C89 /* AllTeamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 620FC9451C96BCC800CC2C89 /* AllTeamCell.xib */; };
 		626DD4541C841FC9006BC53C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4531C841FC9006BC53C /* main.m */; };
 		626DD4571C841FC9006BC53C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4561C841FC9006BC53C /* AppDelegate.m */; };
 		626DD45D1C841FC9006BC53C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 626DD45B1C841FC9006BC53C /* Main.storyboard */; };
@@ -317,6 +316,7 @@
 		905516371CEC3E31001C4F51 /* ActivePublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905516311CEC3E31001C4F51 /* ActivePublicViewController.m */; };
 		905516381CEC3E31001C4F51 /* ActivePublicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */; };
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
+		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
 		EC9A93131CED50C500F6009B /* MainPageTopAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */; };
 		EC9A93151CED519300F6009B /* MainPageActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93141CED519300F6009B /* MainPageActivityCell.xib */; };
 		EC9A93171CED61DA00F6009B /* bg_toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */; };
@@ -606,9 +606,6 @@
 		62091BC31C8FC5CB00DB9804 /* SignUpDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpDetailViewController.h; sourceTree = "<group>"; };
 		62091BC41C8FC5CB00DB9804 /* SignUpDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpDetailViewController.m; sourceTree = "<group>"; };
 		62091BC51C8FC5CB00DB9804 /* SignUpDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpDetailViewController.xib; sourceTree = "<group>"; };
-		620FC9451C96BCC800CC2C89 /* AllTeamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AllTeamCell.xib; sourceTree = "<group>"; };
-		621530DB1C86CB5000FF1EE5 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
-		621530DC1C86CB5000FF1EE5 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
 		626DD44E1C841FC9006BC53C /* ledong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ledong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		626DD4521C841FC9006BC53C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		626DD4531C841FC9006BC53C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -829,10 +826,11 @@
 		905516311CEC3E31001C4F51 /* ActivePublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivePublicViewController.m; sourceTree = "<group>"; };
 		905516321CEC3E31001C4F51 /* ActivePublicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivePublicViewController.xib; sourceTree = "<group>"; };
 		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
+		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
+		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
 		EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTopAdCell.xib; sourceTree = "<group>"; };
 		EC9A93141CED519300F6009B /* MainPageActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageActivityCell.xib; sourceTree = "<group>"; };
 		EC9A93161CED61DA00F6009B /* bg_toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_toolbar@2x.png"; sourceTree = "<group>"; };
-
 		EC9A93191CED9D3D00F6009B /* LDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDLocationManager.h; sourceTree = "<group>"; };
 		EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDLocationManager.m; sourceTree = "<group>"; };
 		ECBB8A461CEDAD6A007D4756 /* ic_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_back@2x.png"; sourceTree = "<group>"; };
@@ -842,7 +840,6 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1275,9 +1272,8 @@
 				626DD47A1C8426B0006BC53C /* AllTeamController.h */,
 				626DD47B1C8426B0006BC53C /* AllTeamController.m */,
 				626DD47C1C8426B0006BC53C /* AllTeamController.xib */,
-				621530DB1C86CB5000FF1EE5 /* AllTeamCell.h */,
-				621530DC1C86CB5000FF1EE5 /* AllTeamCell.m */,
-				620FC9451C96BCC800CC2C89 /* AllTeamCell.xib */,
+				90FB7D631CEEA8250055B493 /* AllTeamCell.h */,
+				90FB7D641CEEA8250055B493 /* AllTeamCell.m */,
 				363BDD101CBF703E001FE507 /* JoinTeamViewController.h */,
 				363BDD111CBF703E001FE507 /* JoinTeamViewController.m */,
 				363BDD121CBF703E001FE507 /* JoinTeamViewController.xib */,
@@ -2123,7 +2119,6 @@
 				363BDD1A1CBF91B3001FE507 /* TeamOrderViewController.xib in Resources */,
 				362F7E8F1CC0D59A00C91090 /* PaySuccessViewController.xib in Resources */,
 				368ACA291CCDED9B00700E45 /* img_1b@2x.png in Resources */,
-				620FC9461C96BCC800CC2C89 /* AllTeamCell.xib in Resources */,
 				905515FB1CEC3CED001C4F51 /* Overlay.png in Resources */,
 				ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */,
 				7F9318ED1C858B910061E9EA /* ic_more4@2x.png in Resources */,
@@ -2198,6 +2193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				363D6BC81CC71189008A169A /* SearchActiveVC.m in Sources */,
+				90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */,
 				363D6BE11CC76973008A169A /* TeamCollectionViewCell.m in Sources */,
 				905515F51CEC3CED001C4F51 /* ELCConsole.m in Sources */,
 				362F7E7E1CC0C1E300C91090 /* PrivateOrderViewController.m in Sources */,

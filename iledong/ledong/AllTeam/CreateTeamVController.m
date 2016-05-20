@@ -202,24 +202,6 @@
     } completion:nil];
 }
 
-- (void)uploadHeaderImage:(NSDictionary*)dict {
-    if ([HttpClient isLogin]) {
-        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
-        [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
-            NSDictionary* dict = (NSDictionary*)responseObject;
-            NSNumber* codeNum = [dict objectForKey:@"code"];
-            if (codeNum.intValue == 0) {
-                [Dialog alert:@"上传团队头像成功！"];
-            }
-//            else {
-//                [Dialog alert:@"上传团队头像失败！"];
-//            }
-        } fail:^{
-            //[Dialog alert:@"上传团队头像失败！"];
-        }];
-    }
-}
-
 - (void)addTagView:(NSString*)str isReDraw:(BOOL)isReDraw index:(NSInteger)index {
     if (str.length == 0)
         return;
@@ -338,8 +320,8 @@
         [image drawInRect:CGRectMake(0, 0, rect.size.width, rect.size.height)];
         UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        image = smallImage;
-        weakSelf.headerImageView.image = image;
+        UIImage* newImage = smallImage;
+        weakSelf.headerImageView.image = newImage;
         
         NSString* strTemp = [weakSelf getStringWithDate:[NSDate date] format:@"yyyyMMddHHmmss"];
         NSString* fileName = [NSString stringWithFormat:@"%@.png", strTemp];
@@ -350,8 +332,15 @@
         [dict setValue:[NSNumber numberWithLongLong:length] forKey:@"ContentLength"];
         [dict setValue:@"file" forKey:@"ContentType"];
         [dict setValue:fileName forKey:@"FileName"];
-        [dict setValue:imageData forKey:@"InputStream"];
-        [weakSelf uploadHeaderImage:dict];
+        //[dict setValue:imageData forKey:@"InputStream"];
+        //[weakSelf uploadHeaderImage:dict];
+        
+        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
+        [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[image] success:^(id responseObject) {
+            [Dialog alert:@"上传团队头像成功！"];
+        } fail:^{
+            [Dialog alert:@"上传团队头像失败！"];
+        }];
     }];
 }
 
@@ -380,75 +369,73 @@
     return NO;
 }
 
-
-    /*
-- (NSString *)postRequestWithURL: (NSString *)url
-                      postParems: (NSMutableDictionary *)postParems
-                     picFilePath: (UIImage *)image
-                     picFileName: (NSString *)picFileName {
-    NSString *TWITTERFON_FORM_BOUNDARY = @"0xKhTmLbOuNdArY";
-    NSString *FORM_FLE_INPUT = @"file";
-    //分界线 --AaB03x
-    NSString *MPboundary=[[NSString alloc]initWithFormat:@"--%@",TWITTERFON_FORM_BOUNDARY];
-    //结束符 AaB03x--
-    NSString *endMPboundary=[[NSString alloc]initWithFormat:@"%@--",MPboundary];
-
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                    timeoutInterval:10];
-    //得到图片的data
-    NSData* data;
-    if (UIImagePNGRepresentation(image))
-        data = UIImagePNGRepresentation(image);
-    else
-        data = UIImageJPEGRepresentation(image, 1.0);
-
-    NSMutableString *body=[[NSMutableString alloc]init];
-    NSArray *keys = [postParems allKeys];
-//    for(int i=0; i<[keys count]; i++) {
-//        //得到当前key
-//        NSString *key=[keys objectAtIndex:i];
-//        //添加分界线，换行
-//        [body appendFormat:@"%@\r\n",MPboundary];
-//        //添加字段名称，换2行
-//        [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key];
-//        //添加字段的值
-//        [body appendFormat:@"%@\r\n",[postParems objectForKey:key]];
-//        
-//        NSLog(@"添加字段的值==%@",[postParems objectForKey:key]);
+//- (NSString *)postRequestWithURL: (NSString *)url
+//                      postParems: (NSMutableDictionary *)postParems
+//                     picFilePath: (UIImage *)image
+//                     picFileName: (NSString *)picFileName {
+//    NSString *TWITTERFON_FORM_BOUNDARY = @"0xKhTmLbOuNdArY";
+//    NSString *FORM_FLE_INPUT = @"file";
+//    //分界线 --AaB03x
+//    NSString *MPboundary=[[NSString alloc]initWithFormat:@"--%@",TWITTERFON_FORM_BOUNDARY];
+//    //结束符 AaB03x--
+//    NSString *endMPboundary=[[NSString alloc]initWithFormat:@"%@--",MPboundary];
+//
+//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+//                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+//                                                    timeoutInterval:10];
+//    //得到图片的data
+//    NSData* data;
+//    if (UIImagePNGRepresentation(image))
+//        data = UIImagePNGRepresentation(image);
+//    else
+//        data = UIImageJPEGRepresentation(image, 1.0);
+//
+//    NSMutableString *body=[[NSMutableString alloc]init];
+//    NSArray *keys = [postParems allKeys];
+////    for(int i=0; i<[keys count]; i++) {
+////        //得到当前key
+////        NSString *key=[keys objectAtIndex:i];
+////        //添加分界线，换行
+////        [body appendFormat:@"%@\r\n",MPboundary];
+////        //添加字段名称，换2行
+////        [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key];
+////        //添加字段的值
+////        [body appendFormat:@"%@\r\n",[postParems objectForKey:key]];
+////        
+////        NSLog(@"添加字段的值==%@",[postParems objectForKey:key]);
+////    }
+//    
+//    [body appendFormat:@"%@\r\n",MPboundary];
+//    //声明pic字段，文件名为boris.png
+//    [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",FORM_FLE_INPUT,picFileName];
+//    //声明上传文件的格式
+//    [body appendFormat:@"Content-Type: image/jpge,image/gif, image/jpeg, image/pjpeg, image/pjpeg\r\n\r\n"];
+//    
+//    NSString *end=[[NSString alloc]initWithFormat:@"\r\n%@",endMPboundary];
+//    NSMutableData *myRequestData = [NSMutableData data];
+//    
+//    //将body字符串转化为UTF8格式的二进制
+//    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+//    [myRequestData appendData:data];
+//    
+//    //加入结束符--AaB03x--
+//    [myRequestData appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",TWITTERFON_FORM_BOUNDARY];
+//    [request setValue:content forHTTPHeaderField:@"Content-Type"];
+//    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData length]] forHTTPHeaderField:@"Content-Length"];
+//    [request setHTTPBody:myRequestData];
+//    [request setHTTPMethod:@"POST"];
+//
+//    NSHTTPURLResponse *urlResponese = nil;
+//    NSError *error = [[NSError alloc]init];
+//    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+//    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
+//    if([urlResponese statusCode] >=200&&[urlResponese statusCode]<300){
+//        NSLog(@"返回结果=====%@",result);
+//        return result;
 //    }
-    
-    [body appendFormat:@"%@\r\n",MPboundary];
-    //声明pic字段，文件名为boris.png
-    [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",FORM_FLE_INPUT,picFileName];
-    //声明上传文件的格式
-    [body appendFormat:@"Content-Type: image/jpge,image/gif, image/jpeg, image/pjpeg, image/pjpeg\r\n\r\n"];
-    
-    NSString *end=[[NSString alloc]initWithFormat:@"\r\n%@",endMPboundary];
-    NSMutableData *myRequestData = [NSMutableData data];
-    
-    //将body字符串转化为UTF8格式的二进制
-    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData appendData:data];
-    
-    //加入结束符--AaB03x--
-    [myRequestData appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",TWITTERFON_FORM_BOUNDARY];
-    [request setValue:content forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:myRequestData];
-    [request setHTTPMethod:@"POST"];
+//    return nil;
+//}
 
-    NSHTTPURLResponse *urlResponese = nil;
-    NSError *error = [[NSError alloc]init];
-    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    if([urlResponese statusCode] >=200&&[urlResponese statusCode]<300){
-        NSLog(@"返回结果=====%@",result);
-        return result;
-    }
-    return nil;
-}
-*/
 @end
