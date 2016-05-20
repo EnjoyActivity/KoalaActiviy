@@ -16,7 +16,6 @@
     CGFloat _mainScrollViewContentHeight;
     CGFloat _mainScrollViewContentOffsetY;
     BOOL _keyboardShow;
-    BOOL _tagTextFieldDone;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -47,6 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.tagArray = [NSMutableArray array];
     [self setupNavigationBar];
     [self layoutSubView];
     [self addKeyBoardNotification];
@@ -85,7 +85,6 @@
 }
 
 - (void)layoutSubView {
-    _tagTextFieldDone = NO;
     self.uploadHeaderImgBtn.layer.borderWidth = 1.0;
     self.uploadHeaderImgBtn.layer.borderColor = UIColorFromRGB(0xDEDEDE).CGColor;
     
@@ -137,6 +136,12 @@
 }
 
 - (void)endEditing {
+    if ([self.addTagTextField isFirstResponder]) {
+        NSInteger index = 0;
+        if (self.tagArray.count > 0)
+            index = self.tagArray.count;
+        [self addTagView:self.addTagTextField.text isReDraw:NO index:index];
+    }
     [self.view endEditing:YES];
 }
 
@@ -191,10 +196,6 @@
 - (void)keyboardDidHide:(NSNotification *) notif {
     _keyboardShow = NO;
     [self changeStartBtnBgColor];
-//    if ([self.addTagTextField isFirstResponder] && !_tagTextFieldDone)
-//        [self addTagView:self.addTagTextField.text isReDraw:NO];
-    
-    _tagTextFieldDone = NO;
     [UIView animateWithDuration:0.5 animations:^{
         [_mainScrollView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentHeight)];
         [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollViewContentOffsetY) animated:YES];
@@ -219,12 +220,13 @@
     }
 }
 
-- (void)addTagView:(NSString*)str isReDraw:(BOOL)isReDraw {
+- (void)addTagView:(NSString*)str isReDraw:(BOOL)isReDraw index:(NSInteger)index {
+    if (str.length == 0)
+        return;
+
     UILabel* tagLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.addTagTextField.frame.origin.x, 10, 0, 0)];
     tagLabel.text = str;
     if (!isReDraw) {
-        if (!self.tagArray)
-            self.tagArray = [NSMutableArray array];
         [self.tagArray addObject:tagLabel.text];
         [self changeStartBtnBgColor];
     }
@@ -241,7 +243,7 @@
     
     tagLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
-    NSDictionary* dict = @{@"index":[NSNumber numberWithInteger:self.tagArray.count-1],
+    NSDictionary* dict = @{@"index":[NSNumber numberWithInteger:index],
                            @"centerX":[NSNumber numberWithInt:tagLabel.center.x]};
     objc_setAssociatedObject(tapGes, @"tapGesData", dict, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [tapGes addTarget:self action:@selector(deleteTagClicked:)];
@@ -251,7 +253,6 @@
     self.addTagTextField.text = @"";
     
     self.tagScrollView.contentSize = CGSizeMake(self.addTagTextField.frame.origin.x+self.addTagTextField.frame.size.width+10, self.tagScrollView.contentSize.height);
-    //self.tagScrollView.contentOffset = CGPointMake(tagLabel.frame.origin.x-10, self.tagScrollView.contentOffset.y);
 }
 
 - (void)deleteTagClicked:(UITapGestureRecognizer*)tapGes {
@@ -298,8 +299,10 @@
         [view removeFromSuperview];
     }
     self.addTagTextField.frame = CGRectMake(15, 16, self.addTagTextField.frame.size.width, self.addTagTextField.frame.size.height);
-    for (NSString* str in self.tagArray)
-        [self addTagView:str isReDraw:YES];
+    int i = 0;
+    for (NSString* str in self.tagArray) {
+        [self addTagView:str isReDraw:YES index:i++];
+    }
 }
 
 - (void)changeStartBtnBgColor {
@@ -368,8 +371,10 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     if (textField == self.addTagTextField) {
         [self.addTagTextField resignFirstResponder];
-        [self addTagView:self.addTagTextField.text isReDraw:NO];
-        _tagTextFieldDone = YES;
+        NSInteger index = 0;
+        if (self.tagArray.count > 0)
+            index = self.tagArray.count;
+        [self addTagView:self.addTagTextField.text isReDraw:NO index:index];
         return YES;
     }
     return NO;
