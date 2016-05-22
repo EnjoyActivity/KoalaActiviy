@@ -77,10 +77,11 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
-    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(00, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"创建团队"];
-    customLab.font = [UIFont systemFontOfSize:16];
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    customLab.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView = customLab;
 }
 

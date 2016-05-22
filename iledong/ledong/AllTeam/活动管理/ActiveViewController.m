@@ -24,7 +24,8 @@
     UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"活动管理"];
-    customLab.font = [UIFont systemFontOfSize:16];
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    customLab.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView = customLab;
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_new"] style:UIBarButtonItemStylePlain target:self action:@selector(startActivityBtnClicked)];

@@ -23,7 +23,8 @@
     UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"团队管理"];
-    customLab.font = [UIFont systemFontOfSize:16];
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    customLab.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView = customLab;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
@@ -36,7 +37,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-
 }
 
 #pragma mark - Table view data source

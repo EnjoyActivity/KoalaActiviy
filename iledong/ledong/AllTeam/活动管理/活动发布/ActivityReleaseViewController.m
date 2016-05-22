@@ -54,7 +54,8 @@ typedef enum gameType {
     UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"发布活动"];
-    customLab.font = [UIFont systemFontOfSize:16];
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    customLab.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView = customLab;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -784,7 +785,7 @@ typedef enum gameType {
     
     UILabel* tipLabel = (UILabel*)[cell.contentView viewWithTag:101];
     if (!tipLabel) {
-        tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 8, 0, 0)];
+        tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 12, 0, 0)];
         tipLabel.font = [UIFont systemFontOfSize:14.0];
         tipLabel.tag = 101;
         tipLabel.textColor = UIColorFromRGB(0x999999);

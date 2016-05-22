@@ -47,7 +47,8 @@
     UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"加入团队"];
-    customLab.font = [UIFont systemFontOfSize:16];
+    customLab.textAlignment = NSTextAlignmentCenter;
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
     self.navigationItem.titleView = customLab;
 }
 
