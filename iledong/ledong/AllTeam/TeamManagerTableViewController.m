@@ -109,6 +109,7 @@
     if (indexPath.section == 1 && indexPath.row == 0) {
         //活动管理
         ActiveViewController* VC = [[ActiveViewController alloc]init];
+        VC.teamId = self.teamId;
         [self.navigationController pushViewController:VC animated:YES];
     }
 }

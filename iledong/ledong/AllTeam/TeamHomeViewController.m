@@ -79,6 +79,7 @@
 
 - (void)manageBtnClicked {
     TeamManagerTableViewController* VC = [[TeamManagerTableViewController alloc]init];
+    VC.teamId = self.teamId;
     [self.navigationController pushViewController:VC animated:YES];
 }
 

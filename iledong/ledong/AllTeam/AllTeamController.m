@@ -263,10 +263,17 @@ typedef enum listType {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TeamHomeViewController *teamHomeVC = [[TeamHomeViewController alloc] init];
-    if (self.tableViewListType == listTypeStartTeam)
+    if (self.tableViewListType == listTypeStartTeam) {
         teamHomeVC.teamType = teamTypeCreate;
-    else if (self.tableViewListType == listTypeJoinTeam)
+        NSDictionary* dict = self.myStartTeamData[indexPath.row];
+        teamHomeVC.teamId = [dict objectForKey:@"Id"];
+    }
+    else if (self.tableViewListType == listTypeJoinTeam)  {
         teamHomeVC.teamType = teamTypeJoin;
+        NSDictionary* dict = self.myJoinTeamData[indexPath.row];
+        teamHomeVC.teamId = [dict objectForKey:@"Id"];
+    }
+
     [self.navigationController pushViewController:teamHomeVC animated:YES];
 }
 

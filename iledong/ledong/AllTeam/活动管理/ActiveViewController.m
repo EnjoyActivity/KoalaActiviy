@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong,nonatomic)NSMutableArray* datas;
+@property (assign,nonatomic)NSInteger currentPageIndex;
 
 @end
 
@@ -23,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.currentPageIndex = 1;
     self.datas = [NSMutableArray array];
     self.navigationItem.title = @"活动管理";
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
@@ -39,6 +41,8 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    
+    [self queryDatas:self.currentPageIndex++];
 }
 
 - (void)didReceiveMemoryWarning {

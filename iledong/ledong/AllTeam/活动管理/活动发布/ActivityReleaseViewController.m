@@ -646,7 +646,7 @@ typedef enum joinType {
     x= imageView.frame.origin.x;
     UILabel* timeLabel = (UILabel*)[cell.contentView viewWithTag:102];
     if (!timeLabel) {
-        timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, addLabel.frame.origin.y+addLabel.frame.size.height+5, 0, 0)];
+        timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, addLabel.frame.origin.y+addLabel.frame.size.height+10, 0, 0)];
         timeLabel.font = [UIFont systemFontOfSize:12.0];
         timeLabel.tag = 102;
         timeLabel.textColor = UIColorFromRGB(0x999999);

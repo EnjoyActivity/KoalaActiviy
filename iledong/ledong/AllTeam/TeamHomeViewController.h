@@ -35,5 +35,6 @@ typedef enum teamType {
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 
 @property (assign,nonatomic)teamType teamType;
+@property (strong,nonatomic)NSString* teamId;
 
 @end

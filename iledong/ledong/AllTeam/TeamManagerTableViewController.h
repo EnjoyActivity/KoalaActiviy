@@ -10,4 +10,6 @@
 
 @interface TeamManagerTableViewController : UITableViewController
 
+@property (nonatomic, strong)NSString* teamId;
+
 @end
