@@ -321,6 +321,7 @@
 		905516351CEC3E31001C4F51 /* ActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055162D1CEC3E31001C4F51 /* ActiveViewController.m */; };
 		905516361CEC3E31001C4F51 /* ActiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */; };
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
+		9063BBCC1CF30C7D0057289D /* ContactTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */; };
 		90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
 		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
@@ -854,6 +855,8 @@
 		9055162D1CEC3E31001C4F51 /* ActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveViewController.m; sourceTree = "<group>"; };
 		9055162E1CEC3E31001C4F51 /* ActiveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActiveViewController.xib; sourceTree = "<group>"; };
 		905516391CEC70C5001C4F51 /* img_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_nodata@2x.png"; sourceTree = "<group>"; };
+		9063BBCA1CF30C7D0057289D /* ContactTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTypeViewController.h; sourceTree = "<group>"; };
+		9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTypeViewController.m; sourceTree = "<group>"; };
 		90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_location@2x.png"; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
@@ -1994,6 +1997,8 @@
 				9040CD0F1CF2CA0800C18476 /* StepperView.m */,
 				9040CD141CF2EF2F00C18476 /* ParameterTableViewController.h */,
 				9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */,
+				9063BBCA1CF30C7D0057289D /* ContactTypeViewController.h */,
+				9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */,
 			);
 			path = "活动发布";
 			sourceTree = "<group>";
@@ -2371,6 +2376,7 @@
 				3656D75F1CD8816600F7C075 /* UserInfoTableViewCell.m in Sources */,
 				3608E20A1CA23C3200AC23A4 /* AdressCityVC.m in Sources */,
 				3627C5D41CA8DBD400A5D7EB /* ZHScanView.m in Sources */,
+				9063BBCC1CF30C7D0057289D /* ContactTypeViewController.m in Sources */,
 				7F06F6361C86E34600F67173 /* ActivityMessageViewController.m in Sources */,
 				EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */,
 				205375961CF2B156005902B3 /* ContactView.m in Sources */,

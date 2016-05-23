@@ -10,6 +10,7 @@
 #import "CHDatePickerView.h"
 #import "StepperView.h"
 #import "ParameterTableViewController.h"
+#import "ContactTypeViewController.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -37,7 +38,13 @@ typedef enum imagePickerFromType {
     imagePickerFromTypeDetail
 }imagePickerFromType;
 
-@interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextViewDelegate>
+@interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextViewDelegate> {
+    @private
+    BOOL _keyboardShow;
+    BOOL _scrollViewDidScroll;
+    CGFloat _mainScrollViewContentSizeheight;
+    CGFloat _mainScrollViewoffsetY;
+}
 
 @property (nonatomic, strong)UITableView* leagueTableView;
 @property (nonatomic, strong)UITableView* nonleagueTableView;
@@ -69,10 +76,13 @@ typedef enum imagePickerFromType {
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
+    
+    [self addKeyboardNotification];
 }
 
 - (void)dealloc {
     [self releaseResource];
+    [self removeKeyboardNotification];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,7 +97,27 @@ typedef enum imagePickerFromType {
     self.nonleagueTableView = nil;
 }
 
-#pragma mark - drawUI 
+- (void)addKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)removeKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+#pragma mark - drawUI
 - (void)setupNavigationBar {
     self.navigationItem.title = @"发布活动";
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
@@ -231,6 +261,49 @@ typedef enum imagePickerFromType {
 }
 
 #pragma mark - delegate
+- (void)keyboardWillShow:(NSNotification *) notif {
+    if (self.gameType == gameTypenonLeague)
+        return;
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIView *firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    if (![firstResponder isKindOfClass:[UITextView class]]) {
+        _mainScrollViewContentSizeheight = self.leagueTableView.contentSize.height;
+        _mainScrollViewoffsetY = self.leagueTableView.contentOffset.y;
+        return;
+    }
+    if (_keyboardShow)
+        return;
+
+    _scrollViewDidScroll = YES;
+    _mainScrollViewContentSizeheight = self.leagueTableView.contentSize.height;
+    _mainScrollViewoffsetY = self.leagueTableView.contentOffset.y;
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+
+    CGFloat y = _mainScrollViewoffsetY+keyboardSize.height-80;
+    CGFloat sizeHeigth = 0;
+    sizeHeigth = _mainScrollViewContentSizeheight+keyboardSize.height;
+    _keyboardShow = YES;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.leagueTableView setContentSize:CGSizeMake(APP_WIDTH, sizeHeigth)];
+        [self.leagueTableView setContentOffset:CGPointMake(0, y) animated:YES];
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            _scrollViewDidScroll = NO;
+        });
+    }];
+}
+
+- (void)keyboardDidHide:(NSNotification *) notif {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.leagueTableView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentSizeheight)];
+        [self.leagueTableView setContentOffset:CGPointMake(0, _mainScrollViewoffsetY) animated:YES];
+        _keyboardShow = NO;
+    } completion:nil];
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.textFieldPath = objc_getAssociatedObject(textField, KTextFieldAsObj);
 }
@@ -246,6 +319,8 @@ typedef enum imagePickerFromType {
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (_scrollViewDidScroll)
+        return;
     [self.view endEditing:YES];
     if (self.gameType == gameTypenonLeague) {
 
@@ -450,11 +525,7 @@ typedef enum imagePickerFromType {
             [self.view addSubview:datePickView];
         }
         else if (indexPath.section == 6) {
-            ParameterTableViewController* Vc = [[ParameterTableViewController alloc]init];
-            Vc.vcTitle = @"联系方式";
-            [Vc setSelectCellBlock:^(NSDictionary* dict) {
-                
-            }];
+            ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
         }
     }
