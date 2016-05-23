@@ -59,7 +59,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     self.tabBarController.tabBar.hidden = NO;
-    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     if (![HttpClient isLogin]) {
         LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
