@@ -240,6 +240,7 @@
 		900400BA1CF03F0300101D86 /* ic_append@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 900400B91CF03F0300101D86 /* ic_append@2x.png */; };
 		903CE5421CED48A3003099EB /* img_teamavatar_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */; };
 		903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 903CE5441CEDBB76003099EB /* LDDeleteTagView.m */; };
+		9040CD0D1CF2957800C18476 /* CHDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD0C1CF2957800C18476 /* CHDatePickerView.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
 		905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515621CEC3CED001C4F51 /* AFHTTPSessionManager.m */; };
@@ -688,6 +689,8 @@
 		903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_teamavatar_120@2x.png"; sourceTree = "<group>"; };
 		903CE5431CEDBB76003099EB /* LDDeleteTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDDeleteTagView.h; sourceTree = "<group>"; };
 		903CE5441CEDBB76003099EB /* LDDeleteTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDDeleteTagView.m; sourceTree = "<group>"; };
+		9040CD0B1CF2957800C18476 /* CHDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHDatePickerView.h; sourceTree = "<group>"; };
+		9040CD0C1CF2957800C18476 /* CHDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHDatePickerView.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		9055155F1CEC3CED001C4F51 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -1925,6 +1928,8 @@
 		9055162F1CEC3E31001C4F51 /* 活动发布 */ = {
 			isa = PBXGroup;
 			children = (
+				9040CD0B1CF2957800C18476 /* CHDatePickerView.h */,
+				9040CD0C1CF2957800C18476 /* CHDatePickerView.m */,
 				90FB7D6B1CEF03730055B493 /* ActivityReleaseViewController.h */,
 				90FB7D6C1CEF03730055B493 /* ActivityReleaseViewController.m */,
 			);
@@ -2282,6 +2287,7 @@
 				7F8F73441C8FB1B300CCFE41 /* MyWalletViewController.m in Sources */,
 				905516051CEC3CED001C4F51 /* MJRefreshAutoGifFooter.m in Sources */,
 				363D6BE61CC76FFB008A169A /* SearchFriendVC.m in Sources */,
+				9040CD0D1CF2957800C18476 /* CHDatePickerView.m in Sources */,
 				ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */,
 				365AEDF51CD9A6BD0019EBF0 /* FooterTableViewCell.m in Sources */,
 				905516091CEC3CED001C4F51 /* MJRefreshBackNormalFooter.m in Sources */,

@@ -7,28 +7,33 @@
 //
 
 #import "ActivityReleaseViewController.h"
+#import "CHDatePickerView.h"
 
-#define kCell1      @"cell1"
-#define kCell2      @"cell2"
-#define kCell3      @"cell3"
-#define kCell4      @"cell4"
-#define kCell5      @"cell5"
-#define kCell6      @"cell6"
-#define kCell7      @"cell7"
-#define kCell8      @"cell8"
+#define kCell1              @"cell1"
+#define kCell2              @"cell2"
+#define kCell3              @"cell3"
+#define kCell4              @"cell4"
+#define kCell5              @"cell5"
+#define kCell6              @"cell6"
+#define kCell7              @"cell7"
+#define kCell8              @"cell8"
+#define KTextFieldAsObj     @"textFieldAssociatedObject"
 
 typedef enum gameType {
     gameTypeLeague = 0,
     gameTypenonLeague
 }gameType;
 
-@interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextViewDelegate>
 
 @property (nonatomic, strong)UITableView* leagueTableView;
 @property (nonatomic, strong)UITableView* nonleagueTableView;
 @property (nonatomic, strong)UIScrollView* headerScrollView;
 @property (nonatomic, strong)UIView* addImgBtnView;
 @property (nonatomic, assign)gameType gameType;
+@property (nonatomic, strong)NSMutableArray* coverPhotoImages;
+@property (nonatomic, strong)NSIndexPath* textFieldPath;
+@property (nonatomic, strong)UILabel* tipLabel;
 
 @end
 
@@ -39,6 +44,7 @@ typedef enum gameType {
 
     self.gameType = gameTypenonLeague;
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    self.coverPhotoImages = [NSMutableArray array];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
@@ -80,6 +86,10 @@ typedef enum gameType {
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = UIColorFromRGB(0x999999);
     [self.addImgBtnView addSubview:label];
+    
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
+    [tapGes addTarget:self action:@selector(addCoverPhotoClicked)];
+    [self.addImgBtnView addGestureRecognizer:tapGes];
 }
 
 - (void)drawNonLeagueTableView {
@@ -116,6 +126,23 @@ typedef enum gameType {
 }
 
 #pragma mark - btn clicked 
+- (void)addCoverPhotoClicked {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]
+        || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+        //支持图库、相片库
+        UIImagePickerController* picker = [[UIImagePickerController alloc]init];
+        picker.view.backgroundColor = [UIColor whiteColor];
+        UIImagePickerControllerSourceType sourcheType = UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        picker.sourceType = sourcheType;
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        [self presentViewController:picker animated:YES completion:nil];
+    }
+    else {
+        [SVProgressHUD showErrorWithStatus:@"不支持获取图库及相片库，请设置权限"];
+    }
+}
+
 - (void)backBtnClicked {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -139,7 +166,33 @@ typedef enum gameType {
     }
 }
 
-#pragma mark - tableView delegate
+#pragma mark - delegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.textFieldPath = objc_getAssociatedObject(textField, KTextFieldAsObj);
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    self.tipLabel.hidden = YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if (textView.text.length == 0) {
+        self.tipLabel.hidden = NO;
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+    if (self.gameType == gameTypenonLeague) {
+
+    }
+    else if (self.gameType == gameTypeLeague) {
+        NSInteger section = self.textFieldPath.section;
+        NSInteger row = self.textFieldPath.row;
+        //NSLog(@"section=%ld, row=%ld", section, row);
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == self.nonleagueTableView) {
         if (section == 1 || section == 3 || section == 4)
@@ -276,9 +329,75 @@ typedef enum gameType {
     return nil;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.nonleagueTableView) {
+        if (indexPath.section == 1) {
+            CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.view completeDateInt:nil completeDateStr:^(NSString *str) {
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
+                NSDate *date = [formatter dateFromString:str];
+                [formatter setDateFormat:@"yyyy-MM-dd  HH:mm"];
+                NSString *dateStr = [formatter stringFromDate:date];
+                UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel* label = nil;
+                if (indexPath.row == 0)         //活动开始时间
+                    label = (UILabel*)[cell.contentView viewWithTag:300];
+                else if (indexPath.row == 1)    //活动结束时间
+                    label = (UILabel*)[cell.contentView viewWithTag:400];
+                label.text = dateStr;
+                [label sizeToFit];
+                label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-30, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
+            }];
+            [self.view addSubview:datePickView];
+        }
+    }
+    else if (tableView == self.leagueTableView) {
+        if (indexPath.section == 1 || indexPath.section == 2) {
+            CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.view completeDateInt:nil completeDateStr:^(NSString *str) {
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
+                NSDate *date = [formatter dateFromString:str];
+                [formatter setDateFormat:@"yyyy-MM-dd  HH:mm"];
+                NSString *dateStr = [formatter stringFromDate:date];
+                UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel* label = nil;
+                if (indexPath.section == 1 && indexPath.row == 0)           //报名开始时间
+                    label = (UILabel*)[cell.contentView viewWithTag:300];
+                else if (indexPath.section == 1 && indexPath.row == 1)      //报名结束时间
+                    label = (UILabel*)[cell.contentView viewWithTag:400];
+                else if (indexPath.section == 2 && indexPath.row == 0)      //活动开始时间
+                    label = (UILabel*)[cell.contentView viewWithTag:300];
+                else if (indexPath.section == 2 && indexPath.row == 1)      //活动结束时间
+                    label = (UILabel*)[cell.contentView viewWithTag:400];
+                label.text = dateStr;
+                [label sizeToFit];
+                label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-30, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
+            }];
+            [self.view addSubview:datePickView];
+        }
+    }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    __weak typeof(self) weakSelf = self;
+    [picker dismissViewControllerAnimated:YES completion:^{
+        UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+
+        UIGraphicsBeginImageContext(CGSizeMake(weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height));
+        [image drawInRect:CGRectMake(0, 0, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height)];
+        UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        UIImage* newImage = smallImage;
+
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
+        imageView.image = newImage;
+        [weakSelf.headerScrollView addSubview:imageView];
+        
+        weakSelf.addImgBtnView.frame = CGRectMake(imageView.frame.size.width+imageView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
+        weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
+
+        [weakSelf.coverPhotoImages addObject:image];
+    }];
 }
 
 #pragma mark - draw cell
@@ -298,6 +417,7 @@ typedef enum gameType {
             [cell.contentView addSubview:titleTextField];
             titleTextField.placeholder = @"请输入活动标题";
         }
+        objc_setAssociatedObject(titleTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     else if (indexPath.row == 1) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -391,7 +511,7 @@ typedef enum gameType {
             startTimeLabel.textColor = UIColorFromRGB(0x999999);
             [cell.contentView addSubview:startTimeLabel];
         }
-        startTimeLabel.text = @"2016-05-09 09:00";
+        startTimeLabel.text = @"未设置";
         [startTimeLabel sizeToFit];
         startTimeLabel.frame = CGRectMake(APP_WIDTH-startTimeLabel.frame.size.width-30, 0, startTimeLabel.frame.size.width, startTimeLabel.frame.size.height);
         startTimeLabel.center = CGPointMake(startTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -409,7 +529,7 @@ typedef enum gameType {
             endTimeLabel.textColor = UIColorFromRGB(0x999999);
             [cell.contentView addSubview:endTimeLabel];
         }
-        endTimeLabel.text = @"2016-05-09 09:00";
+        endTimeLabel.text = @"未设置";
         [endTimeLabel sizeToFit];
         endTimeLabel.frame = CGRectMake(APP_WIDTH-endTimeLabel.frame.size.width-30, 0, endTimeLabel.frame.size.width, endTimeLabel.frame.size.height);
         endTimeLabel.center = CGPointMake(endTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -577,7 +697,7 @@ typedef enum gameType {
             [cell.contentView addSubview:startTimeLabel];
         }
         startTimeLabel.hidden = NO;
-        startTimeLabel.text = @"2016-05-09 09:00";
+        startTimeLabel.text = @"未设置";
         [startTimeLabel sizeToFit];
         startTimeLabel.frame = CGRectMake(APP_WIDTH-startTimeLabel.frame.size.width-30, 0, startTimeLabel.frame.size.width, startTimeLabel.frame.size.height);
         startTimeLabel.center = CGPointMake(startTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -596,7 +716,7 @@ typedef enum gameType {
             [cell.contentView addSubview:endTimeLabel];
         }
         endTimeLabel.hidden = NO;
-        endTimeLabel.text = @"2016-05-09 09:00";
+        endTimeLabel.text = @"未设置";
         [endTimeLabel sizeToFit];
         endTimeLabel.frame = CGRectMake(APP_WIDTH-endTimeLabel.frame.size.width-30, 0, endTimeLabel.frame.size.width, endTimeLabel.frame.size.height);
         endTimeLabel.center = CGPointMake(endTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -664,8 +784,11 @@ typedef enum gameType {
             textField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:textField];
             textField.delegate = self;
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            textField.textAlignment = NSTextAlignmentRight;
             [textField sizeToFit];
         }
+        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 1) {
@@ -678,8 +801,11 @@ typedef enum gameType {
             textField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:textField];
             textField.delegate = self;
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            textField.textAlignment = NSTextAlignmentRight;
             [textField sizeToFit];
         }
+        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
     }
 
@@ -780,19 +906,20 @@ typedef enum gameType {
         textView = [[UITextView alloc]initWithFrame:CGRectMake(15, 5, APP_WIDTH-30, 150)];
         textView.tag = 100;
         [cell.contentView addSubview:textView];
+        textView.delegate = self;
         textView.font = [UIFont systemFontOfSize:14.0];
     }
     
-    UILabel* tipLabel = (UILabel*)[cell.contentView viewWithTag:101];
-    if (!tipLabel) {
-        tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 12, 0, 0)];
-        tipLabel.font = [UIFont systemFontOfSize:14.0];
-        tipLabel.tag = 101;
-        tipLabel.textColor = UIColorFromRGB(0x999999);
-        [cell.contentView addSubview:tipLabel];
+    self.tipLabel = (UILabel*)[cell.contentView viewWithTag:101];
+    if (!self.tipLabel) {
+        self.tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 12, 0, 0)];
+        self.tipLabel.font = [UIFont systemFontOfSize:14.0];
+        self.tipLabel.tag = 101;
+        self.tipLabel.textColor = UIColorFromRGB(0x999999);
+        [cell.contentView addSubview:self.tipLabel];
     }
-    tipLabel.text = @"请输入活动详情";
-    [tipLabel sizeToFit];
+    self.tipLabel.text = @"请输入活动详情";
+    [self.tipLabel sizeToFit];
     
     UIButton* btn = (UIButton*)[cell.contentView viewWithTag:102];
     if (!btn) {
