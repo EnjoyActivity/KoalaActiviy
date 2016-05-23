@@ -11,6 +11,7 @@
 #import "LocationView.h"
 #import "MemberView.h"
 #import "ContactView.h"
+#import "ChooseForm.h"
 
 @interface ActiveDetailViewController ()
 {
@@ -23,11 +24,27 @@
     MemberView *memberView;
     ContactView *contactView;
     UILabel *contentLabel;
+    
+    ChooseForm *chooseFormView;
+    
+    UIView *maskView;
 }
+@property (nonatomic,assign) BOOL inPersonForm;
 
 @end
 
 @implementation ActiveDetailViewController
+
+- (void)setInPersonForm:(BOOL)inPersonForm {
+    _inPersonForm = inPersonForm;
+    if (_inPersonForm) {
+        [chooseFormView.inPersonBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        [chooseFormView.inTeamBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
+    } else {
+        [chooseFormView.inPersonBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
+        [chooseFormView.inTeamBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -165,16 +182,19 @@
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH/2, 0.5)];
     sepLabel.backgroundColor = [UIColor lightGrayColor];
     [chooseFormBtn addSubview:sepLabel];
+    [chooseFormBtn addTarget:self action:@selector(chooseForm:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *signUpBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2, APP_HEIGHT - 45 - 64, APP_WIDTH/2, 45)];
     [signUpBtn setTitle:@"报名" forState:UIControlStateNormal];
     signUpBtn.titleLabel.textColor = [UIColor whiteColor];
     signUpBtn.backgroundColor = RGB(227, 26, 26,1);
     signUpBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [signUpBtn addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:chooseFormBtn];
     [self.view addSubview:signUpBtn];
 }
+
 #pragma mark - button methods
 - (void)repostBtnClick:(id)sender {
     
@@ -183,5 +203,45 @@
 - (void)likeBtnClick:(id)sender {
     
 }
+
+- (void)chooseForm:(UIButton*)sender {
+    _inPersonForm = YES;
+    chooseFormView = (ChooseForm*)[[[NSBundle mainBundle]loadNibNamed:@"ChooseForm" owner:self options:nil]lastObject];
+    [chooseFormView.inPersonBtn addTarget:self action:@selector(choosePersonForm:) forControlEvents:UIControlEventTouchUpInside];
+    [chooseFormView.inTeamBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [chooseFormView.signUpBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
+    maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
+    maskView.backgroundColor = [UIColor blackColor];
+    maskView.alpha = 0.5;
+    chooseFormView.maskView = maskView;
+    chooseFormView.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 216);
+    [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
+    [[[UIApplication sharedApplication]keyWindow]addSubview:chooseFormView];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        chooseFormView.frame = CGRectMake(0, APP_HEIGHT-216, APP_WIDTH, 216);
+    } completion:nil];
+}
+
+- (void)signUp:(UIButton*)sender {
+    
+}
+
+- (void)choosePersonForm:(UIButton*)sender {
+    if (!_inPersonForm) {
+        self.inPersonForm = YES;
+        [chooseFormView.chooseFormBtn setTitle:@"已选择\"个人参加\"" forState:UIControlStateNormal];
+    }
+}
+
+- (void)chooseTeamForm:(UIButton*)sender {
+    if (_inPersonForm) {
+        self.inPersonForm = NO;
+        [chooseFormView.chooseFormBtn setTitle:@"已选择\"团队参加\"" forState:UIControlStateNormal];
+    }
+}
+
+
 
 @end

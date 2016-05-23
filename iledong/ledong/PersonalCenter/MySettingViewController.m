@@ -20,6 +20,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
     [self setButton];
+    
 }
 
 
@@ -31,6 +32,9 @@
     [self.clearButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, APP_WIDTH - 90)];
     [self.aboutUsButton setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
     [self.aboutUsButton setImageEdgeInsets:UIEdgeInsetsMake(0, APP_WIDTH - 38, 0, 0)];
+    
+    NSString *directory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    _clearLabel.text = [NSString stringWithFormat:@"%.2fM",[self folderSizeAtPath:directory]];
     
 }
 
@@ -55,8 +59,30 @@
         }
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+    _clearLabel.text = [NSString stringWithFormat:@"%.2fM",0.0];
     [Dialog toast:@"清除成功"];
+}
+
+//单个文件的大小
+- (long long) fileSizeAtPath:(NSString*) filePath{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:filePath]){
+        return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+    }
+    return 0;
+}
+//获取文件夹大小
+- (float ) folderSizeAtPath:(NSString*) folderPath{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if (![manager fileExistsAtPath:folderPath]) return 0;
+    NSEnumerator *childFilesEnumerator = [[manager subpathsAtPath:folderPath] objectEnumerator];
+    NSString* fileName;
+    long long folderSize = 0;
+    while ((fileName = [childFilesEnumerator nextObject]) != nil){
+        NSString* fileAbsolutePath = [folderPath stringByAppendingPathComponent:fileName];
+        folderSize += [self fileSizeAtPath:fileAbsolutePath];
+    }
+    return folderSize/(1024.0*1024.0);
 }
 
 - (void)didReceiveMemoryWarning {

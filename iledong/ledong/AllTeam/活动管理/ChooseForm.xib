@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="UR1-9w-TY8" customClass="ChooseForm">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="208"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47C-9g-2cR">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="SJW-Wy-pnQ"/>
+                    </constraints>
+                    <items>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="UeJ-e7-hpN"/>
+                        <barButtonItem title="取消" id="SvF-HS-r6p">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="cancelBtnClick:" destination="UR1-9w-TY8" id="RwN-6e-6M2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="2tn-3S-Ifa"/>
+                        <barButtonItem title="确定" id="vhc-KK-Z69">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="okBtnClick:" destination="UR1-9w-TY8" id="hha-lk-thj"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="uJo-iA-KBO"/>
+                    </items>
+                </toolbar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="个人参加" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnr-0a-UN2">
+                    <rect key="frame" x="21" y="53" width="60" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20元/人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Phz-xv-rqQ">
+                    <rect key="frame" x="21" y="79" width="43" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5z-vZ-eUo">
+                    <rect key="frame" x="266" y="62" width="22" height="22"/>
+                    <state key="normal" image="ckb_checked"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="团队参加" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1H-fw-OBf">
+                    <rect key="frame" x="21" y="118" width="62" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="200元/队" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMg-Pa-6rI">
+                    <rect key="frame" x="21" y="147" width="67" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DSR-Aq-ZPO">
+                    <rect key="frame" x="18" y="104" width="284" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="Y28-6m-hJe"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gN4-kO-cTE">
+                    <rect key="frame" x="0.0" y="168" width="160" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="uI7-Ns-dsj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="已选择&quot;个人参加&quot;" image="ic_add.png">
+                        <color key="titleColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="og7-Bp-aDA">
+                    <rect key="frame" x="160" y="168" width="160" height="40"/>
+                    <color key="backgroundColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="sEq-J2-QsN"/>
+                    </constraints>
+                    <state key="normal" title="报名">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9OE-Ne-1If">
+                    <rect key="frame" x="266" y="124" width="22" height="22"/>
+                    <state key="normal" image="ckb_uncheck"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="rnr-0a-UN2" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" constant="21" id="0NX-AZ-nxa"/>
+                <constraint firstItem="gN4-kO-cTE" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" id="6wb-pO-9zL"/>
+                <constraint firstItem="rnr-0a-UN2" firstAttribute="top" secondItem="47C-9g-2cR" secondAttribute="bottom" constant="9" id="7JY-f3-FY0"/>
+                <constraint firstItem="47C-9g-2cR" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" id="9vt-Pk-5mc"/>
+                <constraint firstItem="og7-Bp-aDA" firstAttribute="top" secondItem="9OE-Ne-1If" secondAttribute="bottom" constant="22" id="Am7-M2-WBi"/>
+                <constraint firstItem="Phz-xv-rqQ" firstAttribute="top" secondItem="rnr-0a-UN2" secondAttribute="bottom" constant="8" id="Ena-y0-wUW"/>
+                <constraint firstItem="D1H-fw-OBf" firstAttribute="top" secondItem="DSR-Aq-ZPO" secondAttribute="bottom" constant="13" id="I08-yb-cqJ"/>
+                <constraint firstItem="D1H-fw-OBf" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" constant="21" id="LfS-QF-GTr"/>
+                <constraint firstItem="47C-9g-2cR" firstAttribute="top" secondItem="UR1-9w-TY8" secondAttribute="top" id="Q4S-nD-V6C"/>
+                <constraint firstItem="Phz-xv-rqQ" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" constant="21" id="QUR-mf-USg"/>
+                <constraint firstItem="og7-Bp-aDA" firstAttribute="leading" secondItem="gN4-kO-cTE" secondAttribute="trailing" id="RMC-Da-vYd"/>
+                <constraint firstAttribute="trailing" secondItem="9OE-Ne-1If" secondAttribute="trailing" constant="32" id="S7g-Za-ZZ9"/>
+                <constraint firstAttribute="trailing" secondItem="og7-Bp-aDA" secondAttribute="trailing" id="Tg5-NP-z0R"/>
+                <constraint firstItem="gN4-kO-cTE" firstAttribute="width" secondItem="og7-Bp-aDA" secondAttribute="width" id="XFv-Ze-tZ2"/>
+                <constraint firstItem="U5z-vZ-eUo" firstAttribute="top" secondItem="47C-9g-2cR" secondAttribute="bottom" constant="18" id="eH4-1Y-plf"/>
+                <constraint firstItem="DSR-Aq-ZPO" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" constant="18" id="f8o-7o-w3e"/>
+                <constraint firstAttribute="bottom" secondItem="gN4-kO-cTE" secondAttribute="bottom" id="hN6-O8-csA"/>
+                <constraint firstItem="CMg-Pa-6rI" firstAttribute="leading" secondItem="UR1-9w-TY8" secondAttribute="leading" constant="21" id="l9f-kC-mTG"/>
+                <constraint firstItem="DSR-Aq-ZPO" firstAttribute="centerX" secondItem="47C-9g-2cR" secondAttribute="centerX" id="lcE-qR-TgC"/>
+                <constraint firstItem="CMg-Pa-6rI" firstAttribute="top" secondItem="D1H-fw-OBf" secondAttribute="bottom" constant="8" id="oBb-fQ-KcF"/>
+                <constraint firstItem="DSR-Aq-ZPO" firstAttribute="centerY" secondItem="UR1-9w-TY8" secondAttribute="centerY" id="oUN-P9-vOd"/>
+                <constraint firstAttribute="trailing" secondItem="U5z-vZ-eUo" secondAttribute="trailing" constant="32" id="r7c-lm-rad"/>
+                <constraint firstAttribute="bottom" secondItem="og7-Bp-aDA" secondAttribute="bottom" id="rGI-yk-FAa"/>
+                <constraint firstItem="D1H-fw-OBf" firstAttribute="top" secondItem="DSR-Aq-ZPO" secondAttribute="bottom" constant="13" id="wnj-ti-HOy"/>
+                <constraint firstAttribute="trailing" secondItem="47C-9g-2cR" secondAttribute="trailing" id="znE-22-nUN"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="cancelBtn" destination="SvF-HS-r6p" id="vYb-O1-vpT"/>
+                <outlet property="chooseFormBtn" destination="gN4-kO-cTE" id="Zje-lX-vaK"/>
+                <outlet property="inPersonBtn" destination="U5z-vZ-eUo" id="WaV-io-pXB"/>
+                <outlet property="inPersonLabel" destination="rnr-0a-UN2" id="U2w-Hw-tkk"/>
+                <outlet property="inTeamBtn" destination="9OE-Ne-1If" id="U55-fk-CVd"/>
+                <outlet property="inTeamLabel" destination="D1H-fw-OBf" id="4M7-Qe-gPq"/>
+                <outlet property="moneyPerPeronLabel" destination="Phz-xv-rqQ" id="eDk-Ad-NWa"/>
+                <outlet property="moneyPerTeamLabel" destination="CMg-Pa-6rI" id="ymQ-TZ-hlL"/>
+                <outlet property="okBtn" destination="vhc-KK-Z69" id="ouJ-Nn-bw1"/>
+                <outlet property="signUpBtn" destination="og7-Bp-aDA" id="mzy-Ac-2tn"/>
+            </connections>
+            <point key="canvasLocation" x="265" y="213"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ckb_checked" width="22" height="22"/>
+        <image name="ckb_uncheck" width="22" height="22"/>
+        <image name="ic_add.png" width="12" height="12"/>
+    </resources>
+</document>

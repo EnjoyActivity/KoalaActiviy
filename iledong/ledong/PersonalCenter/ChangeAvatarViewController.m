@@ -111,7 +111,7 @@
     } completion:nil];
     
     [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
-    [[[UIApplication sharedApplication]keyWindow]addSubview:sheet];
+//    [[[UIApplication sharedApplication]keyWindow]addSubview:sheet];
 }
 
 - (void)doneBtnClick:(UIButton*)sender {

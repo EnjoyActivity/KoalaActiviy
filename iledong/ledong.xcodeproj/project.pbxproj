@@ -16,6 +16,8 @@
 		2053759A1CF2B216005902B3 /* LocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205375991CF2B216005902B3 /* LocationView.xib */; };
 		2053759C1CF2B2AC005902B3 /* MemberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2053759B1CF2B2AC005902B3 /* MemberView.xib */; };
 		2053759E1CF2B2DB005902B3 /* ContactView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2053759D1CF2B2DB005902B3 /* ContactView.xib */; };
+		205375A01CF2E1B1005902B3 /* ChooseForm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2053759F1CF2E1B1005902B3 /* ChooseForm.xib */; };
+		205375A31CF2E1C1005902B3 /* ChooseForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 205375A21CF2E1C1005902B3 /* ChooseForm.m */; };
 		2054C1BD1CEEE24F00FF7FDD /* ModificationPhoneVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1BB1CEEE24F00FF7FDD /* ModificationPhoneVC2.m */; };
 		2054C1BE1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054C1BC1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib */; };
 		2054C1C21CEEFE4F00FF7FDD /* TradeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1C01CEEFE4F00FF7FDD /* TradeDetailViewController.m */; };
@@ -373,6 +375,9 @@
 		205375991CF2B216005902B3 /* LocationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationView.xib; sourceTree = "<group>"; };
 		2053759B1CF2B2AC005902B3 /* MemberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MemberView.xib; sourceTree = "<group>"; };
 		2053759D1CF2B2DB005902B3 /* ContactView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactView.xib; sourceTree = "<group>"; };
+		2053759F1CF2E1B1005902B3 /* ChooseForm.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseForm.xib; sourceTree = "<group>"; };
+		205375A11CF2E1C1005902B3 /* ChooseForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseForm.h; sourceTree = "<group>"; };
+		205375A21CF2E1C1005902B3 /* ChooseForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseForm.m; sourceTree = "<group>"; };
 		2054C1BA1CEEE24F00FF7FDD /* ModificationPhoneVC2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationPhoneVC2.h; sourceTree = "<group>"; };
 		2054C1BB1CEEE24F00FF7FDD /* ModificationPhoneVC2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationPhoneVC2.m; sourceTree = "<group>"; };
 		2054C1BC1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModificationPhoneVC2.xib; sourceTree = "<group>"; };
@@ -935,6 +940,9 @@
 				205375941CF2B156005902B3 /* ContactView.h */,
 				205375951CF2B156005902B3 /* ContactView.m */,
 				2053759D1CF2B2DB005902B3 /* ContactView.xib */,
+				205375A11CF2E1C1005902B3 /* ChooseForm.h */,
+				205375A21CF2E1C1005902B3 /* ChooseForm.m */,
+				2053759F1CF2E1B1005902B3 /* ChooseForm.xib */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -2166,6 +2174,7 @@
 				362E300F1CCF3EBE00EBADCF /* user02_44@2x.png in Resources */,
 				362F7E7A1CC0C05900C91090 /* ic_more@2x.png in Resources */,
 				3664D0521CA0FA7300BC6805 /* img_4@2x.png in Resources */,
+				205375A01CF2E1B1005902B3 /* ChooseForm.xib in Resources */,
 				36B2C1D11CBB4FA4001D842B /* ic_female_on@2x.png in Resources */,
 				36F194D81CD2F5E30050EE6F /* start.png in Resources */,
 				90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */,
@@ -2454,6 +2463,7 @@
 				20B63E5B1CEDC02B00D5C551 /* SBJsonStreamWriter.m in Sources */,
 				20B63E581CEDC02B00D5C551 /* SBJsonStreamParserAccumulator.m in Sources */,
 				626DD47D1C8426B0006BC53C /* AllTeamController.m in Sources */,
+				205375A31CF2E1C1005902B3 /* ChooseForm.m in Sources */,
 				3644A9691CD0B33F000D0218 /* FansTableViewCell.m in Sources */,
 				905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */,
 				905516131CEC3CED001C4F51 /* MKAnnotationView+WebCache.m in Sources */,

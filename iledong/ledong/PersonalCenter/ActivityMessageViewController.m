@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     self.titleName = @"活动消息";
     [super viewDidLoad];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationController.navigationBarHidden = NO;
     self.isMyHost = NO;
 }
@@ -50,15 +51,16 @@
 #pragma mark - <UITableViewDelegate,UITableViewDataSource>
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.isMyHost)
-    {
-        // 我参加的 列表
-        return 64.0f;
-    }else
-    {
-        // 我举办的 列表
-        return 64.0f;
-    }
+//    if (!self.isMyHost)
+//    {
+//        // 我参加的 列表
+//        return 64.0f;
+//    }else
+//    {
+//        // 我举办的 列表
+//        return 64.0f;
+//    }
+    return 150;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
