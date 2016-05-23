@@ -9,6 +9,7 @@
 #import "ActivityReleaseViewController.h"
 #import "CHDatePickerView.h"
 #import "StepperView.h"
+#import "ParameterTableViewController.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -31,6 +32,11 @@ typedef enum joinType {
     joinTypeTeam
 }joinType;
 
+typedef enum imagePickerFromType {
+    imagePickerFromTypeHeader = 0,
+    imagePickerFromTypeDetail
+}imagePickerFromType;
+
 @interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextViewDelegate>
 
 @property (nonatomic, strong)UITableView* leagueTableView;
@@ -39,9 +45,13 @@ typedef enum joinType {
 @property (nonatomic, strong)UIView* addImgBtnView;
 @property (nonatomic, assign)gameType gameType;
 @property (nonatomic, assign)joinType joinType;
+@property (nonatomic, assign)imagePickerFromType imgFromType;
 @property (nonatomic, strong)NSMutableArray* coverPhotoImages;
+@property (nonatomic, strong)NSMutableArray* detailPhotoImages;
+@property (nonatomic, strong)NSMutableArray* detailPhotoImages_show;
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
+@property (nonatomic, strong)UIScrollView* detailImageScrollView;
 
 @end
 
@@ -53,14 +63,28 @@ typedef enum joinType {
     self.gameType = gameTypenonLeague;
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
     self.coverPhotoImages = [NSMutableArray array];
+    self.detailPhotoImages = [NSMutableArray array];
+    self.detailPhotoImages_show = [NSMutableArray array];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
 }
 
+- (void)dealloc {
+    [self releaseResource];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [self releaseResource];
+}
+
+- (void)releaseResource {
+    self.coverPhotoImages = nil;
+    self.detailPhotoImages = nil;
+    self.leagueTableView = nil;
+    self.nonleagueTableView = nil;
 }
 
 #pragma mark - drawUI 
@@ -131,6 +155,23 @@ typedef enum joinType {
 }
 
 #pragma mark - btn clicked 
+- (void)addDetailImageBtnClicked {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]
+        || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+        self.imgFromType = imagePickerFromTypeDetail;
+        UIImagePickerController* picker = [[UIImagePickerController alloc]init];
+        picker.view.backgroundColor = [UIColor whiteColor];
+        UIImagePickerControllerSourceType sourcheType = UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        picker.sourceType = sourcheType;
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        [self presentViewController:picker animated:YES completion:nil];
+    }
+    else {
+        [SVProgressHUD showErrorWithStatus:@"不支持获取图库及相片库，请设置权限"];
+    }
+}
+
 - (void)personTypeBtnClicked {
     if (self.joinType == joinTypePerson)
         self.joinType = joinTypeNull;
@@ -152,7 +193,7 @@ typedef enum joinType {
 - (void)addCoverPhotoClicked {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]
         || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
-        //支持图库、相片库
+        self.imgFromType = imagePickerFromTypeHeader;
         UIImagePickerController* picker = [[UIImagePickerController alloc]init];
         picker.view.backgroundColor = [UIColor whiteColor];
         UIImagePickerControllerSourceType sourcheType = UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum;
@@ -353,6 +394,16 @@ typedef enum joinType {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 1) {
+        ParameterTableViewController* VC = [[ParameterTableViewController alloc]init];
+        [self.navigationController pushViewController:VC animated:YES];
+        VC.vcTitle = @"活动分类";
+        [VC setSelectCellBlock:^(NSDictionary *dict) {
+            
+        }];
+        return;
+    }
+    
     if (tableView == self.nonleagueTableView) {
         if (indexPath.section == 1) {
             CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.view completeDateInt:nil completeDateStr:^(NSString *str) {
@@ -398,6 +449,14 @@ typedef enum joinType {
             }];
             [self.view addSubview:datePickView];
         }
+        else if (indexPath.section == 6) {
+            ParameterTableViewController* Vc = [[ParameterTableViewController alloc]init];
+            Vc.vcTitle = @"联系方式";
+            [Vc setSelectCellBlock:^(NSDictionary* dict) {
+                
+            }];
+            [self.navigationController pushViewController:Vc animated:YES];
+        }
     }
 }
 
@@ -412,14 +471,34 @@ typedef enum joinType {
         UIGraphicsEndImageContext();
         UIImage* newImage = smallImage;
 
-        UIImageView* imageView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
-        imageView.image = newImage;
-        [weakSelf.headerScrollView addSubview:imageView];
-        
-        weakSelf.addImgBtnView.frame = CGRectMake(imageView.frame.size.width+imageView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
-        weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
-
-        [weakSelf.coverPhotoImages addObject:image];
+        if (weakSelf.imgFromType == imagePickerFromTypeHeader) {
+            UIImageView* imageView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
+            imageView.image = newImage;
+            [weakSelf.headerScrollView addSubview:imageView];
+            
+            weakSelf.addImgBtnView.frame = CGRectMake(imageView.frame.size.width+imageView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
+            weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
+            
+            [weakSelf.coverPhotoImages addObject:image];
+        }
+        else if (weakSelf.imgFromType == imagePickerFromTypeDetail) {
+            [weakSelf.detailPhotoImages addObject:image];
+            [weakSelf.detailPhotoImages_show addObject:newImage];
+            for (UIView* subView in weakSelf.detailImageScrollView.subviews)
+                [subView removeFromSuperview];
+            
+            CGSize newSize;
+            CGFloat x = 15;
+            for (UIImage* tempImage in weakSelf.detailPhotoImages_show) {
+                UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, 0, 65, 65)];
+                imageView.image = tempImage;
+                imageView.center = CGPointMake(imageView.center.x, weakSelf.detailImageScrollView.bounds.size.height/2);
+                [weakSelf.detailImageScrollView addSubview:imageView];
+                newSize = CGSizeMake(imageView.frame.origin.x+imageView.frame.size.width+5, weakSelf.detailImageScrollView.contentSize.height);
+                x += 65 + 10;
+            }
+            weakSelf.detailImageScrollView.contentSize = CGSizeMake(newSize.width, newSize.height);
+        }
     }];
 }
 
@@ -997,13 +1076,20 @@ typedef enum joinType {
     self.tipLabel.text = @"请输入活动详情";
     [self.tipLabel sizeToFit];
     
-    UIButton* btn = (UIButton*)[cell.contentView viewWithTag:102];
+    if (!self.detailImageScrollView) {
+        CGFloat y = textView.frame.origin.y+textView.frame.size.height+5;
+        self.detailImageScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, y, APP_WIDTH-45, cell.bounds.size.height-y)];
+        [cell.contentView addSubview:self.detailImageScrollView];
+    }
+    
+    UIButton* btn = (UIButton*)[self.detailImageScrollView viewWithTag:102];
     if (!btn) {
-        btn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, cell.contentView.bounds.size.height-30, 0, 0)];
+        btn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, self.detailImageScrollView.frame.origin.y+30, 0, 0)];
         btn.tag = 102;
         [cell.contentView addSubview:btn];
         [btn setImage:[UIImage imageNamed:@"ic_append"] forState:UIControlStateNormal];
         [btn sizeToFit];
+        [btn addTarget:self action:@selector(addDetailImageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return cell;

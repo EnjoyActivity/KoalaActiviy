@@ -42,7 +42,7 @@
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     
-    [self queryDatas:self.currentPageIndex++];
+    //[self queryDatas:self.currentPageIndex++];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,6 +99,7 @@
     
     [cell setSelectManagerBtnClicked:^() {
         ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+        VC.teamId = self.teamId;
         [weakSelf.navigationController pushViewController:VC animated:YES];
     }];
 
@@ -107,6 +108,7 @@
 
 - (void)startActivityBtnClicked {
     ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+    VC.teamId = self.teamId;
     [self.navigationController pushViewController:VC animated:YES];
 }
 
