@@ -8,6 +8,7 @@
 
 #import "ActiveViewController.h"
 #import "ActiveTableViewCell.h"
+#import "ActivityReleaseViewController.h"
 
 @interface ActiveViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -20,11 +21,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.titleName = @"活动管理";
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    [self.rightButton setImage:[UIImage imageNamed:@"ic_new"] forState:UIControlStateNormal];
-    [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 40, 0, 0)];
-    [self.rightButton addTarget:self action:@selector(startActivityBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLab setTextColor:[UIColor redColor]];
+    [customLab setText:@"活动管理"];
+    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    customLab.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = customLab;
+
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_new"] style:UIBarButtonItemStylePlain target:self action:@selector(startActivityBtnClicked)];
+    rightButton.tintColor = [UIColor redColor];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    backItem.tintColor = [UIColor redColor];
+    self.navigationItem.leftBarButtonItem = backItem;
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
@@ -35,13 +46,17 @@
 }
 
 #pragma mark -- UITableViewDataSource,UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 150;
+    if (indexPath.section == 0) {
+        return 140;
     }
     else {
         return 100;
@@ -50,7 +65,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -61,7 +76,7 @@
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
 
     cell.activityImageView.image = [UIImage imageNamed:@"img_1"];
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         cell.activityName.text = @"朝阳区乐动杯足球联赛";
         cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
         cell.activityState.text = @"进行中";
@@ -85,7 +100,12 @@
 }
 
 - (void)startActivityBtnClicked {
-    
+    ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+    [self.navigationController pushViewController:VC animated:YES];
+}
+
+- (void)backBtnClicked {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

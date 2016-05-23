@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface TeamHomeViewController : BaseViewController
+@interface TeamHomeViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *headerImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *signatureLabel;

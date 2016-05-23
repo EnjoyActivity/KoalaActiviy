@@ -38,7 +38,7 @@
 #define API_CREATETEAM_URL       @"Team/Create"            //创建团队
 #define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
 #define API_UPLOAD_HEADERIMAGE_URL   @"User/UploadAvatarUrl"   //上传头像
-
+#define API_EXIT_TEAM_URL           @"Team/QuitTeam"        //退出团队
 //#define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我的团队
 
 #define IS_IPHONE_4 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)480) < DBL_EPSILON)

@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //self.automaticallyAdjustsScrollViewInsets = NO;
     self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -43,16 +44,22 @@
     [self.membersButton setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     [self.publicButton setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     
-    [self.rightButton setImage:[UIImage imageNamed:@"ic_manage"] forState:UIControlStateNormal];
-    [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 40, 0, 0)];
-    [self.rightButton addTarget:self action:@selector(manageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_manage"] style:UIBarButtonItemStylePlain target:self action:@selector(manageBtnClicked)];
+    rightButton.tintColor = [UIColor redColor];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    backItem.tintColor = [UIColor redColor];
+    self.navigationItem.leftBarButtonItem = backItem;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - buttonClick
+- (void)backBtnClicked {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (IBAction)memberButton:(id)sender {
     
