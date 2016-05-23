@@ -8,6 +8,7 @@
 
 #import "ActivityReleaseViewController.h"
 #import "CHDatePickerView.h"
+#import "StepperView.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -24,6 +25,12 @@ typedef enum gameType {
     gameTypenonLeague
 }gameType;
 
+typedef enum joinType {
+    joinTypeNull = 0,
+    joinTypePerson,
+    joinTypeTeam
+}joinType;
+
 @interface ActivityReleaseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextViewDelegate>
 
 @property (nonatomic, strong)UITableView* leagueTableView;
@@ -31,6 +38,7 @@ typedef enum gameType {
 @property (nonatomic, strong)UIScrollView* headerScrollView;
 @property (nonatomic, strong)UIView* addImgBtnView;
 @property (nonatomic, assign)gameType gameType;
+@property (nonatomic, assign)joinType joinType;
 @property (nonatomic, strong)NSMutableArray* coverPhotoImages;
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
@@ -126,6 +134,24 @@ typedef enum gameType {
 }
 
 #pragma mark - btn clicked 
+- (void)personTypeBtnClicked {
+    if (self.joinType == joinTypePerson)
+        self.joinType = joinTypeNull;
+    else
+        self.joinType = joinTypePerson;
+    [self.nonleagueTableView reloadData];
+    [self.leagueTableView reloadData];
+}
+
+- (void)teamTypeBtnClicked {
+    if (self.joinType == joinTypeTeam)
+        self.joinType = joinTypeNull;
+    else
+        self.joinType = joinTypeTeam;
+    [self.nonleagueTableView reloadData];
+    [self.leagueTableView reloadData];
+}
+
 - (void)addCoverPhotoClicked {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]
         || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
@@ -443,40 +469,74 @@ typedef enum gameType {
         
         UIButton* typeBtn = (UIButton*)[cell.contentView viewWithTag:201];
         if (!typeBtn) {
-            typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-60, 10, 0, 0)];
+            typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, 10, 0, 0)];
             typeBtn.tag = 201;
             [cell.contentView addSubview:typeBtn];
-            [typeBtn sizeToFit];
             [typeBtn addTarget:self action:@selector(typeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         }
         if (tableView == self.nonleagueTableView)
             [typeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
         else
             [typeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        [typeBtn sizeToFit];
+        typeBtn.center = CGPointMake(typeBtn.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 3) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.text = @"参加类型";
         cell.textLabel.textColor = UIColorFromRGB(0x999999);
+
+        UILabel* teamLabel = (UILabel*)[cell.contentView viewWithTag:205];
+        if (!teamLabel) {
+            teamLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+            teamLabel.tag = 205;
+            teamLabel.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:teamLabel];
+        }
+        teamLabel.text = @"团队";
+        [teamLabel sizeToFit];
+        teamLabel.frame = CGRectMake(APP_WIDTH-15-teamLabel.frame.size.width, 0, teamLabel.frame.size.width, teamLabel.frame.size.height);
+        teamLabel.center = CGPointMake(teamLabel.center.x, cell.contentView.bounds.size.height/2);
         
+        UIButton* teamTypeBtn = (UIButton*)[cell.contentView viewWithTag:203];
+        if (!teamTypeBtn) {
+            teamTypeBtn = [[UIButton alloc]initWithFrame:CGRectMake(teamLabel.frame.origin.x-30, 10, 0, 0)];
+            teamTypeBtn.tag = 203;
+            [cell.contentView addSubview:teamTypeBtn];
+            [teamTypeBtn addTarget:self action:@selector(teamTypeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if (self.joinType == joinTypeNull || self.joinType == joinTypePerson)
+            [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
+        else
+            [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        [teamTypeBtn sizeToFit];
+        teamTypeBtn.center = CGPointMake(teamTypeBtn.center.x, cell.contentView.bounds.size.height/2);
         
+        UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:204];
+        if (!personLabel) {
+            personLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+            personLabel.tag = 204;
+            personLabel.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:personLabel];
+        }
+        personLabel.text = @"个人";
+        [personLabel sizeToFit];
+        personLabel.frame = CGRectMake(teamTypeBtn.frame.origin.x-30-personLabel.frame.size.width, 0, personLabel.frame.size.width, personLabel.frame.size.height);
+        personLabel.center = CGPointMake(personLabel.center.x, cell.contentView.bounds.size.height/2);
         
-//        UIButton* personTypeBtn = (UIButton*)[cell.contentView viewWithTag:202];
-//        if (!personTypeBtn) {
-//            personTypeBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-60, 10, 0, 0)];
-//            personTypeBtn.tag = 202;
-//            [cell.contentView addSubview:personTypeBtn];
-//            //[personTypeBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//            //[personTypeBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-//            [personTypeBtn setTitle:@"按钮" forState:UIControlStateNormal];
-//            [personTypeBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-//            [personTypeBtn sizeToFit];
-//            [personTypeBtn addTarget:self action:@selector(personTypeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//        }
-        
-        
-        
-        
+        UIButton* personTypeBtn = (UIButton*)[cell.contentView viewWithTag:202];
+        if (!personTypeBtn) {
+            personTypeBtn = [[UIButton alloc]initWithFrame:CGRectMake(personLabel.frame.origin.x-30, 10, 0, 0)];
+            personTypeBtn.tag = 202;
+            [cell.contentView addSubview:personTypeBtn];
+            [personTypeBtn addTarget:self action:@selector(personTypeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if (self.joinType == joinTypeNull || self.joinType == joinTypeTeam)
+            [personTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
+        else
+            [personTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        [personTypeBtn sizeToFit];
+        personTypeBtn.center = CGPointMake(personTypeBtn.center.x, cell.contentView.bounds.size.height/2);
     }
     
     UILabel* lineLabel = (UILabel*)[cell.contentView viewWithTag:1000];
@@ -753,7 +813,26 @@ typedef enum gameType {
     else if (indexPath.row == 2) {
         cell.textLabel.text = @"每队报名人数上限";
     }
-    
+
+    StepperView* view = (StepperView*)[cell.contentView viewWithTag:2000];
+    if (!view) {
+        view = [[StepperView alloc]initWithFrame:CGRectMake(APP_WIDTH-90, 0, 70, 35)];
+        [cell.contentView addSubview:view];
+        view.tag = 2000;
+        view.center = CGPointMake(view.center.x, cell.contentView.bounds.size.height/2);
+    }
+    [view setCurrentSelectNum:^(NSInteger num) {
+        if (indexPath.row == 0) {
+            
+        }
+        else if (indexPath.row == 1) {
+            
+        }
+        else if (indexPath.row == 2) {
+            
+        }
+    }];
+
     UILabel* lineLabel = (UILabel*)[cell.contentView viewWithTag:1000];
     if (!lineLabel) {
         lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, cell.contentView.bounds.size.height-0.5, APP_WIDTH-15, 0.5)];
