@@ -44,10 +44,12 @@
     [self.membersButton setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     [self.publicButton setTitleEdgeInsets:UIEdgeInsetsMake(30, 0, 0, 0)];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_manage"] style:UIBarButtonItemStylePlain target:self action:@selector(manageBtnClicked)];
-    rightButton.tintColor = [UIColor redColor];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    
+    if (self.teamType == teamTypeCreate) {
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_manage"] style:UIBarButtonItemStylePlain target:self action:@selector(manageBtnClicked)];
+        rightButton.tintColor = [UIColor redColor];
+        self.navigationItem.rightBarButtonItem = rightButton;
+    }
+
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;

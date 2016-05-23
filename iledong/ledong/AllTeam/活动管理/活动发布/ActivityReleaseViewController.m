@@ -446,13 +446,13 @@ typedef enum gameType {
             typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-60, 10, 0, 0)];
             typeBtn.tag = 201;
             [cell.contentView addSubview:typeBtn];
-            //[typeBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-            //[typeBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-            [typeBtn setTitle:@"按钮" forState:UIControlStateNormal];
-            [typeBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
             [typeBtn sizeToFit];
             [typeBtn addTarget:self action:@selector(typeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         }
+        if (tableView == self.nonleagueTableView)
+            [typeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
+        else
+            [typeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
     }
     else if (indexPath.row == 3) {
         cell.accessoryType = UITableViewCellAccessoryNone;

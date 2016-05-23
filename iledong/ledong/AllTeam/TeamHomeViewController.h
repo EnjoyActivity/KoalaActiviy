@@ -8,7 +8,13 @@
 
 #import "BaseViewController.h"
 
+typedef enum teamType {
+    teamTypeCreate = 0,
+    teamTypeJoin
+}teamType;
+
 @interface TeamHomeViewController : UIViewController
+
 @property (weak, nonatomic) IBOutlet UIImageView *headerImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *signatureLabel;
@@ -28,8 +34,6 @@
 @property (weak, nonatomic) IBOutlet UIView *ActiveView;
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 
-
-
-
+@property (assign,nonatomic)teamType teamType;
 
 @end

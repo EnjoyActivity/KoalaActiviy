@@ -10,4 +10,6 @@
 
 @interface ActiveViewController : UIViewController
 
+@property (nonatomic, strong)NSString* teamId;
+
 @end

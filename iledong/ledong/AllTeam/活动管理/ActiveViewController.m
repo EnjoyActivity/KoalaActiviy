@@ -9,10 +9,12 @@
 #import "ActiveViewController.h"
 #import "ActiveTableViewCell.h"
 #import "ActivityReleaseViewController.h"
+#import "ActivityReleaseViewController.h"
 
 @interface ActiveViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong,nonatomic)NSMutableArray* datas;
 
 @end
 
@@ -21,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.datas = [NSMutableArray array];
     UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [customLab setTextColor:[UIColor redColor]];
     [customLab setText:@"活动管理"];
@@ -71,6 +74,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *idnetifier = @"activeCell";
+    __weak typeof(self) weakSelf = self;
     ActiveTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idnetifier];
     if (!cell)
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
@@ -93,7 +97,8 @@
     [cell.activityState sizeToFit];
     
     [cell setSelectManagerBtnClicked:^() {
-        
+        ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+        [weakSelf.navigationController pushViewController:VC animated:YES];
     }];
 
     return cell;
@@ -108,5 +113,21 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)queryDatas:(NSInteger)pageIndex {
+    NSString* strToken = [HttpClient getTokenStr];
+    NSDictionary* parameter = @{@"token":strToken,@"page":[NSNumber numberWithInteger:pageIndex],@"PageSize":@10,@"ActivityType":@1,
+                                @"TeamId":self.teamId};
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_QUERY_ACTIVITY_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:parameter success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            self.datas = [dict objectForKey:@"result"];
+            [self.tableView reloadData];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"查询活动列表失败！" withDuration:1.5];
+    }];
+}
 
 @end
