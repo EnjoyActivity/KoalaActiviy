@@ -16,8 +16,11 @@
 @property (unsafe_unretained, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIImageView *btnImage;
-@property (weak, nonatomic) IBOutlet UITableView *resultTableView;
+//@property (weak, nonatomic) IBOutlet UITableView *resultTableView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
+
+@property (nonatomic,strong) UITableView *resultTableView;
+
 
 @end

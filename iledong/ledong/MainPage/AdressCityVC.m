@@ -8,15 +8,20 @@
 
 #import "AdressCityVC.h"
 #import "FRUtils.h"
-#import "CityTableViewCell.h"
 #import "LDLocationManager.h"
 
 
-@interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate>
+@interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
-        LDLocationManager * location;
-}
+    
+    LDLocationManager * location;
+    NSMutableDictionary * cityDic;
+    NSArray * cityIndex;
+    
+    NSMutableArray * searchResultArray;
 
+}
+@property (nonatomic, strong) UITableView * searchResultTable;
 @end
 
 @implementation AdressCityVC
@@ -25,11 +30,40 @@
 {
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
+    cityDic = [NSMutableDictionary dictionaryWithDictionary:[self cityData]];
+    
+    [self.view addSubview:self.searchResultTable];
+    
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
+    [self.tableView registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
+    self.searchTextfile.delegate = self;
     [self getLocationInfo];
+    searchResultArray = [NSMutableArray array];
+    cityIndex = @[@"热门城市", @"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    
+}
 
-//    self.tableView.
+- (NSDictionary *)cityData {
+    NSMutableDictionary * cityDicTemp = [NSMutableDictionary dictionary];
+    int a = 65;
+    
+    NSArray * hotCity = @[@"北京",@"上海",@"广州",@"成都"];
+    [cityDicTemp setObject:hotCity forKey:@"热门城市"];
+    
+    for (int i = 0; i<26; i++) {
+        NSString * title = [NSString stringWithFormat:@"%c",a];
+        NSMutableArray * cityArrTemp = [NSMutableArray array];
+        int random = arc4random()%10;
+        for (int j= 0; j<random+1; j++) {
+            NSString * strTemp = [NSString stringWithFormat:@"%@City%d",title,j];
+            [cityArrTemp addObject:strTemp];
+        }
+        
+        [cityDicTemp setObject:cityArrTemp forKey:title];
+        a++;
+    }
+    return [cityDicTemp copy];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,28 +98,45 @@
     
 }
 
+
 #pragma mark - UITableViewDataSource,UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 27;
+    if ([tableView isEqual:self.searchResultTable]) {
+        return 1;
+    }
+    return cityIndex.count;//[cityDic allKeys].count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+
 {
-    return 3;
+    if ([tableView isEqual:self.searchResultTable]) {
+        return searchResultArray.count;
+    }
+    NSString * index = cityIndex[section];
+// 
+//    int sectionValu = (int)section;
+//    NSString * str = [NSString stringWithFormat:@"%c",sectionValu+64];
+    NSArray * arr = [cityDic objectForKey:index];
+    return arr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *string = @"cityCell";
-    CityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:string];
-    if (!cell)
-    {
-        cell = [[NSBundle mainBundle] loadNibNamed:@"CityTableViewCell" owner:self options:nil][0];
-    }
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cityCell" forIndexPath:indexPath];
     UILabel * cityLabel = (UILabel *)[cell viewWithTag:2];
-    cityLabel.text = @"111";
+    if ([tableView isEqual:self.searchResultTable]) {
+        cityLabel.text = searchResultArray[indexPath.row];
+    }
+    else
+    {
+        NSString * index = cityIndex[indexPath.section];
+        NSArray * arr = [cityDic objectForKey:index];
+        cityLabel.text = arr[indexPath.row];
+    }
+
     return cell;
 }
 
@@ -102,8 +153,7 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 100, 30)];
     label.textColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
     label.font = [UIFont systemFontOfSize:15];
-    NSArray *array = @[@"热门城市", @"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
-    label.text = array[section];
+    label.text = cityIndex[section];
     [view addSubview:label];
     return view;
 }
@@ -112,11 +162,55 @@
 //返回标题索引
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    return @[ @"热门",@"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    if ([tableView isEqual:self.searchResultTable]) {
+        return @[];
+    }
+    return cityIndex;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString * str = cityIndex[indexPath.section];
+    NSArray * arr = [cityDic objectForKey:str];
+    if (_locationResult != nil) {
+        _locationResult(arr[indexPath.row]);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     
 }
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    BOOL isTrue = textField.text.length == 0;
+    self.tableView.hidden = !isTrue;
+    self.searchResultTable.hidden = isTrue;
+}
+
+- (IBAction)editingChanged:(id)sender {
+    UITextField * textField = (UITextField *)sender;
+    BOOL isTrue = textField.text.length == 0;
+    self.searchResultTable.hidden = isTrue;
+    self.tableView.hidden = !isTrue;
+    
+    [searchResultArray addObject:textField.text];
+    [self.searchResultTable reloadData];
+}
+
+- (UITableView *)searchResultTable {
+    if (!_searchResultTable) {
+        _searchResultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64) style:UITableViewStylePlain];
+        _searchResultTable.delegate = self;
+        _searchResultTable.dataSource = self;
+        _searchResultTable.backgroundColor = [UIColor whiteColor];
+        [_searchResultTable registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
+        _searchResultTable.hidden = YES;
+        _searchResultTable.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
+    }
+    return _searchResultTable;
+}
+
 
 @end

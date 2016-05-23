@@ -12,13 +12,24 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    self.activityImageView.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_100"] withParam:1];
+    self.sImageView.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_100"] withParam:1];
     NSString *lenghtStr = @"皇家贝里斯足球联赛";
     NSMutableAttributedString *Str = [[NSMutableAttributedString alloc] initWithString:lenghtStr];
     NSRange redRange = [lenghtStr rangeOfString:@"足球"];
     [Str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:redRange];
-    self.activityName.attributedText = Str;
+    self.sNameLabel.attributedText = Str;
 
+}
+
+- (void)updatedata:(UIImage *)image name:(NSString *)name detail:(NSString *)detail {
+    self.sImageView.image = [FRUtils circleImage:image withParam:1];
+    self.sDetailLabel.text = detail;
+//    self.sNameLabel.text = name;
+    
+    NSRange keyRange = [name rangeOfString:self.keyWords];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
+    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];
+    self.sNameLabel.attributedText = attr;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -7,40 +7,24 @@
 //
 
 #import "SearchFriendVC.h"
-#import "FriendCollectionViewCell.h"
-#import "FriendTableViewCell.h"
-//#import "TeamTableViewCell.h"
+#import "HistoryTableViewCell.h"
 
-static NSString * historyCell = @"HistoryCell";
-static NSString * friendCell = @"friendCell";
+static NSString * const historyCell = @"HistoryCell";
+static NSString * const friendCell = @"ActivityCell";
 
-@interface SearchFriendVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
+@interface SearchFriendVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 
 @end
 
 @implementation SearchFriendVC
 
-static NSString * const reuseIdentifier = @"friendCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
-    
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"FriendTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
-    
-    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
-    self.contentTableView.tableFooterView = self.footerView;
-    
-    self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
-//    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-//    self.textField.returnKeyType = UIReturnKeySearch;
-    self.textField.delegate = self;
-//    self.resultTableView.tableHeaderView = self.headerView;
-//    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self setUpUI];
 
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -56,6 +40,12 @@ static NSString * const reuseIdentifier = @"friendCCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)cancelButtonClicked:(id)sender {
+    self.textField.text = nil;
+    [self.textField resignFirstResponder];
+    [self.resultTableView removeFromSuperview];
+    self.resultTableView = nil;
+}
 
 #pragma mark - UITextFieldDelegate
 
@@ -107,28 +97,26 @@ static NSString * const reuseIdentifier = @"friendCCell";
     }
     else
     {
-        FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
-        cell.friendName.text = @"hahahahh";
+        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
+        cell.sNameLabel.text = @"hahahahh";
         return cell;
     }
-}
-
-#pragma mark - UICollectionViewDataSource,UICollectionViewDelegate
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return 6;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    FriendCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    return cell;
 }
 
 
 
 #pragma mark - UI
+
+- (void)setUpUI {
+    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
+    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
+    self.contentTableView.tableFooterView = self.footerView;
+    
+    self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+    
+    self.textField.delegate = self;
+}
 
 - (UITableView *)resultTableView {
     if (!_resultTableView) {
@@ -138,7 +126,10 @@ static NSString * const reuseIdentifier = @"friendCCell";
         _resultTableView.backgroundColor = [UIColor whiteColor];
         _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _resultTableView.tableHeaderView = self.headerView;
+        [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
     }
     return _resultTableView;
 }
+
+
 @end

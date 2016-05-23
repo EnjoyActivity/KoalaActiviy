@@ -12,13 +12,13 @@
 #import "SearchActiveVC.h"
 #import "SearchTeamVC.h"
 #import "SearchFriendVC.h"
-#import "TeamTableViewCell.h"
-#import "FriendTableViewCell.h"
+
+#import "HistoryTableViewCell.h"
 
 static NSString * historyCell = @"HistoryCell";
-static NSString * activityCell = @"ActivityCell";
-static NSString * teamCell = @"teamCell";
-static NSString * friendCell = @"friendCell";
+static NSString * activityCell = @"sActivityCell";
+static NSString * teamCell   = @"ActivityCell";
+static NSString * friendCell = @"ActivityCell";
 
 
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -45,17 +45,25 @@ static NSString * friendCell = @"friendCell";
   
     self.resultTableView.hidden = YES;
     self.textFiled.delegate = self;
-//    self.textFiled.clearButtonMode = UITextFieldViewModeAlways;
-//    self.textFiled.returnKeyType = UIReturnKeySearch;
-//    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     sectionTitleArray = @[@"活动",@"团队",@"好友"];
+    
+    NSArray * history = @[@"history1",@"history2",@"history3",@"history4",@"history5"];
     historyArray = [NSMutableArray array];
+    [historyArray addObjectsFromArray:history];
+    
     activityArray = [NSMutableArray array];
+     NSArray * activity = @[@"activity1",@"activity2",@"activity3",@"activity4"];
+    [activityArray addObjectsFromArray:activity];
     teamArray =[NSMutableArray array];
+    NSArray * team = @[@"team1",@"team2",@"team3",@"team4",@"team5",@"team6",@"team7",@"team8"];
+    
+    [teamArray addObjectsFromArray:team];
+    
     friendArray = [NSMutableArray array];
     
+    NSArray * friedn = @[@"friend1",@"friend2",@"friend3"];
+    [friendArray addObjectsFromArray:friedn];
     
 }
 
@@ -129,6 +137,13 @@ static NSString * friendCell = @"friendCell";
     return YES;
 }
 
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    self.resultTableView.hidden = YES;
+    self.contentView.hidden = NO;
+    return YES;
+}
+
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
@@ -201,13 +216,13 @@ static NSString * friendCell = @"friendCell";
             return cell;
         }
         else if (indexPath.section == 1) {
-            TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"teamCell" forIndexPath:indexPath];
-            cell.teamName.text = @"hahahahh";
+            HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+            cell.sNameLabel.text = @"hahahahh";
             return cell;
         }
         else {
-            FriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
-            cell.friendName.text = @"oooo";
+            HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
+            cell.sNameLabel.text = @"oooo";
             return cell;
         }
     }
@@ -226,14 +241,14 @@ static NSString * friendCell = @"friendCell";
 {
     if (tableView == self.resultTableView)
     {
-        return 49;
+        return section == 0 ? 0:49;
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([tableView isEqual:self.contentView]) {
+    if ([tableView isEqual:self.tableView]) {
         return nil;
     }
     return [self viewForHeader:section];
@@ -241,7 +256,10 @@ static NSString * friendCell = @"friendCell";
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if ([tableView isEqual:self.contentView]) {
+    if ([tableView isEqual:self.tableView]) {
+        return nil;
+    }
+    if (section == 0) {
         return nil;
     }
     return [self viewForFooter:section];
@@ -266,9 +284,8 @@ static NSString * friendCell = @"friendCell";
 
     [self.tableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];
     
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"SearchTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ActivityCell"];
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"TeamTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"FriendTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"SearchTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"sActivityCell"];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
     
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     
@@ -284,28 +301,29 @@ static NSString * friendCell = @"friendCell";
     footerView.backgroundColor = [UIColor whiteColor];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
-    button.tag = section+100;
+    button.tag = 100 + section;
     [button addTarget:self action:@selector(getMoreActivityInfo:) forControlEvents:UIControlEventTouchUpInside];
+    
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 200, 40)];
-    CALayer * lineLayer = [CALayer layer];
-    lineLayer.frame = CGRectMake(0, 40, APP_WIDTH, 9);
-    lineLayer.backgroundColor = RGB(242.0, 243.0, 244.0, 1.0).CGColor;
-//    UIImageView *bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, APP_WIDTH, 9)];
-//    bgImage.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
     nameLabel.text = [NSString stringWithFormat:@"查看更多相关%@",sectionTitleArray[section]];
     nameLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1];
     nameLabel.font = [UIFont systemFontOfSize:15];
     
+    CALayer * lineLayer = [CALayer layer];
+    lineLayer.frame = CGRectMake(0, 40, APP_WIDTH, 9);
+    lineLayer.backgroundColor = RGB(242.0, 243.0, 244.0, 1.0).CGColor;
+    
+
     [button setImage:[UIImage imageNamed:@"ic_more"] forState:UIControlStateNormal];
     [button setImageEdgeInsets:UIEdgeInsetsMake(0,  APP_WIDTH - 35, 0,0)];
-    
-    //    [button setBackgroundImage:[self imageWithColor:[UIColor grayColor]] forState:UIControlStateHighlighted];
+
     [footerView addSubview:nameLabel];
-//    [footerView addSubview:bgImage];
     [footerView.layer addSublayer:lineLayer];
     [footerView addSubview:button];
     return footerView;
 }
+
+
 
 - (UIView *)viewForHeader:(NSInteger)section {
     UIView *nameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
@@ -316,10 +334,9 @@ static NSString * friendCell = @"friendCell";
     CALayer * lineLayer = [CALayer layer];
     lineLayer.frame = CGRectMake(18, 39, APP_WIDTH, 1);
     lineLayer.backgroundColor = RGB(242.0, 243.0, 244.0, 1.0).CGColor;
-//    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(18, 39, APP_WIDTH, 1)];
-//    lineImageView.backgroundColor = [UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1];
+
     nameView.backgroundColor = [UIColor whiteColor];
-//    [nameView addSubview:lineImageView];
+
     [nameView.layer addSublayer:lineLayer];
     [nameView addSubview:title];
     

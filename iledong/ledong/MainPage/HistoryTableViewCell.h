@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryTableViewCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *activityImageView;
-@property (strong, nonatomic) IBOutlet UILabel *activityName;
-@property (strong, nonatomic) IBOutlet UILabel *activityMember;
+
+@property (nonatomic, copy) NSString * keyWords;
+
+@property (strong, nonatomic) IBOutlet UIImageView *sImageView;
+@property (strong, nonatomic) IBOutlet UILabel *sNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *sDetailLabel;
+
+- (void)updatedata:(UIImage *)image name:(NSString *)name detail:(NSString *)detail;
 
 @end

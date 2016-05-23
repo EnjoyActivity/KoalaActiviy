@@ -7,10 +7,11 @@
 //
 
 #import "SearchTeamVC.h"
-#import "TeamTableViewCell.h"
-#import "TeamCollectionViewCell.h"
+#import "HistoryTableViewCell.h"
 
-static NSString * historyCell = @"HistoryCell";
+static NSString * const historyCell = @"HistoryCell";
+static NSString * const hotSearchCell = @"hotSearchCell";
+static NSString * const teamCell = @"ActivityCell";
 
 @interface SearchTeamVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
 
@@ -18,35 +19,24 @@ static NSString * historyCell = @"HistoryCell";
 
 @implementation SearchTeamVC
 
-static NSString * const reuseIdentifier = @"teamCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.collectionView registerNib:[UINib nibWithNibName:@"TeamCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
-    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
-    
-    self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.contentTableView.tableFooterView = self.footerView;
-    
-    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"TeamTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"teamCell"];
-    
-    self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
-    
-    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-    self.textField.returnKeyType = UIReturnKeySearch;
+    [self setUpUI];
     self.textField.delegate = self;
-    self.resultTableView.hidden = YES;
-    self.resultTableView.tableHeaderView = self.headerView;
-    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)cancelButtonClicked:(id)sender {
+    [self.textField resignFirstResponder];
+    self.contentView.hidden = NO;
+    self.textField.text = nil;
+    [self.resultTableView removeFromSuperview];
+    self.resultTableView = nil;
 }
 
 - (IBAction)gobackButtonClick:(id)sender
@@ -62,7 +52,7 @@ static NSString * const reuseIdentifier = @"teamCCell";
 {
     [textField resignFirstResponder];
     self.contentView.hidden = YES;
-    self.resultTableView.hidden = NO;
+    [self.view addSubview:self.resultTableView];
     return YES;
 }
 
@@ -100,15 +90,15 @@ static NSString * const reuseIdentifier = @"teamCCell";
 {
     if (tableView == self.contentTableView)
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
         label.text = @"history";
         return cell;
     }
     else
     {
-        TeamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"teamCell" forIndexPath:indexPath];
-        cell.teamName.text = @"hahahahh";
+        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+        cell.sNameLabel.text = @"hahahahh";
         return cell;
     }
 }
@@ -122,10 +112,39 @@ static NSString * const reuseIdentifier = @"teamCCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    TeamCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
+    UILabel * label = (UILabel *)[cell viewWithTag:2];
+    label.text = @"热门团队";
     return cell;
 }
 
+#pragma mark - UI
+
+- (void)setUpUI {
+    [self.collectionView registerNib:[UINib nibWithNibName:@"HotSearchCell" bundle:nil] forCellWithReuseIdentifier:hotSearchCell];
+    
+    [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
+    [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(4, -18, 0, 0)];
+    
+    self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.contentTableView.tableFooterView = self.footerView;
+    
+    [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
+    self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+}
+
+- (UITableView *)resultTableView {
+    if (!_resultTableView) {
+        _resultTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 66, APP_WIDTH, APP_HEIGHT-66) style:UITableViewStylePlain];
+        _resultTableView.delegate = self;
+        _resultTableView.dataSource = self;
+        _resultTableView.backgroundColor = [UIColor whiteColor];
+        _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _resultTableView.tableHeaderView = self.headerView;
+        [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
+    }
+    return _resultTableView;
+}
 
 
 @end

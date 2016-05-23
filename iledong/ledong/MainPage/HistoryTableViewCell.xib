@@ -20,14 +20,14 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="朝阳区乐动杯足球联赛" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iDA-L8-baG">
                         <rect key="frame" x="113" y="13" width="188" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="92人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IKs-aJ-wEE">
                         <rect key="frame" x="113" y="39" width="162" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -43,9 +43,9 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
-                <outlet property="activityImageView" destination="oEP-hx-1yQ" id="YPn-Ln-DTJ"/>
-                <outlet property="activityMember" destination="IKs-aJ-wEE" id="y2o-ti-32M"/>
-                <outlet property="activityName" destination="iDA-L8-baG" id="NeF-Sv-0St"/>
+                <outlet property="sDetailLabel" destination="IKs-aJ-wEE" id="Nrh-oC-DPw"/>
+                <outlet property="sImageView" destination="oEP-hx-1yQ" id="aAX-U2-AnB"/>
+                <outlet property="sNameLabel" destination="iDA-L8-baG" id="mEk-Hx-302"/>
             </connections>
             <point key="canvasLocation" x="287" y="338"/>
         </tableViewCell>

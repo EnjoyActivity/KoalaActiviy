@@ -8,11 +8,10 @@
 
 #import "SearchActiveVC.h"
 #import "HistoryTableViewCell.h"
-#import "HotCollectionViewCell.h"
 
-static NSString * historyCell = @"HistoryCell";
-static NSString * activityCell = @"ActivityCell";
-
+static NSString * const historyCell = @"HistoryCell";
+static NSString * const activityCell = @"ActivityCell";
+static NSString * const hotSearchCell = @"hotSearchCell";
 
 @interface SearchActiveVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
 
@@ -20,7 +19,6 @@ static NSString * activityCell = @"ActivityCell";
 
 @implementation SearchActiveVC
 
-static NSString * const reuseIdentifier = @"hotCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,13 +41,22 @@ static NSString * const reuseIdentifier = @"hotCCell";
 {
     
 }
+
+- (IBAction)cancelButtonClicked:(id)sender {
+    self.textField.text = nil;
+    [self.textField resignFirstResponder];
+    [self.resultTableView removeFromSuperview];
+    self.resultTableView = nil;
+    self.contentView.hidden = NO;
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     self.contentView.hidden = YES;
-    self.resultTableView.hidden = NO;
+    [self.view addSubview:self.resultTableView];
     return YES;
 }
 
@@ -95,7 +102,7 @@ static NSString * const reuseIdentifier = @"hotCCell";
     else
     {
         HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
-        cell.activityName.text = @"sdasd";
+        cell.sNameLabel.text = @"sdasd";
         return cell;
     }
 }
@@ -109,29 +116,39 @@ static NSString * const reuseIdentifier = @"hotCCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    HotCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
+    UILabel * label = (UILabel *)[cell viewWithTag:2];
+    label.text = @"热门活动";
     return cell;
 }
 
 #pragma mark - UI
 
 - (void)setUpUI {
-    [self.collectionView registerNib:[UINib nibWithNibName:@"HotCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"HotSearchCell" bundle:nil] forCellWithReuseIdentifier:hotSearchCell];//HotCollectionViewCell
+    
     [self.historyTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];
-    [self.resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
-
     [self.gobackButton setImage:[UIImage imageNamed:@"top_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
     
-    //    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.historyTableView.tableFooterView = self.footerView;
     self.btnImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
-    //    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-    //    self.textField.returnKeyType = UIReturnKeySearch;
+
     self.textField.delegate = self;
-    self.resultTableView.hidden = YES;
-    self.resultTableView.tableHeaderView = self.headerView;
-    //    self.resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
 }
+
+- (UITableView *)resultTableView {
+    if (!_resultTableView) {
+        _resultTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 66, APP_WIDTH, APP_HEIGHT-66) style:UITableViewStylePlain];
+        _resultTableView.delegate = self;
+        _resultTableView.dataSource = self;
+        _resultTableView.backgroundColor = [UIColor whiteColor];
+        _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _resultTableView.tableHeaderView = self.headerView;
+        [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
+    }
+    return _resultTableView;
+}
+
 @end

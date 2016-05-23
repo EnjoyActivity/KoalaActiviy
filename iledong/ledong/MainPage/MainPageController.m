@@ -20,9 +20,9 @@ static NSString * const topAdCellIdentifier = @"TopAdCell";
 static NSString * const activityCellIdentifier = @"ActivityCell";
 static NSString * const hotTeamIdentifier = @"teamCell";
 
-static CGFloat const adCollectionHeight = 280;
-static CGFloat const activityCollectionHeight = 180;
-static CGFloat const teamCollectionHeight = 280;
+static CGFloat const adHeight = 280;
+static CGFloat const activityHeight = 180;
+static CGFloat const teamHeight = 280;
 
 @interface MainPageController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate>
 {
@@ -56,6 +56,7 @@ static CGFloat const teamCollectionHeight = 280;
     CALayer * topAdProgressLayer;
     CALayer * activityProgressLayer;
     CALayer * hotTeamProgressLayer;
+    
     
 
     
@@ -120,7 +121,38 @@ static CGFloat const teamCollectionHeight = 280;
 }
 
 
-#pragma mark - netWork
+#pragma mark - netWork 
+
+- (void)requestAdData {
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+    
+}
+
+- (void)requestActivityData {
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)requestTeamData {
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
 
 
 
@@ -129,6 +161,11 @@ static CGFloat const teamCollectionHeight = 280;
 - (void)buttonClicked:(UIButton *)sender {
     if ([sender isEqual:locationButton]) {
         AdressCityVC *adressCityVC = [[AdressCityVC alloc] init];
+        adressCityVC.locationResult = ^(NSString *city) {
+            [locationButton setTitle:city forState:UIControlStateNormal];
+            CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
+            [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
+        };
         [self.navigationController pushViewController:adressCityVC animated:YES];
     } else if ([sender isEqual:scannerButton]) {
         ScanViewController *scanViewController = [[ScanViewController alloc] init];
@@ -161,6 +198,7 @@ static CGFloat const teamCollectionHeight = 280;
         UICollectionViewCell * topAdCell = [collectionView dequeueReusableCellWithReuseIdentifier:topAdCellIdentifier forIndexPath:indexPath];
         UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
         imageView.image = [UIImage imageNamed:topAdImageArray[indexPath.row]];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:nil];
         return topAdCell;
         
     } else if ([collectionView isEqual:activityCollectionView]) {
@@ -440,15 +478,15 @@ static CGFloat const teamCollectionHeight = 280;
 
 - (void)addCollectionView{
     
-    UICollectionViewFlowLayout * topAdLayout = [self flowLayoutItemSize:CGSizeMake(APP_WIDTH, 280) lineSpace:0];
-    topAdCollectionView = [self collectionViewFrame:CGRectMake(0, 0, APP_WIDTH, 280) layOut:topAdLayout nibName:@"MainPageTopAdCell" identifier:topAdCellIdentifier];
+    UICollectionViewFlowLayout * topAdLayout = [self flowLayoutItemSize:CGSizeMake(APP_WIDTH, adHeight) lineSpace:0];
+    topAdCollectionView = [self collectionViewFrame:CGRectMake(0, 0, APP_WIDTH, adHeight) layOut:topAdLayout nibName:@"MainPageTopAdCell" identifier:topAdCellIdentifier];
     
     UICollectionViewFlowLayout * activityLayout = [self flowLayoutItemSize:CGSizeMake(180, 180) lineSpace:7];
-    activityCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(topAdCollectionView.frame)+55, APP_WIDTH, 180) layOut:activityLayout nibName:@"MainPageActivityCell" identifier:activityCellIdentifier];
+    activityCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(topAdCollectionView.frame)+55, APP_WIDTH, activityHeight) layOut:activityLayout nibName:@"MainPageActivityCell" identifier:activityCellIdentifier];
     
 
-    UICollectionViewFlowLayout * hotTeamLayout = [self flowLayoutItemSize:CGSizeMake(240, 280) lineSpace:6];
-    hotTeamCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(activityCollectionView.frame)+55, APP_WIDTH, 280) layOut:hotTeamLayout nibName:@"TeamsCell" identifier:hotTeamIdentifier];
+    UICollectionViewFlowLayout * hotTeamLayout = [self flowLayoutItemSize:CGSizeMake(240, teamHeight) lineSpace:6];
+    hotTeamCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(activityCollectionView.frame)+55, APP_WIDTH, teamHeight) layOut:hotTeamLayout nibName:@"TeamsCell" identifier:hotTeamIdentifier];
     
     [mainScrollView addSubview:topAdCollectionView];
     [mainScrollView addSubview:activityCollectionView];
@@ -510,14 +548,14 @@ static CGFloat const teamCollectionHeight = 280;
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     
-    CALayer * adProgressLayer = [self layerWithFrame:CGRectMake(0, 280, APP_WIDTH, 2) color:bgColor];
-    topAdProgressLayer = [self layerWithFrame:CGRectMake(0, 280, APP_WIDTH/topAdImageArray.count, 2) color:progressColor];
+    CALayer * adProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH, 2) color:bgColor];
+    topAdProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH/topAdImageArray.count, 2) color:progressColor];
     
-    CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, 280+180+55, APP_WIDTH, 2) color:bgColor];
-    activityProgressLayer = [self layerWithFrame:CGRectMake(0, 280+180+55, APP_WIDTH/activityImageArray.count, 2) color:progressColor];
+    CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH, 2) color:bgColor];
+    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/activityImageArray.count, 2) color:progressColor];
     
-    CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, 280+180+55+55+280, APP_WIDTH, 2) color:bgColor];
-    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, 280+180+55+55+280, APP_WIDTH/teamImageArray.count, 2) color:progressColor];
+    CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH, 2) color:bgColor];
+    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/teamImageArray.count, 2) color:progressColor];
     
     [mainScrollView.layer addSublayer:adProgressLayer];
     [mainScrollView.layer addSublayer:topAdProgressLayer];
