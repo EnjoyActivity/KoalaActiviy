@@ -24,18 +24,15 @@
     [super viewDidLoad];
     
     self.datas = [NSMutableArray array];
-    UILabel *customLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    [customLab setTextColor:[UIColor redColor]];
-    [customLab setText:@"活动管理"];
-    customLab.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
-    customLab.textAlignment = NSTextAlignmentCenter;
-    self.navigationItem.titleView = customLab;
+    self.navigationItem.title = @"活动管理";
+    NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
+    self.navigationController.navigationBar.titleTextAttributes = dic;
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_new"] style:UIBarButtonItemStylePlain target:self action:@selector(startActivityBtnClicked)];
     rightButton.tintColor = [UIColor redColor];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
 

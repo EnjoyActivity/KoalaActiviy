@@ -50,7 +50,7 @@
         self.navigationItem.rightBarButtonItem = rightButton;
     }
 
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
 }
