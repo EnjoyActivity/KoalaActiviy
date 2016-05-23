@@ -9,6 +9,7 @@
 #import "ActivityMessageViewController.h"
 #import "ActivityMessageTableViewCell.h"
 #import "MyHostTableViewCell.h"
+#import "ActiveDetailViewController.h"
 
 @interface ActivityMessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -96,6 +97,12 @@
         
         return cell;
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ActiveDetailViewController *vc = [[ActiveDetailViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

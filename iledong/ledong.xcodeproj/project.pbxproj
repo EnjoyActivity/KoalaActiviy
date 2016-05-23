@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 205375861CF29496005902B3 /* ActiveDetailViewController.m */; };
+		2053758D1CF2B113005902B3 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053758C1CF2B113005902B3 /* TitleView.m */; };
+		205375901CF2B12E005902B3 /* LocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053758F1CF2B12E005902B3 /* LocationView.m */; };
+		205375931CF2B13C005902B3 /* MemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 205375921CF2B13C005902B3 /* MemberView.m */; };
+		205375961CF2B156005902B3 /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 205375951CF2B156005902B3 /* ContactView.m */; };
+		205375981CF2B172005902B3 /* TitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205375971CF2B172005902B3 /* TitleView.xib */; };
+		2053759A1CF2B216005902B3 /* LocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205375991CF2B216005902B3 /* LocationView.xib */; };
+		2053759C1CF2B2AC005902B3 /* MemberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2053759B1CF2B2AC005902B3 /* MemberView.xib */; };
+		2053759E1CF2B2DB005902B3 /* ContactView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2053759D1CF2B2DB005902B3 /* ContactView.xib */; };
 		2054C1BD1CEEE24F00FF7FDD /* ModificationPhoneVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1BB1CEEE24F00FF7FDD /* ModificationPhoneVC2.m */; };
 		2054C1BE1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054C1BC1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib */; };
 		2054C1C21CEEFE4F00FF7FDD /* TradeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1C01CEEFE4F00FF7FDD /* TradeDetailViewController.m */; };
@@ -348,6 +357,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		205375851CF29496005902B3 /* ActiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveDetailViewController.h; sourceTree = "<group>"; };
+		205375861CF29496005902B3 /* ActiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveDetailViewController.m; sourceTree = "<group>"; };
+		2053758B1CF2B113005902B3 /* TitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleView.h; sourceTree = "<group>"; };
+		2053758C1CF2B113005902B3 /* TitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleView.m; sourceTree = "<group>"; };
+		2053758E1CF2B12E005902B3 /* LocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationView.h; sourceTree = "<group>"; };
+		2053758F1CF2B12E005902B3 /* LocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationView.m; sourceTree = "<group>"; };
+		205375911CF2B13C005902B3 /* MemberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberView.h; sourceTree = "<group>"; };
+		205375921CF2B13C005902B3 /* MemberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberView.m; sourceTree = "<group>"; };
+		205375941CF2B156005902B3 /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
+		205375951CF2B156005902B3 /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
+		205375971CF2B172005902B3 /* TitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleView.xib; sourceTree = "<group>"; };
+		205375991CF2B216005902B3 /* LocationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationView.xib; sourceTree = "<group>"; };
+		2053759B1CF2B2AC005902B3 /* MemberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MemberView.xib; sourceTree = "<group>"; };
+		2053759D1CF2B2DB005902B3 /* ContactView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactView.xib; sourceTree = "<group>"; };
 		2054C1BA1CEEE24F00FF7FDD /* ModificationPhoneVC2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationPhoneVC2.h; sourceTree = "<group>"; };
 		2054C1BB1CEEE24F00FF7FDD /* ModificationPhoneVC2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationPhoneVC2.m; sourceTree = "<group>"; };
 		2054C1BC1CEEE24F00FF7FDD /* ModificationPhoneVC2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModificationPhoneVC2.xib; sourceTree = "<group>"; };
@@ -881,6 +904,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		205375841CF28E74005902B3 /* 活动详情 */ = {
+			isa = PBXGroup;
+			children = (
+				2053758A1CF2B0DC005902B3 /* view */,
+				205375851CF29496005902B3 /* ActiveDetailViewController.h */,
+				205375861CF29496005902B3 /* ActiveDetailViewController.m */,
+			);
+			name = "活动详情";
+			sourceTree = "<group>";
+		};
+		2053758A1CF2B0DC005902B3 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				2053758B1CF2B113005902B3 /* TitleView.h */,
+				2053758C1CF2B113005902B3 /* TitleView.m */,
+				205375971CF2B172005902B3 /* TitleView.xib */,
+				2053758E1CF2B12E005902B3 /* LocationView.h */,
+				2053758F1CF2B12E005902B3 /* LocationView.m */,
+				205375991CF2B216005902B3 /* LocationView.xib */,
+				205375911CF2B13C005902B3 /* MemberView.h */,
+				205375921CF2B13C005902B3 /* MemberView.m */,
+				2053759B1CF2B2AC005902B3 /* MemberView.xib */,
+				205375941CF2B156005902B3 /* ContactView.h */,
+				205375951CF2B156005902B3 /* ContactView.m */,
+				2053759D1CF2B2DB005902B3 /* ContactView.xib */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
 		20B63E221CED6EC500D5C551 /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1916,6 +1968,7 @@
 		905516281CEC3E31001C4F51 /* 活动管理 */ = {
 			isa = PBXGroup;
 			children = (
+				205375841CF28E74005902B3 /* 活动详情 */,
 				905516291CEC3E31001C4F51 /* ActiveTableViewCell.h */,
 				9055162A1CEC3E31001C4F51 /* ActiveTableViewCell.m */,
 				9055162B1CEC3E31001C4F51 /* ActiveTableViewCell.xib */,
@@ -2069,6 +2122,7 @@
 				3693F2841CA4D5F200E48BD9 /* parent2_i5.png in Resources */,
 				3693F2851CA4D5F200E48BD9 /* parent3_i5.png in Resources */,
 				362F7E8A1CC0C8FD00C91090 /* CollectionViewCell.xib in Resources */,
+				205375981CF2B172005902B3 /* TitleView.xib in Resources */,
 				363BDD141CBF703E001FE507 /* JoinTeamViewController.xib in Resources */,
 				361001321CD1DB69002C0FCF /* TeamHomeViewController.xib in Resources */,
 				363D6BC91CC71189008A169A /* SearchActiveVC.xib in Resources */,
@@ -2094,6 +2148,7 @@
 				36BD8BB01C9F9EEB00F99077 /* ic_search@2x.png in Resources */,
 				3629CEC41CDB4C5000BEF297 /* bg_timebox_mid@2x.png in Resources */,
 				3644A9651CD0B26C000D0218 /* FansViewController.xib in Resources */,
+				2053759E1CF2B2DB005902B3 /* ContactView.xib in Resources */,
 				36B2C1D21CBB4FA4001D842B /* ic_female@2x.png in Resources */,
 				36BD8BAD1C9F9AAB00F99077 /* ic_scan@2x.png in Resources */,
 				362F85F01CABB6C9006FFE61 /* PublicDetailViewController.xib in Resources */,
@@ -2155,6 +2210,7 @@
 				368ACA291CCDED9B00700E45 /* img_1b@2x.png in Resources */,
 				905515FB1CEC3CED001C4F51 /* Overlay.png in Resources */,
 				ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */,
+				2053759C1CF2B2AC005902B3 /* MemberView.xib in Resources */,
 				7F9318ED1C858B910061E9EA /* ic_more4@2x.png in Resources */,
 				368ACA301CCDF65500700E45 /* ModificationPhoneVC.xib in Resources */,
 				3627C5D01CA8DBD400A5D7EB /* scan@2x.png in Resources */,
@@ -2181,6 +2237,7 @@
 				EC7CB2941CEEF19D008258B1 /* LDTeamTableViewCell.xib in Resources */,
 				905515FA1CEC3CED001C4F51 /* ELCAssetTablePicker.xib in Resources */,
 				36E3E1FE1CC476F100294509 /* ic_unionpay@2x.png in Resources */,
+				2053759A1CF2B216005902B3 /* LocationView.xib in Resources */,
 				36ED83121CC615B800D51ACA /* ic_search_team@2x.png in Resources */,
 				7F8F73451C8FB1B300CCFE41 /* MyWalletViewController.xib in Resources */,
 				362F85EA1CABB69A006FFE61 /* PublicViewController.xib in Resources */,
@@ -2237,6 +2294,7 @@
 				362F7E7E1CC0C1E300C91090 /* PrivateOrderViewController.m in Sources */,
 				626DD4931C843BD7006BC53C /* FRUtils.m in Sources */,
 				363BDD0E1CBF6B32001FE507 /* AuditViewController.m in Sources */,
+				2053758D1CF2B113005902B3 /* TitleView.m in Sources */,
 				905515EF1CEC3CED001C4F51 /* AFURLResponseSerialization.m in Sources */,
 				3627C2FC1CA8CF6700A5D7EB /* SearchTableViewCell.m in Sources */,
 				905516021CEC3CED001C4F51 /* MJRefreshComponent.m in Sources */,
@@ -2288,6 +2346,7 @@
 				905516331CEC3E31001C4F51 /* ActiveTableViewCell.m in Sources */,
 				7F875FEF1C867E1F003C6EBB /* FootprintViewController.m in Sources */,
 				36B2C1C31CBB4863001D842B /* PublishViewController.m in Sources */,
+				205375901CF2B12E005902B3 /* LocationView.m in Sources */,
 				EC7CB2931CEEF19D008258B1 /* LDTeamTableViewCell.m in Sources */,
 				7F8F73441C8FB1B300CCFE41 /* MyWalletViewController.m in Sources */,
 				905516051CEC3CED001C4F51 /* MJRefreshAutoGifFooter.m in Sources */,
@@ -2309,6 +2368,7 @@
 				3627C5D41CA8DBD400A5D7EB /* ZHScanView.m in Sources */,
 				7F06F6361C86E34600F67173 /* ActivityMessageViewController.m in Sources */,
 				EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */,
+				205375961CF2B156005902B3 /* ContactView.m in Sources */,
 				EC9A931B1CED9D3D00F6009B /* LDLocationManager.m in Sources */,
 				626DD4901C843B30006BC53C /* Dialog.m in Sources */,
 				905516041CEC3CED001C4F51 /* MJRefreshHeader.m in Sources */,
@@ -2326,6 +2386,7 @@
 				361001311CD1DB69002C0FCF /* TeamHomeViewController.m in Sources */,
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
+				205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */,
 				36B2C1B01CBB481A001D842B /* MemberTableViewCell.m in Sources */,
 				36F194DC1CD335220050EE6F /* CollectTableViewCell.m in Sources */,
 				20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */,
@@ -2338,6 +2399,7 @@
 				362F85EF1CABB6C9006FFE61 /* PublicDetailViewController.m in Sources */,
 				905515F11CEC3CED001C4F51 /* ELCAlbumPickerController.m in Sources */,
 				905516211CEC3CED001C4F51 /* UIImageView+WebCache.m in Sources */,
+				205375931CF2B13C005902B3 /* MemberView.m in Sources */,
 				36B2C1C91CBB4E0B001D842B /* SexViewController.m in Sources */,
 				EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */,
 				20B63E5C1CEDC02B00D5C551 /* SBJsonStreamWriterAccumulator.m in Sources */,

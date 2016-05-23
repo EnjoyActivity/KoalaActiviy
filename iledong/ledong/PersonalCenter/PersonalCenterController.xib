@@ -150,6 +150,10 @@
                                         <action selector="personalInfomationButtonClick:" destination="-1" eventType="touchUpInside" id="p6f-3V-VtD"/>
                                     </connections>
                                 </button>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_more.png" id="Oal-SY-sKl">
+                                    <rect key="frame" x="344" y="89" width="11" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
@@ -186,7 +190,10 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="215.5" y="179.5"/>
+            <point key="canvasLocation" x="244.5" y="179.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="ic_more.png" width="8" height="15"/>
+    </resources>
 </document>

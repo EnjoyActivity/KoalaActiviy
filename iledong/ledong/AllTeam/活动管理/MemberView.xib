@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="lkv-QG-jDL" customClass="MemberView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_more.png" translatesAutoresizingMaskIntoConstraints="NO" id="xEq-T9-bh0">
+                    <rect key="frame" x="302" y="29" width="11" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Gah-ke-nR7"/>
+                        <constraint firstAttribute="width" constant="11" id="GyL-Tw-w2U"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="已报名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXt-fp-KQt">
+                    <rect key="frame" x="252" y="29" width="50" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="xEq-T9-bh0" firstAttribute="leading" secondItem="NXt-fp-KQt" secondAttribute="trailing" id="NPZ-iu-wuz"/>
+                <constraint firstAttribute="trailing" secondItem="xEq-T9-bh0" secondAttribute="trailing" constant="7" id="PiV-8v-neq"/>
+                <constraint firstItem="xEq-T9-bh0" firstAttribute="top" secondItem="lkv-QG-jDL" secondAttribute="top" constant="29" id="QcJ-bG-qO1"/>
+                <constraint firstAttribute="bottom" secondItem="xEq-T9-bh0" secondAttribute="bottom" constant="30" id="dKh-ga-DL0"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="signUpLabel" destination="NXt-fp-KQt" id="pca-rM-jKm"/>
+            </connections>
+            <point key="canvasLocation" x="213" y="247"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_more.png" width="8" height="15"/>
+    </resources>
+</document>
