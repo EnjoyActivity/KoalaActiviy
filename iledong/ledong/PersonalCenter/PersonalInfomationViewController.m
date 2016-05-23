@@ -68,8 +68,7 @@
 #pragma mark - buttonClick
 
 - (IBAction)exitButtonClick:(id)sender {
-    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
-    [defs setObject:@"" forKey:@"kToken"];
+    [FRUtils setToken:@""];
     [AppDelegate showMainView];
 }
 

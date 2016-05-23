@@ -133,6 +133,9 @@
         }
         else
         {
+            if ([[responseObject objectForKey:@"code"] intValue] == 20010) {
+                [FRUtils setToken:@""];
+            }
             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
         }
         [[HttpClient shareHttpClient] hiddenMessageHUD];
@@ -163,6 +166,9 @@
         }
         else
         {
+            if ([[responseObject objectForKey:@"code"] intValue] == 20010) {
+                [FRUtils setToken:@""];
+            }
             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
         }
         [[HttpClient shareHttpClient] hiddenMessageHUD];

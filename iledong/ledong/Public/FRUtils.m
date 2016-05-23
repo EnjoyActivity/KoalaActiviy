@@ -600,4 +600,12 @@ static FRUtils *instance = nil;
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     [defs setObject:birth forKey:@"birthday"];
 }
+
++ (void)setToken:(NSString *)token
+{
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:token forKey:@"kToken"];
+    [defs synchronize];
+}
+
 @end

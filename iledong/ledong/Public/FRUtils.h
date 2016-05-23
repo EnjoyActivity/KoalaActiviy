@@ -89,4 +89,6 @@ typedef enum : NSUInteger
 + (void)setRemark:(NSString*)remark;
 + (void)setAvatarUrl:(NSString*)url;
 + (void)setBirthday:(NSString*)birth;
++ (void)setToken:(NSString *)token;
+
 @end
