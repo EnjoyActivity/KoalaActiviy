@@ -106,12 +106,13 @@
     ChangeAvatarView* sheet = [[ChangeAvatarView alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 160, APP_WIDTH, 160)];    sheet.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 160);
     sheet.maskView = maskView;
     sheet.delegate = self;
+    [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
     [[[UIApplication sharedApplication]keyWindow]addSubview:sheet];
     [UIView animateWithDuration:0.5 animations:^{
         sheet.frame = CGRectMake(0, APP_HEIGHT-160, APP_WIDTH, 160);
     } completion:nil];
     
-    [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
+    
 //    [[[UIApplication sharedApplication]keyWindow]addSubview:sheet];
 }
 

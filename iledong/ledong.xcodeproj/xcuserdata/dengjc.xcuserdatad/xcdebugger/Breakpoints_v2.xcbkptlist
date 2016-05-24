@@ -91,84 +91,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
-            timestampString = "485774826.282397"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "-queryActiveDetailInfo"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__51-[ActiveDetailViewController queryActiveDetailInfo]_block_invoke"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485774931.790552"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "297"
-                  endingLineNumber = "297"
-                  offsetFromSymbolStart = "480">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.317"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485774931.790764"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "297"
-                  endingLineNumber = "297"
-                  offsetFromSymbolStart = "51">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.318"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485774931.790924"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "297"
-                  endingLineNumber = "297"
-                  offsetFromSymbolStart = "29">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__51-[ActiveDetailViewController queryActiveDetailInfo]_block_invoke.321"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485774931.791157"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "299"
-                  endingLineNumber = "299"
-                  offsetFromSymbolStart = "12">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
             timestampString = "485774851.262576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -185,13 +107,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ChooseActiveItemVC.m"
-            timestampString = "485774903.044698"
+            timestampString = "485776318.33502"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "-queryItemById"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
+            timestampString = "485775660.613395"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "-queryActiveDetailInfo"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__51-[ActiveDetailViewController queryActiveDetailInfo]_block_invoke"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
+                  timestampString = "485776553.298429"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "297"
+                  endingLineNumber = "297"
+                  offsetFromSymbolStart = "480">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_.317"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
+                  timestampString = "485776553.298543"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "297"
+                  endingLineNumber = "297"
+                  offsetFromSymbolStart = "51">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.318"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
+                  timestampString = "485776553.298636"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "297"
+                  endingLineNumber = "297"
+                  offsetFromSymbolStart = "29">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__51-[ActiveDetailViewController queryActiveDetailInfo]_block_invoke.321"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
+                  timestampString = "485776553.298728"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
