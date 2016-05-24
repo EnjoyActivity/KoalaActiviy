@@ -35,12 +35,13 @@ static NSString * const locationIdentifier = @"LocationCell";
     [super viewDidLoad];
     currentPage = 1;
 
-    if (self.activityId == 3) {
+    if (self.activityId == 0) {
         [self.locationTableview setHidden:NO];
         changeActivity = YES;
     }
     NSDictionary * dic = @{
-                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId]
+                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+                           @"ReadFlag" :[NSNumber numberWithInt:1]
                            };
     [self requestActivityData:currentPage parameter:dic];
     locationArray = @[@"全部地区",@"附近",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去"];
@@ -88,6 +89,7 @@ static NSString * const locationIdentifier = @"LocationCell";
         else {
             [activityArray addObjectsFromArray:array];
         }
+        currentPage ++;
         dispatch_async(dispatch_get_main_queue(), ^{
             [activityTableView reloadData];
         });
@@ -143,18 +145,23 @@ static NSString * const locationIdentifier = @"LocationCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.locationTableview]) {
         if (changeActivity) {
-            NSNumber * activityIdTemp = [_activityClassArray[indexPath.row] objectForKey:@"Id"];
-            NSString * titleTemp = [_activityClassArray[indexPath.row] objectForKey:@"ClassName"];
-            [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
-            [self.activityButton setSelected:NO];
-            NSDictionary * dic= @{
-                                  @"ActivityClassId":activityIdTemp
-                                  };
-            currentPage = 1;
-            [self.locationTableview setHidden:YES];
-            [self requestActivityData:currentPage parameter:dic];
+            [self changeActivity:indexPath.row];
         }
     }
+    
+}
+
+- (void)changeActivity:(NSInteger)row {
+    self.activityId = [[_activityClassArray[row] objectForKey:@"Id"] integerValue];
+    NSString * titleTemp = [_activityClassArray[row] objectForKey:@"ClassName"];
+    [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
+    [self.activityButton setSelected:NO];
+    NSDictionary * dic= @{
+                          @"ActivityClassId":[NSNumber numberWithInteger:self.activityId]
+                          };
+    currentPage = 1;
+    [self.locationTableview setHidden:YES];
+    [self requestActivityData:currentPage parameter:dic];
 }
 
 #pragma mark - ButtonAction
@@ -176,7 +183,7 @@ static NSString * const locationIdentifier = @"LocationCell";
   
 }
 
-- (void)filterButtonClicked:(UIButton *)sender {  
+- (void)filterButtonClicked:(UIButton *)sender {
     [self.activityButton setSelected:NO];
     
     UIButton * button = (UIButton *)[self.filterView viewWithTag:currentButton];
@@ -187,18 +194,28 @@ static NSString * const locationIdentifier = @"LocationCell";
     switch (sender.tag) {
         case 1:
         {
-            
+            NSDictionary * dic = @{
+                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+                                   @"ReadFlag" :[NSNumber numberWithInt:1]
+                                   };
+            currentPage = 1;
+            [self requestActivityData:currentPage parameter:dic];
             [self.locationTableview setHidden:YES];
         }
             break;
         case 2:
         {
+            NSDictionary * dic = @{
+                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+                                   };
+            currentPage = 1;
+            [self requestActivityData:currentPage parameter:dic];
             [self.locationTableview setHidden:YES];
         }
             break;
         case 3:
         {
-            [self.locationTableview setHidden:YES];
+            [self thisWeakActivity];
         }
             break;
         case 4:
@@ -213,6 +230,29 @@ static NSString * const locationIdentifier = @"LocationCell";
 }
 
 
+- (void)thisWeakActivity {
+    NSDate * currentDate = [NSDate date];
+    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDateComponents * comp = [[NSCalendar currentCalendar] components:NSCalendarUnitWeekday fromDate:currentDate];
+    NSInteger weak = comp.weekday-1;
+    
+    NSDate * monday = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:1-weak toDate:currentDate options:0];
+    NSDate * sunday =[[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:7-weak toDate:currentDate options:0];
+    
+    NSString * mondayStr = [formatter stringFromDate:monday];
+    NSString * sundayStr = [formatter stringFromDate:sunday];
+    
+    NSDictionary * dic = @{
+                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+                           @"time1" :mondayStr,
+                           @"time2" :sundayStr
+                           };
+    currentPage = 1;
+    [self requestActivityData:currentPage parameter:dic];
+    
+    [self.locationTableview setHidden:YES];
+}
 #pragma mark - UI
 
 - (void)setUpUI {

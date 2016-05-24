@@ -255,10 +255,9 @@ static CGFloat const teamHeight = 280;
         NSLog(@"ad: %ld",(long)indexPath.row);
         
     } else if ([collectionView isEqual:activityCollectionView]) {
-        NSLog(@"activity: %ld",(long)indexPath.row);
         LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
         if (indexPath.row == 2) {
-            activityVC.activityId = 3;
+            activityVC.activityId = 0;
             activityVC.activityClassName = @"更多";
         }
         else {
