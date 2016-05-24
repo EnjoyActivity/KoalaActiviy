@@ -11,6 +11,7 @@
 #import "StepperView.h"
 #import "ParameterTableViewController.h"
 #import "ContactTypeViewController.h"
+#import "SessionInfoViewController.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -20,6 +21,7 @@
 #define kCell6              @"cell6"
 #define kCell7              @"cell7"
 #define kCell8              @"cell8"
+#define kCell9              @"cell9"
 #define KTextFieldAsObj     @"textFieldAssociatedObject"
 
 typedef enum gameType {
@@ -28,8 +30,7 @@ typedef enum gameType {
 }gameType;
 
 typedef enum joinType {
-    joinTypeNull = 0,
-    joinTypePerson,
+    joinTypePerson = 0,
     joinTypeTeam
 }joinType;
 
@@ -50,8 +51,6 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)UITableView* nonleagueTableView;
 @property (nonatomic, strong)UIScrollView* headerScrollView;
 @property (nonatomic, strong)UIView* addImgBtnView;
-@property (nonatomic, assign)gameType gameType;
-@property (nonatomic, assign)joinType joinType;
 @property (nonatomic, assign)imagePickerFromType imgFromType;
 @property (nonatomic, strong)NSMutableArray* coverPhotoImages;
 @property (nonatomic, strong)NSMutableArray* detailPhotoImages;
@@ -60,14 +59,18 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
 
+//发布请求参数
+@property (nonatomic, assign)gameType gameType;                         //活动是否联赛
+@property (nonatomic, assign)joinType joinType;                         //参加类型
 @property (nonatomic, strong)NSDictionary* selectActivityDict;          //选择的活动类别
 @property (nonatomic, strong)NSMutableArray* activityAddressArray;      //活动地点
 @property (nonatomic, strong)NSString* contactInfo;                     //联系方式
 @property (nonatomic, strong)NSDictionary* timeSigningUpDict;           //报名时间
 @property (nonatomic, strong)NSDictionary* timeActivityDict;            //活动时间
 @property (nonatomic, strong)NSDictionary* signingUpPersonCountDict;    //报名人数情况
-
-
+@property (nonatomic, strong)NSDictionary* moneyDict;                   //费用
+@property (nonatomic, strong)NSString* activityDetailText;              //活动详情
+@property (nonatomic, strong)NSString* titleStr;                        //活动标题
 
 @end
 
@@ -191,6 +194,7 @@ typedef enum imagePickerFromType {
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell6];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell7];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell8];
+    [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell9];
     self.leagueTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.leagueTableView.hidden = YES;
 }
@@ -214,19 +218,13 @@ typedef enum imagePickerFromType {
 }
 
 - (void)personTypeBtnClicked {
-    if (self.joinType == joinTypePerson)
-        self.joinType = joinTypeNull;
-    else
-        self.joinType = joinTypePerson;
+    self.joinType = joinTypePerson;
     [self.nonleagueTableView reloadData];
     [self.leagueTableView reloadData];
 }
 
 - (void)teamTypeBtnClicked {
-    if (self.joinType == joinTypeTeam)
-        self.joinType = joinTypeNull;
-    else
-        self.joinType = joinTypeTeam;
+    self.joinType = joinTypeTeam;
     [self.nonleagueTableView reloadData];
     [self.leagueTableView reloadData];
 }
@@ -339,13 +337,12 @@ typedef enum imagePickerFromType {
     else if (self.gameType == gameTypeLeague) {
         NSInteger section = self.textFieldPath.section;
         NSInteger row = self.textFieldPath.row;
-        //NSLog(@"section=%ld, row=%ld", section, row);
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == self.nonleagueTableView) {
-        if (section == 1 )//|| section == 3 || section == 4)
+        if (section == 1 )
             return 10;
         else if (section == 2)
             return 35;
@@ -370,7 +367,7 @@ typedef enum imagePickerFromType {
         else if (section == 2) {
             return self.activityAddressArray.count+1;
         }
-        else if (section == 3)// || section == 4)
+        else if (section == 3)
             return 1;
     }
     else if (self.leagueTableView == tableView) {
@@ -378,8 +375,12 @@ typedef enum imagePickerFromType {
             return 4;
         else if (section == 1 || section == 2 || section == 4)
             return 2;
-        else if (section == 3)
-            return 3;
+        else if (section == 3) {
+            if (self.joinType == joinTypePerson)
+                return 1;
+            else if (self.joinType == joinTypeTeam)
+                return 3;
+        }
         else if (section == 5 || section == 6 || section == 7 || section == 8)
             return 1;
     }
@@ -450,7 +451,7 @@ typedef enum imagePickerFromType {
         else if (indexPath.section == 6)
             return 45;
         else if (indexPath.section == 7)
-            return 250;
+            return 150;//250;
     }
     return 50;
 }
@@ -514,6 +515,10 @@ typedef enum imagePickerFromType {
                 label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-30, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
             }];
             [self.view addSubview:datePickView];
+        }
+        else if (indexPath.section == 2) {
+            SessionInfoViewController* Vc = [[SessionInfoViewController alloc]init];
+            [self.navigationController pushViewController:Vc animated:YES];
         }
     }
     else if (tableView == self.leagueTableView) {
@@ -679,7 +684,7 @@ typedef enum imagePickerFromType {
             [cell.contentView addSubview:teamTypeBtn];
             [teamTypeBtn addTarget:self action:@selector(teamTypeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         }
-        if (self.joinType == joinTypeNull || self.joinType == joinTypePerson)
+        if (self.joinType == joinTypePerson)
             [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
         else
             [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
@@ -705,7 +710,7 @@ typedef enum imagePickerFromType {
             [cell.contentView addSubview:personTypeBtn];
             [personTypeBtn addTarget:self action:@selector(personTypeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         }
-        if (self.joinType == joinTypeNull || self.joinType == joinTypeTeam)
+        if (self.joinType == joinTypeTeam)
             [personTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
         else
             [personTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
@@ -1132,7 +1137,7 @@ typedef enum imagePickerFromType {
 
 - (UITableViewCell*)drawLeagueSection6Cell:(UITableView*)tableView
                                  indexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell1 forIndexPath:indexPath];
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell9 forIndexPath:indexPath];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = UIColorFromRGB(0x333333);
@@ -1175,7 +1180,7 @@ typedef enum imagePickerFromType {
 
     UITextView* textView = (UITextView*)[cell.contentView viewWithTag:100];
     if (!textView) {
-        textView = [[UITextView alloc]initWithFrame:CGRectMake(15, 5, APP_WIDTH-30, 150)];
+        textView = [[UITextView alloc]initWithFrame:CGRectMake(15, 5, APP_WIDTH-30, 120/*150*/)];
         textView.tag = 100;
         [cell.contentView addSubview:textView];
         textView.delegate = self;
@@ -1193,21 +1198,21 @@ typedef enum imagePickerFromType {
     self.tipLabel.text = @"请输入活动详情";
     [self.tipLabel sizeToFit];
     
-    if (!self.detailImageScrollView) {
-        CGFloat y = textView.frame.origin.y+textView.frame.size.height+5;
-        self.detailImageScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, y, APP_WIDTH-45, cell.bounds.size.height-y)];
-        [cell.contentView addSubview:self.detailImageScrollView];
-    }
+//    if (!self.detailImageScrollView) {
+//        CGFloat y = textView.frame.origin.y+textView.frame.size.height+5;
+//        self.detailImageScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, y, APP_WIDTH-45, cell.bounds.size.height-y)];
+//        [cell.contentView addSubview:self.detailImageScrollView];
+//    }
     
-    UIButton* btn = (UIButton*)[self.detailImageScrollView viewWithTag:102];
-    if (!btn) {
-        btn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, self.detailImageScrollView.frame.origin.y+30, 0, 0)];
-        btn.tag = 102;
-        [cell.contentView addSubview:btn];
-        [btn setImage:[UIImage imageNamed:@"ic_append"] forState:UIControlStateNormal];
-        [btn sizeToFit];
-        [btn addTarget:self action:@selector(addDetailImageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    }
+//    UIButton* btn = (UIButton*)[self.detailImageScrollView viewWithTag:102];
+//    if (!btn) {
+//        btn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, self.detailImageScrollView.frame.origin.y+30, 0, 0)];
+//        btn.tag = 102;
+//        [cell.contentView addSubview:btn];
+//        [btn setImage:[UIImage imageNamed:@"ic_append"] forState:UIControlStateNormal];
+//        [btn sizeToFit];
+//        [btn addTarget:self action:@selector(addDetailImageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//    }
     
     return cell;
 }
@@ -1230,9 +1235,11 @@ typedef enum imagePickerFromType {
 
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
     [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[img] success:^(id responseObject) {
-        [Dialog alert:@"上传成功！"];
+        [[HttpClient shareHttpClient] hiddenMessageHUD];
+        [Dialog simpleToast:@"上传成功！" withDuration:1.5];
     } fail:^{
-        [Dialog alert:@"上传失败！"];
+        [[HttpClient shareHttpClient] hiddenMessageHUD];
+        [Dialog simpleToast:@"上传失败！" withDuration:1.5];
     }];
 }
 

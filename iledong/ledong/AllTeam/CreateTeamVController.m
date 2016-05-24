@@ -336,9 +336,9 @@
         
         NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
         [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[image] success:^(id responseObject) {
-            [Dialog alert:@"上传团队头像成功！"];
+            [Dialog simpleToast:@"上传团队头像成功！" withDuration:1.5];
         } fail:^{
-            [Dialog alert:@"上传团队头像失败！"];
+            [Dialog simpleToast:@"上传团队头像失败！" withDuration:1.5];
         }];
     }];
 }

@@ -85,7 +85,7 @@
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
-            [Dialog alert:@"查询失败！"];
+            [Dialog simpleToast:@"查询失败！" withDuration:1.5];
             return;
         }
         self.datas = [resultDic[@"result"] copy];
@@ -94,7 +94,7 @@
         });
     }
     failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [Dialog alert:@"查询失败！"];
+        [Dialog simpleToast:@"查询失败！" withDuration:1.5];
     }];
 }
 

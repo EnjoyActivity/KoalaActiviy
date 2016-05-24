@@ -77,7 +77,6 @@ typedef enum listType {
             NSNumber* codeNum = [dict objectForKey:@"code"];
             if (codeNum.intValue == 0) {
                 NSArray* array = [dict objectForKey:@"result"];
-                NSLog(@"%@",array[0]);
                 self.myStartTeamData = [NSMutableArray arrayWithArray:array];
                 if (self.myStartTeamData.count > 0) {
                     self.bgImageView.hidden = YES;
@@ -291,10 +290,10 @@ typedef enum listType {
         NSNumber* result = [dict objectForKey:@"Result"];
         if (!result.boolValue) {
             NSString* str = [dict objectForKey:@"Message"];
-            [Dialog alert:str];
+            [Dialog simpleToast:str withDuration:1.5];
         }
     } fail:^{
-        [Dialog alert:@"退出团队失败"];
+        [Dialog simpleToast:@"退出团队失败！" withDuration:1.5];
     }];
 }
 

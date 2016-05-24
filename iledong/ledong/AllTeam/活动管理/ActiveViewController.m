@@ -41,7 +41,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
-    
     [self queryDatas:self.currentPageIndex++];
 }
 
@@ -77,6 +76,7 @@
     static NSString *idnetifier = @"activeCell";
     __weak typeof(self) weakSelf = self;
     ActiveTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idnetifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!cell)
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
 
