@@ -117,8 +117,12 @@
 }
 
 - (void)queryDatas:(NSInteger)pageIndex {
+    //暂不使用分页,设置第一页获取1000个数据
+    NSInteger pageSize = 1000;
+    //
+    
     NSString* strToken = [HttpClient getTokenStr];
-    NSDictionary* parameter = @{@"token":strToken,@"page":[NSNumber numberWithInteger:pageIndex],@"PageSize":@10,@"ActivityType":@1,
+    NSDictionary* parameter = @{@"token":strToken,@"page":[NSNumber numberWithInteger:1/*pageIndex*/],@"PageSize":[NSNumber numberWithInteger:pageSize],@"ActivityType":@1,
                                 @"TeamId":self.teamId};
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_QUERY_ACTIVITY_URL];
     [HttpClient postJSONWithUrl:urlStr parameters:parameter success:^(id responseObject) {

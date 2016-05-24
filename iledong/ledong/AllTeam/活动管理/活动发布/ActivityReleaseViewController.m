@@ -1166,4 +1166,16 @@ typedef enum imagePickerFromType {
     return cell;
 }
 
+- (void)commitActivity {
+    //提交封面图片组->提交详情图片组->提交
+    
+    
+    
+    
+    
+}
+
+
+
+
 @end
