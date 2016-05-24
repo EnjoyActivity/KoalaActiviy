@@ -222,6 +222,7 @@
          {
              fail();
          }
+         [[HttpClient shareHttpClient] hiddenMessageHUD];
      }];
 }
 #pragma mark - 下载文件

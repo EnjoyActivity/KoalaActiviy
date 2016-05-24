@@ -12,15 +12,6 @@
             symbolName = "-[NSException raise]"
             moduleName = "">
             <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NSException raise]"
-                  moduleName = "CoreFoundation"
-                  usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "0">
-               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -148,7 +139,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485776622.884261"
+                  timestampString = "485776885.774944"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "297"
@@ -163,7 +154,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485776622.884473"
+                  timestampString = "485776885.775057"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "297"
@@ -178,7 +169,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485776622.884611"
+                  timestampString = "485776885.775151"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "297"
@@ -193,7 +184,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "485776622.884752"
+                  timestampString = "485776885.775243"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "299"
