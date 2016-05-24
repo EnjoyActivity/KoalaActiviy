@@ -62,6 +62,7 @@
     NSString* str = self.textField.text;
     if (self.block) {
         self.block(str);
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

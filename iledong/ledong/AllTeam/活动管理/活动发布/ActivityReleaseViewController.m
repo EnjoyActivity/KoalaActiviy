@@ -59,7 +59,15 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
-@property (nonatomic, strong)NSDictionary* selectActivityDict;
+
+@property (nonatomic, strong)NSDictionary* selectActivityDict;          //选择的活动类别
+@property (nonatomic, strong)NSMutableArray* activityAddressArray;      //活动地点
+@property (nonatomic, strong)NSString* contactInfo;                     //联系方式
+@property (nonatomic, strong)NSDictionary* timeSigningUpDict;           //报名时间
+@property (nonatomic, strong)NSDictionary* timeActivityDict;            //活动时间
+@property (nonatomic, strong)NSDictionary* signingUpPersonCountDict;    //报名人数情况
+
+
 
 @end
 
@@ -73,6 +81,8 @@ typedef enum imagePickerFromType {
     self.coverPhotoImages = [NSMutableArray array];
     self.detailPhotoImages = [NSMutableArray array];
     self.detailPhotoImages_show = [NSMutableArray array];
+    self.activityAddressArray = [NSMutableArray array];
+    
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
@@ -335,7 +345,7 @@ typedef enum imagePickerFromType {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == self.nonleagueTableView) {
-        if (section == 1 || section == 3 || section == 4)
+        if (section == 1 )//|| section == 3 || section == 4)
             return 10;
         else if (section == 2)
             return 35;
@@ -357,7 +367,10 @@ typedef enum imagePickerFromType {
             return 4;
         else if (section == 1)
             return 2;
-        else if (section == 2 || section == 3 || section == 4)
+        else if (section == 2) {
+            return self.activityAddressArray.count+1;
+        }
+        else if (section == 3)// || section == 4)
             return 1;
     }
     else if (self.leagueTableView == tableView) {
@@ -382,11 +395,11 @@ typedef enum imagePickerFromType {
             case 1:
                 return [self drawSection1Cell:self.nonleagueTableView indexPath:indexPath];
             case 2:
-                return [self drawSection2Cell:self.nonleagueTableView indexPath:indexPath];
+                return [self drawSection2ListCell:self.nonleagueTableView indexPath:indexPath];
             case 3:
-                return [self drawSection3Cell:self.nonleagueTableView indexPath:indexPath];
-            case 4:
-                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];
+                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];//[self drawSection3Cell:self.nonleagueTableView indexPath:indexPath];
+//            case 4:
+//                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];
             default:
                 break;
         }
@@ -420,7 +433,7 @@ typedef enum imagePickerFromType {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.nonleagueTableView == tableView)
-        return 5;
+        return 4;
     else if (self.leagueTableView == tableView)
         return 9;
     return 0;
@@ -428,7 +441,7 @@ typedef enum imagePickerFromType {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.nonleagueTableView == tableView) {
-        if (indexPath.section == 2 || indexPath.section == 3)
+        if (indexPath.section == 2)//|| indexPath.section == 3)
             return 100;
     }
     else if (self.leagueTableView == tableView) {
@@ -531,7 +544,8 @@ typedef enum imagePickerFromType {
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
             [Vc setCompleteSelect:^(NSString *str) {
-                
+                self.contactInfo = str;
+                [self.leagueTableView reloadData];
             }];
         }
     }
@@ -768,6 +782,13 @@ typedef enum imagePickerFromType {
     return cell;
 }
 
+- (UITableViewCell*)drawSection2ListCell:(UITableView*)tableView
+                           indexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == self.activityAddressArray.count)
+        return [self drawSection3Cell:tableView indexPath:indexPath];
+    return [self drawSection2Cell:tableView indexPath:indexPath];
+}
+
 - (UITableViewCell*)drawSection2Cell:(UITableView*)tableView
                            indexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell2 forIndexPath:indexPath];
@@ -840,6 +861,10 @@ typedef enum imagePickerFromType {
     moneyLabel.text = @"200元";
     [moneyLabel sizeToFit];
     moneyLabel.center = CGPointMake(moneyLabel.center.x, cell.contentView.bounds.size.height/2);
+    
+    UILabel* lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, cell.contentView.bounds.size.height-10, APP_WIDTH, 10)];
+    lineLabel.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    [cell.contentView addSubview:lineLabel];
 
     return cell;
 }
@@ -858,7 +883,7 @@ typedef enum imagePickerFromType {
         nameLabel.textColor = UIColorFromRGB(0x333333);
         [cell.contentView addSubview:nameLabel];
     }
-    nameLabel.text = @"场次2";
+    nameLabel.text = [NSString stringWithFormat:@"场次%ld", self.activityAddressArray.count+1];
     [nameLabel sizeToFit];
     nameLabel.center = CGPointMake(nameLabel.center.x, cell.contentView.bounds.size.height/2);
 
@@ -1128,8 +1153,16 @@ typedef enum imagePickerFromType {
         [cell.contentView addSubview:addLabel];
     }
     addLabel.hidden = NO;
-    addLabel.text = @"未添加";
+    if (self.contactInfo.length == 0)
+        addLabel.text = @"未添加";
+    else
+        addLabel.text = self.contactInfo;
     [addLabel sizeToFit];
+    CGFloat width = addLabel.frame.size.width;
+    if (addLabel.frame.size.width > 150) {
+        width = 150;
+    }
+    addLabel.frame = CGRectMake(APP_WIDTH-30-width, 0, width, addLabel.frame.size.height);
     addLabel.center = CGPointMake(addLabel.center.x, cell.contentView.bounds.size.height/2);
     
     return cell;
