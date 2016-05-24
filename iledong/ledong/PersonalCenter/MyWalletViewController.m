@@ -121,5 +121,20 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)queryWalletInfo {
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Wallet/GetWalletInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+        NSDictionary* temp = (NSDictionary*)json;
+        if ([[temp objectForKey:@"code"]intValue]!=0) {
+            [Dialog toast:[temp objectForKey:@"msg"]];
+            return;
+        }
+       
+        
+    }fail:^{
+        [Dialog toast:@"网络失败，请稍后再试"];
+    }];
+}
+
+
 
 @end

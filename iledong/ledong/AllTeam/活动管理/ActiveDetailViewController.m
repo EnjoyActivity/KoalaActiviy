@@ -242,6 +242,17 @@
     }
 }
 
-
+- (void)queryActiveDetailInfo {
+    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Activity/GetActivityById"];
+    NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
+    [postDic setObject:@"token" forKey:[HttpClient getTokenStr]];
+    [postDic setObject:@"id" forKey:@(self.activeId)];
+    
+    [HttpClient postJSONWithUrl:url parameters:postDic success:^(id reponseObject){
+        
+    }fail:^{
+        
+    }];
+}
 
 @end

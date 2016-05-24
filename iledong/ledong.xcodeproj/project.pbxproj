@@ -23,6 +23,11 @@
 		2054C1C21CEEFE4F00FF7FDD /* TradeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1C01CEEFE4F00FF7FDD /* TradeDetailViewController.m */; };
 		2054C1C71CEEFF7200FF7FDD /* TradeDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054C1C51CEEFF7200FF7FDD /* TradeDetailTableViewCell.m */; };
 		2054C1C81CEEFF7200FF7FDD /* TradeDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054C1C61CEEFF7200FF7FDD /* TradeDetailTableViewCell.xib */; };
+		2054E9091CF4096000CD3FDD /* SessionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054E9071CF4096000CD3FDD /* SessionTableViewCell.m */; };
+		2054E90A1CF4096000CD3FDD /* SessionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054E9081CF4096000CD3FDD /* SessionTableViewCell.xib */; };
+		2054E9111CF4181600CD3FDD /* ChooseActiveItemVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054E90F1CF4181600CD3FDD /* ChooseActiveItemVC.m */; };
+		2054E9121CF4181600CD3FDD /* ChooseActiveItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054E9101CF4181600CD3FDD /* ChooseActiveItemVC.xib */; };
+		2054E9161CF419F000CD3FDD /* ActiveItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054E9151CF419F000CD3FDD /* ActiveItemModel.m */; };
 		20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E201CED66A300D5C551 /* ChangeAvatarViewController.m */; };
 		20B63E2C1CED791E00D5C551 /* ChangeAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E291CED791E00D5C551 /* ChangeAvatarView.m */; };
 		20B63E351CED883400D5C551 /* ChangeNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B63E341CED883400D5C551 /* ChangeNickNameViewController.m */; };
@@ -386,6 +391,14 @@
 		2054C1C41CEEFF7200FF7FDD /* TradeDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeDetailTableViewCell.h; sourceTree = "<group>"; };
 		2054C1C51CEEFF7200FF7FDD /* TradeDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeDetailTableViewCell.m; sourceTree = "<group>"; };
 		2054C1C61CEEFF7200FF7FDD /* TradeDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TradeDetailTableViewCell.xib; sourceTree = "<group>"; };
+		2054E9061CF4096000CD3FDD /* SessionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionTableViewCell.h; sourceTree = "<group>"; };
+		2054E9071CF4096000CD3FDD /* SessionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionTableViewCell.m; sourceTree = "<group>"; };
+		2054E9081CF4096000CD3FDD /* SessionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SessionTableViewCell.xib; sourceTree = "<group>"; };
+		2054E90E1CF4181600CD3FDD /* ChooseActiveItemVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseActiveItemVC.h; sourceTree = "<group>"; };
+		2054E90F1CF4181600CD3FDD /* ChooseActiveItemVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseActiveItemVC.m; sourceTree = "<group>"; };
+		2054E9101CF4181600CD3FDD /* ChooseActiveItemVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseActiveItemVC.xib; sourceTree = "<group>"; };
+		2054E9141CF419F000CD3FDD /* ActiveItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveItemModel.h; sourceTree = "<group>"; };
+		2054E9151CF419F000CD3FDD /* ActiveItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveItemModel.m; sourceTree = "<group>"; };
 		20B63E1F1CED66A300D5C551 /* ChangeAvatarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeAvatarViewController.h; sourceTree = "<group>"; };
 		20B63E201CED66A300D5C551 /* ChangeAvatarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeAvatarViewController.m; sourceTree = "<group>"; };
 		20B63E291CED791E00D5C551 /* ChangeAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeAvatarView.m; sourceTree = "<group>"; };
@@ -918,9 +931,13 @@
 		205375841CF28E74005902B3 /* 活动详情 */ = {
 			isa = PBXGroup;
 			children = (
+				2054E9131CF4194D00CD3FDD /* Model */,
 				2053758A1CF2B0DC005902B3 /* view */,
 				205375851CF29496005902B3 /* ActiveDetailViewController.h */,
 				205375861CF29496005902B3 /* ActiveDetailViewController.m */,
+				2054E90E1CF4181600CD3FDD /* ChooseActiveItemVC.h */,
+				2054E90F1CF4181600CD3FDD /* ChooseActiveItemVC.m */,
+				2054E9101CF4181600CD3FDD /* ChooseActiveItemVC.xib */,
 			);
 			name = "活动详情";
 			sourceTree = "<group>";
@@ -943,8 +960,20 @@
 				205375A11CF2E1C1005902B3 /* ChooseForm.h */,
 				205375A21CF2E1C1005902B3 /* ChooseForm.m */,
 				2053759F1CF2E1B1005902B3 /* ChooseForm.xib */,
+				2054E9061CF4096000CD3FDD /* SessionTableViewCell.h */,
+				2054E9071CF4096000CD3FDD /* SessionTableViewCell.m */,
+				2054E9081CF4096000CD3FDD /* SessionTableViewCell.xib */,
 			);
 			name = view;
+			sourceTree = "<group>";
+		};
+		2054E9131CF4194D00CD3FDD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2054E9141CF419F000CD3FDD /* ActiveItemModel.h */,
+				2054E9151CF419F000CD3FDD /* ActiveItemModel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		20B63E221CED6EC500D5C551 /* view */ = {
@@ -2238,6 +2267,7 @@
 				362F85FB1CABCAE3006FFE61 /* CreateTeamVController.xib in Resources */,
 				7F8F192A1C87E12100570B79 /* MyCollectionViewController.xib in Resources */,
 				EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */,
+				2054E9121CF4181600CD3FDD /* ChooseActiveItemVC.xib in Resources */,
 				361A76481CBC9357002FE6B2 /* img_avatar_100.png in Resources */,
 				626DD45F1C841FC9006BC53C /* Images.xcassets in Resources */,
 				3608E20D1CA26D9500AC23A4 /* ic_search_a@2x.png in Resources */,
@@ -2285,6 +2315,7 @@
 				362F7E7F1CC0C1E300C91090 /* PrivateOrderViewController.xib in Resources */,
 				36E1E6E41C9F84C90085C457 /* ic_mine_on@2x.png in Resources */,
 				36B2C1CD1CBB4F8C001D842B /* ic_male_on@2x.png in Resources */,
+				2054E90A1CF4096000CD3FDD /* SessionTableViewCell.xib in Resources */,
 				36B2C1CE1CBB4F8C001D842B /* ic_male@2x.png in Resources */,
 				362F7E731CC0BF7800C91090 /* ic_add_grey@2x.png in Resources */,
 				36E1E6E51C9F84C90085C457 /* ic_mine@2x.png in Resources */,
@@ -2376,6 +2407,7 @@
 				905516091CEC3CED001C4F51 /* MJRefreshBackNormalFooter.m in Sources */,
 				905515FF1CEC3CED001C4F51 /* MBProgressHUD.m in Sources */,
 				361A765D1CBCEB81002FE6B2 /* GoodActivViewController.m in Sources */,
+				2054E9161CF419F000CD3FDD /* ActiveItemModel.m in Sources */,
 				7F06F6241C86C28800F67173 /* MyMessageViewController.m in Sources */,
 				905516191CEC3CED001C4F51 /* SDWebImageDownloaderOperation.m in Sources */,
 				905515F01CEC3CED001C4F51 /* AFURLSessionManager.m in Sources */,
@@ -2431,6 +2463,7 @@
 				7F9318F91C8596590061E9EA /* PersonalInfomationViewController.m in Sources */,
 				3627C3011CA8D62A00A5D7EB /* ScanViewController.m in Sources */,
 				7F8F19171C87D2F700570B79 /* MyHostTableViewCell.m in Sources */,
+				2054E9111CF4181600CD3FDD /* ChooseActiveItemVC.m in Sources */,
 				7F875FF51C868D1C003C6EBB /* PlayerTableViewCell.m in Sources */,
 				626DD4541C841FC9006BC53C /* main.m in Sources */,
 				36B2C1B21CBB481A001D842B /* MemberViewController.m in Sources */,
@@ -2446,6 +2479,7 @@
 				20B63E5E1CEDC02B00D5C551 /* SBJsonTokeniser.m in Sources */,
 				36B2C1D61CBB7F72001D842B /* UserNameViewController.m in Sources */,
 				36E3E1F91CC46E4700294509 /* AffirmPayViewController.m in Sources */,
+				2054E9091CF4096000CD3FDD /* SessionTableViewCell.m in Sources */,
 				905515FD1CEC3CED001C4F51 /* MBProgressHUD+Add.m in Sources */,
 				9055160B1CEC3CED001C4F51 /* MJRefreshGifHeader.m in Sources */,
 				20B63E2C1CED791E00D5C551 /* ChangeAvatarView.m in Sources */,

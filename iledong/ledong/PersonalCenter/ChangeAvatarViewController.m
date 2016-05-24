@@ -125,9 +125,9 @@
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
     [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[headImage] success:^(id response){
-        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
-        NSDictionary* temp = (NSDictionary*)jsonObject;
+//        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+//        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
+        NSDictionary* temp = (NSDictionary*)response;
         if ([[temp objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[temp objectForKey:@"msg"]];
             return;

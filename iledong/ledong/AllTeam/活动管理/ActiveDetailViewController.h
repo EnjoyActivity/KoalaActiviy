@@ -10,6 +10,6 @@
 
 @interface ActiveDetailViewController : BaseViewController
 
-
+@property (nonatomic,assign) int activeId;
 
 @end

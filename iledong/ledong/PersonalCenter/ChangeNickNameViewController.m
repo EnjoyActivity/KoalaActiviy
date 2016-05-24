@@ -95,9 +95,9 @@
         [postDic setObject:@"" forKey:@"Interest"];
         [postDic setObject:@"" forKey:@"AvatarUrl"];
         [HttpClient postJSONWithUrl:url parameters:postDic success:^(id response){
-            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
-            NSDictionary* temp = (NSDictionary*)jsonObject;
+//            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+//            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
+            NSDictionary* temp = (NSDictionary*)response;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
                 [Dialog toast:[temp objectForKey:@"msg"]];
                 return;
