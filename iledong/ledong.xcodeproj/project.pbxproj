@@ -2647,7 +2647,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7818db2d-47f9-4096-bde6-f13fdc9248fc";
+				PROVISIONING_PROFILE = "d3c75de4-6250-46b3-b97e-ee392df908df";
 			};
 			name = Debug;
 		};
@@ -2664,7 +2664,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7818db2d-47f9-4096-bde6-f13fdc9248fc";
+				PROVISIONING_PROFILE = "d3c75de4-6250-46b3-b97e-ee392df908df";
 			};
 			name = Release;
 		};
