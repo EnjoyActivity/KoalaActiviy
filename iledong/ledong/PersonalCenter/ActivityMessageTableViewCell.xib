@@ -66,6 +66,7 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="SNB-v7-LcN">
                         <rect key="frame" x="162" y="107" width="60" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <state key="normal" title="取消订单" backgroundImage="btn_redline">
                             <color key="titleColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -74,12 +75,22 @@
                         <rect key="frame" x="246" y="107" width="60" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <state key="normal" title="付款">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="activeImageView" destination="aI7-i6-Xj9" id="AmR-DV-WW1"/>
+                <outlet property="activeTitleLabel" destination="bn5-bu-ur9" id="XFB-uu-UR1"/>
+                <outlet property="cancelBtn" destination="SNB-v7-LcN" id="Pqi-hR-aeN"/>
+                <outlet property="joinFormLabel" destination="Dgg-h6-Wjl" id="Ixz-IC-jm5"/>
+                <outlet property="moneyLabel" destination="WR9-vc-kUj" id="GNB-iS-SJB"/>
+                <outlet property="okBtn" destination="IhG-EP-Hl1" id="Mp6-ai-fre"/>
+                <outlet property="payLabel" destination="tMK-SI-Ojv" id="sty-dn-lyf"/>
+            </connections>
             <point key="canvasLocation" x="212" y="192"/>
         </tableViewCell>
     </objects>
