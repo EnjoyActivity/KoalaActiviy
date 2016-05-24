@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 
 @property (nonatomic,strong) UITableView * resultTableView;
+@property (strong, nonatomic) IBOutlet UILabel *resultCountLabel;
 
 @end

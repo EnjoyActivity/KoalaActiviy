@@ -29,7 +29,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tabBarController.tabBar.hidden = YES;
     cityDic = [NSMutableDictionary dictionaryWithDictionary:[self cityData]];
     
     [self.view addSubview:self.searchResultTable];
@@ -41,6 +40,19 @@
     [self getLocationInfo];
     searchResultArray = [NSMutableArray array];
     cityIndex = @[@"热门城市", @"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear: animated];
+    self.tabBarController.tabBar.hidden = NO;
+    self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden= YES;
+    self.navigationController.navigationBarHidden = YES;
     
 }
 

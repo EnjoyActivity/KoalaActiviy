@@ -15,6 +15,7 @@
                 <outlet property="gobackButton" destination="djS-4l-0bH" id="cHc-fX-lCY"/>
                 <outlet property="headerLabel" destination="n02-8N-kOn" id="lET-Lt-qgN"/>
                 <outlet property="headerView" destination="jO2-HJ-74t" id="N2g-zb-fLb"/>
+                <outlet property="resultCountLabel" destination="n02-8N-kOn" id="Oh9-qQ-6VX"/>
                 <outlet property="textField" destination="LHx-q0-zrh" id="F2i-oP-qGe"/>
                 <outlet property="view" destination="0Pb-DK-ACb" id="Uv5-PO-6C0"/>
             </connections>

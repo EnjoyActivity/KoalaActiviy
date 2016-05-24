@@ -34,9 +34,9 @@ static CGFloat const teamHeight = 280;
     //精彩活动
     NSTimer *activityTimer;
     NSInteger currentActivity;
-    NSMutableArray *activityImageArray;
-    NSMutableArray *activityNameArray;
-    NSArray * activityArray;
+//    NSMutableArray *activityImageArray;
+//    NSMutableArray *activityNameArray;
+    NSMutableArray * activityArray;
     //热门团队
     
     NSTimer *teamTimer;
@@ -82,20 +82,25 @@ static CGFloat const teamHeight = 280;
     
  
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationController.navigationBarHidden = YES;
+//    self.navigationController.navigationBarHidden = YES;
     
     self.navigationController.navigationBar.shadowImage = [UIImage new];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     
-    topAdImageArray = [NSMutableArray arrayWithObjects:@"img_1",@"img_1b", nil];
-    activityImageArray = [NSMutableArray arrayWithObjects:@"img_3",@"img_4",@"img_morebg", nil];
-    activityNameArray = [NSMutableArray arrayWithObjects:@"篮球",@"足球",@"更多", nil];
+    
+    
+    topAdImageArray = [NSMutableArray array];
+
+    
+    activityArray = [NSMutableArray array];
     teamImageArray = [NSMutableArray arrayWithObjects:@"img_3",@"img_4",@"img_5",@"img_6",@"img_2", nil];
     teamHeadImageArray = [NSMutableArray arrayWithObjects:@"user01_44",@"user02_44",@"user01_44",@"user02_44",@"user01_44", nil];
     
     [self setUpUI];
     
+    
     [self requestActivityData];
+    [self requestAdData];
 
     
  
@@ -106,20 +111,21 @@ static CGFloat const teamHeight = 280;
 {
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = NO;
-    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBarHidden = YES;
 }
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self adTimerStart];
-    [self activityTimerStart];
-    [self teamTimerStart];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
  
+    self.tabBarController.tabBar.hidden = YES;
+    self.navigationController.navigationBarHidden = NO;
+    
     [self adTimerStop];
     [self activityTimerStop];
     [self teamTimerStop];
@@ -129,13 +135,22 @@ static CGFloat const teamHeight = 280;
 #pragma mark - netWork 
 
 - (void)requestAdData {
-    NSString * token =[HttpClient getTokenStr];
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    NSDictionary * dic = @{
-                           
-                           };
     AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [requestManager GET:@"Config/FeaturesImages" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSArray * resultArray = resultDic[@"result"];
+        topAdImageArray = [resultArray copy];
+   
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self addAdProgress];
+            [self adTimerStart];
+            [topAdCollectionView reloadData];
+        });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         
@@ -158,11 +173,14 @@ static CGFloat const teamHeight = 280;
         }
         activityArray = [resultDic[@"result"] copy];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self addActivityProgress];
+            [self activityTimerStart];
             [activityCollectionView reloadData];
         });
         
     }
     failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
     }];
 }
 
@@ -170,6 +188,12 @@ static CGFloat const teamHeight = 280;
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
     [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self addTeamProgress];
+            [self teamTimerStart];
+            [hotTeamCollectionView reloadData];
+        });
+        
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         
@@ -206,8 +230,10 @@ static CGFloat const teamHeight = 280;
     if ([collectionView isEqual:topAdCollectionView]) {
         return topAdImageArray.count;
     } else if ([collectionView isEqual:activityCollectionView]) {
-//        return activityImageArray.count;
-        return 3;
+        if (activityArray.count == 0) {
+            return 0;
+        }
+        return MIN(3, activityArray.count);
     }
     return teamImageArray.count;
 }
@@ -220,8 +246,9 @@ static CGFloat const teamHeight = 280;
     if ([collectionView isEqual:topAdCollectionView]) {
         UICollectionViewCell * topAdCell = [collectionView dequeueReusableCellWithReuseIdentifier:topAdCellIdentifier forIndexPath:indexPath];
         UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
-        imageView.image = [UIImage imageNamed:topAdImageArray[indexPath.row]];
-//        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:nil];
+        NSString * imgUrl = [NSString stringWithFormat:@"http://119.254.209.83:9428/%@",topAdImageArray[indexPath.row]];
+        NSURL * url = [NSURL URLWithString:imgUrl];
+        [imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img_1"]];
         return topAdCell;
         
     } else if ([collectionView isEqual:activityCollectionView]) {
@@ -400,7 +427,7 @@ static CGFloat const teamHeight = 280;
     // 滚动视图内容的跳转
 //    activPageIndex = ++activPageIndex % [activImageArr count];
     currentActivity ++;
-    currentActivity = currentActivity % activityImageArray.count;
+    currentActivity = currentActivity % activityArray.count;
     CGFloat xOffset = (180 + 6) * currentActivity;
     CGFloat maxOffset = activityCollectionView.contentSize.width -APP_WIDTH-6;
     if (xOffset > maxOffset) {
@@ -430,7 +457,7 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)activityProgressMove {
-    NSInteger count = activityImageArray.count;
+    NSInteger count = activityArray.count;
     CGFloat width = APP_WIDTH/count;
     NSInteger current = currentActivity%count;
     CGPoint oldPosition = activityProgressLayer.position;
@@ -512,7 +539,6 @@ static CGFloat const teamHeight = 280;
     [self addCollectionView];
     [self addLabel];
     [self addButton];
-    [self addProgressLayer];
     
     [self.view addSubview:mainScrollView];
 
@@ -586,28 +612,35 @@ static CGFloat const teamHeight = 280;
     
 }
 
-- (void)addProgressLayer {
+- (void)addAdProgress {
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     
     CALayer * adProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH, 2) color:bgColor];
     topAdProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH/topAdImageArray.count, 2) color:progressColor];
-    
-    CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH, 2) color:bgColor];
-    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/activityImageArray.count, 2) color:progressColor];
-    
-    CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH, 2) color:bgColor];
-    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/teamImageArray.count, 2) color:progressColor];
-    
+
     [mainScrollView.layer addSublayer:adProgressLayer];
     [mainScrollView.layer addSublayer:topAdProgressLayer];
+}
+
+- (void)addActivityProgress {
+    UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
+    UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
+    CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH, 2) color:bgColor];
+    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/activityArray.count, 2) color:progressColor];
     [mainScrollView.layer addSublayer:activityLayer];
     [mainScrollView.layer addSublayer:activityProgressLayer];
-    
+}
+
+- (void)addTeamProgress {
+    UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
+    UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
+    CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH, 2) color:bgColor];
+    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/teamImageArray.count, 2) color:progressColor];
     [mainScrollView.layer addSublayer:teamLayer];
     [mainScrollView.layer addSublayer:hotTeamProgressLayer];
-    
 }
+
 
 - (CALayer *)layerWithFrame:(CGRect)frame color:(UIColor*)bgColor {
     CALayer * layer = [CALayer layer];

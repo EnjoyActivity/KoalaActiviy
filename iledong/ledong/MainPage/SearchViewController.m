@@ -24,6 +24,7 @@ static NSString * friendCell = @"ActivityCell";
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
     NSArray *sectionTitleArray;
+    
     NSMutableArray * historyArray;
     NSMutableArray * activityArray;
     NSMutableArray * teamArray;
@@ -38,108 +39,106 @@ static NSString * friendCell = @"ActivityCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBarHidden = YES;
     self.tabBarController.tabBar.hidden = YES;
-
+    
+    historyArray = [NSMutableArray arrayWithArray:[self getSearchHistory]];
+    
     [self setUpUI];
   
     self.resultTableView.hidden = YES;
     self.textFiled.delegate = self;
     
     sectionTitleArray = @[@"活动",@"团队",@"好友"];
-    
-    NSArray * history = @[@"history1",@"history2",@"history3",@"history4",@"history5"];
-    historyArray = [NSMutableArray array];
-    [historyArray addObjectsFromArray:history];
+
     
     activityArray = [NSMutableArray array];
-     NSArray * activity = @[@"activity1",@"activity2",@"activity3",@"activity4"];
-    [activityArray addObjectsFromArray:activity];
     teamArray =[NSMutableArray array];
-    NSArray * team = @[@"team1",@"team2",@"team3",@"team4",@"team5",@"team6",@"team7",@"team8"];
-    
-    [teamArray addObjectsFromArray:team];
-    
     friendArray = [NSMutableArray array];
-    
-    NSArray * friedn = @[@"friend1",@"friend2",@"friend3"];
-    [friendArray addObjectsFromArray:friedn];
-    
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+    self.tabBarController.tabBar.hidden = NO;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - ButtonClick
-- (IBAction)searchTeamButtonClick:(id)sender
-{
-    SearchTeamVC *teamController = [[SearchTeamVC alloc] init];
-    [self.navigationController pushViewController:teamController animated:YES];
-}
 
-- (IBAction)searchActivButtonClick:(id)sender
-{
-    SearchActiveVC *activeController = [[SearchActiveVC alloc] init];
-    [self.navigationController pushViewController:activeController animated:YES];
-}
+#pragma mark - NetWork
 
-- (IBAction)searchFrindsButtonClick:(id)sender
-{
-    SearchFriendVC *friendController = [[SearchFriendVC alloc] init];
-    [self.navigationController pushViewController:friendController animated:YES];
-}
-
-- (IBAction)gobackButtonClick:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-- (IBAction)searchButtonClicked:(id)sender {
+- (void)requestDataKeyWord:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"keywords":keyWord,
+                           @"ownertype":[NSNumber numberWithInt:0]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            [SVProgressHUD showErrorWithStatus:@"error"];
+            return ;
+        }
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
     
 }
 
-- (IBAction)clearSearchButtonClick:(id)sender
-{
-    [historyArray removeAllObjects];
-    [self.tableView reloadData];
-    
-}
-
-- (void)getMoreActivityInfo:(UIButton *)sender {
-    NSInteger tag = sender.tag-100;
-    switch (tag) {
-        case 0:
-        {
-            
-        }
-            break;
-        case 1:
-        {
-            
-        }
-            break;
-        case 2:
-        {
-            
-        }
-            break;
+- (NSString *)getPlistPath {
+    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/mainHistory.plist"];
+    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
+    if (history == nil) {
+        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
+        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
     }
+    
+    return plistPath;
+}
+
+- (NSArray *)getSearchHistory {
+    NSString * path = [self getPlistPath];
+    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
+    return arrayTemp;
+}
+
+- (void)addSearchHistory {
+    NSString * path = [self getPlistPath];
+    if (historyArray.count > 20) {
+        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
+    }
+    [historyArray writeToFile:path atomically:YES];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField.text.length == 0) {
+        return YES;
+    }
     [textField resignFirstResponder];
+    
+    [historyArray insertObject:textField.text atIndex:0];
+    [self addSearchHistory];
+    [self requestDataKeyWord:textField.text];
     self.contentView.hidden = YES;
     self.resultTableView.hidden = NO;
+    
     return YES;
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
     self.resultTableView.hidden = YES;
     self.contentView.hidden = NO;
+    [self.tableView reloadData];
     return YES;
 }
 
@@ -213,16 +212,22 @@ static NSString * friendCell = @"ActivityCell";
             SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
             cell.activityName.text = @"dasda";
             cell.activityPrice.text = @"ewqq";
+//            cell.activityDetail.text
+//            cell.headImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
             return cell;
         }
         else if (indexPath.section == 1) {
             HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
             cell.sNameLabel.text = @"hahahahh";
+//            cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
+//            cell.sDetailLabel.text
             return cell;
         }
         else {
             HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
             cell.sNameLabel.text = @"oooo";
+//            cell.sDetailLabel.text
+//            cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
             return cell;
         }
     }
@@ -269,13 +274,72 @@ static NSString * friendCell = @"ActivityCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.tableView]) {
-        
+        NSString * historyTemp =historyArray[indexPath.row];
+        [self requestDataKeyWord:historyTemp];
+        [self.resultTableView setHidden:NO];
+        self.textFiled.text = historyTemp;
     }
     else {
         
     }
 }
 
+
+#pragma mark - ButtonClick
+- (IBAction)searchTeamButtonClick:(id)sender
+{
+    SearchTeamVC *teamController = [[SearchTeamVC alloc] init];
+    [self.navigationController pushViewController:teamController animated:YES];
+}
+
+- (IBAction)searchActivButtonClick:(id)sender
+{
+    SearchActiveVC *activeController = [[SearchActiveVC alloc] init];
+    [self.navigationController pushViewController:activeController animated:YES];
+}
+
+- (IBAction)searchFrindsButtonClick:(id)sender
+{
+    SearchFriendVC *friendController = [[SearchFriendVC alloc] init];
+    [self.navigationController pushViewController:friendController animated:YES];
+}
+
+- (IBAction)gobackButtonClick:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)searchButtonClicked:(id)sender {
+    
+}
+
+- (IBAction)clearSearchButtonClick:(id)sender
+{
+    [historyArray removeAllObjects];
+    [self addSearchHistory];
+    [self.tableView reloadData];
+    
+}
+
+- (void)getMoreActivityInfo:(UIButton *)sender {
+    NSInteger tag = sender.tag-100;
+    switch (tag) {
+        case 0:
+        {
+            
+        }
+            break;
+        case 1:
+        {
+            
+        }
+            break;
+        case 2:
+        {
+            
+        }
+            break;
+    }
+}
 
 #pragma mark - UI
 

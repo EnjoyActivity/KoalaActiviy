@@ -14,6 +14,11 @@ static NSString * const activityCell = @"ActivityCell";
 static NSString * const hotSearchCell = @"hotSearchCell";
 
 @interface SearchActiveVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
+{
+    NSMutableArray * historyArray;
+    NSMutableArray * resultArray;
+    NSMutableArray * hotSearchArray;
+}
 
 @end
 
@@ -22,6 +27,10 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    historyArray = [NSMutableArray array];
+    [historyArray addObjectsFromArray:[self getSearchHistory]];
+    resultArray = [NSMutableArray array];
+    hotSearchArray = [NSMutableArray array];
     [self setUpUI];
     
   
@@ -32,6 +41,64 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - NetWork
+
+- (void)requestWithKeyWord:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"keywoords":keyWord,
+                           @"ownertype":[NSNumber numberWithInt:0]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            [SVProgressHUD showErrorWithStatus:@"error"];
+            return ;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+    }];
+}
+
+- (void)requestHotSearch {
+    
+}
+#pragma mark - SearchHistory
+- (NSString *)getPlistPath {
+    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/activityHistory.plist"];
+    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
+    if (history == nil) {
+        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
+        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
+    }
+    
+    return plistPath;
+}
+
+- (NSArray *)getSearchHistory {
+    NSString * path = [self getPlistPath];
+    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
+    return arrayTemp;
+}
+
+- (void)addSearchHistory {
+    NSString * path = [self getPlistPath];
+    if (historyArray.count > 20) {
+        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
+    }
+    [historyArray writeToFile:path atomically:YES];
+}
+
+#pragma mark - buttonAction
 
 - (IBAction)gobackButtonClick:(id)sender
 {
@@ -39,27 +106,43 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 }
 - (IBAction)clearSearchButton:(id)sender
 {
+    [historyArray removeAllObjects];
+    [self.historyTableView reloadData];
+    [self addSearchHistory];
     
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
     self.textField.text = nil;
     [self.textField resignFirstResponder];
-    [self.resultTableView removeFromSuperview];
-    self.resultTableView = nil;
-    self.contentView.hidden = NO;
+    [self.resultTableView setHidden:YES];
+//    self.contentView.hidden = NO;
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField.text.length == 0) {
+        return YES;
+    }
+    
     [textField resignFirstResponder];
-    self.contentView.hidden = YES;
-    [self.view addSubview:self.resultTableView];
+    [historyArray insertObject:textField.text atIndex:0];
+    [self addSearchHistory];
+    
+    [self requestWithKeyWord:textField.text];
+//    self.contentView.hidden = YES;
+    [self.resultTableView setHidden:NO];
     return YES;
 }
 
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    [self.resultTableView setHidden:YES];
+//    self.contentView.hidden = NO;
+    [self.historyTableView reloadData];
+    return YES;
+}
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
@@ -82,11 +165,11 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 {
     if (tableView == self.historyTableView)
     {
-        return 4;
+        return historyArray.count;
     }
     else
     {
-        return 2;
+        return resultArray.count;
     }
 }
 
@@ -96,14 +179,25 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
-        label.text = @"history";
+        label.text = historyArray[indexPath.row];
         return cell;
     }
     else
     {
         HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
         cell.sNameLabel.text = @"sdasd";
+//        cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
+//        cell.sDetailLabel.text
         return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.historyTableView]) {
+        NSString * historyTemp = historyArray[indexPath.row];
+        self.textField.text = historyTemp;
+        [self requestWithKeyWord:historyTemp];
+        [self.resultTableView setHidden:NO];
     }
 }
 
@@ -135,6 +229,8 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     self.btnImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
 
     self.textField.delegate = self;
+    
+    [self.view addSubview:self.resultTableView];
 
 }
 
@@ -146,6 +242,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
         _resultTableView.backgroundColor = [UIColor whiteColor];
         _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _resultTableView.tableHeaderView = self.headerView;
+        _resultTableView.hidden = YES;
         [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
     }
     return _resultTableView;

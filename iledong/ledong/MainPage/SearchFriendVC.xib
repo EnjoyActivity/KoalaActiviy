@@ -13,6 +13,7 @@
                 <outlet property="gobackButton" destination="0hp-7n-edd" id="xRn-gf-4QN"/>
                 <outlet property="headerLabel" destination="Z4v-AK-GkT" id="dFl-3s-Dpm"/>
                 <outlet property="headerView" destination="mKU-Nu-h3e" id="ggn-O5-Ezi"/>
+                <outlet property="resultCountLabel" destination="Z4v-AK-GkT" id="Bm2-Vp-Yi3"/>
                 <outlet property="textField" destination="blW-73-4cU" id="L4A-8k-gcc"/>
                 <outlet property="view" destination="YJR-I8-NGO" id="nC5-mU-aNq"/>
             </connections>

@@ -9,11 +9,11 @@
             <connections>
                 <outlet property="btnImage" destination="gmj-Dz-1vn" id="feC-Lk-Lyc"/>
                 <outlet property="collectionView" destination="ejQ-EB-LvO" id="OrJ-DV-ksg"/>
-                <outlet property="contentView" destination="VeG-Hf-vCr" id="bSJ-Ba-yug"/>
                 <outlet property="footerView" destination="RVU-hv-zAj" id="hiz-58-xYf"/>
                 <outlet property="gobackButton" destination="7Pb-ul-1On" id="jKy-Hq-f6O"/>
                 <outlet property="headerView" destination="bvS-q7-PvX" id="czw-cj-UOz"/>
                 <outlet property="historyTableView" destination="yWG-FU-OyN" id="Lan-lh-8gS"/>
+                <outlet property="resultCountLabel" destination="zYT-PW-Z2i" id="bq0-rW-Xlu"/>
                 <outlet property="textField" destination="F6B-l0-xJR" id="Hcy-b8-Rdh"/>
                 <outlet property="view" destination="cTn-rn-6Hg" id="Eok-tn-zPA"/>
             </connections>

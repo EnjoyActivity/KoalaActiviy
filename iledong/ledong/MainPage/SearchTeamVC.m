@@ -14,7 +14,10 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 static NSString * const teamCell = @"ActivityCell";
 
 @interface SearchTeamVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
-
+{
+    NSMutableArray * historyArray;
+    NSMutableArray * resultArray;
+}
 @end
 
 @implementation SearchTeamVC
@@ -22,6 +25,10 @@ static NSString * const teamCell = @"ActivityCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    historyArray = [NSMutableArray array];
+    resultArray = [NSMutableArray array];
+    [historyArray addObjectsFromArray:[self getSearchHistory]];
+    
     [self setUpUI];
     self.textField.delegate = self;
 
@@ -31,12 +38,66 @@ static NSString * const teamCell = @"ActivityCell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - NetWork
+
+- (void)requestWithKeyWord:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"keywoords":keyWord,
+                           @"ownertype":[NSNumber numberWithInt:1]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            [SVProgressHUD showErrorWithStatus:@"error"];
+            return ;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+    }];
+}
+
+
+- (NSString *)getPlistPath {
+    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/teamHistory.plist"];
+    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
+    if (history == nil) {
+        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
+        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
+    }
+    
+    return plistPath;
+}
+
+- (NSArray *)getSearchHistory {
+    NSString * path = [self getPlistPath];
+    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
+    return arrayTemp;
+}
+
+- (void)addSearchHistory {
+    NSString * path = [self getPlistPath];
+    if (historyArray.count > 20) {
+        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
+    }
+    [historyArray writeToFile:path atomically:YES];
+}
+#pragma mark - ButtonAction
 - (IBAction)cancelButtonClicked:(id)sender {
     [self.textField resignFirstResponder];
-    self.contentView.hidden = NO;
+//    self.contentView.hidden = NO;
     self.textField.text = nil;
-    [self.resultTableView removeFromSuperview];
-    self.resultTableView = nil;
+    [self.resultTableView setHidden:YES];
 }
 
 - (IBAction)gobackButtonClick:(id)sender
@@ -44,15 +105,32 @@ static NSString * const teamCell = @"ActivityCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)clearSearchHistory:(id)sender {
+    [historyArray removeAllObjects];
+    [self addSearchHistory];
+    [self.contentTableView reloadData];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField.text.length == 0) {
+        return YES;
+    }
     [textField resignFirstResponder];
-    self.contentView.hidden = YES;
-    [self.view addSubview:self.resultTableView];
+    [historyArray insertObject:textField.text atIndex:0];
+    [self addSearchHistory];
+    
+    [self requestWithKeyWord:textField.text];
+//    self.contentView.hidden = YES;
+    [self.resultTableView setHidden:NO];
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    [self.resultTableView setHidden:YES];
+//    self.contentView.hidden = NO;
+    [self.contentTableView reloadData];
     return YES;
 }
 
@@ -78,11 +156,11 @@ static NSString * const teamCell = @"ActivityCell";
 {
     if (tableView == self.contentTableView)
     {
-        return 4;
+        return historyArray.count;
     }
     else
     {
-        return 2;
+        return resultArray.count;
     }
 }
 
@@ -92,14 +170,25 @@ static NSString * const teamCell = @"ActivityCell";
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
-        label.text = @"history";
+        label.text = historyArray[indexPath.row];
         return cell;
     }
     else
     {
         HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
         cell.sNameLabel.text = @"hahahahh";
+//        cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
+//        cell.sDetailLabel.text
         return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.contentTableView]) {
+        NSString * historyTemp = historyArray[indexPath.row];
+        self.textField.text = historyTemp;
+        [self requestWithKeyWord:historyTemp];
+        [self.resultTableView setHidden:NO];
     }
 }
 
@@ -131,6 +220,8 @@ static NSString * const teamCell = @"ActivityCell";
     
     [self.contentTableView registerNib:[UINib nibWithNibName:@"SearchHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:historyCell];//teamCell
     self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
+    [self.view addSubview:self.resultTableView];
+    
 }
 
 - (UITableView *)resultTableView {
@@ -141,6 +232,7 @@ static NSString * const teamCell = @"ActivityCell";
         _resultTableView.backgroundColor = [UIColor whiteColor];
         _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _resultTableView.tableHeaderView = self.headerView;
+        _resultTableView.hidden = YES;
         [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
     }
     return _resultTableView;

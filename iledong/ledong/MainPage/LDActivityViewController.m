@@ -52,12 +52,14 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
     self.tabBarController.tabBar.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -164,6 +166,19 @@ static NSString * const locationIdentifier = @"LocationCell";
     [self requestActivityData:currentPage parameter:dic];
 }
 
+- (void)filterUserArea:(NSInteger)row {
+    //ProvinceCode
+    //CityCode
+    //AreaCode
+    NSDictionary * dic= @{
+                          @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+                          @"CityCode" :@"1111"
+                          };
+    currentPage = 1;
+    [self.locationTableview setHidden:YES];
+    [self requestActivityData:currentPage parameter:dic];
+    
+}
 #pragma mark - ButtonAction
 - (IBAction)backButtonClicked:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:YES];

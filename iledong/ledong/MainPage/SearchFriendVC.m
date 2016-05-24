@@ -13,6 +13,10 @@ static NSString * const historyCell = @"HistoryCell";
 static NSString * const friendCell = @"ActivityCell";
 
 @interface SearchFriendVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+{
+    NSMutableArray * historyArray;
+    NSMutableArray * resultArray;
+}
 
 @end
 
@@ -21,6 +25,10 @@ static NSString * const friendCell = @"ActivityCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    historyArray = [NSMutableArray array];
+    resultArray = [NSMutableArray array];
+    [historyArray addObjectsFromArray:[self getSearchHistory]];
     [self setUpUI];
 
 }
@@ -31,7 +39,63 @@ static NSString * const friendCell = @"ActivityCell";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - NetWork
+- (void)requestWithKeyWord:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"keywoords":keyWord,
+                           @"ownertype":[NSNumber numberWithInt:2]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            [SVProgressHUD showErrorWithStatus:@"error"];
+            return ;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+    }];
+}
+
+
+- (NSString *)getPlistPath {
+    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/friendHistory.plist"];
+    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
+    if (history == nil) {
+        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
+        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
+    }
+    
+    return plistPath;
+}
+
+- (NSArray *)getSearchHistory {
+    NSString * path = [self getPlistPath];
+    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
+    return arrayTemp;
+}
+
+- (void)addSearchHistory {
+    NSString * path = [self getPlistPath];
+    if (historyArray.count > 20) {
+        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
+    }
+    [historyArray writeToFile:path atomically:YES];
+}
+
+#pragma mark - ButtonClicked
 - (IBAction)clearSearchHistory:(id)sender {
+    [historyArray removeAllObjects];
+    [self addSearchHistory];
+    [self.contentTableView reloadData];
     
 }
 
@@ -43,16 +107,28 @@ static NSString * const friendCell = @"ActivityCell";
 - (IBAction)cancelButtonClicked:(id)sender {
     self.textField.text = nil;
     [self.textField resignFirstResponder];
-    [self.resultTableView removeFromSuperview];
-    self.resultTableView = nil;
+    [self.resultTableView setHidden:YES];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField.text.length == 0) {
+        return YES;
+    }
     [textField resignFirstResponder];
-    [self.view addSubview:self.resultTableView];
+    [historyArray insertObject:textField.text atIndex:0];
+    [self addSearchHistory];
+    
+    [self requestWithKeyWord:textField.text];
+    [self.resultTableView setHidden:NO];
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    [self.resultTableView setHidden:YES];
+    [self.contentTableView reloadData];
     return YES;
 }
 
@@ -78,11 +154,11 @@ static NSString * const friendCell = @"ActivityCell";
 {
     if (tableView == self.contentTableView)
     {
-        return 4;
+        return historyArray.count;
     }
     else
     {
-        return 2;
+        return resultArray.count;
     }
 }
 
@@ -92,17 +168,27 @@ static NSString * const friendCell = @"ActivityCell";
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCell forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
-        label.text = @"history";
+        label.text = historyArray[indexPath.row];
         return cell;
     }
     else
     {
         HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
         cell.sNameLabel.text = @"hahahahh";
+//        cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
+//        cell.sDetailLabel.text = 
         return cell;
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.contentTableView]) {
+        NSString * historyTemp = historyArray[indexPath.row];
+        self.textField.text = historyTemp;
+        [self requestWithKeyWord:historyTemp];
+        [self.resultTableView setHidden:NO];
+    }
+}
 
 
 #pragma mark - UI
@@ -116,6 +202,8 @@ static NSString * const friendCell = @"ActivityCell";
     self.footerImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
     
     self.textField.delegate = self;
+    
+    [self.view addSubview:self.resultTableView];
 }
 
 - (UITableView *)resultTableView {
@@ -126,6 +214,7 @@ static NSString * const friendCell = @"ActivityCell";
         _resultTableView.backgroundColor = [UIColor whiteColor];
         _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _resultTableView.tableHeaderView = self.headerView;
+        _resultTableView.hidden = YES;
         [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:friendCell];
     }
     return _resultTableView;

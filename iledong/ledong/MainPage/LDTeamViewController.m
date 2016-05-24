@@ -32,9 +32,12 @@ static NSString * const teamCell = @"teamCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    
+    
     self.title = @"热门团队";
     self.view.backgroundColor = [UIColor whiteColor];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.automaticallyAdjustsScrollViewInsets = NO;    
     
     NSDictionary * dic = @{
                            NSFontAttributeName:[UIFont systemFontOfSize:18],
@@ -50,6 +53,7 @@ static NSString * const teamCell = @"teamCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
 }
