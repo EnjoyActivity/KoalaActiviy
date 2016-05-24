@@ -59,6 +59,7 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
+@property (nonatomic, strong)NSDictionary* selectActivityDict;
 
 @end
 
@@ -474,7 +475,9 @@ typedef enum imagePickerFromType {
         [self.navigationController pushViewController:VC animated:YES];
         VC.vcTitle = @"活动分类";
         [VC setSelectCellBlock:^(NSDictionary *dict) {
-            
+            self.selectActivityDict = dict;
+            [self.leagueTableView reloadData];
+            [self.nonleagueTableView reloadData];
         }];
         return;
     }
@@ -527,6 +530,9 @@ typedef enum imagePickerFromType {
         else if (indexPath.section == 6) {
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
+            [Vc setCompleteSelect:^(NSString *str) {
+                
+            }];
         }
     }
 }
@@ -608,8 +614,12 @@ typedef enum imagePickerFromType {
             activityTypeLabel.textColor = UIColorFromRGB(0x999999);
             [cell.contentView addSubview:activityTypeLabel];
         }
-        activityTypeLabel.text = @"篮球";
+        if (self.selectActivityDict)
+            activityTypeLabel.text = [self.selectActivityDict objectForKey:@"ClassName"];
+        else
+            activityTypeLabel.text = @"未设置";
         [activityTypeLabel sizeToFit];
+        activityTypeLabel.frame = CGRectMake(APP_WIDTH-activityTypeLabel.frame.size.width-30, 0, activityTypeLabel.frame.size.width, activityTypeLabel.frame.size.height);
         activityTypeLabel.center = CGPointMake(activityTypeLabel.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 2) {

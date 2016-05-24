@@ -34,6 +34,10 @@
     self.textField.placeholder = @"请输入联系电话";
     self.textField.font = [UIFont systemFontOfSize:14.0];
     self.textField.center = CGPointMake(APP_WIDTH/2, APP_HEIGHT/2-20);
+    self.textField.textAlignment = NSTextAlignmentCenter;
+    self.textField.keyboardType = UIKeyboardTypeNumberPad;
+    self.textField.layer.borderColor = UIColorFromRGB(0xEFEFEF).CGColor;
+    self.textField.layer.borderWidth = 1;
     
     UIButton* btn = [[UIButton alloc]initWithFrame:CGRectMake(0, self.textField.frame.origin.y+self.textField.frame.size.height+10, 100, 40)];
     [btn setTitle:@"确定" forState:UIControlStateNormal];
@@ -54,6 +58,7 @@
 }
 
 - (void)btnClicked {
+    [self.view endEditing:YES];
     NSString* str = self.textField.text;
     if (self.block) {
         self.block(str);

@@ -269,7 +269,7 @@ typedef enum listType {
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
     else if (self.tableViewListType == listTypeJoinTeam)  {
-        teamHomeVC.teamType = teamTypeJoin;
+        teamHomeVC.teamType = teamTypeCreate;//teamTypeJoin;
         NSDictionary* dict = self.myJoinTeamData[indexPath.row];
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
