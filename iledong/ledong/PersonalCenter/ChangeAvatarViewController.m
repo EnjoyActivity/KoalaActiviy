@@ -74,15 +74,16 @@
     [tipBtn setTitleColor:RGB(227, 26, 26, 1) forState:UIControlStateNormal];
     tipBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     tipBtn.center = CGPointMake(APP_WIDTH/2, tipLabel.frame.origin.y - 9 - size.height/2);
-    
+    tipBtn.tag = 100;
+    [tipBtn addTarget:self action:@selector(doneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    if (!_isGuide) {
+        tipBtn.hidden = YES;
+        tipLabel.hidden = YES;
+    }
     //完成
     UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
-    if (_isGuide) {
-        [doneBtn setTitle:@"下一步" forState:UIControlStateNormal];
-    } else {
-        [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
-    }
+    [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
     [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -115,23 +116,14 @@
 }
 
 - (void)doneBtnClick:(UIButton*)sender {
+    if (sender.tag == 100) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        return;
+    }
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-    NSString *url;
-    if (_isGuide) {
-        [postDic setObject:[FRUtils getNickName]  forKey:@"NickName"];
-        [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
-        [postDic setObject:[FRUtils getPhoneNum] forKey:@"Phone"];
-        [postDic setObject:[FRUtils getSign] forKey:@"Sign"];
-        [postDic setObject:[FRUtils getRemark] forKey:@"Remark"];
-        [postDic setObject:[FRUtils getinterest] forKey:@"Interest"];
-        [postDic setObject:[FRUtils getAvatarUrl] forKey:@"AvatarUrl"];
-        
-        url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
-    } else {
-        url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"];
-    }
-    
+    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
     [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[headImage] success:^(id response){
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
@@ -150,6 +142,8 @@
         [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
     }];
 }
+
+
 
 
 - (void)onTakePhotoBtnClicked {

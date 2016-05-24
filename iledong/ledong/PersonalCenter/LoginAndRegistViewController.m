@@ -106,17 +106,9 @@
 //登录
 - (IBAction)userLoginButtonClick:(id)sender
 {
+    
     [self.phoneNum resignFirstResponder];
     [self.putNumber resignFirstResponder];
-    
-//    [FRUtils setPhoneNum:self.phoneNum.text];//保存手机号
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//    NSUserDefaults *kTokenValue = [NSUserDefaults standardUserDefaults];
-//    [kTokenValue setObject:@"123" forKey: @"kToken"];
-//    if (![FRUtils isFirstLogin]) {
-//        [FRUtils setIsFirstLogin];
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuide" object:nil];
-//    }
     
     if ([self.phoneNum.text isEqualToString:@""]||[self.putNumber.text isEqualToString:@""])
     {
@@ -136,8 +128,9 @@
         [FRUtils queryUserInfoFromWeb:^{
             if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+            } else {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
             }
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
         }failBlock:nil];
         [self dismissViewControllerAnimated:YES completion:nil];
     } fail:^{
