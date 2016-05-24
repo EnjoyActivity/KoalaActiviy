@@ -42,7 +42,7 @@
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     
-    //[self queryDatas:self.currentPageIndex++];
+    [self queryDatas:self.currentPageIndex++];
 }
 
 - (void)didReceiveMemoryWarning {

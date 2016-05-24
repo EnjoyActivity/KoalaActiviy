@@ -69,4 +69,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)queryData {
+    
+}
+
 @end

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^completeSelect)(NSString* str);
+
 @interface ContactTypeViewController : UIViewController
+
+- (void)setCompleteSelect:(completeSelect)block;
 
 @end

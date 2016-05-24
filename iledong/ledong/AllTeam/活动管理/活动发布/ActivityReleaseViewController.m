@@ -551,6 +551,7 @@ typedef enum imagePickerFromType {
             weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
             
             [weakSelf.coverPhotoImages addObject:image];
+            [weakSelf uploadImg:image];
         }
         else if (weakSelf.imgFromType == imagePickerFromTypeDetail) {
             [weakSelf.detailPhotoImages addObject:image];
@@ -569,6 +570,8 @@ typedef enum imagePickerFromType {
                 x += 65 + 10;
             }
             weakSelf.detailImageScrollView.contentSize = CGSizeMake(newSize.width, newSize.height);
+            
+            [weakSelf uploadImg:image];
         }
     }];
 }
@@ -1167,15 +1170,36 @@ typedef enum imagePickerFromType {
 }
 
 - (void)commitActivity {
-    //提交封面图片组->提交详情图片组->提交
-    
-    
-    
-    
+
     
 }
 
+- (void)uploadImg:(UIImage*)img {
+    NSString* strTemp = [self getStringWithDate:[NSDate date] format:@"yyyyMMddHHmmss"];
+    NSString* fileName = [NSString stringWithFormat:@"%@.png", strTemp];
+    NSData * imageData = UIImagePNGRepresentation(img);
+    long long length = [imageData length];
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    [dict setValue:[HttpClient getTokenStr] forKey:@"token"];
+    [dict setValue:[NSNumber numberWithLongLong:length] forKey:@"ContentLength"];
+    [dict setValue:@"file" forKey:@"ContentType"];
+    [dict setValue:fileName forKey:@"FileName"];
 
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[img] success:^(id responseObject) {
+        [Dialog alert:@"上传成功！"];
+    } fail:^{
+        [Dialog alert:@"上传失败！"];
+    }];
+}
 
+- (NSString*)getStringWithDate:(NSDate*)_date format:(NSString*)_format{
+    if (!_date || _format.length == 0)
+        return @"";
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:_format];
+    NSString* dateStr = [dateFormatter stringFromDate:_date];
+    return  dateStr;
+}
 
 @end
