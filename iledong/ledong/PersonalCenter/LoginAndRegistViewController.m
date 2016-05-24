@@ -80,11 +80,13 @@
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    manager.requestSerializer.timeoutInterval = 10;
     NSDictionary *parameters = @{@"phone": self.phoneNum.text};
     NSString *str = [API_BASE_URL stringByAppendingString:API_VALIDATION_URL];
-    [Dialog progressToast:@""];
+    [[HttpClient shareHttpClient] showMessageHUD:@""];
     [manager GET:str parameters:parameters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject)
     {
+        [[HttpClient shareHttpClient] hiddenMessageHUD];
         if ([[responseObject objectForKey:@"code"] intValue] == 0)
         {
             NSLog(@"%@",responseObject);
@@ -96,6 +98,7 @@
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error)
     {
+        [[HttpClient shareHttpClient] hiddenMessageHUD];
         [Dialog simpleToast:@"验证码获取失败！" withDuration:1.5];
     }];
 }
