@@ -17,6 +17,8 @@ static NSString * const locationIdentifier = @"LocationCell";
     UITableView * activityTableView;
     NSMutableArray * activityArray;
     NSArray * locationArray;
+    NSInteger currentPage;
+    BOOL changeActivity;
     
 }
 @property (strong, nonatomic) IBOutlet UIButton *activityButton;
@@ -31,18 +33,16 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.backButton setImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
-    [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
-    
-    [self.activityButton setTitle:@"精彩活动 " forState:UIControlStateNormal];
+    currentPage = 1;
 
-    [self.activityButton setImage:[UIImage imageNamed:@"ic_triangle_grey@2x"] forState:UIControlStateNormal];
-    self.activityButton.transform = CGAffineTransformMakeScale(-1,1);
-    self.activityButton.titleLabel.transform = CGAffineTransformMakeScale(-1, 1);
-    self.activityButton.imageView.transform = CGAffineTransformMakeScale(-1, 1);
-    NSArray * arrone = @[@"arrOne",@"arrTwo",@"arrThr",@"arrOne",@"arrTwo",@"arrThr"];
-    activityArray = [NSMutableArray arrayWithArray:arrone];
-    
+    if (self.activityId == 3) {
+        [self.locationTableview setHidden:NO];
+        changeActivity = YES;
+    }
+    NSDictionary * dic = @{
+                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId]
+                           };
+    [self requestActivityData:currentPage parameter:dic];
     locationArray = @[@"全部地区",@"附近",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去"];
     [self setUpFilterView];
     [self setUpUI];
@@ -64,6 +64,39 @@ static NSString * const locationIdentifier = @"LocationCell";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - NetWork
+- (void)requestActivityData:(NSInteger)pageIndex parameter:(NSDictionary *)parameter{
+    NSString * token = [HttpClient getTokenStr];
+    NSMutableDictionary * parameterDic = [NSMutableDictionary dictionary];
+    [parameterDic setValue:token forKey:@"token"];
+    [parameterDic setValue:[NSNumber numberWithInt:10] forKey:@"PageSize"];
+    [parameterDic setValue:[NSNumber numberWithInteger:pageIndex] forKey:@"page"];
+    [parameterDic setValuesForKeysWithDictionary:parameter];
+    
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Activity/QueryActivitys" parameters:parameterDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSArray * array = resultDic[@"result"];
+        if (pageIndex == 1) {
+            activityArray = [array copy];
+        }
+        else {
+            [activityArray addObjectsFromArray:array];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [activityTableView reloadData];
+        });
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"请求失败"];
+    }];
+}
+
+
 #pragma mark - UitableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -72,7 +105,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.locationTableview]) {
-        return locationArray.count;
+        return changeActivity ? _activityClassArray.count:locationArray.count;
     }
     return activityArray.count;
 }
@@ -81,12 +114,26 @@ static NSString * const locationIdentifier = @"LocationCell";
     if ([tableView isEqual:self.locationTableview]) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:locationIdentifier forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
-        label.text = locationArray[indexPath.row];
+        if (changeActivity) {
+            label.text = [_activityClassArray[indexPath.row] valueForKey:@"ClassName"];
+        }
+        else {
+            label.text = locationArray[indexPath.row];
+        }
         return cell;
     }
     LDActivityTableViewCell * cell = (LDActivityTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"activityCell" forIndexPath:indexPath];
-    cell.adImageView.image = [UIImage imageNamed:@"img_1@2x"];
-    cell.headImageView.image = [UIImage imageNamed:@"user01_44@2x"];
+    
+    NSDictionary * dic = activityArray[indexPath.row];
+    [cell.adImageView sd_setImageWithURL:[NSURL URLWithString:dic[@"Cover"]] placeholderImage:[UIImage imageNamed:@"img_1@2x"]];
+    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:dic[@"Cover"]] placeholderImage:[UIImage imageNamed:@"user01_44@2x"]];
+    cell.activityPrice.text = [NSString stringWithFormat:@"%@-%@",dic[@"EntryMoneyMin"],dic[@"EntryMoneyMax"]];
+    cell.activityName.text = dic[@"Title"];
+    cell.activityOwer.text = dic[@"ConstitutorName"];
+    cell.activityDetail.text = [NSString stringWithFormat:@"%@",dic[@"ClassName"]];
+    
+//    cell.adImageView.image = [UIImage imageNamed:@"img_1@2x"];
+//    cell.headImageView.image = [UIImage imageNamed:@"user01_44@2x"];
     return cell;
     
 }
@@ -95,7 +142,18 @@ static NSString * const locationIdentifier = @"LocationCell";
 #pragma mark - TableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.locationTableview]) {
-        
+        if (changeActivity) {
+            NSNumber * activityIdTemp = [_activityClassArray[indexPath.row] objectForKey:@"Id"];
+            NSString * titleTemp = [_activityClassArray[indexPath.row] objectForKey:@"ClassName"];
+            [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
+            [self.activityButton setSelected:NO];
+            NSDictionary * dic= @{
+                                  @"ActivityClassId":activityIdTemp
+                                  };
+            currentPage = 1;
+            [self.locationTableview setHidden:YES];
+            [self requestActivityData:currentPage parameter:dic];
+        }
     }
 }
 
@@ -104,15 +162,25 @@ static NSString * const locationIdentifier = @"LocationCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)activityButtonCicked:(UIButton *)sender {
-    
+    BOOL isSeleted = sender.isSelected;
+    if (isSeleted) {
+        [self.locationTableview setHidden:YES];;
+        [sender setSelected:NO];
+    }
+    else {
+        changeActivity = YES;
+        [sender setSelected:YES];
+        [self.locationTableview setHidden:NO];
+        [self.locationTableview reloadData];
+    }
+  
 }
 
-- (void)filterButtonClicked:(UIButton *)sender {
+- (void)filterButtonClicked:(UIButton *)sender {  
+    [self.activityButton setSelected:NO];
+    
     UIButton * button = (UIButton *)[self.filterView viewWithTag:currentButton];
     [button setSelected:NO];
-    if (currentButton == 4) {
-        [self.locationTableview removeFromSuperview];
-    }
     currentButton = sender.tag;
     [sender setSelected:YES];
     
@@ -120,21 +188,24 @@ static NSString * const locationIdentifier = @"LocationCell";
         case 1:
         {
             
+            [self.locationTableview setHidden:YES];
         }
             break;
         case 2:
         {
-            
+            [self.locationTableview setHidden:YES];
         }
             break;
         case 3:
         {
-            
+            [self.locationTableview setHidden:YES];
         }
             break;
         case 4:
         {
-            [self.view addSubview:self.locationTableview];
+            changeActivity = false;
+            [self.locationTableview setHidden:NO];;
+            [self.locationTableview reloadData];
         }
             break;
     }
@@ -145,6 +216,19 @@ static NSString * const locationIdentifier = @"LocationCell";
 #pragma mark - UI
 
 - (void)setUpUI {
+    [self.backButton setImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
+    [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
+    
+    NSString * acTitle = [NSString stringWithFormat:@"精彩活动 %@ ",self.activityClassName];
+    [self.activityButton setTitle:acTitle forState:UIControlStateNormal];
+    
+    [self.activityButton setImage:[UIImage imageNamed:@"ic_triangle_grey@2x"] forState:UIControlStateNormal];
+    [self.activityButton setImage:[UIImage imageNamed:@"ic_triangle_grey_up@2x"] forState:UIControlStateSelected];
+    
+    self.activityButton.transform = CGAffineTransformMakeScale(-1,1);
+    self.activityButton.titleLabel.transform = CGAffineTransformMakeScale(-1, 1);
+    self.activityButton.imageView.transform = CGAffineTransformMakeScale(-1, 1);
+    
     activityTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 104, APP_WIDTH, APP_HEIGHT - 104) style:UITableViewStylePlain];
     activityTableView.delegate = self;
     activityTableView.dataSource = self;
@@ -159,6 +243,8 @@ static NSString * const locationIdentifier = @"LocationCell";
         activityTableView.rowHeight = UITableViewAutomaticDimension;
     }
     [self.view addSubview:activityTableView];
+    
+    [self.view addSubview:self.locationTableview];
 }
 
 - (void)setUpFilterView{
@@ -214,6 +300,7 @@ static NSString * const locationIdentifier = @"LocationCell";
         _locationTableview.dataSource = self;
         _locationTableview.rowHeight = 37;
         _locationTableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _locationTableview.hidden = YES;
         [_locationTableview registerNib:[UINib nibWithNibName:@"ActivityLocationCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:locationIdentifier];
         
     }

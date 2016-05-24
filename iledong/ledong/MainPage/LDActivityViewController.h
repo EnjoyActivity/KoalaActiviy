@@ -10,4 +10,7 @@
 
 @interface LDActivityViewController : UIViewController
 
+@property (nonatomic,assign) NSInteger activityId;
+@property (nonatomic,copy) NSString * activityClassName;
+@property (nonatomic,copy) NSArray * activityClassArray;
 @end

@@ -36,6 +36,7 @@ static CGFloat const teamHeight = 280;
     NSInteger currentActivity;
     NSMutableArray *activityImageArray;
     NSMutableArray *activityNameArray;
+    NSArray * activityArray;
     //热门团队
     
     NSTimer *teamTimer;
@@ -93,6 +94,10 @@ static CGFloat const teamHeight = 280;
     teamHeadImageArray = [NSMutableArray arrayWithObjects:@"user01_44",@"user02_44",@"user01_44",@"user02_44",@"user01_44", nil];
     
     [self setUpUI];
+    
+    [self requestActivityData];
+
+    
  
 }
 
@@ -124,7 +129,11 @@ static CGFloat const teamHeight = 280;
 #pragma mark - netWork 
 
 - (void)requestAdData {
+    NSString * token =[HttpClient getTokenStr];
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    NSDictionary * dic = @{
+                           
+                           };
     AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
     [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         
@@ -135,12 +144,25 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)requestActivityData {
+    NSString * token =[HttpClient getTokenStr];
+    NSDictionary * dic = @{
+                           @"token":token
+                           };
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"getAd" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [requestManager GET:@"ActivityClass/GetActivityClass" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        activityArray = [resultDic[@"result"] copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [activityCollectionView reloadData];
+        });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
+    }
+    failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
     }];
 }
 
@@ -184,7 +206,8 @@ static CGFloat const teamHeight = 280;
     if ([collectionView isEqual:topAdCollectionView]) {
         return topAdImageArray.count;
     } else if ([collectionView isEqual:activityCollectionView]) {
-        return activityImageArray.count;
+//        return activityImageArray.count;
+        return 3;
     }
     return teamImageArray.count;
 }
@@ -198,15 +221,24 @@ static CGFloat const teamHeight = 280;
         UICollectionViewCell * topAdCell = [collectionView dequeueReusableCellWithReuseIdentifier:topAdCellIdentifier forIndexPath:indexPath];
         UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
         imageView.image = [UIImage imageNamed:topAdImageArray[indexPath.row]];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:nil];
+//        [imageView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:nil];
         return topAdCell;
         
     } else if ([collectionView isEqual:activityCollectionView]) {
         UICollectionViewCell * activityCell = [collectionView dequeueReusableCellWithReuseIdentifier:activityCellIdentifier forIndexPath:indexPath];
         UIImageView * imageView = (UIImageView *)[activityCell viewWithTag:2];
-        imageView.image = [UIImage imageNamed:activityImageArray[indexPath.row]];
         UILabel * label = (UILabel *)[activityCell viewWithTag:3];
-        label.text = activityNameArray[indexPath.row];
+        if (indexPath.row == 2) {
+            imageView.image = [UIImage imageNamed:@"img_morebg"];
+            label.text = @"更多";
+        }
+        else
+        {
+            NSDictionary * dic = activityArray[indexPath.row];
+            [imageView sd_setImageWithURL:dic[@"CoverUrl"] placeholderImage:[UIImage imageNamed:@"img_3"]];
+            label.text = dic[@"ClassName"];
+            
+        }
         return activityCell;
     }
     TeamsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotTeamIdentifier forIndexPath:indexPath];
@@ -214,6 +246,7 @@ static CGFloat const teamHeight = 280;
     cell.headerImage.image = [FRUtils resizeImageWithImageName:teamHeadImageArray[indexPath.row]];
     return cell;
 }
+
 
 #pragma mark - collectionDelegate
 
@@ -224,6 +257,16 @@ static CGFloat const teamHeight = 280;
     } else if ([collectionView isEqual:activityCollectionView]) {
         NSLog(@"activity: %ld",(long)indexPath.row);
         LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
+        if (indexPath.row == 2) {
+            activityVC.activityId = 3;
+            activityVC.activityClassName = @"更多";
+        }
+        else {
+            NSDictionary * dic = activityArray[indexPath.row];
+            activityVC.activityClassName = [dic objectForKey:@"ClassName"];
+            activityVC.activityId = [[dic objectForKey:@"Id"] integerValue];
+        }
+        activityVC.activityClassArray = [activityArray copy];
         [self.navigationController pushViewController:activityVC animated:YES];
     } else if ([collectionView isEqual:hotTeamCollectionView]) {
         LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
