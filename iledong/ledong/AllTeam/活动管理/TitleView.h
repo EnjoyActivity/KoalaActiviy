@@ -16,5 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *remainTeamLabel;
 @property (strong, nonatomic) IBOutlet UILabel *personLabel;
 @property (strong, nonatomic) IBOutlet UILabel *teamLabel;
+@property (strong, nonatomic) IBOutlet UILabel *personMoneyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *teamMoneyLabel;
 
 @end

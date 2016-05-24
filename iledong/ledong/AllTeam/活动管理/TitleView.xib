@@ -112,9 +112,11 @@
                 <outlet property="activeTimeLabel" destination="1zi-ad-SgS" id="IKP-qx-7a7"/>
                 <outlet property="activeTitleLabel" destination="5y2-8k-aBY" id="Yrx-u0-7hI"/>
                 <outlet property="personLabel" destination="WZu-f3-JIp" id="XAx-49-ze8"/>
+                <outlet property="personMoneyLabel" destination="6qn-46-2py" id="l9p-yV-aHI"/>
                 <outlet property="remainPersonLabel" destination="8NO-oP-mF5" id="Mct-Cc-Y6M"/>
                 <outlet property="remainTeamLabel" destination="m2H-dc-5Uu" id="ssV-kZ-5di"/>
                 <outlet property="teamLabel" destination="2Wg-fT-kK0" id="kXz-lJ-NKA"/>
+                <outlet property="teamMoneyLabel" destination="OYU-zS-iIK" id="nf7-ZX-odc"/>
                 <outlet property="timeRemainLabel" destination="mad-nz-e6n" id="Hle-4k-Yv8"/>
             </connections>
             <point key="canvasLocation" x="245" y="37.5"/>

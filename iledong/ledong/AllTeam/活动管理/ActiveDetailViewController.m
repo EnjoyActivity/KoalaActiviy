@@ -28,6 +28,8 @@
     ChooseForm *chooseFormView;
     
     UIView *maskView;
+    
+    NSDictionary *activityInfo;
 }
 @property (nonatomic,assign) BOOL inPersonForm;
 
@@ -62,6 +64,16 @@
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
     
+ 
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+#pragma mark - setup UI
+- (void)setupUI {
     [self setupScrollView];
     [self setupCoverImageView];
     [self setupTitleView];
@@ -72,12 +84,6 @@
     [self setupButton];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-#pragma mark - setup UI
 - (void)setupScrollView {
     scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT - 45 - 64)];
     scrollView.showsVerticalScrollIndicator = NO;
@@ -85,8 +91,7 @@
 }
 - (void)setupCoverImageView {
     UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 200)];
-    
-    coverImage.image = [UIImage imageNamed:@"img_nodata"];
+    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
     [scrollView addSubview:coverImage];
     startPos = 200;
 }
@@ -94,6 +99,15 @@
 - (void)setupTitleView {
     titleView = (TitleView*)[[[NSBundle mainBundle]loadNibNamed:@"TitleView" owner:self options:nil]lastObject];
     titleView.frame = CGRectMake(0,startPos , APP_WIDTH, 180);
+    titleView.activeTitleLabel = [activityInfo objectForKey:@"Title"];
+    NSString *beginTime = [self formatStringFromString:[activityInfo objectForKey:@"BeginTime"]];
+    NSString *endTime = [self formatStringFromString:[activityInfo objectForKey:@"EndTime"]];
+    titleView.activeTimeLabel.text = [NSString stringWithFormat:@"%@ - %@",beginTime,endTime];
+    NSInteger days = [self howManyDaysSinceNow:[activityInfo objectForKey:@"ApplyEndTime"]];
+    titleView.timeRemainLabel.text = [NSString stringWithFormat:@"报名剩余 %ld 天",(long)days];
+    titleView.personMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMin"]];
+    titleView.teamMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMax"]];
+    
     startPos += 180;
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
     sepLabel.backgroundColor = [UIColor lightGrayColor];
@@ -119,6 +133,8 @@
 - (void)setupContactView {
     contactView = (ContactView*)[[[NSBundle mainBundle]loadNibNamed:@"ContactView" owner:self options:nil]lastObject];
     contactView.frame = CGRectMake(0,startPos , APP_WIDTH, 160);
+    [contactView.infoButton addTarget:self action:@selector(infoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [contactView.reportButton addTarget:self action:@selector(complainBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     startPos += 160;
     
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
@@ -148,7 +164,7 @@
     contentLabel.textAlignment = NSTextAlignmentCenter;
     contentLabel.font = [UIFont systemFontOfSize:15];
     contentLabel.textColor = RGB(153, 153, 153, 1);
-    contentLabel.text = @"如果遇到提示，就得考虑约束不全的问题了。比如你的底部有一个动态高度的label，设计为与的\n距离为1，与其上的一个控件距离为0，你想着label的高度由的高度来控制，即依赖scrollview的高度，岂不知scrollview的高度是根\n据内部subview的高度来计算的，也就是依赖于后者的。这种情况就最好用代码设置了。";
+    contentLabel.text = [activityInfo objectForKey:@"demand"];//@"如果遇到提示，就得考虑约束不全的问题了。比如你的底部有一个动态高度的label，设计为与的\n距离为1，与其上的一个控件距离为0，你想着label的高度由的高度来控制，即依赖scrollview的高度，岂不知scrollview的高度是根\n据内部subview的高度来计算的，也就是依赖于后者的。这种情况就最好用代码设置了。";
     contentLabel.numberOfLines = 0;
     
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:contentLabel.text];
@@ -242,17 +258,73 @@
     }
 }
 
+- (void)infoBtnClick:(UIButton*)sender {
+    [self makePhone:[activityInfo objectForKey:@"Tel"]];
+}
+
+- (void)complainBtnClick:(UIButton*)sender {
+    [self makePhone:[activityInfo objectForKey:@"ComplainTel"]];
+}
+
+#pragma mark - inner methods
 - (void)queryActiveDetailInfo {
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Activity/GetActivityById"];
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:@"token" forKey:[HttpClient getTokenStr]];
-    [postDic setObject:@"id" forKey:@(self.activeId)];
+    [postDic setObject:@"id" forKey:@(self.Id)];
     
     [HttpClient postJSONWithUrl:url parameters:postDic success:^(id reponseObject){
-        
+        NSDictionary* temp = (NSDictionary*)reponseObject;
+        if ([[temp objectForKey:@"code"]intValue]!=0) {
+            [Dialog toast:[temp objectForKey:@"msg"]];
+            return;
+        }
+        activityInfo = [temp objectForKey:@"result"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupUI];
+        });
     }fail:^{
         
     }];
+}
+
+- (NSString*)formatStringFromString:(NSString*)dateStr {
+    NSArray *weekday = @[@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六"];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *date= [dateFormatter dateFromString:dateStr];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags =NSCalendarUnitYear | NSCalendarUnitMonth |NSCalendarUnitDay | NSCalendarUnitWeekday |
+    NSCalendarUnitHour |NSCalendarUnitMinute | NSCalendarUnitSecond;
+    
+    comps = [calendar components:unitFlags fromDate:date];
+    
+    NSString *resultStr = [NSString stringWithFormat:@"%ld月%ld日 %@ %ld:%ld",(long)[comps month],(long)[comps day],weekday[[comps weekday]-1],(long)[comps hour],(long)[comps minute]];
+    
+    return resultStr;
+}
+
+- (NSInteger)howManyDaysSinceNow:(NSString*)dateStr {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date= [dateFormatter dateFromString:dateStr];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned int unitFlag = NSCalendarUnitDay;
+    NSDateComponents *components = [calendar components:unitFlag fromDate:[NSDate date] toDate:date options:0];
+    return [components day] + 1;
+}
+//make phone
+- (void)makePhone:(NSString*)phone {
+    UIWebView *callWebview =[[UIWebView alloc] init];
+    NSURL *telURL =[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phone]];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
+    [self.view addSubview:callWebview];
 }
 
 @end
