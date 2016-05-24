@@ -9,6 +9,7 @@
 #import "ChooseActiveItemVC.h"
 #import "SessionTableViewCell.h"
 #import "ActiveItemModel.h"
+#import "ActiveDetailViewController.h"
 
 @interface ChooseActiveItemVC ()
 {
@@ -28,15 +29,17 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    ActiveItemModel *model = [[ActiveItemModel alloc]init];
-    model.placeName = @"绿茵足球场";
-    model.address = @"北京市朝阳区绿茵路128号";
-    model.beginTime = @"10:00";
-    model.endTime = @"12:00";
-    model.maxNum = 40;
-    model.willNum = 10;
-    model.constitutorName = @"dengjc";
-    [data addObject:model];
+//    ActiveItemModel *model = [[ActiveItemModel alloc]init];
+//    model.placeName = @"绿茵足球场";
+//    model.address = @"北京市朝阳区绿茵路128号";
+//    model.beginTime = @"10:00";
+//    model.endTime = @"12:00";
+//    model.maxNum = 40;
+//    model.willNum = 10;
+//    model.constitutorName = @"dengjc";
+//    [data addObject:model];
+    
+    [self queryItemById];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -79,16 +82,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    ActiveDetailViewController *vc = [[ActiveDetailViewController alloc]init];
+    ActiveItemModel *model = [data objectAtIndex:indexPath.row];
+    vc.Id = model.activityId;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)setupCell:(SessionTableViewCell*)cell model:(ActiveItemModel*)model {
     cell.placeNameLabel.text = model.placeName;
     cell.addressLabel.text = model.address;
-    cell.beginTimeLabel.text = model.beginTime;
-    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",model.endTime];
+    cell.beginTimeLabel.text = [model.beginTime substringWithRange:NSMakeRange(11, 5)];
+    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(11, 5)]];
     cell.constitutorNameLabel.text = [NSString stringWithFormat:@"组织人：%@",model.constitutorName];
-    cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余0",model.maxNum - model.willNum];
+    cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余 %d",model.maxNum - model.willNum,model.maxApplyNum - model.applyNum];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
@@ -116,6 +123,8 @@
             model.entryMoney = [[item objectForKey:@"EntryMoney"]intValue];
             model.willNum = [[item objectForKey:@"WillNum"]intValue];
             model.maxNum = [[item objectForKey:@"MaxNum"]intValue];
+            model.applyNum = [[item objectForKey:@"ApplyNum"]intValue];
+            model.maxApplyNum = [[item objectForKey:@"MaxApplyNum"]intValue];
             model.constitutorId = [[item objectForKey:@"ConstitutorId"]intValue];
             model.placeName = [item objectForKey:@"PlaceName"];
             model.address = [item objectForKey:@"Address"];

@@ -64,7 +64,7 @@
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
     
- 
+    [self queryActiveDetailInfo];
 }
 
 
@@ -107,6 +107,11 @@
     titleView.timeRemainLabel.text = [NSString stringWithFormat:@"报名剩余 %ld 天",(long)days];
     titleView.personMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMin"]];
     titleView.teamMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMax"]];
+    //剩余人、团队
+    int remainPerson = [[activityInfo objectForKey:@"MaxNum"]intValue] - [[activityInfo objectForKey:@"WillNum"]intValue];
+    titleView.remainPersonLabel.text = [NSString stringWithFormat:@"%d",remainPerson];
+    int remainTeam = [[activityInfo objectForKey:@"MaxApplyNum"]intValue] - [[activityInfo objectForKey:@"ApplyNum"]intValue];
+    titleView.remainTeamLabel.text = [NSString stringWithFormat:@"%d",remainTeam];
     
     startPos += 180;
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
@@ -118,6 +123,12 @@
 
 - (void)setupLocationView {
     locationView = (LocationView*)[[[NSBundle mainBundle]loadNibNamed:@"LocationView" owner:self options:nil]lastObject];
+    NSArray *items = [activityInfo objectForKey:@"activityitems"];
+    if (items.count!=0) {
+        NSDictionary *dic = [items objectAtIndex:0];
+        locationView.locationLabel.text = [dic objectForKey:@"PlaceName"];
+        locationView.detailLocationLabel.text = [dic objectForKey:@"Address"];
+    }
     locationView.frame = CGRectMake(0,startPos , APP_WIDTH, 80);
     startPos += 80;
     [scrollView addSubview:locationView];

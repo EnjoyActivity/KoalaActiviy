@@ -87,7 +87,7 @@
         {
             cell = [[NSBundle mainBundle]loadNibNamed:@"ActivityMessageTableViewCell" owner:self options:nil][0];
         }
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }else
     {
@@ -97,7 +97,7 @@
         {
             cell = [[NSBundle mainBundle]loadNibNamed:@"MyHostTableViewCell" owner:self options:nil][0];
         }
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
 }
@@ -107,6 +107,7 @@
 //    vc.hidesBottomBarWhenPushed = YES;
 //    [self.navigationController pushViewController:vc animated:YES];
     ChooseActiveItemVC *vc = [[ChooseActiveItemVC alloc]init];
+    vc.Id = 1;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
