@@ -39,8 +39,6 @@ static NSString * friendCell = @"ActivityCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = YES;
-    self.tabBarController.tabBar.hidden = YES;
     
     historyArray = [NSMutableArray arrayWithArray:[self getSearchHistory]];
     
@@ -59,9 +57,8 @@ static NSString * friendCell = @"ActivityCell";
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = NO;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

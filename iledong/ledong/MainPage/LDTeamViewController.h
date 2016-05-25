@@ -10,4 +10,6 @@
 
 @interface LDTeamViewController : UIViewController
 
+@property (nonatomic, copy) NSArray * categoryArray;
+
 @end

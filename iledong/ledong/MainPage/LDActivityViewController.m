@@ -33,6 +33,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     currentPage = 1;
 
     if (self.activityId == 0) {
@@ -52,14 +53,10 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-    self.tabBarController.tabBar.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.tabBarController.tabBar.hidden = NO;
-    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {

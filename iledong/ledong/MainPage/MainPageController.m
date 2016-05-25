@@ -34,8 +34,6 @@ static CGFloat const teamHeight = 280;
     //精彩活动
     NSTimer *activityTimer;
     NSInteger currentActivity;
-//    NSMutableArray *activityImageArray;
-//    NSMutableArray *activityNameArray;
     NSMutableArray * activityArray;
     //热门团队
     
@@ -58,7 +56,7 @@ static CGFloat const teamHeight = 280;
     CALayer * activityProgressLayer;
     CALayer * hotTeamProgressLayer;
     
-    
+    UIImage * moreImage;
 
     
 }
@@ -79,10 +77,11 @@ static CGFloat const teamHeight = 280;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    moreImage = [self moreTeamImage];
+
+    self.navigationController.navigationBarHidden = YES;
     
- 
     self.view.backgroundColor = [UIColor whiteColor];
-//    self.navigationController.navigationBarHidden = YES;
     
     self.navigationController.navigationBar.shadowImage = [UIImage new];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
@@ -111,7 +110,7 @@ static CGFloat const teamHeight = 280;
 {
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = NO;
-    self.navigationController.navigationBarHidden = YES;
+   
 }
 
 
@@ -124,7 +123,6 @@ static CGFloat const teamHeight = 280;
     [super viewWillDisappear:animated];
  
     self.tabBarController.tabBar.hidden = YES;
-    self.navigationController.navigationBarHidden = NO;
     
     [self adTimerStop];
     [self activityTimerStop];
@@ -160,6 +158,10 @@ static CGFloat const teamHeight = 280;
 
 - (void)requestActivityData {
     NSString * token =[HttpClient getTokenStr];
+    if (token.length == 0) {
+        return;
+    }
+    
     NSDictionary * dic = @{
                            @"token":token
                            };
@@ -235,8 +237,9 @@ static CGFloat const teamHeight = 280;
         }
         return MIN(3, activityArray.count);
     }
-    return teamImageArray.count;
+    return MIN(6, teamImageArray.count+1);
 }
+
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
@@ -682,6 +685,22 @@ static CGFloat const teamHeight = 280;
     collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.showsHorizontalScrollIndicator = false;
     return collectionView;
+}
+
+- (UIImage *)moreTeamImage {
+    UIImage * image;
+    UIGraphicsBeginImageContext(CGSizeMake(180, 280));
+    UIImage * oldImage = [UIImage imageNamed:@"img_morebg"];
+    [oldImage drawInRect:CGRectMake(0, 0, 180, 280)];
+    
+    NSDictionary * dic = @{
+                           NSFontAttributeName:[UIFont systemFontOfSize:20],
+                           NSForegroundColorAttributeName:[UIColor whiteColor]
+                           };
+    NSAttributedString * attr = [[NSAttributedString alloc] initWithString:@"更多" attributes:dic];
+    [attr drawAtPoint:CGPointMake(60, 120)];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    return image;
 }
 
 @end

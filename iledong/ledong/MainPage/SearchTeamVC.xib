@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="collectionView" destination="uHc-vU-lH1" id="AoZ-zh-saO"/>
                 <outlet property="contentTableView" destination="ed3-mD-9sB" id="2bP-Ot-1vQ"/>
-                <outlet property="contentView" destination="vAU-qB-puN" id="XdD-Oa-4ZA"/>
                 <outlet property="footerImage" destination="Y17-iE-CGb" id="veN-0T-RkK"/>
                 <outlet property="footerView" destination="TCT-1r-bDP" id="XDp-jq-NYm"/>
                 <outlet property="gobackButton" destination="djS-4l-0bH" id="cHc-fX-lCY"/>

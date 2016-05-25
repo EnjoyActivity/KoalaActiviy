@@ -25,14 +25,19 @@ static NSString * const friendCell = @"ActivityCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     historyArray = [NSMutableArray array];
     resultArray = [NSMutableArray array];
     [historyArray addObjectsFromArray:[self getSearchHistory]];
     [self setUpUI];
 
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

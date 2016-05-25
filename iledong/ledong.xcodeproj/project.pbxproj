@@ -355,6 +355,7 @@
 		ECBB8A4C1CEDB97A007D4756 /* LDActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */; };
 		ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */; };
 		ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */; };
+		ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -914,6 +915,7 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
+		ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1417,6 +1419,7 @@
 				ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */,
 				EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */,
 				EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */,
+				ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */,
 				3664D0581CA1287C00BC6805 /* TeamsCell.h */,
 				3664D0591CA1287C00BC6805 /* TeamsCell.m */,
 				3664D05A1CA1287C00BC6805 /* TeamsCell.xib */,
@@ -2329,6 +2332,7 @@
 				36B2C1CE1CBB4F8C001D842B /* ic_male@2x.png in Resources */,
 				362F7E731CC0BF7800C91090 /* ic_add_grey@2x.png in Resources */,
 				36E1E6E51C9F84C90085C457 /* ic_mine@2x.png in Resources */,
+				ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */,
 				362F491A1CD20105000777F0 /* TeamHomeTableViewCell.xib in Resources */,
 				36E3E2041CC4803E00294509 /* ckb_uncheck@2x.png in Resources */,
 			);
