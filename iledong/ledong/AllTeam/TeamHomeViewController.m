@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tabBarController.tabBar.hidden = YES;
+    //self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;

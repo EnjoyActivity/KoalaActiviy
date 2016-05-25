@@ -60,6 +60,8 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
 @property (nonatomic, strong)UIButton* btn;
+@property (nonatomic, strong)UITextField* costTextField;
+@property (nonatomic, strong)UITextField* marginTextField;
 @property (nonatomic, strong)NSTimer* timer;
 @property (atomic, assign)BOOL isComplete;
 
@@ -370,13 +372,6 @@ typedef enum imagePickerFromType {
     if (_scrollViewDidScroll)
         return;
     [self.view endEditing:YES];
-    if (self.gameType == gameTypenonLeague) {
-        
-    }
-    else if (self.gameType == gameTypeLeague) {
-        NSInteger section = self.textFieldPath.section;
-        NSInteger row = self.textFieldPath.row;
-    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -524,6 +519,7 @@ typedef enum imagePickerFromType {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
+        [self.view endEditing:YES];
         ParameterTableViewController* VC = [[ParameterTableViewController alloc]init];
         [self.navigationController pushViewController:VC animated:YES];
         VC.vcTitle = @"活动分类";
@@ -560,6 +556,7 @@ typedef enum imagePickerFromType {
             [self.view addSubview:datePickView];
         }
         else if (indexPath.section == 2) {
+            [self.view endEditing:YES];
             SessionInfoViewController* Vc = [[SessionInfoViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
         }
@@ -597,6 +594,7 @@ typedef enum imagePickerFromType {
             [self.view addSubview:datePickView];
         }
         else if (indexPath.section == 6) {
+            [self.view endEditing:YES];
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
             [Vc setCompleteSelect:^(NSString *str) {
@@ -605,6 +603,7 @@ typedef enum imagePickerFromType {
             }];
         }
         else if (indexPath.section == 5) {
+            [self.view endEditing:YES];
             ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
         }
@@ -1128,45 +1127,45 @@ typedef enum imagePickerFromType {
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"费用";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:500];
-        if (!textField) {
-            textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 500;
-            textField.placeholder = @"请输入费用";
-            textField.font = [UIFont systemFontOfSize:14.0];
-            [cell.contentView addSubview:textField];
-            textField.delegate = self;
-            textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentCenter;
-            [textField sizeToFit];
+        self.costTextField = (UITextField*)[cell.contentView viewWithTag:500];
+        if (!self.costTextField) {
+            self.costTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
+            self.costTextField.tag = 500;
+            self.costTextField.placeholder = @"请输入费用";
+            self.costTextField.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:self.costTextField];
+            self.costTextField.delegate = self;
+            self.costTextField.keyboardType = UIKeyboardTypeNumberPad;
+            self.costTextField.textAlignment = NSTextAlignmentCenter;
+            [self.costTextField sizeToFit];
         }
         NSArray* keys = self.moneyDict.allKeys;
         if (self.moneyDict && [keys containsObject:@"cost"])
-            textField.text = [self.moneyDict objectForKey:@"cost"];
+            self.costTextField.text = [self.moneyDict objectForKey:@"cost"];
  
-        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
+        objc_setAssociatedObject(self.costTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.costTextField.center = CGPointMake(self.costTextField.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 1) {
         cell.textLabel.text = @"保证金";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:501];
-        if (!textField) {
-            textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 501;
-            textField.placeholder = @"请输入费用";
-            textField.font = [UIFont systemFontOfSize:14.0];
-            [cell.contentView addSubview:textField];
-            textField.delegate = self;
-            textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentCenter;
-            [textField sizeToFit];
+        self.marginTextField = (UITextField*)[cell.contentView viewWithTag:501];
+        if (!self.marginTextField) {
+            self.marginTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
+            self.marginTextField.tag = 501;
+            self.marginTextField.placeholder = @"请输入费用";
+            self.marginTextField.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:self.marginTextField];
+            self.marginTextField.delegate = self;
+            self.marginTextField.keyboardType = UIKeyboardTypeNumberPad;
+            self.marginTextField.textAlignment = NSTextAlignmentCenter;
+            [self.marginTextField sizeToFit];
         }
         NSArray* keys = self.moneyDict.allKeys;
         if (self.moneyDict && [keys containsObject:@"margin"])
-            textField.text = [self.moneyDict objectForKey:@"margin"];
+            self.marginTextField.text = [self.moneyDict objectForKey:@"margin"];
 
-        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
+        objc_setAssociatedObject(self.marginTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.marginTextField.center = CGPointMake(self.marginTextField.center.x, cell.contentView.bounds.size.height/2);
     }
 
     UILabel* lineLabel = (UILabel*)[cell.contentView viewWithTag:1000];
@@ -1345,7 +1344,6 @@ typedef enum imagePickerFromType {
 
 - (void)doTimer {
     //检测参数是否填写完毕，完毕则打开发布按钮，否则置灰
-    
     //两table共有的
     if (self.coverPhotoImages.count == 0) {//封面
         [self setStartBtnState:NO];

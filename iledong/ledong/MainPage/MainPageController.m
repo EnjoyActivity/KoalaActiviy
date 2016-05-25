@@ -109,7 +109,7 @@ static CGFloat const teamHeight = 280;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = NO;
+    //self.tabBarController.tabBar.hidden = NO;
    
 }
 
@@ -122,7 +122,7 @@ static CGFloat const teamHeight = 280;
 {
     [super viewWillDisappear:animated];
  
-    self.tabBarController.tabBar.hidden = YES;
+    //self.tabBarController.tabBar.hidden = YES;
     
     [self adTimerStop];
     [self activityTimerStop];
