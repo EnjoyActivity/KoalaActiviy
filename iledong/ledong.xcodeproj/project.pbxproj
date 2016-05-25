@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		203416881CF550C30002D8B5 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 203416861CF550C30002D8B5 /* SignUpViewController.m */; };
+		203416891CF550C30002D8B5 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203416871CF550C30002D8B5 /* SignUpViewController.xib */; };
+		2034168D1CF5530C0002D8B5 /* SignTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2034168C1CF5530C0002D8B5 /* SignTitleView.m */; };
+		2034168F1CF5534E0002D8B5 /* SignTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2034168E1CF5534E0002D8B5 /* SignTitleView.xib */; };
+		203416921CF5558E0002D8B5 /* ChooseTeamView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203416911CF5558E0002D8B5 /* ChooseTeamView.xib */; };
+		203416951CF555A00002D8B5 /* ChooseTeamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 203416941CF555A00002D8B5 /* ChooseTeamView.m */; };
+		203416981CF5584A0002D8B5 /* ContactInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 203416971CF5584A0002D8B5 /* ContactInfoView.m */; };
+		2034169A1CF5585A0002D8B5 /* ContactInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203416991CF5585A0002D8B5 /* ContactInfoView.xib */; };
 		205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 205375861CF29496005902B3 /* ActiveDetailViewController.m */; };
 		2053758D1CF2B113005902B3 /* TitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053758C1CF2B113005902B3 /* TitleView.m */; };
 		205375901CF2B12E005902B3 /* LocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053758F1CF2B12E005902B3 /* LocationView.m */; };
@@ -370,6 +378,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		203416851CF550C30002D8B5 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		203416861CF550C30002D8B5 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		203416871CF550C30002D8B5 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
+		2034168B1CF5530C0002D8B5 /* SignTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignTitleView.h; sourceTree = "<group>"; };
+		2034168C1CF5530C0002D8B5 /* SignTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignTitleView.m; sourceTree = "<group>"; };
+		2034168E1CF5534E0002D8B5 /* SignTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignTitleView.xib; sourceTree = "<group>"; };
+		203416911CF5558E0002D8B5 /* ChooseTeamView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseTeamView.xib; sourceTree = "<group>"; };
+		203416931CF555A00002D8B5 /* ChooseTeamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseTeamView.h; sourceTree = "<group>"; };
+		203416941CF555A00002D8B5 /* ChooseTeamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseTeamView.m; sourceTree = "<group>"; };
+		203416961CF5584A0002D8B5 /* ContactInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoView.h; sourceTree = "<group>"; };
+		203416971CF5584A0002D8B5 /* ContactInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoView.m; sourceTree = "<group>"; };
+		203416991CF5585A0002D8B5 /* ContactInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactInfoView.xib; sourceTree = "<group>"; };
 		205375851CF29496005902B3 /* ActiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveDetailViewController.h; sourceTree = "<group>"; };
 		205375861CF29496005902B3 /* ActiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveDetailViewController.m; sourceTree = "<group>"; };
 		2053758B1CF2B113005902B3 /* TitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleView.h; sourceTree = "<group>"; };
@@ -938,6 +958,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		203416901CF555590002D8B5 /* 提交报名 */ = {
+			isa = PBXGroup;
+			children = (
+				2034168B1CF5530C0002D8B5 /* SignTitleView.h */,
+				2034168C1CF5530C0002D8B5 /* SignTitleView.m */,
+				2034168E1CF5534E0002D8B5 /* SignTitleView.xib */,
+				203416931CF555A00002D8B5 /* ChooseTeamView.h */,
+				203416941CF555A00002D8B5 /* ChooseTeamView.m */,
+				203416911CF5558E0002D8B5 /* ChooseTeamView.xib */,
+				203416961CF5584A0002D8B5 /* ContactInfoView.h */,
+				203416971CF5584A0002D8B5 /* ContactInfoView.m */,
+				203416991CF5585A0002D8B5 /* ContactInfoView.xib */,
+			);
+			name = "提交报名";
+			sourceTree = "<group>";
+		};
 		205375841CF28E74005902B3 /* 活动详情 */ = {
 			isa = PBXGroup;
 			children = (
@@ -948,6 +984,9 @@
 				2054E90E1CF4181600CD3FDD /* ChooseActiveItemVC.h */,
 				2054E90F1CF4181600CD3FDD /* ChooseActiveItemVC.m */,
 				2054E9101CF4181600CD3FDD /* ChooseActiveItemVC.xib */,
+				203416851CF550C30002D8B5 /* SignUpViewController.h */,
+				203416861CF550C30002D8B5 /* SignUpViewController.m */,
+				203416871CF550C30002D8B5 /* SignUpViewController.xib */,
 			);
 			name = "活动详情";
 			sourceTree = "<group>";
@@ -955,6 +994,7 @@
 		2053758A1CF2B0DC005902B3 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				203416901CF555590002D8B5 /* 提交报名 */,
 				2053758B1CF2B113005902B3 /* TitleView.h */,
 				2053758C1CF2B113005902B3 /* TitleView.m */,
 				205375971CF2B172005902B3 /* TitleView.xib */,
@@ -2192,8 +2232,10 @@
 				626DD45D1C841FC9006BC53C /* Main.storyboard in Resources */,
 				361A76531CBCD1F7002FE6B2 /* HotTeamTableViewCell.xib in Resources */,
 				7F9318F51C8596240061E9EA /* top_back@3x.png in Resources */,
+				2034169A1CF5585A0002D8B5 /* ContactInfoView.xib in Resources */,
 				3644A96A1CD0B33F000D0218 /* FansTableViewCell.xib in Resources */,
 				362F49151CD1F1FB000777F0 /* ic_manage@2x.png in Resources */,
+				203416921CF5558E0002D8B5 /* ChooseTeamView.xib in Resources */,
 				3664D05C1CA1287C00BC6805 /* TeamsCell.xib in Resources */,
 				7F8F19351C88098000570B79 /* LoginAndRegistViewController.xib in Resources */,
 				363D6BE71CC76FFB008A169A /* SearchFriendVC.xib in Resources */,
@@ -2224,6 +2266,7 @@
 				90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */,
 				900400BA1CF03F0300101D86 /* ic_append@2x.png in Resources */,
 				362F7E741CC0BF7800C91090 /* ic_add@2x.png in Resources */,
+				203416891CF550C30002D8B5 /* SignUpViewController.xib in Resources */,
 				3627C2F81CA8C7E400A5D7EB /* SearchViewController.xib in Resources */,
 				7F9318EB1C858A010061E9EA /* flat_classmanage@2x.png in Resources */,
 				3664D04C1CA0FA7300BC6805 /* img_1@2x.png in Resources */,
@@ -2243,6 +2286,7 @@
 				362E30111CCF406800EBADCF /* img_logo_login@2x.png in Resources */,
 				626DD4621C841FC9006BC53C /* LaunchScreen.xib in Resources */,
 				36B2C1CA1CBB4E0B001D842B /* SexViewController.xib in Resources */,
+				2034168F1CF5534E0002D8B5 /* SignTitleView.xib in Resources */,
 				9055160E1CEC3CED001C4F51 /* MJRefresh.bundle in Resources */,
 				36ED83171CC62F0000D51ACA /* HistoryTableViewCell.xib in Resources */,
 				7F06F62C1C86D43D00F67173 /* ActivityMessageTableViewCell.xib in Resources */,
@@ -2375,12 +2419,14 @@
 				363BDD191CBF91B3001FE507 /* TeamOrderViewController.m in Sources */,
 				36E3E2081CC4879500294509 /* FailureSignViewController.m in Sources */,
 				7F875FEA1C867DB6003C6EBB /* FocusViewController.m in Sources */,
+				2034168D1CF5530C0002D8B5 /* SignTitleView.m in Sources */,
 				905516001CEC3CED001C4F51 /* MJRefreshAutoFooter.m in Sources */,
 				9055160C1CEC3CED001C4F51 /* MJRefreshNormalHeader.m in Sources */,
 				362F7E891CC0C8FD00C91090 /* CollectionViewCell.m in Sources */,
 				9055160F1CEC3CED001C4F51 /* MJRefreshConst.m in Sources */,
 				905515F21CEC3CED001C4F51 /* ELCAsset.m in Sources */,
 				905515ED1CEC3CED001C4F51 /* AFURLConnectionOperation.m in Sources */,
+				203416881CF550C30002D8B5 /* SignUpViewController.m in Sources */,
 				36FF6F451CA3E3D100387203 /* UserProtocolVC.m in Sources */,
 				362F85E91CABB69A006FFE61 /* PublicViewController.m in Sources */,
 				9040CD101CF2CA0800C18476 /* StepperView.m in Sources */,
@@ -2455,6 +2501,7 @@
 				9055161C1CEC3CED001C4F51 /* UIButton+WebCache.m in Sources */,
 				361A76571CBCD46B002FE6B2 /* SearchHotViewController.m in Sources */,
 				20B63E591CEDC02B00D5C551 /* SBJsonStreamParserAdapter.m in Sources */,
+				203416981CF5584A0002D8B5 /* ContactInfoView.m in Sources */,
 				361001311CD1DB69002C0FCF /* TeamHomeViewController.m in Sources */,
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
@@ -2479,6 +2526,7 @@
 				905516221CEC3CED001C4F51 /* UIView+WebCacheOperation.m in Sources */,
 				905516201CEC3CED001C4F51 /* UIImageView+HighlightedWebCache.m in Sources */,
 				905516071CEC3CED001C4F51 /* MJRefreshAutoStateFooter.m in Sources */,
+				203416951CF555A00002D8B5 /* ChooseTeamView.m in Sources */,
 				7F9318F91C8596590061E9EA /* PersonalInfomationViewController.m in Sources */,
 				3627C3011CA8D62A00A5D7EB /* ScanViewController.m in Sources */,
 				7F8F19171C87D2F700570B79 /* MyHostTableViewCell.m in Sources */,

@@ -124,6 +124,7 @@
 //    [self.navigationController pushViewController:vc animated:YES];
     ChooseActiveItemVC *vc = [[ChooseActiveItemVC alloc]init];
     vc.Id = 1;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

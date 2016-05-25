@@ -12,6 +12,7 @@
 #import "MemberView.h"
 #import "ContactView.h"
 #import "ChooseForm.h"
+#import "SignUpViewController.h"
 
 @interface ActiveDetailViewController ()
 {
@@ -304,7 +305,7 @@
     chooseFormView = (ChooseForm*)[[[NSBundle mainBundle]loadNibNamed:@"ChooseForm" owner:self options:nil]lastObject];
     [chooseFormView.inPersonBtn addTarget:self action:@selector(choosePersonForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.inTeamBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
-    [chooseFormView.signUpBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
+    [chooseFormView.signUpBtn addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.cancelBtn addTarget:self action:@selector(cancelBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.okBtn addTarget:self action:@selector(okBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -321,7 +322,10 @@
 }
 
 - (void)signUp:(UIButton*)sender {
-    
+    [maskView removeFromSuperview];
+    [chooseFormView removeFromSuperview];
+    SignUpViewController *vc = [[SignUpViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)choosePersonForm:(UIButton*)sender {
@@ -346,12 +350,12 @@
     [self makePhone:[activityInfo objectForKey:@"ComplainTel"]];
 }
 
-- (IBAction)cancelBtnClick:(id)sender {
+- (void)cancelBtnClick:(id)sender {
     [maskView removeFromSuperview];
     [chooseFormView removeFromSuperview];
 
 }
-- (IBAction)okBtnClick:(id)sender {
+- (void)okBtnClick:(id)sender {
     [maskView removeFromSuperview];
     [chooseFormView removeFromSuperview];
     if (_inPersonForm==1) {

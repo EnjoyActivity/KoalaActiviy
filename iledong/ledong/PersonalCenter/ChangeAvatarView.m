@@ -51,25 +51,25 @@
 
 - (void)onPhotoBtnClicked:(id)sender {
     if (self.delegate && [self.delegate respondsToSelector:@selector(onTakePhotoBtnClicked)]) {
-        [self popView:0.3];
+        [self popView:0.1];
         [self.delegate onTakePhotoBtnClicked];
     }
 }
 
 - (void)onPictureBtnClicked:(id)sender {
     if (self.delegate && [self.delegate respondsToSelector:@selector(onPictureBtnClicked)]) {
-        [self popView:0.3];
+        [self popView:0.1];
         [self.delegate onPictureBtnClicked];
     }
 }
 
 - (void)onCancelBtnClicked:(id)sender {
-    [self popView:0.5];
+    [self popView:0.3];
 }
 
 - (void)popView:(NSTimeInterval)duration {
     [UIView animateWithDuration:duration animations:^{
-        self.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 130);
+        self.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 160);
     } completion:^(BOOL finished) {
         [self.maskView removeFromSuperview];
         self.maskView = nil;

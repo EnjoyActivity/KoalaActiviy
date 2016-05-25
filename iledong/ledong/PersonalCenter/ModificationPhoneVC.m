@@ -21,8 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     timeNum = 60;
-    self.tabBarController.tabBar.hidden = YES;
-    self.navigationController.navigationBarHidden = YES;
     [self.gobackButton setImage:[UIImage imageNamed:@"ic_back"] forState:UIControlStateNormal];
     [self.gobackButton setImageEdgeInsets:UIEdgeInsetsMake(0, -60, 0, 0)];
     self.ImageSend.image = [FRUtils resizeImageWithImageName:@"btn_white"];
@@ -92,6 +90,7 @@
          if ([[responseObject objectForKey:@"code"] intValue] == 0)
          {
              ModificationPhoneVC2 *vc = [[ModificationPhoneVC2 alloc]init];
+             vc.hidesBottomBarWhenPushed = YES;
              [self.navigationController pushViewController:vc animated:YES];
          }
          else

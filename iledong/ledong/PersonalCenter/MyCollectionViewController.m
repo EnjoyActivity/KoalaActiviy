@@ -19,7 +19,6 @@
     self.titleName = @"我的收藏";
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
