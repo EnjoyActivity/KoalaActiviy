@@ -15,6 +15,14 @@
 
 @property (nonatomic, copy)completeBlock block;
 @property (nonatomic, strong)UITableView* tableView;
+@property (nonatomic, strong)UITextField* activityVenueTextField;
+@property (nonatomic, strong)UITextField* activitySiteTextField;
+@property (nonatomic, strong)UITextField* organizersTextField;
+@property (nonatomic, strong)UITextField* activityCostTextField;
+@property (nonatomic, strong)NSMutableDictionary* dataDict;
+@property (nonatomic, strong)NSString* beginTime;
+@property (nonatomic, strong)NSString* endTime;
+@property (nonatomic, assign)BOOL isModify;
 
 @end
 
@@ -25,6 +33,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.dataDict = [NSMutableDictionary dictionary];
     [self setupTableView];
     [self setupNavigationBar];
 }
@@ -78,14 +87,7 @@
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell1 forIndexPath:indexPath];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    UITextField* textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
-    textField.font = [UIFont systemFontOfSize:14.0];
-    [cell.contentView addSubview:textField];
-    textField.hidden = YES;
-    textField.keyboardType = UIKeyboardTypeDefault;
-    textField.textAlignment = NSTextAlignmentRight;
-    
+
     UIButton* btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
     [btn setTitle:@"确定" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
@@ -98,33 +100,80 @@
     [cell.contentView addSubview:timeLabel];
     timeLabel.tag = 100;
     timeLabel.hidden = YES;
-    
+
     if (indexPath.section == 0) {
+        self.activityVenueTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.activityVenueTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.activityVenueTextField];
+        self.activityVenueTextField.hidden = YES;
+        self.activityVenueTextField.keyboardType = UIKeyboardTypeDefault;
+        self.activityVenueTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动场馆";
-        textField.hidden = NO;
-        textField.placeholder = @"请输入活动场馆";
+        self.activityVenueTextField.hidden = NO;
+        self.activityVenueTextField.placeholder = @"请输入活动场馆";
+        if (self.dataDict)
+            self.activityVenueTextField.text = [self.dataDict objectForKey:@"activityVenue"];
     }
     else if (indexPath.section == 1) {
+        self.activitySiteTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.activitySiteTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.activitySiteTextField];
+        self.activitySiteTextField.hidden = YES;
+        self.activitySiteTextField.keyboardType = UIKeyboardTypeDefault;
+        self.activitySiteTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动地点";
-        textField.hidden = NO;
-        textField.placeholder = @"请输入活动地点";
+        self.activitySiteTextField.hidden = NO;
+        self.activitySiteTextField.placeholder = @"请输入活动地点";
+        if (self.dataDict)
+            self.activitySiteTextField.text = [self.dataDict objectForKey:@"activitySite"];
     }
     else if (indexPath.section == 2) {
         cell.textLabel.text = @"报名开始时间";
         timeLabel.hidden = NO;
+        if (self.dataDict) {
+            timeLabel.text = [self.dataDict objectForKey:@"beginTime"];
+            [timeLabel sizeToFit];
+            timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
+            timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
+            self.beginTime = [self.dataDict objectForKey:@"beginTime"];
+        }
     }
     else if (indexPath.section == 3) {
         cell.textLabel.text = @"报名结束时间";
         timeLabel.hidden = NO;
+        if (self.dataDict) {
+            timeLabel.text = [self.dataDict objectForKey:@"endTime"];
+            [timeLabel sizeToFit];
+            timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
+            timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
+            self.endTime = [self.dataDict objectForKey:@"endTime"];
+        }
     }
     else if (indexPath.section == 4) {
+        self.organizersTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.organizersTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.organizersTextField];
+        self.organizersTextField.hidden = YES;
+        self.organizersTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"组织者";
+        self.organizersTextField.hidden = NO;
+        self.organizersTextField.keyboardType = UIKeyboardTypeDefault;
+        self.organizersTextField.placeholder = @"请输入活动组织者";
+        if (self.dataDict)
+            self.organizersTextField.text = [self.dataDict objectForKey:@"organizers"];
     }
     else if (indexPath.section == 5) {
+        self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.activityCostTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.activityCostTextField];
+        self.activityCostTextField.hidden = YES;
+        self.activityCostTextField.keyboardType = UIKeyboardTypeNumberPad;
+        self.activityCostTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动费用";
-        textField.hidden = NO;
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-        textField.placeholder = @"请输入活动费用";
+        self.activityCostTextField.hidden = NO;
+        self.activityCostTextField.placeholder = @"请输入活动费用";
+        if (self.dataDict)
+            self.activityCostTextField.text = [self.dataDict objectForKey:@"activityCost"];
     }
     else if (indexPath.section == 6) {
         btn.hidden = NO;
@@ -135,6 +184,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 2 || indexPath.section == 3) {
+        [self.view endEditing:YES];
         CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.tableView completeDateInt:nil completeDateStr:^(NSString *str) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
@@ -147,6 +197,11 @@
             [label sizeToFit];
             label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-15, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
             label.center = CGPointMake(label.center.x, cell.contentView.bounds.size.height/2);
+            
+            if (indexPath.section == 2)
+                self.beginTime = dateStr;
+            else if (indexPath.section == 3)
+                self.endTime = dateStr;
         }];
         [self.tableView addSubview:datePickView];
     }
@@ -156,8 +211,9 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setCompleteBlock:(completeBlock)block {
+- (void)setCompleteBlock:(completeBlock)block isModify:(BOOL)isModify {
     self.block = block;
+    self.isModify = isModify;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -165,10 +221,33 @@
 }
 
 - (void)btnClicked {
+    [self.view endEditing:YES];
     if (self.block) {
-        self.block(@{});
+        if (self.activityVenueTextField.text.length == 0 ||
+            self.activitySiteTextField.text.length == 0 ||
+            self.organizersTextField.text.length == 0 ||
+            self.activityCostTextField.text.length == 0 ||
+            self.beginTime.length == 0 ||
+            self.endTime.length == 0) {
+            [Dialog simpleToast:@"请填写相关参数！" withDuration:1.5];
+            return;
+        }
+        
+        self.dataDict = [NSMutableDictionary dictionary];
+        [self.dataDict setValue:self.beginTime forKey:@"beginTime"];
+        [self.dataDict setValue:self.endTime forKey:@"endTime"];
+        [self.dataDict setValue:self.activityVenueTextField.text forKey:@"activityVenue"];
+        [self.dataDict setValue:self.activitySiteTextField.text forKey:@"activitySite"];
+        [self.dataDict setValue:self.organizersTextField.text forKey:@"organizers"];
+        [self.dataDict setValue:self.activityCostTextField.text forKey:@"activityCost"];
+        self.block(self.isModify, self.dataDict);
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)setPreDict:(NSDictionary*)dict {
+    self.dataDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+    [self.tableView reloadData];
 }
 
 @end

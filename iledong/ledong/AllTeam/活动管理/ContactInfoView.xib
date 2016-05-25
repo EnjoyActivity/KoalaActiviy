@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1oG-kK-1Do" customClass="ContactInfoView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="137"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="填写联系人信息" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0x-2m-1OG">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="u0l-uU-OjU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号（必填）" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LQU-30-pb5">
+                    <rect key="frame" x="0.0" y="87" width="320" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Yoi-2v-voQ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="联系人姓名（必填）" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dFW-tE-hOY">
+                    <rect key="frame" x="0.0" y="36" width="320" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="egh-In-GmN"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="i0x-2m-1OG" firstAttribute="leading" secondItem="1oG-kK-1Do" secondAttribute="leading" id="0sp-ry-LTn"/>
+                <constraint firstAttribute="trailing" secondItem="i0x-2m-1OG" secondAttribute="trailing" id="4Tp-Aw-DFI"/>
+                <constraint firstItem="dFW-tE-hOY" firstAttribute="leading" secondItem="1oG-kK-1Do" secondAttribute="leading" id="CKh-C9-e3t"/>
+                <constraint firstAttribute="trailing" secondItem="dFW-tE-hOY" secondAttribute="trailing" id="MWJ-dP-ix4"/>
+                <constraint firstAttribute="bottom" secondItem="LQU-30-pb5" secondAttribute="bottom" id="dmk-EG-WFX"/>
+                <constraint firstItem="dFW-tE-hOY" firstAttribute="top" secondItem="i0x-2m-1OG" secondAttribute="bottom" id="eKK-i8-Z5c"/>
+                <constraint firstAttribute="trailing" secondItem="LQU-30-pb5" secondAttribute="trailing" id="jDd-SH-V5r"/>
+                <constraint firstItem="LQU-30-pb5" firstAttribute="leading" secondItem="1oG-kK-1Do" secondAttribute="leading" id="phG-5t-eWH"/>
+                <constraint firstItem="i0x-2m-1OG" firstAttribute="top" secondItem="1oG-kK-1Do" secondAttribute="top" id="rAc-Td-YWK"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="nameLabel" destination="dFW-tE-hOY" id="kwZ-x3-eFB"/>
+                <outlet property="phoneLabel" destination="LQU-30-pb5" id="apJ-U0-0dT"/>
+                <outlet property="tipLabel" destination="i0x-2m-1OG" id="Z5v-8C-yug"/>
+            </connections>
+            <point key="canvasLocation" x="-66" y="137.5"/>
+        </view>
+    </objects>
+</document>

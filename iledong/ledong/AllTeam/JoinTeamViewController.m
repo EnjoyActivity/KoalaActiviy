@@ -9,6 +9,7 @@
 #import "JoinTeamViewController.h"
 #import "ApplyViewController.h"
 #import "AuditViewController.h"
+#import "AllTeamController.h"
 
 @interface JoinTeamViewController ()<UITextViewDelegate>
 
@@ -50,7 +51,12 @@
 }
 
 - (void)backBtnClicked {
-    [self.navigationController popViewControllerAnimated:YES];
+    for (UIViewController* Vc in self.navigationController.viewControllers) {
+        if ([Vc isKindOfClass:[AllTeamController class]]) {
+            [self.navigationController popToViewController:Vc animated:YES];
+            return;
+        }
+    }
 }
 
 
@@ -62,7 +68,7 @@
 - (IBAction)submitButtonClick:(id)sender
 {
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_TEAMJOINTEAM_URL];
-    NSDictionary *dic = @{@"token":[HttpClient getTokenStr],@"teamid":@"",@"message":_textView.text};
+    NSDictionary *dic = @{@"token":[HttpClient getTokenStr],@"teamid":self.teamId,@"message":_textView.text};
     [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject)
      {
          AuditViewController *auditViewController = [[AuditViewController alloc] init];

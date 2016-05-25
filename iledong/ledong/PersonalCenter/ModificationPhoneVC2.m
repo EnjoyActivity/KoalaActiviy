@@ -25,8 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     timeNum = 60;
-    self.tabBarController.tabBar.hidden = YES;
-    self.navigationController.navigationBarHidden = YES;
     [self.goBackBtn setImage:[UIImage imageNamed:@"ic_back"] forState:UIControlStateNormal];
     [self.goBackBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -60, 0, 0)];
     self.imgSend.image = [FRUtils resizeImageWithImageName:@"btn_white"];

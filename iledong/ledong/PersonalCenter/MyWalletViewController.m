@@ -33,7 +33,6 @@
     [self.rightButton setTitle:@"查看明细" forState:UIControlStateNormal];
     [self.rightButton addTarget:self action:@selector(checkDetail:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
     
     dataArrSection1 = @[@"工商银行",@"添加银行卡...",@"微信钱包"];
     contentArrSection1 = @[@"尾号9999",@"",@"未绑定"];

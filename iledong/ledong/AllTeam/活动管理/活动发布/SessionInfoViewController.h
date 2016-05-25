@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^completeBlock)(NSDictionary* dict);
+typedef void (^completeBlock)(BOOL isMoidfy, NSDictionary* dict);
 
 @interface SessionInfoViewController : UIViewController
 
-- (void)setCompleteBlock:(completeBlock)block;
+- (void)setPreDict:(NSDictionary*)dict;
+- (void)setCompleteBlock:(completeBlock)block
+                isModify:(BOOL)isModify;
 
 @end

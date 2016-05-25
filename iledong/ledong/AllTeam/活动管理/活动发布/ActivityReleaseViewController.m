@@ -77,7 +77,7 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSMutableDictionary* signingUpPersonCountDict;     //报名人数情况
 @property (nonatomic, strong)NSMutableDictionary* moneyDict;                    //费用
 @property (nonatomic, strong)NSMutableDictionary* activityAddress;              //活动地点      1
-@property (nonatomic, strong)NSMutableArray* activitySessionArray;              //活动场次      1
+@property (nonatomic, strong)NSMutableArray* activitySessionArray;              //活动场次
 
 @end
 
@@ -100,8 +100,6 @@ typedef enum imagePickerFromType {
 - (void)dealloc {
     [self releaseResource];
     [self removeKeyboardNotification];
-    [self.timer invalidate];
-    self.timer = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -273,6 +271,8 @@ typedef enum imagePickerFromType {
 }
 
 - (void)backBtnClicked {
+    [self.timer invalidate];
+    self.timer = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -338,10 +338,12 @@ typedef enum imagePickerFromType {
         NSString* str = ((UITextField*)firstResponder).text;
         if (firstResponder.tag == 100) //活动标题
             self.titleStr = str;
-        else if (firstResponder.tag == 500) //费用
+        else {
+            str = self.costTextField.text;
             [self.moneyDict setValue:str forKey:@"cost"];
-        else if (firstResponder.tag == 501) //保证金
+            str = self.marginTextField.text;
             [self.moneyDict setValue:str forKey:@"margin"];
+        }
     }
     
     [UIView animateWithDuration:0.5 animations:^{
@@ -558,6 +560,25 @@ typedef enum imagePickerFromType {
         else if (indexPath.section == 2) {
             [self.view endEditing:YES];
             SessionInfoViewController* Vc = [[SessionInfoViewController alloc]init];
+            BOOL isModify = NO;
+            NSDictionary* tempDict = nil;
+            if (self.activitySessionArray.count > indexPath.row) {
+                tempDict = self.activitySessionArray[indexPath.row];
+                if (tempDict)
+                    isModify = YES;
+            }
+            [Vc setCompleteBlock:^(BOOL isMoidfy, NSDictionary *dict) {
+                if (isModify) {
+                    [self.activitySessionArray removeObjectAtIndex:indexPath.row];
+                    [self.activitySessionArray insertObject:dict atIndex:indexPath.row];
+                }
+                else {
+                    [self.activitySessionArray addObject:dict];
+                }
+                [self.nonleagueTableView reloadData];
+            } isModify:isModify];
+            if (tempDict)
+                [Vc setPreDict:tempDict];
             [self.navigationController pushViewController:Vc animated:YES];
         }
     }
@@ -866,6 +887,7 @@ typedef enum imagePickerFromType {
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
+    NSDictionary* dict = self.activitySessionArray[indexPath.row];
     UIImageView* imageView = (UIImageView*)[cell.contentView viewWithTag:99];
     if (!imageView) {
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 0, 0)];
@@ -884,8 +906,11 @@ typedef enum imagePickerFromType {
         nameLabel.textColor = UIColorFromRGB(0x333333);
         [cell.contentView addSubview:nameLabel];
     }
-    nameLabel.text = @"云端篮球馆";
+    nameLabel.text = [dict objectForKey:@"activityVenue"];
     [nameLabel sizeToFit];
+    if (nameLabel.frame.size.width > 150) {
+        nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, 150, nameLabel.frame.size.height);
+    }
     
     UILabel* addLabel = (UILabel*)[cell.contentView viewWithTag:101];
     if (!addLabel) {
@@ -895,8 +920,11 @@ typedef enum imagePickerFromType {
         addLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:addLabel];
     }
-    addLabel.text = @"北京市朝阳区绿荫路128号";
+    addLabel.text = [dict objectForKey:@"activitySite"];
     [addLabel sizeToFit];
+    if (addLabel.frame.size.width > 150) {
+        addLabel.frame = CGRectMake(addLabel.frame.origin.x, addLabel.frame.origin.y, 150, addLabel.frame.size.height);
+    }
     
     x= imageView.frame.origin.x;
     UILabel* timeLabel = (UILabel*)[cell.contentView viewWithTag:102];
@@ -907,7 +935,7 @@ typedef enum imagePickerFromType {
         timeLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:timeLabel];
     }
-    timeLabel.text = @"报名时间 05月19日 19:00 － 05月25日 19:00";
+    timeLabel.text = [NSString stringWithFormat:@"报名时间:%@-%@", [dict objectForKey:@"beginTime"], [dict objectForKey:@"endTime"]];
     [timeLabel sizeToFit];
     
     UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:103];
@@ -918,7 +946,7 @@ typedef enum imagePickerFromType {
         personLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:personLabel];
     }
-    personLabel.text = @"组织者:李云山";
+    personLabel.text = [NSString stringWithFormat:@"组织者：%@", [dict objectForKey:@"organizers"]];
     [personLabel sizeToFit];
     
     UILabel* moneyLabel = (UILabel*)[cell.contentView viewWithTag:104];
@@ -929,8 +957,9 @@ typedef enum imagePickerFromType {
         moneyLabel.textColor = UIColorFromRGB(0xE31B1A);
         [cell.contentView addSubview:moneyLabel];
     }
-    moneyLabel.text = @"200元";
+    moneyLabel.text = [NSString stringWithFormat:@"%@元", [dict objectForKey:@"activityCost"]];
     [moneyLabel sizeToFit];
+    moneyLabel.frame = CGRectMake(APP_WIDTH-30-moneyLabel.frame.size.width, 0, moneyLabel.frame.size.width, moneyLabel.frame.size.height);
     moneyLabel.center = CGPointMake(moneyLabel.center.x, cell.contentView.bounds.size.height/2);
     
     UILabel* lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, cell.contentView.bounds.size.height-10, APP_WIDTH, 10)];
@@ -1093,15 +1122,16 @@ typedef enum imagePickerFromType {
         view.tag = 2000;
         view.center = CGPointMake(view.center.x, cell.contentView.bounds.size.height/2);
     }
+    __weak typeof(self)weakSelf = self;
     [view setCurrentSelectNum:^(NSInteger num) {
         if (indexPath.row == 0) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
         }
         else if (indexPath.row == 1) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
         }
         else if (indexPath.row == 2) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
         }
     }];
 
@@ -1370,10 +1400,10 @@ typedef enum imagePickerFromType {
     }
     
     if (self.gameType == gameTypenonLeague) {   //nonleagueTableView独有
-//        if (self.activitySessionArray.count == 0) { //活动场次
-//            [self setStartBtnState:NO];
-//            return;
-//        }
+        if (self.activitySessionArray.count == 0) { //活动场次
+            [self setStartBtnState:NO];
+            return;
+        }
     }
     else if (self.gameType == gameTypeLeague) { //leagueTableView独有
         if (self.contactInfo.length == 0) { //联系方式

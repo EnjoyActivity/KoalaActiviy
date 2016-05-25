@@ -22,7 +22,6 @@
     self.titleName = @"关注";
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.isPlayerList = YES;
 }

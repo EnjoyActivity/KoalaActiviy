@@ -178,6 +178,7 @@
             {
                 // 进入我的活动
                 ActivityMessageViewController *activityMessageViewController = [[ActivityMessageViewController alloc] init];
+                activityMessageViewController.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:activityMessageViewController animated:YES];
             }
                 break;
@@ -188,6 +189,7 @@
             case 2:
             {
                 MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc] init];
+                myCollectionVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:myCollectionVC animated:YES];
             }
                 break;
@@ -202,6 +204,7 @@
     } else if (indexPath.section == 1) {
         // 点击进入钱包
         MyWalletViewController *myWalletViewController = [[MyWalletViewController alloc] init];
+        myWalletViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myWalletViewController animated:YES];
     } else {
         // 进入我的设置
@@ -217,6 +220,7 @@
 {
     // 点击进入个人信息
     PersonalInfomationViewController *personalInfoController = [[PersonalInfomationViewController alloc] init];
+    personalInfoController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:personalInfoController animated:YES];
     
     // 进入登录注册
@@ -228,6 +232,8 @@
 {
     // 点击进入我的相册/足迹
     FootprintViewController *footprintViewController = [[FootprintViewController alloc] init];
+    footprintViewController.hidesBottomBarWhenPushed = YES;
+    
     [self.navigationController pushViewController:footprintViewController animated:YES];
 }
 
@@ -235,6 +241,7 @@
 {
     // 点击进入积分
     IntergralViewController *intergralViewController = [[IntergralViewController alloc] init];
+    intergralViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:intergralViewController animated:YES];
 }
 
@@ -242,6 +249,7 @@
 {
     // 点击进入关注
     FocusViewController *focusViewController = [[FocusViewController alloc]init];
+    focusViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:focusViewController animated:YES];
 }
 - (IBAction)fansButtonClick:(id)sender
@@ -254,6 +262,7 @@
 {
     // 进入我的消息
     MyMessageViewController *myMessageViewController = [[MyMessageViewController alloc] init];
+    myMessageViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:myMessageViewController animated:YES];
 }
 

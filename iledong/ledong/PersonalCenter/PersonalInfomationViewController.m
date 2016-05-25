@@ -57,7 +57,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
 
 }
@@ -215,6 +214,7 @@
     } else {
         if (indexPath.row == 0) {//手机
             ModificationPhoneVC *vc = [[ModificationPhoneVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
 
         }

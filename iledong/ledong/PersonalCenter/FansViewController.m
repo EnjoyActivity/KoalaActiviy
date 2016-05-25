@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     self.titleName = @"粉丝";
     [super viewDidLoad];
-    self.tabBarController.tabBar.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }

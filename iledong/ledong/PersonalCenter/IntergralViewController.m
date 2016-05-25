@@ -30,7 +30,6 @@
     self.titleName = @"我的积分";
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
     
     dataArr = @[@"签到",@"参加活动",@"登录",@"新用户注册"];
     contentArr = @[@"+10",@"+10",@"+10",@"+10"];
