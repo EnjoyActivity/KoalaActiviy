@@ -100,8 +100,6 @@ typedef enum imagePickerFromType {
 - (void)dealloc {
     [self releaseResource];
     [self removeKeyboardNotification];
-    [self.timer invalidate];
-    self.timer = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -273,6 +271,8 @@ typedef enum imagePickerFromType {
 }
 
 - (void)backBtnClicked {
+    [self.timer invalidate];
+    self.timer = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -1122,15 +1122,16 @@ typedef enum imagePickerFromType {
         view.tag = 2000;
         view.center = CGPointMake(view.center.x, cell.contentView.bounds.size.height/2);
     }
+    __weak typeof(self)weakSelf = self;
     [view setCurrentSelectNum:^(NSInteger num) {
         if (indexPath.row == 0) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
         }
         else if (indexPath.row == 1) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
         }
         else if (indexPath.row == 2) {
-            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
+            [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
         }
     }];
 

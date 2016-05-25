@@ -269,6 +269,7 @@
 		9040CD161CF2EF2F00C18476 /* ParameterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */; };
 		90467B501CF446B20086FE5E /* SessionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */; };
 		90467B531CF45A320086FE5E /* ActivityAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B521CF45A320086FE5E /* ActivityAddressViewController.m */; };
+		904D484E1CF5969C006338C1 /* SelectTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 904D484D1CF5969C006338C1 /* SelectTeamViewController.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
 		905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515621CEC3CED001C4F51 /* AFHTTPSessionManager.m */; };
@@ -767,6 +768,8 @@
 		90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionInfoViewController.m; sourceTree = "<group>"; };
 		90467B511CF45A320086FE5E /* ActivityAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityAddressViewController.h; sourceTree = "<group>"; };
 		90467B521CF45A320086FE5E /* ActivityAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityAddressViewController.m; sourceTree = "<group>"; };
+		904D484C1CF5969C006338C1 /* SelectTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectTeamViewController.h; sourceTree = "<group>"; };
+		904D484D1CF5969C006338C1 /* SelectTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectTeamViewController.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		9055155F1CEC3CED001C4F51 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -1434,6 +1437,8 @@
 				363BDD101CBF703E001FE507 /* JoinTeamViewController.h */,
 				363BDD111CBF703E001FE507 /* JoinTeamViewController.m */,
 				363BDD121CBF703E001FE507 /* JoinTeamViewController.xib */,
+				904D484C1CF5969C006338C1 /* SelectTeamViewController.h */,
+				904D484D1CF5969C006338C1 /* SelectTeamViewController.m */,
 				905516281CEC3E31001C4F51 /* 活动管理 */,
 				3610012D1CD1DB16002C0FCF /* 团队 */,
 				362F7E801CC0C65100C91090 /* 报名 */,
@@ -2506,6 +2511,7 @@
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
 				205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */,
+				904D484E1CF5969C006338C1 /* SelectTeamViewController.m in Sources */,
 				36B2C1B01CBB481A001D842B /* MemberTableViewCell.m in Sources */,
 				36F194DC1CD335220050EE6F /* CollectTableViewCell.m in Sources */,
 				20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */,

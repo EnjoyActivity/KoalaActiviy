@@ -14,6 +14,7 @@
 #import "CreateTeamVController.h"
 #import "JoinTeamViewController.h"
 #import "TeamHomeViewController.h"
+#import "SelectTeamViewController.h"
 
 #define kCell       @"AllTeamCell"
 
@@ -162,9 +163,12 @@ typedef enum listType {
 {
     if ([HttpClient isLogin])
     {
-        JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
-        [joinTeamViewController setHidesBottomBarWhenPushed:YES];
-        [self.navigationController pushViewController:joinTeamViewController animated:YES];
+        //JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
+        //[joinTeamViewController setHidesBottomBarWhenPushed:YES];
+        
+        SelectTeamViewController* selectTeamViewController = [[SelectTeamViewController alloc]init];
+        [selectTeamViewController setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:selectTeamViewController animated:YES];
     }
     else
     {
