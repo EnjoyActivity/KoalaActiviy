@@ -20,7 +20,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBarHidden = NO;
     self.title = @"您的性别";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.

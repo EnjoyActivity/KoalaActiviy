@@ -100,7 +100,8 @@
     maskView.alpha = 0.5;
 //
 //    [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
-    ChangeAvatarView* sheet = [[ChangeAvatarView alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 160, APP_WIDTH, 160)];    sheet.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 160);
+    ChangeAvatarView* sheet = [[ChangeAvatarView alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 160, APP_WIDTH, 160)];
+    sheet.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 160);
     sheet.maskView = maskView;
     sheet.delegate = self;
     [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
@@ -134,14 +135,20 @@
             self.block(_headImage);
         }
         [FRUtils setAvatarUrl:[temp objectForKey:@"result"]];
+        //缓存头像
+        [FRUtils setHeaderImage:_headImage];
+
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshHeaderImage" object:_headImage];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (_isGuide) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
     }fail:^{
         [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
     }];
 }
-
-
 
 
 - (void)onTakePhotoBtnClicked {

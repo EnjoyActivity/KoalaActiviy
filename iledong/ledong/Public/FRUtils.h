@@ -79,7 +79,7 @@ typedef enum : NSUInteger
 + (NSString*)getSign;//签名
 + (NSString*)getinterest;//爱好
 + (NSString*)getBirthday;
-+ (NSString*)getHeaderImage;
++ (UIImage*)getHeaderImage;
 
 + (void)setPhoneNum:(NSString*)phone;
 + (void)setNickName:(NSString*)name;
@@ -91,6 +91,6 @@ typedef enum : NSUInteger
 + (void)setAvatarUrl:(NSString*)url;
 + (void)setBirthday:(NSString*)birth;
 + (void)setToken:(NSString *)token;
-+ (void)setHeaderImage:(NSString*)headerImage;
++ (void)setHeaderImage:(UIImage*)headerImage;
 
 @end

@@ -435,11 +435,10 @@ static FRUtils *instance = nil;
         }
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
              [FRUtils saveUserInfo:json];
+             if (success) {
+                 success();
+             }
          });
-        
-        if (success) {
-            success();
-        }
         
     }fail:^{
         if (fail) {
@@ -500,23 +499,24 @@ static FRUtils *instance = nil;
         [FRUtils setAvatarUrl:@""];
     } else {
         [FRUtils setAvatarUrl:avatar];
-        
+        //缓存头像
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg/"];
         if (![fileManager fileExistsAtPath:headerImageDirectory]) {
             [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
         }
         NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
         if (![fileManager fileExistsAtPath:fileName]) {
             NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
             [imgData writeToFile:fileName atomically:NO];
         }
-        [FRUtils setHeaderImage:fileName];
+       
     }
     int sex = [[result objectForKey:@"Sex"]intValue];
     [FRUtils setGender:sex];
 }
+
 
 + (BOOL)isFirstLogin {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
@@ -567,9 +567,14 @@ static FRUtils *instance = nil;
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     return [defs objectForKey:@"birthday"];
 }
-+ (NSString*)getHeaderImage {
-    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    return [defs objectForKey:@"headerImage"];
++ (UIImage*)getHeaderImage {
+    NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg/"];
+    NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+    NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
+    
+    return [UIImage imageWithContentsOfFile:fileName];
+
+
 }
 //set
 + (void)setNickName:(NSString*)name {
@@ -620,9 +625,15 @@ static FRUtils *instance = nil;
     [defs setObject:token forKey:@"kToken"];
     [defs synchronize];
 }
-+ (void)setHeaderImage:(NSString*)headerImage {
-    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    [defs setObject:headerImage forKey:@"headerImage"];
-    [defs synchronize];
++ (void)setHeaderImage:(UIImage*)headerImage {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+    if (![fileManager fileExistsAtPath:headerImageDirectory]) {
+        [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+    NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
+    NSData *imgData = UIImagePNGRepresentation(headerImage);
+    [imgData writeToFile:fileName atomically:NO];
 }
 @end

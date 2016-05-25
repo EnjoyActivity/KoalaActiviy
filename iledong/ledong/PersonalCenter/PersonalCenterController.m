@@ -45,8 +45,6 @@
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshUserInfo:) name:@"RefreshUserinfo" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshHeaderImage:) name:@"RefreshHeaderImage" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshNickName:) name:@"RefreshNickName" object:nil];
-        
-        
     }
     return self;
 }
@@ -103,11 +101,29 @@
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
     
-    [self refreshUserInfo:nil];
-    
+    _nameLabel.text = [FRUtils getNickName];
+    _signatureLabel.text = [FRUtils getSign];
+    if ([FRUtils getHeaderImage]) {
+        _headerImage.image = [FRUtils circleImage:[FRUtils getHeaderImage] withParam:1];
+    } else {
+        _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
+    }
+
     if ([HttpClient isLogin]) {
         [FRUtils queryUserInfoFromWeb:^{
             [self refreshUserInfo:nil];
+            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    ChangeGenderViewController *vc = [[ChangeGenderViewController alloc]init];
+                    vc.isGuide = YES;
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:NO];
+                });
+                
+//                    [self showGuide:nil];
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+                }
         }failBlock:nil];
     }
 }
@@ -267,28 +283,22 @@
 
 //通知
 - (void)showGuide:(NSNotification *)notification {
-    self.tabBarController.tabBar.hidden = YES;
-    self.navigationController.navigationBarHidden = NO;
     ChangeGenderViewController *vc = [[ChangeGenderViewController alloc]init];
     vc.isGuide = YES;
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void)refreshUserInfo:(NSNotification *)notification {
-    _nameLabel.text = [FRUtils getNickName];
-    _signatureLabel.text = [FRUtils getSign];
-    NSString *avatarUrl = [FRUtils getAvatarUrl];
-    if (!avatarUrl||avatarUrl.length == 0) {
-        _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
-    } else {
-        NSString *fileName = [FRUtils getHeaderImage];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:fileName]) {
-            _headerImage.image = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _nameLabel.text = [FRUtils getNickName];
+        _signatureLabel.text = [FRUtils getSign];
+        if ([FRUtils getHeaderImage]) {
+            _headerImage.image = [FRUtils circleImage:[FRUtils getHeaderImage] withParam:1];
         } else {
-            _headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
+            _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
         }
-    }
+    });
 
 }
 

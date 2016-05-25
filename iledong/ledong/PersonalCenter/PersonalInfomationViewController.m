@@ -37,13 +37,11 @@
 @implementation PersonalInfomationViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.titleName = @"用户信息";
-    NSString *avatarUrl = [FRUtils getAvatarUrl];
     if (!_image) {
         _image = [UIImage imageNamed:@"img_avatar_44"];
     }
-
-    [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
     nameArrSection1 = [[NSMutableArray alloc] initWithObjects:@"昵称",@"性别",@"生日",@"常住地", nil];

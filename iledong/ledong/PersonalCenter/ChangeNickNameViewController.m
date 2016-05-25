@@ -24,6 +24,8 @@
     self.title = @"设置昵称";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyBoard:)];
+    [self.view addGestureRecognizer:tapGes];
     [self setupUI];
 }
 
@@ -76,12 +78,15 @@
 }
 
 #pragma mark - button method
+- (void)hideKeyBoard:(UIGestureRecognizer*)ges {
+    [nameField resignFirstResponder];
+}
+
 - (void)doneBtnClick:(UIButton*)sender {
     if (nameField.text.length == 0) {
         [Dialog toast:@"昵称不能为空"];
         return;
     }
-    
     
     [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
         NSDictionary* temp = (NSDictionary*)json;
@@ -92,7 +97,9 @@
         NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
         [postDic setObject:nameField.text forKey:@"NickName"];
         [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-        [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
+        if (_isGuide) {
+            [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
+        }
         [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
             NSDictionary* temp = (NSDictionary*)json;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
