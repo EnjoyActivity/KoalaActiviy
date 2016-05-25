@@ -12,15 +12,6 @@
             symbolName = "-[NSException raise]"
             moduleName = "">
             <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NSException raise]"
-                  moduleName = "CoreFoundation"
-                  usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "0">
-               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -148,7 +139,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/PersonalCenter/ChangeAvatarViewController.m"
-                  timestampString = "485859829.771655"
+                  timestampString = "485860096.417475"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "128"
@@ -163,7 +154,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/PersonalCenter/ChangeAvatarViewController.m"
-                  timestampString = "485859829.771816"
+                  timestampString = "485860096.417649"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"

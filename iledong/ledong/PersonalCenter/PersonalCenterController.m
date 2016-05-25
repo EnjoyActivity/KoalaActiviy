@@ -105,11 +105,9 @@
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
     
     if ([HttpClient isLogin]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            [FRUtils queryUserInfoFromWeb:^{
-                [self refreshUI];
-            }failBlock:nil];
-        });
+        [FRUtils queryUserInfoFromWeb:^{
+            [self refreshUI];
+        }failBlock:nil];
     }
 }
 
