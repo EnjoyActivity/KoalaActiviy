@@ -67,6 +67,9 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    if (locations.count == 0) {
+        return;
+    }
     CLLocation * location = [locations firstObject];
     CLLocationCoordinate2D  coordinate = location.coordinate;
     
@@ -80,25 +83,30 @@
             return ;
         }
         CLPlacemark * mark = [placemarks firstObject];
-        NSDictionary * dic = mark.addressDictionary;
         
         NSString * city = mark.locality;
         if (!city) {
             city = mark.administrativeArea;
         }
+        if (!city) {
+            city = @"NULL";
+        }
+        NSString * postalCode = mark.postalCode;
+        if (postalCode == nil) {
+            postalCode = @"NULL";
+        }
+        
         NSDictionary * infoDic = @{
                                @"longitude"   :[NSNumber numberWithDouble:coordinate.longitude],
                                @"latitude"    :[NSNumber numberWithDouble:coordinate.latitude],
-                               @"areaCode"    :dic[@"postalCode"],
-                                 @"city"        :city
+                               @"areaCode"    :postalCode,
+                                 @"city"      :city
                                };
         if (successResult != nil) {
             successResult(infoDic);
         }
         [self.locationManager stopUpdatingLocation];
     }];
-    
-
 }
 
 @end

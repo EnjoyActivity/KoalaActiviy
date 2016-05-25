@@ -355,6 +355,7 @@
 		ECBB8A4C1CEDB97A007D4756 /* LDActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */; };
 		ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */; };
 		ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */; };
+		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
 		ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */; };
 /* End PBXBuildFile section */
 
@@ -915,6 +916,7 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
+		ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTeamMoreCell.xib; sourceTree = "<group>"; };
 		ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2058,6 +2060,7 @@
 			children = (
 				EC9A93121CED50C500F6009B /* MainPageTopAdCell.xib */,
 				EC9A93141CED519300F6009B /* MainPageActivityCell.xib */,
+				ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */,
 				ECBB8A481CEDB97A007D4756 /* LDActivityTableViewCell.h */,
 				ECBB8A491CEDB97A007D4756 /* LDActivityTableViewCell.m */,
 				ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */,
@@ -2333,6 +2336,7 @@
 				362F7E731CC0BF7800C91090 /* ic_add_grey@2x.png in Resources */,
 				36E1E6E51C9F84C90085C457 /* ic_mine@2x.png in Resources */,
 				ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */,
+				ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */,
 				362F491A1CD20105000777F0 /* TeamHomeTableViewCell.xib in Resources */,
 				36E3E2041CC4803E00294509 /* ckb_uncheck@2x.png in Resources */,
 			);

@@ -33,6 +33,8 @@
     
     [self.view addSubview:self.searchResultTable];
     
+    
+    
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
     [self.tableView registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
@@ -81,22 +83,28 @@
 #pragma mark - location
 
 - (void)getLocationInfo {
-    @WeakObj(self);
+//    @WeakObj(self);
     location = [[LDLocationManager alloc] init];
     [location getLocationSuccess:^(NSDictionary * locationInfo) {
-        [selfWeak loadUserLocationInfo:locationInfo];
+//        [selfWeak loadUserLocationInfo:locationInfo];
+        NSString * city = locationInfo[@"city"];
+        if ([city isEqualToString:@"NULL"]) {
+            return ;
+        }
+        self.adressCity.text = city;
     } fail:^(NSError * error) {
         
     }];
 }
 
-- (void)loadUserLocationInfo:(NSDictionary *)dic {
-    NSString * city = dic[@"city"];
-    double  longitude = [dic[@"longitude"] doubleValue];
-    double latitude = [dic[@"latitude"] doubleValue];
-    NSString * areaCode = dic[@"areaCode"];
-    
-}
+//- (void)loadUserLocationInfo:(NSDictionary *)dic {
+//    NSString * city = dic[@"city"];
+//    double  longitude = [dic[@"longitude"] doubleValue];
+//    double latitude = [dic[@"latitude"] doubleValue];
+//    NSString * areaCode = dic[@"areaCode"];
+//    
+//}
+
 #pragma mark - ButtonClick
 - (IBAction)gobackButtonClick:(id)sender
 {
@@ -186,6 +194,14 @@
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    return YES;
+}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     

@@ -31,6 +31,10 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     [historyArray addObjectsFromArray:[self getSearchHistory]];
     resultArray = [NSMutableArray array];
     hotSearchArray = [NSMutableArray array];
+    for (int i =1; i<9; i++) {
+        NSString * str = [NSString stringWithFormat:@"热门搜索%d",i];
+        [hotSearchArray addObject:str];
+    }
     [self setUpUI];
     
   
@@ -71,6 +75,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
+            [self.resultTableView reloadData];
         });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
@@ -223,8 +228,18 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
-    label.text = @"热门活动";
+    label.text = hotSearchArray[indexPath.row];
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString * str = hotSearchArray[indexPath.row];
+    self.textField.text = str;
+    [self.resultTableView setHidden:NO];
+    [historyArray insertObject:str atIndex:0];
+    [self addSearchHistory];
+    
+    [self requestWithKeyWord:str];
 }
 
 #pragma mark - UI

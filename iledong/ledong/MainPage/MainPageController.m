@@ -19,6 +19,7 @@
 static NSString * const topAdCellIdentifier = @"TopAdCell";
 static NSString * const activityCellIdentifier = @"ActivityCell";
 static NSString * const hotTeamIdentifier = @"teamCell";
+static NSString * const teamMoreIdentifier = @"teamMoreCell";
 
 static CGFloat const adHeight = 280;
 static CGFloat const activityHeight = 180;
@@ -78,8 +79,6 @@ static CGFloat const teamHeight = 280;
 - (void)viewDidLoad {
     [super viewDidLoad];
     moreImage = [self moreTeamImage];
-
-    self.navigationController.navigationBarHidden = YES;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -109,7 +108,7 @@ static CGFloat const teamHeight = 280;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = NO;
+    self.navigationController.navigationBar.hidden = YES;
    
 }
 
@@ -121,8 +120,6 @@ static CGFloat const teamHeight = 280;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
- 
-    self.tabBarController.tabBar.hidden = YES;
     
     [self adTimerStop];
     [self activityTimerStop];
@@ -159,6 +156,7 @@ static CGFloat const teamHeight = 280;
 - (void)requestActivityData {
     NSString * token =[HttpClient getTokenStr];
     if (token.length == 0) {
+        [activityCollectionView reloadData];
         return;
     }
     
@@ -214,12 +212,15 @@ static CGFloat const teamHeight = 280;
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
             [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
         };
+        adressCityVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:adressCityVC animated:YES];
     } else if ([sender isEqual:scannerButton]) {
         ScanViewController *scanViewController = [[ScanViewController alloc] init];
+        scanViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:scanViewController animated:YES];
     } else {
         SearchViewController *searchViewController = [[SearchViewController alloc] init];
+        searchViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:searchViewController animated:YES];
     }
 }
@@ -232,10 +233,7 @@ static CGFloat const teamHeight = 280;
     if ([collectionView isEqual:topAdCollectionView]) {
         return topAdImageArray.count;
     } else if ([collectionView isEqual:activityCollectionView]) {
-        if (activityArray.count == 0) {
-            return 0;
-        }
-        return MIN(3, activityArray.count);
+        return MIN(3, activityArray.count+1);
     }
     return MIN(6, teamImageArray.count+1);
 }
@@ -247,36 +245,55 @@ static CGFloat const teamHeight = 280;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:topAdCollectionView]) {
-        UICollectionViewCell * topAdCell = [collectionView dequeueReusableCellWithReuseIdentifier:topAdCellIdentifier forIndexPath:indexPath];
-        UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
-        NSString * imgUrl = [NSString stringWithFormat:@"http://119.254.209.83:9428/%@",topAdImageArray[indexPath.row]];
-        NSURL * url = [NSURL URLWithString:imgUrl];
-        [imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img_1"]];
-        return topAdCell;
+        return [self topAdCell:collectionView indexPath:indexPath];
         
     } else if ([collectionView isEqual:activityCollectionView]) {
-        UICollectionViewCell * activityCell = [collectionView dequeueReusableCellWithReuseIdentifier:activityCellIdentifier forIndexPath:indexPath];
-        UIImageView * imageView = (UIImageView *)[activityCell viewWithTag:2];
-        UILabel * label = (UILabel *)[activityCell viewWithTag:3];
-        if (indexPath.row == 2) {
-            imageView.image = [UIImage imageNamed:@"img_morebg"];
-            label.text = @"更多";
-        }
-        else
-        {
-            NSDictionary * dic = activityArray[indexPath.row];
-            [imageView sd_setImageWithURL:dic[@"CoverUrl"] placeholderImage:[UIImage imageNamed:@"img_3"]];
-            label.text = dic[@"ClassName"];
-            
-        }
-        return activityCell;
+        return [self activityCell:collectionView indexPath:indexPath];
+        
     }
-    TeamsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotTeamIdentifier forIndexPath:indexPath];
-    cell.teamImageView.image = [FRUtils resizeImageWithImageName:teamImageArray[indexPath.row]];
-    cell.headerImage.image = [FRUtils resizeImageWithImageName:teamHeadImageArray[indexPath.row]];
-    return cell;
+    return [self teamCell:collectionView indexPath:indexPath];
 }
 
+- (UICollectionViewCell *)topAdCell:(UICollectionView *) collectionView indexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell * topAdCell = [collectionView dequeueReusableCellWithReuseIdentifier:topAdCellIdentifier forIndexPath:indexPath];
+    UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
+    NSString * imgUrl = [NSString stringWithFormat:@"http://119.254.209.83:9428/%@",topAdImageArray[indexPath.row]];
+    NSURL * url = [NSURL URLWithString:imgUrl];
+    [imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img_1"]];
+    return topAdCell;
+}
+
+- (UICollectionViewCell *)activityCell:(UICollectionView *)collectionView indexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell * activityCell = [collectionView dequeueReusableCellWithReuseIdentifier:activityCellIdentifier forIndexPath:indexPath];
+    UIImageView * imageView = (UIImageView *)[activityCell viewWithTag:2];
+    UILabel * label = (UILabel *)[activityCell viewWithTag:3];
+    if (indexPath.row == MIN(2, activityArray.count)) {
+        imageView.image = [UIImage imageNamed:@"img_morebg"];
+        label.text = @"更多";
+    }
+    else
+    {
+        NSDictionary * dic = activityArray[indexPath.row];
+        [imageView sd_setImageWithURL:dic[@"CoverUrl"] placeholderImage:[UIImage imageNamed:@"img_3"]];
+        label.text = dic[@"ClassName"];
+        
+    }
+    return activityCell;
+}
+
+- (UICollectionViewCell *)teamCell:(UICollectionView *)collectionView indexPath:(NSIndexPath *)indexPath {
+ 
+    if (indexPath.row == MIN(5, teamImageArray.count)) {
+        UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:teamMoreIdentifier forIndexPath:indexPath];
+        UIImageView * imageView = (UIImageView *)[cell viewWithTag:2];
+        imageView.image = moreImage;
+        return cell;
+    }
+        TeamsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotTeamIdentifier forIndexPath:indexPath];
+        cell.teamImageView.image = [FRUtils resizeImageWithImageName:teamImageArray[indexPath.row]];
+        cell.headerImage.image = [FRUtils resizeImageWithImageName:teamHeadImageArray[indexPath.row]];
+    return cell;
+}
 
 #pragma mark - collectionDelegate
 
@@ -285,23 +302,42 @@ static CGFloat const teamHeight = 280;
         NSLog(@"ad: %ld",(long)indexPath.row);
         
     } else if ([collectionView isEqual:activityCollectionView]) {
-        LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
-        if (indexPath.row == 2) {
-            activityVC.activityId = 0;
-            activityVC.activityClassName = @"更多";
-        }
-        else {
-            NSDictionary * dic = activityArray[indexPath.row];
-            activityVC.activityClassName = [dic objectForKey:@"ClassName"];
-            activityVC.activityId = [[dic objectForKey:@"Id"] integerValue];
-        }
-        activityVC.activityClassArray = [activityArray copy];
-        [self.navigationController pushViewController:activityVC animated:YES];
+        [self activitySeleted:indexPath.row];
+        
     } else if ([collectionView isEqual:hotTeamCollectionView]) {
-        LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
-        [self.navigationController pushViewController:teamVc animated:YES];
+        [self teamSeleted:indexPath.row];
     }
 }
+
+- (void)activitySeleted:(NSInteger)row{
+    LDActivityViewController * activityVC = [[LDActivityViewController alloc] init];
+    if (row == MIN(2, activityArray.count)) {
+        activityVC.activityId = 0;
+        activityVC.activityClassName = @"更多";
+    }
+    else {
+        NSDictionary * dic = activityArray[row];
+        activityVC.activityClassName = [dic objectForKey:@"ClassName"];
+        activityVC.activityId = [[dic objectForKey:@"Id"] integerValue];
+    }
+    activityVC.activityClassArray = [activityArray copy];
+    activityVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:activityVC animated:YES];
+}
+
+- (void)teamSeleted:(NSInteger)row {
+    if (row == MIN(5, teamImageArray.count)) {
+        LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
+        teamVc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:teamVc animated:YES];
+    }
+    else
+    {
+        
+    }
+
+}
+
 
 #pragma mark - srcollViewDelegate
 
@@ -401,7 +437,7 @@ static CGFloat const teamHeight = 280;
     // 滚动视图内容的跳转
 //    currentAd = ++currentAd % [topAdImageArray count];
     currentAd ++;
-    currentAd = currentAd % topAdImageArray.count;
+    currentAd = currentAd %topAdImageArray.count;
     CGPoint point = CGPointMake(APP_WIDTH * currentAd, 0);
     [topAdCollectionView setContentOffset:point animated:YES];
     [self adProgressMove];
@@ -430,7 +466,7 @@ static CGFloat const teamHeight = 280;
     // 滚动视图内容的跳转
 //    activPageIndex = ++activPageIndex % [activImageArr count];
     currentActivity ++;
-    currentActivity = currentActivity % activityArray.count;
+    currentActivity = currentActivity % (activityArray.count+1);
     CGFloat xOffset = (180 + 6) * currentActivity;
     CGFloat maxOffset = activityCollectionView.contentSize.width -APP_WIDTH-6;
     if (xOffset > maxOffset) {
@@ -460,7 +496,7 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)activityProgressMove {
-    NSInteger count = activityArray.count;
+    NSInteger count = activityArray.count+1;
     CGFloat width = APP_WIDTH/count;
     NSInteger current = currentActivity%count;
     CGPoint oldPosition = activityProgressLayer.position;
@@ -482,7 +518,7 @@ static CGFloat const teamHeight = 280;
     // 滚动视图内容的跳转
     currentTeam++;
     
-    currentTeam = currentTeam % teamImageArray.count;
+    currentTeam = currentTeam % (teamImageArray.count+1);
     
     CGFloat xOffset = (240 + 6) * currentTeam;
     CGFloat maxOffset = hotTeamCollectionView.contentSize.width -APP_WIDTH-6;
@@ -513,7 +549,7 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)teamProgressMove {
-    NSInteger count = teamImageArray.count;
+    NSInteger count = teamImageArray.count+1;
     CGFloat width = APP_WIDTH/count;
     NSInteger current = currentTeam%count;
     CGPoint oldPosition = hotTeamProgressLayer.position;
@@ -558,6 +594,7 @@ static CGFloat const teamHeight = 280;
 
     UICollectionViewFlowLayout * hotTeamLayout = [self flowLayoutItemSize:CGSizeMake(240, teamHeight) lineSpace:6];
     hotTeamCollectionView = [self collectionViewFrame:CGRectMake(0, CGRectGetMaxY(activityCollectionView.frame)+55, APP_WIDTH, teamHeight) layOut:hotTeamLayout nibName:@"TeamsCell" identifier:hotTeamIdentifier];
+    [hotTeamCollectionView registerNib:[UINib nibWithNibName:@"MainPageTeamMoreCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:teamMoreIdentifier];
     
     [mainScrollView addSubview:topAdCollectionView];
     [mainScrollView addSubview:activityCollectionView];
@@ -630,7 +667,7 @@ static CGFloat const teamHeight = 280;
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH, 2) color:bgColor];
-    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/activityArray.count, 2) color:progressColor];
+    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/(activityArray.count+1), 2) color:progressColor];
     [mainScrollView.layer addSublayer:activityLayer];
     [mainScrollView.layer addSublayer:activityProgressLayer];
 }
@@ -639,7 +676,7 @@ static CGFloat const teamHeight = 280;
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH, 2) color:bgColor];
-    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/teamImageArray.count, 2) color:progressColor];
+    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/(teamImageArray.count+1), 2) color:progressColor];
     [mainScrollView.layer addSublayer:teamLayer];
     [mainScrollView.layer addSublayer:hotTeamProgressLayer];
 }
@@ -689,16 +726,16 @@ static CGFloat const teamHeight = 280;
 
 - (UIImage *)moreTeamImage {
     UIImage * image;
-    UIGraphicsBeginImageContext(CGSizeMake(180, 280));
+    UIGraphicsBeginImageContext(CGSizeMake(240, 280));
     UIImage * oldImage = [UIImage imageNamed:@"img_morebg"];
-    [oldImage drawInRect:CGRectMake(0, 0, 180, 280)];
+    [oldImage drawInRect:CGRectMake(0, 0, 240, 280)];
     
     NSDictionary * dic = @{
                            NSFontAttributeName:[UIFont systemFontOfSize:20],
                            NSForegroundColorAttributeName:[UIColor whiteColor]
                            };
     NSAttributedString * attr = [[NSAttributedString alloc] initWithString:@"更多" attributes:dic];
-    [attr drawAtPoint:CGPointMake(60, 120)];
+    [attr drawAtPoint:CGPointMake(100, 120)];
     image = UIGraphicsGetImageFromCurrentImageContext();
     return image;
 }

@@ -9,7 +9,7 @@
 #import "ScanViewController.h"
 #import "ZHScanView.h"
 
-@interface ScanViewController ()
+@interface ScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *goBackButton;
 
 @end
@@ -51,7 +51,25 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)openPhoto:(id)sender {
+    UIImagePickerController * imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    NSString * mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSString * url = [info objectForKey:UIImagePickerControllerReferenceURL];
+    
+}
+
 
 
 @end
