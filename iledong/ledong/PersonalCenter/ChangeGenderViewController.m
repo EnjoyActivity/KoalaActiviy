@@ -103,18 +103,19 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
-            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-            NSDictionary* temp = (NSDictionary*)jsonObject;
+
+            NSDictionary* temp = (NSDictionary*)json;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
                 [Dialog toast:[temp objectForKey:@"msg"]];
                 return;
             }
-            NSMutableDictionary *postDic = [temp objectForKey:@"result"];
+            NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
             if (_isFemale) {
-                [postDic setObject:@0 forKey:@"NickName"];
+                [postDic setObject:@0 forKey:@"Sex"];
+                [postDic setObject:@"女" forKey:@"SexName"];
             } else {
-                [postDic setObject:@1 forKey:@"NickName"];
+                [postDic setObject:@1 forKey:@"Sex"];
+                [postDic setObject:@"男" forKey:@"SexName"];
             }
             [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
             [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){

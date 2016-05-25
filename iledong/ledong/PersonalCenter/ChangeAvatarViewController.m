@@ -27,10 +27,23 @@
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
     NSString *avatarUrl = [FRUtils getAvatarUrl];
+//    if (!avatarUrl||avatarUrl.length == 0) {
+//        headImage = [UIImage imageNamed:@"img_avatar_44"];
+//    } else {
+//        headImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+//    }
     if (!avatarUrl||avatarUrl.length == 0) {
-        headImage = [UIImage imageNamed:@"img_avatar_44"];
+        headImage = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
     } else {
-        headImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:fileName]) {
+            headImage = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
+        } else {
+            headImage = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
+        }
     }
     [self setupUI];
 }
@@ -126,7 +139,9 @@
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
     [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[headImage] success:^(id response){
-        NSDictionary* temp = (NSDictionary*)response;
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
+        NSDictionary* temp = (NSDictionary*)jsonObject;
         if ([[temp objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[temp objectForKey:@"msg"]];
             return;

@@ -39,11 +39,7 @@
         UITabBarItem *myBar = [[UITabBarItem alloc]initWithTitle:@"我的" image:[UIImage imageNamed:@"ic_mine_on"] tag:2];
         myBar.selectedImage = [UIImage imageNamed:@"ic_mine"];
         self.tabBarItem = myBar;
-        
-//        UIView *bgView = [[UIView alloc] initWithFrame:myBar.bounds];
-//        bgView.backgroundColor = [UIColor whiteColor];
-//        [myBar insertSubview:bgView atIndex:0];
-//        self.tabBar.opaque = YES;
+    
         dataArr = @[@"我的活动",@"我的荣誉",@"我的收藏",@"我的优惠券"];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showGuide:) name:@"ShowGuideNotification" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshUserInfo:) name:@"RefreshUserinfo" object:nil];
@@ -67,11 +63,11 @@
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
         [self presentViewController:nav animated:YES completion:nil];
     } else {
-        if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
-            [self showGuide:nil];
-//            [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
-//            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
-        }
+//        if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
+//            [self showGuide:nil];
+////            [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+////            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+//        }
     }
 }
 - (void)viewDidLoad {
@@ -82,7 +78,7 @@
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [[UIView alloc]init];
     
-    self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
+//    self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
     self.signingImage.image = [FRUtils resizeImageWithImageName:@"btn_white"];
     //关注、积分、足迹、粉丝button设置
     [self.focusBtn setTitle:@"关注" forState:UIControlStateNormal];
@@ -103,10 +99,12 @@
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
-    
+    [self refreshUI];
     if ([HttpClient isLogin]) {
         [FRUtils queryUserInfoFromWeb:^{
-            [self refreshUI];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshUI];
+            });
         }failBlock:nil];
     }
 }

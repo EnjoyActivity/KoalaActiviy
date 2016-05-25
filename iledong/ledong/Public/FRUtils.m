@@ -513,14 +513,8 @@ static FRUtils *instance = nil;
             [imgData writeToFile:fileName atomically:NO];
         }
     }
-    NSString *sex = [result objectForKey:@"Sex"];
-    if ([sex isEqualToString:@"男"]) {
-        [FRUtils setGender:1];
-    } else if ([sex isEqualToString:@"女"]){
-        [FRUtils setGender:0];
-    } else {
-        [FRUtils setGender:2];
-    }
+    int sex = [[result objectForKey:@"Sex"]intValue];
+    [FRUtils setGender:sex];
 }
 
 + (BOOL)isFirstLogin {

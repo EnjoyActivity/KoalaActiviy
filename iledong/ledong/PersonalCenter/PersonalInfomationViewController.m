@@ -39,11 +39,25 @@
 - (void)viewDidLoad {
     self.titleName = @"用户信息";
     NSString *avatarUrl = [FRUtils getAvatarUrl];
+//    if (!avatarUrl||avatarUrl.length == 0) {
+//        _image = [UIImage imageNamed:@"img_avatar_44"];
+//    } else {
+//        _image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+//    }
     if (!avatarUrl||avatarUrl.length == 0) {
-        _image = [UIImage imageNamed:@"img_avatar_44"];
+        _image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
     } else {
-        _image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:fileName]) {
+            _image = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
+        } else {
+            _image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
+        }
     }
+
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = self.footerView;
