@@ -13,7 +13,7 @@
 {
     UIImageView *headerImageView;
     UIView *maskView;
-    UIImage *headImage;
+//    UIImage *headImage;
 }
 
 @end
@@ -25,26 +25,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"个人头像";
     self.view.backgroundColor = [UIColor whiteColor];
-    // Do any additional setup after loading the view.
-    NSString *avatarUrl = [FRUtils getAvatarUrl];
-//    if (!avatarUrl||avatarUrl.length == 0) {
-//        headImage = [UIImage imageNamed:@"img_avatar_44"];
-//    } else {
-//        headImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
-//    }
-    if (!avatarUrl||avatarUrl.length == 0) {
-        headImage = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
-    } else {
-        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
-        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:fileName]) {
-            headImage = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
-        } else {
-            headImage = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
-        }
+    if (!_headImage) {
+        _headImage = [UIImage imageNamed:@"img_avatar_44"];
     }
+
     [self setupUI];
 }
 
@@ -57,7 +41,7 @@
     headerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 50, 156 - 32, 100, 100)];
     headerImageView.layer.cornerRadius = 50;
     headerImageView.clipsToBounds = YES;
-    headerImageView.image = headImage;
+    headerImageView.image = _headImage;
 //    headerImageView.backgroundColor = [UIColor purpleColor];
     
     UIButton *uploadBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 64, CGRectGetMaxY(headerImageView.frame) + 40, 128, 40)];
@@ -138,7 +122,7 @@
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
-    [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[headImage] success:^(id response){
+    [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[_headImage] success:^(id response){
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
         NSDictionary* temp = (NSDictionary*)jsonObject;
@@ -147,10 +131,10 @@
             return;
         }
         if (self.block) {
-            self.block(headImage);
+            self.block(_headImage);
         }
         [FRUtils setAvatarUrl:[temp objectForKey:@"result"]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshHeaderImage" object:_headImage];
         [self.navigationController popViewControllerAnimated:YES];
     }fail:^{
         [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
@@ -196,12 +180,12 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 //    __weak typeof(self) weakSelf = self;
     [picker dismissViewControllerAnimated:YES completion:^{
-        headImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        headerImageView.image = headImage;
+        _headImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        headerImageView.image = _headImage;
         
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             //拍照，则需要手动保存到本地
-            UIImageWriteToSavedPhotosAlbum(headImage, self, nil, nil);
+            UIImageWriteToSavedPhotosAlbum(_headImage, self, nil, nil);
         }
         
         

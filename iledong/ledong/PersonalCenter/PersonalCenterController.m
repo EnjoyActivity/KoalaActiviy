@@ -43,6 +43,8 @@
         dataArr = @[@"我的活动",@"我的荣誉",@"我的收藏",@"我的优惠券"];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showGuide:) name:@"ShowGuideNotification" object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshUserInfo:) name:@"RefreshUserinfo" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshHeaderImage:) name:@"RefreshHeaderImage" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshNickName:) name:@"RefreshNickName" object:nil];
         
         
     }
@@ -62,13 +64,14 @@
         loginView.isPersonalCenterPage = YES;
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
         [self presentViewController:nav animated:YES completion:nil];
-    } else {
+    }
+//    else {
 //        if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
 //            [self showGuide:nil];
 ////            [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
 ////            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
 //        }
-    }
+//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -99,16 +102,15 @@
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
-    [self refreshUI];
+    
+    [self refreshUserInfo:nil];
+    
     if ([HttpClient isLogin]) {
         [FRUtils queryUserInfoFromWeb:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshUI];
-            });
+            [self refreshUserInfo:nil];
         }failBlock:nil];
     }
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -212,6 +214,7 @@
 {
     // 点击进入个人信息
     PersonalInfomationViewController *personalInfoController = [[PersonalInfomationViewController alloc] init];
+    personalInfoController.image = _headerImage.image;
     personalInfoController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:personalInfoController animated:YES];
     
@@ -276,22 +279,9 @@
     _signatureLabel.text = [FRUtils getSign];
     NSString *avatarUrl = [FRUtils getAvatarUrl];
     if (!avatarUrl||avatarUrl.length == 0) {
-        _headerImage.image = [UIImage imageNamed:@"img_avatar_44"];
-    } else {
-        _headerImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
-    }
-}
-
-- (void)refreshUI {
-    _nameLabel.text = [FRUtils getNickName];
-    _signatureLabel.text = [FRUtils getSign];
-    NSString *avatarUrl = [FRUtils getAvatarUrl];
-    if (!avatarUrl||avatarUrl.length == 0) {
         _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
     } else {
-        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
-        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        NSString *fileName = [FRUtils getHeaderImage];
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:fileName]) {
             _headerImage.image = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
@@ -299,6 +289,16 @@
             _headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
         }
     }
+
+}
+
+- (void)refreshHeaderImage:(NSNotification *)notification {
+
+    _headerImage.image = [FRUtils circleImage:[notification object] withParam:1];
+}
+
+- (void)refreshNickName:(NSNotification *)notification {
+    _nameLabel.text = [notification object];
 }
 
 

@@ -11,5 +11,5 @@
 @interface PersonalInfomationViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
-
+@property (strong,nonatomic) UIImage *image;
 @end

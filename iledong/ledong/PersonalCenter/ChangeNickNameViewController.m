@@ -108,7 +108,7 @@
                 vc.isGuide = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             } else {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshNickName" object:nameField.text];
                 [self.navigationController popViewControllerAnimated:YES];
             }
             

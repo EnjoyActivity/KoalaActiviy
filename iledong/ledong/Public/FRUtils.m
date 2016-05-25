@@ -428,7 +428,7 @@ static FRUtils *instance = nil;
 //}
 
 + (void)queryUserInfoFromWeb:(void(^)())success  failBlock:(void(^)())fail {
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+    [HttpClient JSONDataWithUrlSilent:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
         if ([[json objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[json objectForKey:@"msg"]];
             return;
@@ -512,6 +512,7 @@ static FRUtils *instance = nil;
             NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
             [imgData writeToFile:fileName atomically:NO];
         }
+        [FRUtils setHeaderImage:fileName];
     }
     int sex = [[result objectForKey:@"Sex"]intValue];
     [FRUtils setGender:sex];
@@ -566,6 +567,10 @@ static FRUtils *instance = nil;
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     return [defs objectForKey:@"birthday"];
 }
++ (NSString*)getHeaderImage {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"headerImage"];
+}
 //set
 + (void)setNickName:(NSString*)name {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
@@ -615,5 +620,9 @@ static FRUtils *instance = nil;
     [defs setObject:token forKey:@"kToken"];
     [defs synchronize];
 }
-
++ (void)setHeaderImage:(NSString*)headerImage {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:headerImage forKey:@"headerImage"];
+    [defs synchronize];
+}
 @end

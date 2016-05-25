@@ -151,6 +151,38 @@
     }];
 }
 
+#pragma mark - JSON方式获取数据 GET方式 无提示框
+
++ (void)JSONDataWithUrlSilent:(NSString *)url parameters:(id)parameters success:(void (^)(id json))success fail:(void (^)())fail
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes  =[NSSet setWithObjects:@"application/json",@"text/html",nil];
+    
+    [manager GET:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"%@",responseObject);
+         if ([[responseObject objectForKey:@"code"] intValue] == 0)
+         {
+             success(responseObject);
+         }
+         else
+         {
+             if ([[responseObject objectForKey:@"code"] intValue] == 20010) {
+                 [FRUtils setToken:@""];
+             }
+             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
+         }
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"%@", error);
+         if (fail)
+         {
+             fail();
+         }
+     }];
+}
+
 #pragma mark - JSON方式post提交数据 POST
 + (void)postJSONWithUrl:(NSString *)urlStr parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail
 {

@@ -17,4 +17,6 @@ typedef void (^ChangeAvatarBlock)(UIImage *image);
 
 @property (nonatomic,assign) BOOL isGuide;
 
+@property (nonatomic,strong) UIImage *headImage;
+
 @end
