@@ -80,7 +80,7 @@
     cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
     cell.teamNameLabel.text = [dict objectForKey:@"Name"];
     [cell.teamNameLabel sizeToFit];
-    NSNumber* maxPersonNum = [dict objectForKey:@"MaxPersonNum"];
+    NSNumber* maxPersonNum = [dict objectForKey:@"PersonNum"];
     cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
     [cell.personCountLabel sizeToFit];
     

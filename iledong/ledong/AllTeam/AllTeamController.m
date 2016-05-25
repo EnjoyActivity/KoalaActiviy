@@ -202,7 +202,7 @@ typedef enum listType {
     cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
     cell.teamNameLabel.text = [dict objectForKey:@"Name"];
     [cell.teamNameLabel sizeToFit];
-    NSNumber* maxPersonNum = [dict objectForKey:@"MaxPersonNum"];
+    NSNumber* maxPersonNum = [dict objectForKey:@"PersonNum"];
     cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
     [cell.personCountLabel sizeToFit];
     
@@ -228,6 +228,19 @@ typedef enum listType {
                 [cell setNeedsLayout];
             });
         });
+    }
+    
+    if (self.tableViewListType == listTypeJoinTeam) {
+        cell.personCountLabel.hidden = YES;
+        cell.payAttentionCountLabel.hidden = YES;
+        
+        cell.teamActiveCountLabel.text = @"审核中";
+        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xE3191A);
+    }
+    else {
+        cell.personCountLabel.hidden = NO;
+        cell.payAttentionCountLabel.hidden = NO;
+        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xBABABA);
     }
 
     return cell;
