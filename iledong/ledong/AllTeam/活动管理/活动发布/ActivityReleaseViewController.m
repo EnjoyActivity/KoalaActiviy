@@ -627,6 +627,9 @@ typedef enum imagePickerFromType {
             [self.view endEditing:YES];
             ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
+            [Vc setCompleteActivityAddressInfo:^(NSDictionary *dict) {
+                
+            }];
         }
     }
 }

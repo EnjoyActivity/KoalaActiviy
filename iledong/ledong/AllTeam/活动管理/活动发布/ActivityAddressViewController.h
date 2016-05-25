@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^completeActivityAddressInfo)(NSDictionary* dict);
+
 @interface ActivityAddressViewController : UIViewController
+
+- (void)setCompleteActivityAddressInfo:(completeActivityAddressInfo)block;
 
 @end
