@@ -12,6 +12,7 @@
 #import "ParameterTableViewController.h"
 #import "ContactTypeViewController.h"
 #import "SessionInfoViewController.h"
+#import "ActivityAddressViewController.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -60,17 +61,18 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
 
 //发布请求参数
-@property (nonatomic, assign)gameType gameType;                         //活动是否联赛
-@property (nonatomic, assign)joinType joinType;                         //参加类型
-@property (nonatomic, strong)NSDictionary* selectActivityDict;          //选择的活动类别
-@property (nonatomic, strong)NSMutableArray* activityAddressArray;      //活动地点
-@property (nonatomic, strong)NSString* contactInfo;                     //联系方式
-@property (nonatomic, strong)NSDictionary* timeSigningUpDict;           //报名时间
-@property (nonatomic, strong)NSDictionary* timeActivityDict;            //活动时间
-@property (nonatomic, strong)NSDictionary* signingUpPersonCountDict;    //报名人数情况
-@property (nonatomic, strong)NSDictionary* moneyDict;                   //费用
-@property (nonatomic, strong)NSString* activityDetailText;              //活动详情
-@property (nonatomic, strong)NSString* titleStr;                        //活动标题
+@property (nonatomic, assign)gameType gameType;                                 //活动是否联赛
+@property (nonatomic, assign)joinType joinType;                                 //参加类型
+@property (nonatomic, strong)NSString* contactInfo;                             //联系方式
+@property (nonatomic, strong)NSString* activityDetailText;                      //活动详情
+@property (nonatomic, strong)NSString* titleStr;                                //活动标题
+@property (nonatomic, strong)NSMutableDictionary* selectActivityDict;           //选择的活动类别
+@property (nonatomic, strong)NSMutableDictionary* timeSigningUpDict;            //报名时间
+@property (nonatomic, strong)NSMutableDictionary* timeActivityDict;             //活动时间
+@property (nonatomic, strong)NSMutableDictionary* signingUpPersonCountDict;     //报名人数情况
+@property (nonatomic, strong)NSMutableDictionary* moneyDict;                    //费用
+@property (nonatomic, strong)NSMutableDictionary* activityAddress;              //活动地点      1
+@property (nonatomic, strong)NSMutableArray* activitySessionArray;              //活动场次      1
 
 @end
 
@@ -78,19 +80,13 @@ typedef enum imagePickerFromType {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.gameType = gameTypenonLeague;
-    self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
-    self.coverPhotoImages = [NSMutableArray array];
-    self.detailPhotoImages = [NSMutableArray array];
-    self.detailPhotoImages_show = [NSMutableArray array];
-    self.activityAddressArray = [NSMutableArray array];
     
+    self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    [self initParameter];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
-    
     [self addKeyboardNotification];
 }
 
@@ -102,6 +98,22 @@ typedef enum imagePickerFromType {
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     [self releaseResource];
+}
+
+- (void)initParameter {
+    self.gameType = gameTypenonLeague;
+    
+    self.coverPhotoImages = [NSMutableArray array];
+    self.detailPhotoImages = [NSMutableArray array];
+    self.detailPhotoImages_show = [NSMutableArray array];
+    self.activitySessionArray = [NSMutableArray array];
+    
+    self.selectActivityDict = [NSMutableDictionary dictionary];
+    self.timeSigningUpDict = [NSMutableDictionary dictionary];
+    self.timeActivityDict = [NSMutableDictionary dictionary];
+    self.signingUpPersonCountDict = [NSMutableDictionary dictionary];
+    self.moneyDict = [NSMutableDictionary dictionary];
+    self.activityAddress = [NSMutableDictionary dictionary];
 }
 
 - (void)releaseResource {
@@ -306,6 +318,18 @@ typedef enum imagePickerFromType {
 }
 
 - (void)keyboardDidHide:(NSNotification *) notif {
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIView *firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    if ([firstResponder isKindOfClass:[UITextField class]]) {
+        NSString* str = ((UITextField*)firstResponder).text;
+        if (firstResponder.tag == 100) //活动标题
+            self.titleStr = str;
+        else if (firstResponder.tag == 500) //费用
+            [self.moneyDict setValue:str forKey:@"cost"];
+        else if (firstResponder.tag == 501) //保证金
+            [self.moneyDict setValue:str forKey:@"margin"];
+    }
+    
     [UIView animateWithDuration:0.5 animations:^{
         [self.leagueTableView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentSizeheight)];
         [self.leagueTableView setContentOffset:CGPointMake(0, _mainScrollViewoffsetY) animated:YES];
@@ -325,6 +349,9 @@ typedef enum imagePickerFromType {
     if (textView.text.length == 0) {
         self.tipLabel.hidden = NO;
     }
+    else {
+        self.activityDetailText = textView.text;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -332,7 +359,7 @@ typedef enum imagePickerFromType {
         return;
     [self.view endEditing:YES];
     if (self.gameType == gameTypenonLeague) {
-
+        
     }
     else if (self.gameType == gameTypeLeague) {
         NSInteger section = self.textFieldPath.section;
@@ -365,7 +392,7 @@ typedef enum imagePickerFromType {
         else if (section == 1)
             return 2;
         else if (section == 2) {
-            return self.activityAddressArray.count+1;
+            return self.activitySessionArray.count+1;
         }
         else if (section == 3)
             return 1;
@@ -489,7 +516,7 @@ typedef enum imagePickerFromType {
         [self.navigationController pushViewController:VC animated:YES];
         VC.vcTitle = @"活动分类";
         [VC setSelectCellBlock:^(NSDictionary *dict) {
-            self.selectActivityDict = dict;
+            self.selectActivityDict = [NSMutableDictionary dictionaryWithDictionary:dict];
             [self.leagueTableView reloadData];
             [self.nonleagueTableView reloadData];
         }];
@@ -506,10 +533,14 @@ typedef enum imagePickerFromType {
                 NSString *dateStr = [formatter stringFromDate:date];
                 UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
                 UILabel* label = nil;
-                if (indexPath.row == 0)         //活动开始时间
+                if (indexPath.row == 0)  {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                else if (indexPath.row == 1)    //活动结束时间
+                    [self.timeActivityDict setValue:dateStr forKey:@"beginTime"];
+                }
+                else if (indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
+                    [self.timeActivityDict setValue:dateStr forKey:@"endTime"];
+                }
                 label.text = dateStr;
                 [label sizeToFit];
                 label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-30, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
@@ -531,14 +562,22 @@ typedef enum imagePickerFromType {
                 NSString *dateStr = [formatter stringFromDate:date];
                 UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
                 UILabel* label = nil;
-                if (indexPath.section == 1 && indexPath.row == 0)           //报名开始时间
+                if (indexPath.section == 1 && indexPath.row == 0) {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                else if (indexPath.section == 1 && indexPath.row == 1)      //报名结束时间
+                    [self.timeSigningUpDict setValue:dateStr forKey:@"beginTime"];
+                }
+                else if (indexPath.section == 1 && indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
-                else if (indexPath.section == 2 && indexPath.row == 0)      //活动开始时间
+                    [self.timeSigningUpDict setValue:dateStr forKey:@"endTime"];
+                }
+                else if (indexPath.section == 2 && indexPath.row == 0)  {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                else if (indexPath.section == 2 && indexPath.row == 1)      //活动结束时间
+                    [self.timeActivityDict setValue:dateStr forKey:@"beginTime"];
+                }
+                else if (indexPath.section == 2 && indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
+                    [self.timeActivityDict setValue:dateStr forKey:@"endTime"];
+                }
                 label.text = dateStr;
                 [label sizeToFit];
                 label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-30, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
@@ -552,6 +591,10 @@ typedef enum imagePickerFromType {
                 self.contactInfo = str;
                 [self.leagueTableView reloadData];
             }];
+        }
+        else if (indexPath.section == 5) {
+            ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+            [self.navigationController pushViewController:Vc animated:YES];
         }
     }
 }
@@ -618,6 +661,7 @@ typedef enum imagePickerFromType {
             [cell.contentView addSubview:titleTextField];
             titleTextField.placeholder = @"请输入活动标题";
         }
+        titleTextField.text = self.titleStr;
         objc_setAssociatedObject(titleTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     else if (indexPath.row == 1) {
@@ -750,7 +794,13 @@ typedef enum imagePickerFromType {
             startTimeLabel.textColor = UIColorFromRGB(0x999999);
             [cell.contentView addSubview:startTimeLabel];
         }
-        startTimeLabel.text = @"未设置";
+        
+        NSArray* keys = self.timeActivityDict.allKeys;
+        if (self.timeActivityDict && [keys containsObject:@"beginTime"])
+            startTimeLabel.text = [self.timeActivityDict objectForKey:@"beginTime"];
+        else
+            startTimeLabel.text = @"未设置";
+  
         [startTimeLabel sizeToFit];
         startTimeLabel.frame = CGRectMake(APP_WIDTH-startTimeLabel.frame.size.width-30, 0, startTimeLabel.frame.size.width, startTimeLabel.frame.size.height);
         startTimeLabel.center = CGPointMake(startTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -768,7 +818,12 @@ typedef enum imagePickerFromType {
             endTimeLabel.textColor = UIColorFromRGB(0x999999);
             [cell.contentView addSubview:endTimeLabel];
         }
-        endTimeLabel.text = @"未设置";
+        
+        NSArray* keys = self.timeActivityDict.allKeys;
+        if (self.timeActivityDict && [keys containsObject:@"endTime"])
+            endTimeLabel.text = [self.timeActivityDict objectForKey:@"endTime"];
+        else
+            endTimeLabel.text = @"未设置";
         [endTimeLabel sizeToFit];
         endTimeLabel.frame = CGRectMake(APP_WIDTH-endTimeLabel.frame.size.width-30, 0, endTimeLabel.frame.size.width, endTimeLabel.frame.size.height);
         endTimeLabel.center = CGPointMake(endTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -789,7 +844,7 @@ typedef enum imagePickerFromType {
 
 - (UITableViewCell*)drawSection2ListCell:(UITableView*)tableView
                            indexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.activityAddressArray.count)
+    if (indexPath.row == self.activitySessionArray.count)
         return [self drawSection3Cell:tableView indexPath:indexPath];
     return [self drawSection2Cell:tableView indexPath:indexPath];
 }
@@ -888,7 +943,7 @@ typedef enum imagePickerFromType {
         nameLabel.textColor = UIColorFromRGB(0x333333);
         [cell.contentView addSubview:nameLabel];
     }
-    nameLabel.text = [NSString stringWithFormat:@"场次%ld", self.activityAddressArray.count+1];
+    nameLabel.text = [NSString stringWithFormat:@"场次%ld", self.activitySessionArray.count+1];
     [nameLabel sizeToFit];
     nameLabel.center = CGPointMake(nameLabel.center.x, cell.contentView.bounds.size.height/2);
 
@@ -947,7 +1002,13 @@ typedef enum imagePickerFromType {
             [cell.contentView addSubview:startTimeLabel];
         }
         startTimeLabel.hidden = NO;
-        startTimeLabel.text = @"未设置";
+   
+        NSArray* keys = self.timeSigningUpDict.allKeys;
+        if (self.timeSigningUpDict && [keys containsObject:@"beginTime"])
+            startTimeLabel.text = [self.timeSigningUpDict objectForKey:@"beginTime"];
+        else
+            startTimeLabel.text = @"未设置";
+
         [startTimeLabel sizeToFit];
         startTimeLabel.frame = CGRectMake(APP_WIDTH-startTimeLabel.frame.size.width-30, 0, startTimeLabel.frame.size.width, startTimeLabel.frame.size.height);
         startTimeLabel.center = CGPointMake(startTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -966,7 +1027,11 @@ typedef enum imagePickerFromType {
             [cell.contentView addSubview:endTimeLabel];
         }
         endTimeLabel.hidden = NO;
-        endTimeLabel.text = @"未设置";
+        NSArray* keys = self.timeSigningUpDict.allKeys;
+        if (self.timeSigningUpDict && [keys containsObject:@"endTime"])
+            endTimeLabel.text = [self.timeSigningUpDict objectForKey:@"endTime"];
+        else
+            endTimeLabel.text = @"未设置";
         [endTimeLabel sizeToFit];
         endTimeLabel.frame = CGRectMake(APP_WIDTH-endTimeLabel.frame.size.width-30, 0, endTimeLabel.frame.size.width, endTimeLabel.frame.size.height);
         endTimeLabel.center = CGPointMake(endTimeLabel.center.x, cell.contentView.bounds.size.height/2);
@@ -1013,13 +1078,13 @@ typedef enum imagePickerFromType {
     }
     [view setCurrentSelectNum:^(NSInteger num) {
         if (indexPath.row == 0) {
-            
+            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
         }
         else if (indexPath.row == 1) {
-            
+            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
         }
         else if (indexPath.row == 2) {
-            
+            [self.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
         }
     }];
 
@@ -1045,35 +1110,43 @@ typedef enum imagePickerFromType {
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"费用";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:100];
+        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:500];
         if (!textField) {
             textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 100;
+            textField.tag = 500;
             textField.placeholder = @"请输入费用";
             textField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:textField];
             textField.delegate = self;
             textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentRight;
+            textField.textAlignment = NSTextAlignmentCenter;
             [textField sizeToFit];
         }
+        NSArray* keys = self.moneyDict.allKeys;
+        if (self.moneyDict && [keys containsObject:@"cost"])
+            textField.text = [self.moneyDict objectForKey:@"cost"];
+ 
         objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 1) {
         cell.textLabel.text = @"保证金";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:101];
+        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:501];
         if (!textField) {
             textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 101;
+            textField.tag = 501;
             textField.placeholder = @"请输入费用";
             textField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:textField];
             textField.delegate = self;
             textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentRight;
+            textField.textAlignment = NSTextAlignmentCenter;
             [textField sizeToFit];
         }
+        NSArray* keys = self.moneyDict.allKeys;
+        if (self.moneyDict && [keys containsObject:@"margin"])
+            textField.text = [self.moneyDict objectForKey:@"margin"];
+
         objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
     }
@@ -1251,5 +1324,6 @@ typedef enum imagePickerFromType {
     NSString* dateStr = [dateFormatter stringFromDate:_date];
     return  dateStr;
 }
+
 
 @end

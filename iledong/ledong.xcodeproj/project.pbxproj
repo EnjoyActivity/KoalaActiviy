@@ -260,6 +260,7 @@
 		9040CD101CF2CA0800C18476 /* StepperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD0F1CF2CA0800C18476 /* StepperView.m */; };
 		9040CD161CF2EF2F00C18476 /* ParameterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */; };
 		90467B501CF446B20086FE5E /* SessionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */; };
+		90467B531CF45A320086FE5E /* ActivityAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B521CF45A320086FE5E /* ActivityAddressViewController.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
 		905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515621CEC3CED001C4F51 /* AFHTTPSessionManager.m */; };
@@ -742,6 +743,8 @@
 		9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParameterTableViewController.m; sourceTree = "<group>"; };
 		90467B4E1CF446B20086FE5E /* SessionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionInfoViewController.h; sourceTree = "<group>"; };
 		90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionInfoViewController.m; sourceTree = "<group>"; };
+		90467B511CF45A320086FE5E /* ActivityAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityAddressViewController.h; sourceTree = "<group>"; };
+		90467B521CF45A320086FE5E /* ActivityAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityAddressViewController.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		9055155F1CEC3CED001C4F51 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -2041,6 +2044,8 @@
 				9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */,
 				90467B4E1CF446B20086FE5E /* SessionInfoViewController.h */,
 				90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */,
+				90467B511CF45A320086FE5E /* ActivityAddressViewController.h */,
+				90467B521CF45A320086FE5E /* ActivityAddressViewController.m */,
 			);
 			path = "活动发布";
 			sourceTree = "<group>";
@@ -2355,6 +2360,7 @@
 				905516021CEC3CED001C4F51 /* MJRefreshComponent.m in Sources */,
 				362F85FA1CABCAE3006FFE61 /* CreateTeamVController.m in Sources */,
 				3627C2F71CA8C7E400A5D7EB /* SearchViewController.m in Sources */,
+				90467B531CF45A320086FE5E /* ActivityAddressViewController.m in Sources */,
 				626DD4961C843E0C006BC53C /* BaseViewController.m in Sources */,
 				905515F41CEC3CED001C4F51 /* ELCAssetTablePicker.m in Sources */,
 				361A76521CBCD1F7002FE6B2 /* HotTeamTableViewCell.m in Sources */,
