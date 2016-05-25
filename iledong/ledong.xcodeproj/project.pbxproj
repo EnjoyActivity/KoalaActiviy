@@ -356,6 +356,8 @@
 		ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */; };
 		ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */; };
 		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
+		ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */; };
+		ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */; };
 		ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */; };
 /* End PBXBuildFile section */
 
@@ -917,6 +919,9 @@
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
 		ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTeamMoreCell.xib; sourceTree = "<group>"; };
+		ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageTeamTableViewCell.h; sourceTree = "<group>"; };
+		ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageTeamTableViewCell.m; sourceTree = "<group>"; };
+		ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDMainPageTeamTableViewCell.xib; sourceTree = "<group>"; };
 		ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2072,6 +2077,9 @@
 				EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */,
 				EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */,
 				EC9ECC151CEED42600A613EA /* SearchHistoryCell.xib */,
+				ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */,
+				ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */,
+				ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2315,6 +2323,7 @@
 				905516341CEC3E31001C4F51 /* ActiveTableViewCell.xib in Resources */,
 				363BDD0F1CBF6B32001FE507 /* AuditViewController.xib in Resources */,
 				3608E20B1CA23C3200AC23A4 /* AdressCityVC.xib in Resources */,
+				ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */,
 				EC9ECC161CEED42600A613EA /* SearchHistoryCell.xib in Resources */,
 				7F875FFC1C868E98003C6EBB /* FriendSpaceTableViewCell.xib in Resources */,
 				EC33E09F1CEDF95A00ADAB7E /* ic_triangle_grey@2x.png in Resources */,
@@ -2459,6 +2468,7 @@
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
 				205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */,
+				ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */,
 				36B2C1B01CBB481A001D842B /* MemberTableViewCell.m in Sources */,
 				36F194DC1CD335220050EE6F /* CollectTableViewCell.m in Sources */,
 				20B63E211CED66A300D5C551 /* ChangeAvatarViewController.m in Sources */,

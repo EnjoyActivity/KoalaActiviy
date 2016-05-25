@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface TeamsCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *teamImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *headerImage;
-@property (weak, nonatomic) IBOutlet UILabel *teamName;
-@property (weak, nonatomic) IBOutlet UILabel *teamNum;
-@property (weak, nonatomic) IBOutlet UILabel *teamAdress;
-@property (weak, nonatomic) IBOutlet UILabel *attentionNum;
-@property (weak, nonatomic) IBOutlet UILabel *header;
+@property (strong, nonatomic) IBOutlet UIImageView *teamImageView;
+@property (strong, nonatomic) IBOutlet UILabel *teamNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *teamMemberLabel;
+@property (strong, nonatomic) IBOutlet UILabel *teamAreaLabel;
+@property (strong, nonatomic) IBOutlet UILabel *teamAttentionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *teamCaptainLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *teamCaptainImage;
 
 @end
