@@ -24,13 +24,16 @@
 {
     [super viewDidLoad];
     
-    imageArr = [[NSArray alloc] initWithObjects:@"start", nil];
+    imageArr = [[NSArray alloc] initWithObjects:@"start",nil];
+    if (imageArr.count == 0) {
+        [self loginButtonClick];
+    }
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     [self.view addSubview:_scrollView];
     _scrollView.pagingEnabled = YES;
     _scrollView.contentOffset = CGPointZero;
-    _scrollView.backgroundColor = [UIColor redColor];
+    _scrollView.bounces = NO;
     for (int i = 0; i < [imageArr count]; i++)
     {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height)];
