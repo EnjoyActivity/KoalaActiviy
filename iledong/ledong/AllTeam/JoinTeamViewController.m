@@ -51,12 +51,7 @@
 }
 
 - (void)backBtnClicked {
-    for (UIViewController* Vc in self.navigationController.viewControllers) {
-        if ([Vc isKindOfClass:[AllTeamController class]]) {
-            [self.navigationController popToViewController:Vc animated:YES];
-            return;
-        }
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -74,9 +69,8 @@
          AuditViewController *auditViewController = [[AuditViewController alloc] init];
          [self.navigationController pushViewController:auditViewController animated:YES];
      } fail:^{
-         [Dialog simpleToast:@"获取我的团队失败！" withDuration:1.5];
+         [Dialog simpleToast:@"加入团队失败！" withDuration:1.5];
      }];
-
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {

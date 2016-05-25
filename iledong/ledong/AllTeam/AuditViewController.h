@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface AuditViewController : BaseViewController
+@interface AuditViewController : UIViewController
 
 @end
