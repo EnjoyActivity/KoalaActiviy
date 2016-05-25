@@ -25,21 +25,22 @@
     ContactView *contactView;
     UILabel *contentLabel;
     
+    UIButton *chooseFormBtn;
     ChooseForm *chooseFormView;
     
     UIView *maskView;
     
     NSDictionary *activityInfo;
 }
-@property (nonatomic,assign) BOOL inPersonForm;
+@property (nonatomic,assign) int inPersonForm;
 
 @end
 
 @implementation ActiveDetailViewController
 
-- (void)setInPersonForm:(BOOL)inPersonForm {
+- (void)setInPersonForm:(int)inPersonForm {
     _inPersonForm = inPersonForm;
-    if (_inPersonForm) {
+    if (_inPersonForm==1) {
         [chooseFormView.inPersonBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
         [chooseFormView.inTeamBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
     } else {
@@ -64,6 +65,71 @@
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
     
+    activityInfo  = @{
+                          @"Id": @7,
+                          @"ActivityClassId": @1,
+                          @"Title": @"2016四川中学生足球联赛 ",
+                          @"Cover": @"../../images/2016050801.gif",
+                          @"ActivityType": @0,
+                          @"IsLeague": @1,
+                          @"JionType": @1,
+                          @"Demand": @"要求年龄12-18岁之间",
+                          @"Tel": @"15399998888",
+                          @"ComplainTel": @"028-11111111",
+                          @"ReleaseUserId": @0,
+                          @"ReleaseState": @0,
+                          @"ReleaseTime": @"",
+                          @"BeginTime": @"2016-08-01 00:00:00",
+                          @"EndTime": @"2016-09-01 00:00:00",
+                          @"ApplyBeginTime": @"2016-06-01 00:00:00",
+                          @"ApplyEndTime": @"2016-06-10 00:00:00",
+                          @"WillNum": @11,
+                          @"MaxNum": @16,
+                          @"MaxApplyNum": @32,
+                          @"ApplyNum": @0,
+                          @"provinceCode": @"510000",
+                          @"cityCode": @"510100",
+                          @"areaCode": @"0",
+                          @"ConstitutorId": @1,
+                          @"Constitutor": @"",
+                          @"EntryMoneyMin": @200,
+                          @"EntryMoneyMax": @200,
+                          @"ReadFlag": @1,
+                          @"tag": @"足球",
+                          @"activityitems": @[
+                                            @{
+                                                @"Id": @17,
+                                                @"ActivityId": @7,
+                                                @"Remark": @"2016四川中学生足球联赛第一场",
+                                                @"BeginTime": @"2016-08-01 00:00:00",
+                                                @"EndTime": @"2016-08-01 00:00:00",
+                                                @"ApplyBeginTime": @"2016-06-01 00:00:00",
+                                                @"ApplyEndTime": @"2016-06-10 00:00:00",
+                                                @"EntryMoney": @200,
+                                                @"WillNum": @20,
+                                                @"MaxNum": @30,
+                                                @"MaxApplyNum": @2,
+                                                @"ApplyNum": @0,
+                                                @"ConstitutorId": @1,
+                                                @"PlaceName": @"成都市体育馆",
+                                                @"Address": @"成都市顺城街2号",
+                                                @"MapX": @103.5,
+                                                @"MapY": @53.3,
+                                                @"ProvinceCode": @"510000",
+                                                @"CityCode": @"510100",
+                                                @"AreaCode": @"510107",
+                                                @"provinceName": @"四川省",
+                                                @"cityName": @"成都市",
+                                                @"areaName": @"武侯区",
+                                                @"ConstitutorName": @"",
+                                                @"activityItemTeams": @[],
+                                                @"activityItemUsers": @[]
+                                            }                                            ],
+                          @"activityTeams": @[],
+                          @"activityUsers": @[]
+                      };
+
+    [self setupUI];
     [self queryActiveDetailInfo];
 }
 
@@ -91,7 +157,7 @@
 }
 - (void)setupCoverImageView {
     UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 200)];
-    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
+//    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
     [scrollView addSubview:coverImage];
     startPos = 200;
 }
@@ -106,12 +172,14 @@
     NSInteger days = [self howManyDaysSinceNow:[activityInfo objectForKey:@"ApplyEndTime"]];
     titleView.timeRemainLabel.text = [NSString stringWithFormat:@"报名剩余 %ld 天",(long)days];
     titleView.personMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMin"]];
+    [titleView.personMoneyLabel sizeToFit];
     titleView.teamMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMax"]];
+    [titleView.teamMoneyLabel sizeToFit];
     //剩余人、团队
     int remainPerson = [[activityInfo objectForKey:@"MaxNum"]intValue] - [[activityInfo objectForKey:@"WillNum"]intValue];
-    titleView.remainPersonLabel.text = [NSString stringWithFormat:@"%d",remainPerson];
+    titleView.remainPersonLabel.text = [NSString stringWithFormat:@"剩余 %d",remainPerson];
     int remainTeam = [[activityInfo objectForKey:@"MaxApplyNum"]intValue] - [[activityInfo objectForKey:@"ApplyNum"]intValue];
-    titleView.remainTeamLabel.text = [NSString stringWithFormat:@"%d",remainTeam];
+    titleView.remainTeamLabel.text = [NSString stringWithFormat:@"剩余 %d",remainTeam];
     
     startPos += 180;
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
@@ -175,7 +243,7 @@
     contentLabel.textAlignment = NSTextAlignmentCenter;
     contentLabel.font = [UIFont systemFontOfSize:15];
     contentLabel.textColor = RGB(153, 153, 153, 1);
-    contentLabel.text = [activityInfo objectForKey:@"demand"];//@"如果遇到提示，就得考虑约束不全的问题了。比如你的底部有一个动态高度的label，设计为与的\n距离为1，与其上的一个控件距离为0，你想着label的高度由的高度来控制，即依赖scrollview的高度，岂不知scrollview的高度是根\n据内部subview的高度来计算的，也就是依赖于后者的。这种情况就最好用代码设置了。";
+    contentLabel.text = [activityInfo objectForKey:@"Demand"];//@"如果遇到提示，就得考虑约束不全的问题了。比如你的底部有一个动态高度的label，设计为与的\n距离为1，与其上的一个控件距离为0，你想着label的高度由的高度来控制，即依赖scrollview的高度，岂不知scrollview的高度是根\n据内部subview的高度来计算的，也就是依赖于后者的。这种情况就最好用代码设置了。";
     contentLabel.numberOfLines = 0;
     
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:contentLabel.text];
@@ -200,7 +268,7 @@
 }
 
 - (void)setupButton {
-    UIButton *chooseFormBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH/2, 45)];
+    chooseFormBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH/2, 45)];
     [chooseFormBtn setTitle:@"选择参加形式" forState:UIControlStateNormal];
     [chooseFormBtn setImage:[UIImage imageNamed:@"ic_add"] forState:UIControlStateNormal];
     [chooseFormBtn setTitleColor:RGB(227, 26, 26,1) forState:UIControlStateNormal];
@@ -232,16 +300,17 @@
 }
 
 - (void)chooseForm:(UIButton*)sender {
-    _inPersonForm = YES;
+    _inPersonForm = 1;
     chooseFormView = (ChooseForm*)[[[NSBundle mainBundle]loadNibNamed:@"ChooseForm" owner:self options:nil]lastObject];
     [chooseFormView.inPersonBtn addTarget:self action:@selector(choosePersonForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.inTeamBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
-    
     [chooseFormView.signUpBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
+    [chooseFormView.cancelBtn addTarget:self action:@selector(cancelBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [chooseFormView.okBtn addTarget:self action:@selector(okBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
     maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     maskView.backgroundColor = [UIColor blackColor];
     maskView.alpha = 0.5;
-    chooseFormView.maskView = maskView;
     chooseFormView.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 216);
     [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
     [[[UIApplication sharedApplication]keyWindow]addSubview:chooseFormView];
@@ -256,15 +325,15 @@
 }
 
 - (void)choosePersonForm:(UIButton*)sender {
-    if (!_inPersonForm) {
-        self.inPersonForm = YES;
+    if (_inPersonForm==0) {
+        self.inPersonForm = 1;
         [chooseFormView.chooseFormBtn setTitle:@"已选择\"个人参加\"" forState:UIControlStateNormal];
     }
 }
 
 - (void)chooseTeamForm:(UIButton*)sender {
-    if (_inPersonForm) {
-        self.inPersonForm = NO;
+    if (_inPersonForm==1) {
+        self.inPersonForm = 0;
         [chooseFormView.chooseFormBtn setTitle:@"已选择\"团队参加\"" forState:UIControlStateNormal];
     }
 }
@@ -276,6 +345,22 @@
 - (void)complainBtnClick:(UIButton*)sender {
     [self makePhone:[activityInfo objectForKey:@"ComplainTel"]];
 }
+
+- (IBAction)cancelBtnClick:(id)sender {
+    [maskView removeFromSuperview];
+    [chooseFormView removeFromSuperview];
+
+}
+- (IBAction)okBtnClick:(id)sender {
+    [maskView removeFromSuperview];
+    [chooseFormView removeFromSuperview];
+    if (_inPersonForm==1) {
+        [chooseFormBtn setTitle:@"已选择\"个人参加\"" forState:UIControlStateNormal];
+    } else {
+        [chooseFormBtn setTitle:@"已选择\"团队参加\"" forState:UIControlStateNormal];
+    }
+}
+
 
 #pragma mark - inner methods
 - (void)queryActiveDetailInfo {
@@ -315,7 +400,7 @@
     
     comps = [calendar components:unitFlags fromDate:date];
     
-    NSString *resultStr = [NSString stringWithFormat:@"%ld月%ld日 %@ %ld:%ld",(long)[comps month],(long)[comps day],weekday[[comps weekday]-1],(long)[comps hour],(long)[comps minute]];
+    NSString *resultStr = [NSString stringWithFormat:@"%ld月%ld日 %@ %02ld:%02ld",(long)[comps month],(long)[comps day],weekday[[comps weekday]-1],(long)[comps hour],(long)[comps minute]];
     
     return resultStr;
 }

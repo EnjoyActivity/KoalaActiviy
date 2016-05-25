@@ -19,18 +19,28 @@
 @end
 
 @implementation ActivityMessageViewController
-
 - (void)viewDidLoad {
     self.titleName = @"活动消息";
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationController.navigationBarHidden = NO;
     self.isMyHost = NO;
+    
+    _myJoinBtn.backgroundColor = RGB(227, 26, 26, 1);
+    [_myJoinBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    _myHostBtn.backgroundColor = RGB(242, 243, 244, 1);
+    [_myHostBtn setTitleColor:RGB(153, 153, 153, 1) forState:UIControlStateNormal];
 }
 
 #pragma mark - button click
 - (IBAction)myJoinButtonClick:(id)sender
 {
+    _myJoinBtn.backgroundColor = RGB(227, 26, 26, 1);
+    [_myJoinBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    _myHostBtn.backgroundColor = RGB(242, 243, 244, 1);
+    [_myHostBtn setTitleColor:RGB(153, 153, 153, 1) forState:UIControlStateNormal];
     // 加载 我参加的 列表
     if (self.isMyHost)
     {
@@ -41,6 +51,11 @@
 
 - (IBAction)myHostButtonClick:(id)sender
 {
+    _myHostBtn.backgroundColor = RGB(227, 26, 26, 1);
+    [_myHostBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    _myJoinBtn.backgroundColor = RGB(242, 243, 244, 1);
+    [_myJoinBtn setTitleColor:RGB(153, 153, 153, 1) forState:UIControlStateNormal];
     // 加载 我举办的 列表
     if (!self.isMyHost)
     {
@@ -97,6 +112,7 @@
         {
             cell = [[NSBundle mainBundle]loadNibNamed:@"MyHostTableViewCell" owner:self options:nil][0];
         }
+        cell.activeTitleLabel.text = @"xxxxx";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }

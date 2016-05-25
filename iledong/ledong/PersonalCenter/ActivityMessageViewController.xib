@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActivityMessageViewController">
             <connections>
+                <outlet property="myHostBtn" destination="Jds-ah-UpD" id="H2c-B6-Fvs"/>
+                <outlet property="myJoinBtn" destination="PeX-0H-Wdg" id="lLd-sP-0nd"/>
                 <outlet property="tableView" destination="roW-X7-Ah1" id="4Us-yy-W25"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

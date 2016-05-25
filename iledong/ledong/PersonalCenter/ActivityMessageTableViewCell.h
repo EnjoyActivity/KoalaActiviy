@@ -17,5 +17,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *cancelBtn;
 @property (strong, nonatomic) IBOutlet UIButton *okBtn;
 @property (strong, nonatomic) IBOutlet UILabel *moneyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *spaceLabel;
 
 @end
