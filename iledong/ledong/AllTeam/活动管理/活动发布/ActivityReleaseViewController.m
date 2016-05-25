@@ -59,6 +59,9 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
+@property (nonatomic, strong)UIButton* btn;
+@property (nonatomic, strong)NSTimer* timer;
+@property (atomic, assign)BOOL isComplete;
 
 //发布请求参数
 @property (nonatomic, assign)gameType gameType;                                 //活动是否联赛
@@ -88,11 +91,15 @@ typedef enum imagePickerFromType {
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
     [self addKeyboardNotification];
+    
+    [self setupCheckParameterTimer];
 }
 
 - (void)dealloc {
     [self releaseResource];
     [self removeKeyboardNotification];
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +108,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)initParameter {
+    self.isComplete = NO;
     self.gameType = gameTypenonLeague;
     
     self.coverPhotoImages = [NSMutableArray array];
@@ -141,6 +149,10 @@ typedef enum imagePickerFromType {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+}
+
+- (void)setupCheckParameterTimer {
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(doTimer) userInfo:nil repeats:YES];
 }
 
 #pragma mark - drawUI
@@ -967,13 +979,19 @@ typedef enum imagePickerFromType {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell4 forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    UIButton* btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
-    [cell.contentView addSubview:btn];
-    btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
-    [btn setTitle:@"发布" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btn.userInteractionEnabled = NO;
-    [btn addTarget:self action:@selector(startBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
+    [cell.contentView addSubview:self.btn];
+    self.btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
+    [self.btn setTitle:@"发布" forState:UIControlStateNormal];
+    [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.btn.userInteractionEnabled = NO;
+    if (self.isComplete) {
+        self.btn.backgroundColor = [UIColor redColor];
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = YES;
+    }
+
+    [self.btn addTarget:self action:@selector(startBtnClicked) forControlEvents:UIControlEventTouchUpInside];
 
     return cell;
 }
@@ -1325,5 +1343,115 @@ typedef enum imagePickerFromType {
     return  dateStr;
 }
 
+- (void)doTimer {
+    //检测参数是否填写完毕，完毕则打开发布按钮，否则置灰
+    
+    //两table共有的
+    if (self.coverPhotoImages.count == 0) {//封面
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (self.titleStr.length == 0) {//活动标题
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (self.timeActivityDict) {    //活动时间
+        NSArray* keys = self.timeActivityDict.allKeys;
+        if (![keys containsObject:@"beginTime"] || ![keys containsObject:@"endTime"]) {
+            [self setStartBtnState:NO];
+            return;
+        }
+    }
+    else {
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (!self.selectActivityDict) { //选择的活动类别
+        [self setStartBtnState:NO];
+        return;
+    }
+    
+    if (self.gameType == gameTypenonLeague) {   //nonleagueTableView独有
+//        if (self.activitySessionArray.count == 0) { //活动场次
+//            [self setStartBtnState:NO];
+//            return;
+//        }
+    }
+    else if (self.gameType == gameTypeLeague) { //leagueTableView独有
+        if (self.contactInfo.length == 0) { //联系方式
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.activityDetailText.length == 0) {  //活动详情
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.timeSigningUpDict) {   //报名时间
+            NSArray* keys = self.timeSigningUpDict.allKeys;
+            if (![keys containsObject:@"beginTime"] || ![keys containsObject:@"endTime"]) {
+                [self setStartBtnState:NO];
+                return;
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.signingUpPersonCountDict) {   //报名人数情况
+            NSArray* keys = self.signingUpPersonCountDict.allKeys;
+            if (self.joinType == joinTypePerson) {
+                if (![keys containsObject:@"planCount"]) {
+                    [self setStartBtnState:NO];
+                    return;
+                }
+            }
+            else if (self.joinType == joinTypeTeam) {
+                if (![keys containsObject:@"planCount"] || ![keys containsObject:@"lowerLimitCount"] ||
+                    ![keys containsObject:@"ceilingCount"]) {
+                    [self setStartBtnState:NO];
+                    return;
+                }
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.moneyDict) {   //费用
+            NSArray* keys = self.moneyDict.allKeys;
+            if (![keys containsObject:@"cost"] || ![keys containsObject:@"margin"]) {
+                [self setStartBtnState:NO];
+                return;
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+//        if (self.activityAddress) { //活动地点
+//            // @property (nonatomic, strong)NSMutableDictionary* activityAddress;
+//        }
+//        else {
+//            [self setStartBtnState:NO];
+//            return;
+//        }
+    }
+    
+    [self setStartBtnState:YES];
+}
+
+- (void)setStartBtnState:(BOOL)isEnable {
+    self.isComplete = isEnable;
+    if (isEnable) {
+        self.btn.backgroundColor = [UIColor redColor];
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = YES;
+    }
+    else {
+        self.btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = NO;
+    }
+}
 
 @end
