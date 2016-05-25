@@ -37,7 +37,9 @@
     
     [self setupScrollView];
     [self setupTitleView];
-    [self setupChooseTeamView];
+    if (_joinType==2) {
+        [self setupChooseTeamView];
+    }
     [self setupInfoView];
     [self setupPreferentialView];
     [self setupTotalMoneyView:@"200"];
@@ -57,7 +59,10 @@
 - (void)setupTitleView {
     titleView = (SignTitleView*)[[[NSBundle mainBundle]loadNibNamed:@"SignTitleView" owner:self options:nil]lastObject];
     titleView.frame = CGRectMake(0,startPos , APP_WIDTH, 100);
-    startPos += 109;
+    startPos += 100;
+    if (_joinType == 2) {
+        startPos += 9;
+    }
     [scrollView addSubview:titleView];
 }
 //选择参加团队

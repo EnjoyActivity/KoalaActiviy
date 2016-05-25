@@ -428,15 +428,15 @@ static FRUtils *instance = nil;
 //}
 
 + (void)queryUserInfoFromWeb:(void(^)())success  failBlock:(void(^)())fail {
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
-//        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-//        id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-//        NSDictionary* temp = (NSDictionary*)jsonObject;
+    [HttpClient JSONDataWithUrlSilent:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
         if ([[json objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[json objectForKey:@"msg"]];
             return;
         }
-        [FRUtils saveUserInfo:json];
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+             [FRUtils saveUserInfo:json];
+         });
+        
         if (success) {
             success();
         }
@@ -445,9 +445,7 @@ static FRUtils *instance = nil;
         if (fail) {
             fail();
         }
-//        [Dialog toast:@"网络失败，请稍后再试"];
     }];
-
 }
 
 + (void)saveUserInfo:(id)json {
@@ -458,7 +456,6 @@ static FRUtils *instance = nil;
     NSString *nickName = [result objectForKey:@"NickName"];
     if (!nickName||[nickName isKindOfClass:[NSNull class]]||nickName.length == 0) {
         [FRUtils setNickName:@""];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
     } else {
         [FRUtils setNickName:nickName];
     }
@@ -503,6 +500,18 @@ static FRUtils *instance = nil;
         [FRUtils setAvatarUrl:@""];
     } else {
         [FRUtils setAvatarUrl:avatar];
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+        if (![fileManager fileExistsAtPath:headerImageDirectory]) {
+            [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        if (![fileManager fileExistsAtPath:fileName]) {
+            NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
+            [imgData writeToFile:fileName atomically:NO];
+        }
     }
     NSString *sex = [result objectForKey:@"Sex"];
     if ([sex isEqualToString:@"男"]) {
@@ -594,7 +603,12 @@ static FRUtils *instance = nil;
 }
 + (void)setAvatarUrl:(NSString*)url {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    [defs setObject:url forKey:@"avatarUrl"];
+    if ([url hasPrefix:@".."]) {
+        NSString *fullUrl = [NSString stringWithFormat:@"%@%@",API_BASE_URL,[url substringFromIndex:3]];
+        [defs setObject:fullUrl forKey:@"avatarUrl"];
+    } else {
+        [defs setObject:url forKey:@"avatarUrl"];
+    }
 }
 + (void)setBirthday:(NSString *)birth {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];

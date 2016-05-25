@@ -94,6 +94,8 @@
             [timer fire];
             [Dialog simpleToast:@"验证码已发送！" withDuration:1.5];
             
+        } else {
+             [Dialog simpleToast:[responseObject objectForKey:@"msg"] withDuration:1.5];
         }
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error)
@@ -126,7 +128,7 @@
     {
         NSLog(@"登陆成功！");
         [FRUtils queryUserInfoFromWeb:^{
-            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
+            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
             } else {
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];

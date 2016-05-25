@@ -17,6 +17,7 @@
 +(id)shareHttpClient;
 //GET
 + (void)JSONDataWithUrl:(NSString *)url parameters:(id)parameters success:(void (^)(id json))success fail:(void (^)())fail;
++ (void)JSONDataWithUrlSilent:(NSString *)url parameters:(id)parameters success:(void (^)(id json))success fail:(void (^)())fail;
 //POST
 + (void)postJSONWithUrl:(NSString *)urlStr parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail;
 //Token获取

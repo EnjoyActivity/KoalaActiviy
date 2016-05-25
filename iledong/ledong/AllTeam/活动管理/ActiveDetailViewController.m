@@ -33,15 +33,15 @@
     
     NSDictionary *activityInfo;
 }
-@property (nonatomic,assign) int inPersonForm;
+@property (nonatomic,assign) int joinType;
 
 @end
 
 @implementation ActiveDetailViewController
 
-- (void)setInPersonForm:(int)inPersonForm {
-    _inPersonForm = inPersonForm;
-    if (_inPersonForm==1) {
+- (void)setJoinType:(int)joinType {
+    _joinType = joinType;
+    if (_joinType==1) {
         [chooseFormView.inPersonBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
         [chooseFormView.inTeamBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
     } else {
@@ -158,6 +158,7 @@
 }
 - (void)setupCoverImageView {
     UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 200)];
+    coverImage.backgroundColor = [UIColor purpleColor];
 //    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
     [scrollView addSubview:coverImage];
     startPos = 200;
@@ -301,7 +302,7 @@
 }
 
 - (void)chooseForm:(UIButton*)sender {
-    _inPersonForm = 1;
+    _joinType = 1;
     chooseFormView = (ChooseForm*)[[[NSBundle mainBundle]loadNibNamed:@"ChooseForm" owner:self options:nil]lastObject];
     [chooseFormView.inPersonBtn addTarget:self action:@selector(choosePersonForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.inTeamBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
@@ -324,20 +325,25 @@
 - (void)signUp:(UIButton*)sender {
     [maskView removeFromSuperview];
     [chooseFormView removeFromSuperview];
+    if ([chooseFormBtn.currentTitle isEqualToString:@"选择参加形式"]) {
+        [Dialog toast:@"请选择参加形式"];
+        return;
+    }
     SignUpViewController *vc = [[SignUpViewController alloc]init];
+    vc.joinType = _joinType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)choosePersonForm:(UIButton*)sender {
-    if (_inPersonForm==0) {
-        self.inPersonForm = 1;
+    if (_joinType==2) {
+        self.joinType = 1;
         [chooseFormView.chooseFormBtn setTitle:@"已选择\"个人参加\"" forState:UIControlStateNormal];
     }
 }
 
 - (void)chooseTeamForm:(UIButton*)sender {
-    if (_inPersonForm==1) {
-        self.inPersonForm = 0;
+    if (_joinType==1) {
+        self.joinType = 2;
         [chooseFormView.chooseFormBtn setTitle:@"已选择\"团队参加\"" forState:UIControlStateNormal];
     }
 }
@@ -358,7 +364,7 @@
 - (void)okBtnClick:(id)sender {
     [maskView removeFromSuperview];
     [chooseFormView removeFromSuperview];
-    if (_inPersonForm==1) {
+    if (_joinType==1) {
         [chooseFormBtn setTitle:@"已选择\"个人参加\"" forState:UIControlStateNormal];
     } else {
         [chooseFormBtn setTitle:@"已选择\"团队参加\"" forState:UIControlStateNormal];

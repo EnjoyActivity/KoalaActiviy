@@ -81,67 +81,107 @@
         [Dialog toast:@"昵称不能为空"];
         return;
     }
-    if (_isGuide) {
-        [FRUtils setNickName:nameField.text];
-        
-        NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"];
-        NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
-        
-        [postDic setObject:[FRUtils getNickName]  forKey:@"NickName"];
+    
+    
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+        NSDictionary* temp = (NSDictionary*)json;
+        if ([[temp objectForKey:@"code"]intValue]!=0) {
+            [Dialog toast:[temp objectForKey:@"msg"]];
+            return;
+        }
+        NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
+        [postDic setObject:nameField.text forKey:@"NickName"];
+        [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
         [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
-        [postDic setObject:[FRUtils getPhoneNum] forKey:@"Phone"];
-        [postDic setObject:@"" forKey:@"Sign"];
-        [postDic setObject:@"" forKey:@"Remark"];
-        [postDic setObject:@"" forKey:@"Interest"];
-        [postDic setObject:@"" forKey:@"AvatarUrl"];
-        [HttpClient postJSONWithUrl:url parameters:postDic success:^(id response){
-//            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-//            id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
-            NSDictionary* temp = (NSDictionary*)response;
-            if ([[temp objectForKey:@"code"]intValue]!=0) {
-                [Dialog toast:[temp objectForKey:@"msg"]];
-                return;
-            }
-            ChangeAvatarViewController *vc = [[ChangeAvatarViewController alloc]init];
-            vc.isGuide = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
-        }fail:^{
-            [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
-        }];
-        
-    } else {
-        
-        [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
             NSDictionary* temp = (NSDictionary*)json;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
                 [Dialog toast:[temp objectForKey:@"msg"]];
                 return;
             }
-            NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
-            [postDic setObject:nameField.text forKey:@"NickName"];
-            [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-            [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
-                NSDictionary* temp = (NSDictionary*)json;
-                if ([[temp objectForKey:@"code"]intValue]!=0) {
-                    [Dialog toast:[temp objectForKey:@"msg"]];
-                    return;
-                }
-                if (self.block) {
-                    self.block(nameField.text);
-                }
-                [FRUtils setNickName:nameField.text];
+            if (self.block) {
+                self.block(nameField.text);
+            }
+            [FRUtils setNickName:nameField.text];
+            if (_isGuide) {
+                ChangeAvatarViewController *vc = [[ChangeAvatarViewController alloc]init];
+                vc.isGuide = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
-                
-            }fail:^{
-                [Dialog toast:@"网络失败，请稍后再试"];
-            }];
+            }
+            
             
         }fail:^{
             [Dialog toast:@"网络失败，请稍后再试"];
         }];
-    }
+        
+    }fail:^{
+        [Dialog toast:@"网络失败，请稍后再试"];
+    }];
+    
+    
+    
+//    if (_isGuide) {
+//
+//        NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"];
+//        NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
+//        
+//        [postDic setObject:[FRUtils getNickName]  forKey:@"NickName"];
+//        [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
+//        [postDic setObject:[FRUtils getPhoneNum] forKey:@"Phone"];
+//        [postDic setObject:@"" forKey:@"Sign"];
+//        [postDic setObject:@"" forKey:@"Remark"];
+//        [postDic setObject:@"" forKey:@"Interest"];
+//        [postDic setObject:@"" forKey:@"AvatarUrl"];
+//        [HttpClient postJSONWithUrl:url parameters:postDic success:^(id response){
+//            NSDictionary* temp = (NSDictionary*)response;
+//            if ([[temp objectForKey:@"code"]intValue]!=0) {
+//                [Dialog toast:[temp objectForKey:@"msg"]];
+//                return;
+//            }
+//            [FRUtils setNickName:nameField.text];
+//            ChangeAvatarViewController *vc = [[ChangeAvatarViewController alloc]init];
+//            vc.isGuide = YES;
+//            [self.navigationController pushViewController:vc animated:YES];
+//            
+//        }fail:^{
+//            [SVProgressHUD showErrorWithStatus:@"网络失败，请稍后再试"];
+//        }];
+//        
+//    } else {
+//        
+//        [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+//            NSDictionary* temp = (NSDictionary*)json;
+//            if ([[temp objectForKey:@"code"]intValue]!=0) {
+//                [Dialog toast:[temp objectForKey:@"msg"]];
+//                return;
+//            }
+//            NSMutableDictionary *postDic = [NSMutableDictionary dictionaryWithDictionary:[temp objectForKey:@"result"]];
+//            [postDic setObject:nameField.text forKey:@"NickName"];
+//            [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+//            [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+//                NSDictionary* temp = (NSDictionary*)json;
+//                if ([[temp objectForKey:@"code"]intValue]!=0) {
+//                    [Dialog toast:[temp objectForKey:@"msg"]];
+//                    return;
+//                }
+//                if (self.block) {
+//                    self.block(nameField.text);
+//                }
+//                [FRUtils setNickName:nameField.text];
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+//                [self.navigationController popViewControllerAnimated:YES];
+//                
+//            }fail:^{
+//                [Dialog toast:@"网络失败，请稍后再试"];
+//            }];
+//            
+//        }fail:^{
+//            [Dialog toast:@"网络失败，请稍后再试"];
+//        }];
+//    }
 }
 
 

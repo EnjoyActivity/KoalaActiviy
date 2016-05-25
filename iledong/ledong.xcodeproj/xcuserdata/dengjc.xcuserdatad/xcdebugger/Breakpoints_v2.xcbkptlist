@@ -59,11 +59,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
-            timestampString = "485852167.961762"
+            timestampString = "485854516.103621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
             landmarkName = "-queryActiveDetailInfo"
             landmarkType = "5">
          </BreakpointContent>
@@ -91,13 +91,77 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/PersonalCenter/LoginAndRegistViewController.m"
-            timestampString = "485850446.274989"
+            timestampString = "485853322.383596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
             landmarkName = "-getNumberButtonClick:"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
+            timestampString = "485854516.103621"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
+            landmarkName = "-signUp:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/PersonalCenter/ChangeAvatarViewController.m"
+            timestampString = "485855676.094901"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "-doneBtnClick:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ChangeAvatarViewController doneBtnClick:]"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/PersonalCenter/ChangeAvatarViewController.m"
+                  timestampString = "485858884.000024"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "570">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__43-[ChangeAvatarViewController doneBtnClick:]_block_invoke"
+                  moduleName = "ledong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/PersonalCenter/ChangeAvatarViewController.m"
+                  timestampString = "485858884.000143"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "47">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -56,11 +56,6 @@
     tabbarController.tabBar.barTintColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    if ([HttpClient isLogin]) {
-        [FRUtils queryUserInfoFromWeb:^{
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
-        }failBlock:nil];
-    }
     return YES;
 }
 

@@ -67,14 +67,12 @@
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
         [self presentViewController:nav animated:YES completion:nil];
     } else {
-        [FRUtils queryUserInfoFromWeb:^{
-            if (![FRUtils getNickName]||[FRUtils getNickName].length == 0) {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
-            }
-        }failBlock:nil];
+        if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
+            [self showGuide:nil];
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+        }
     }
-    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -106,15 +104,13 @@
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
     
-    _nameLabel.text = [FRUtils getNickName];
-    _signatureLabel.text = [FRUtils getSign];
-    NSString *avatarUrl = [FRUtils getAvatarUrl];
-    if (!avatarUrl||avatarUrl.length == 0) {
-        _headerImage.image = [UIImage imageNamed:@"img_avatar_44"];
-    } else {
-        _headerImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]];
+    if ([HttpClient isLogin]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [FRUtils queryUserInfoFromWeb:^{
+                [self refreshUI];
+            }failBlock:nil];
+        });
     }
-    
 }
 
 
@@ -290,6 +286,24 @@
     }
 }
 
+- (void)refreshUI {
+    _nameLabel.text = [FRUtils getNickName];
+    _signatureLabel.text = [FRUtils getSign];
+    NSString *avatarUrl = [FRUtils getAvatarUrl];
+    if (!avatarUrl||avatarUrl.length == 0) {
+        _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
+    } else {
+        NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+        NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:fileName]) {
+            _headerImage.image = [FRUtils circleImage:[UIImage imageWithContentsOfFile:fileName] withParam:1];
+        } else {
+            _headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:avatarUrl]]] withParam:1];
+        }
+    }
+}
 
 
 @end

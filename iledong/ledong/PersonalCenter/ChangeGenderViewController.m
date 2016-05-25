@@ -24,6 +24,9 @@
     self.title = @"您的性别";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
+    if (_isGuide) {
+        self.leftButton.hidden = YES;
+    }
     [self setupUI];
 }
 

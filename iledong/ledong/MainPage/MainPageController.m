@@ -99,9 +99,6 @@ static CGFloat const teamHeight = 280;
     
     [self requestActivityData];
     [self requestAdData];
-
-    
- 
 }
 
 
