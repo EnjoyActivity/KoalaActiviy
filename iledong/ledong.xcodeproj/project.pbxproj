@@ -2132,7 +2132,6 @@
 				TargetAttributes = {
 					626DD44D1C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = KTE5C5W8Z4;
 					};
 					626DD4661C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -2654,12 +2653,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ledong/ILeDong_PrefixHeader.pch";
 				INFOPLIST_FILE = ledong/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2671,12 +2671,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ledong/ILeDong_PrefixHeader.pch";
 				INFOPLIST_FILE = ledong/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
