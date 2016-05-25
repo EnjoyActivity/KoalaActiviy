@@ -56,8 +56,8 @@
     
     self.leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 25, self.bounds.size.height)];
     [self addSubview:self.leftBtn];
-    [self.leftBtn setImage:[UIImage imageNamed:@"ic_add_grey"] forState:UIControlStateNormal];
-    [self.leftBtn setImage:[UIImage imageNamed:@"ic_add"] forState:UIControlStateHighlighted];
+    [self.leftBtn setImage:[UIImage imageNamed:@"ic_sub_grey"] forState:UIControlStateNormal];
+    [self.leftBtn setImage:[UIImage imageNamed:@"ic_sub"] forState:UIControlStateHighlighted];
     [self.leftBtn addTarget:self action:@selector(leftBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     self.label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 20, self.bounds.size.height)];

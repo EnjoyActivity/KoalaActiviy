@@ -14,6 +14,7 @@
 #import "CreateTeamVController.h"
 #import "JoinTeamViewController.h"
 #import "TeamHomeViewController.h"
+#import "SelectTeamViewController.h"
 
 #define kCell       @"AllTeamCell"
 
@@ -162,9 +163,12 @@ typedef enum listType {
 {
     if ([HttpClient isLogin])
     {
-        JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
-        [joinTeamViewController setHidesBottomBarWhenPushed:YES];
-        [self.navigationController pushViewController:joinTeamViewController animated:YES];
+        //JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
+        //[joinTeamViewController setHidesBottomBarWhenPushed:YES];
+        
+        SelectTeamViewController* selectTeamViewController = [[SelectTeamViewController alloc]init];
+        [selectTeamViewController setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:selectTeamViewController animated:YES];
     }
     else
     {
@@ -220,7 +224,7 @@ typedef enum listType {
             if (data == nil)
                 return;
             dispatch_async(dispatch_get_main_queue(), ^{
-                cell.imageView.image = [UIImage imageWithData:data];
+                cell.teamImageView.image = [UIImage imageWithData:data];
                 [cell setNeedsLayout];
             });
         });
@@ -247,17 +251,16 @@ typedef enum listType {
     if (editingStyle == UITableViewCellEditingStyleDelete &&
         self.tableViewListType == listTypeJoinTeam) {
         if (indexPath.row < [self.myJoinTeamData count]) {
-            [self exitTeam:self.myJoinTeamData[indexPath.row]];
-            [self.myJoinTeamData removeObjectAtIndex:indexPath.row];
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self exitTeam:self.myJoinTeamData[indexPath.row] listType:listTypeJoinTeam tableView:tableView row:indexPath];
         }
     }
     else if (editingStyle == UITableViewCellEditingStyleDelete &&
              self.tableViewListType == listTypeStartTeam) {
         if (indexPath.row < [self.myStartTeamData count]) {
-            [self exitTeam:self.myStartTeamData[indexPath.row]];
-            [self.myStartTeamData removeObjectAtIndex:indexPath.row];
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//            [self exitTeam:self.myStartTeamData[indexPath.row]];
+//            [self.myStartTeamData removeObjectAtIndex:indexPath.row];
+//            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self exitTeam:self.myStartTeamData[indexPath.row] listType:listTypeStartTeam tableView:tableView row:indexPath];
         }
     }
 }
@@ -270,7 +273,7 @@ typedef enum listType {
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
     else if (self.tableViewListType == listTypeJoinTeam)  {
-        teamHomeVC.teamType = teamTypeCreate;//teamTypeJoin;
+        teamHomeVC.teamType = teamTypeJoin;
         NSDictionary* dict = self.myJoinTeamData[indexPath.row];
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
@@ -284,7 +287,8 @@ typedef enum listType {
 }
 
 #pragma mark - logic
-- (void)exitTeam:(NSDictionary*)dict {
+- (void)exitTeam:(NSDictionary*)dict listType:(listType)listType
+       tableView:(UITableView*)tableView row:(NSIndexPath*)indexPath {
     NSString* teamId = [dict objectForKey:@"Id"];
     NSString* token = [HttpClient getTokenStr];
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_EXIT_TEAM_URL];
@@ -294,6 +298,13 @@ typedef enum listType {
         if (!result.boolValue) {
             NSString* str = [dict objectForKey:@"Message"];
             [Dialog simpleToast:str withDuration:1.5];
+        }
+        else {
+            if (listType == listTypeStartTeam)
+                [self.myStartTeamData removeObjectAtIndex:indexPath.row];
+            else if (listType == listTypeJoinTeam)
+                [self.myJoinTeamData removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         }
     } fail:^{
         [Dialog simpleToast:@"退出团队失败！" withDuration:1.5];

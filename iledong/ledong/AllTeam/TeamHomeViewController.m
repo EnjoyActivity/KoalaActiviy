@@ -29,6 +29,8 @@
     
     CGFloat hight = self.headerImage.frame.size.height + self.middleView.frame.size.height + self.ActiveView.frame.size.height + self.footerView.frame.size.height + 90;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
+    
+    [self queryTeamInfo];
 }
 
 
@@ -103,6 +105,21 @@
         cell = [[NSBundle mainBundle] loadNibNamed:@"TeamHomeTableViewCell" owner:self options:nil][0];
     }
     return cell;
+}
+
+- (void)queryTeamInfo {
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_QUERY_TEAMINFO_URL];
+    NSDictionary *dic = @{@"token":[HttpClient getTokenStr],
+                          @"teamid":self.teamId};
+    [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            
+        }
+    } fail:^{
+        [Dialog simpleToast:@"获取团队信息失败！" withDuration:1.5];
+    }];
 }
 
 @end

@@ -133,8 +133,6 @@ static NSString * const locationIdentifier = @"LocationCell";
     cell.activityOwer.text = dic[@"ConstitutorName"];
     cell.activityDetail.text = [NSString stringWithFormat:@"%@",dic[@"ClassName"]];
     
-//    cell.adImageView.image = [UIImage imageNamed:@"img_1@2x"];
-//    cell.headImageView.image = [UIImage imageNamed:@"user01_44@2x"];
     return cell;
     
 }

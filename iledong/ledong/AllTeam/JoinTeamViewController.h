@@ -8,5 +8,6 @@
 
 @interface JoinTeamViewController : UIViewController
 
+@property (nonatomic, strong)NSString* teamId;
 
 @end

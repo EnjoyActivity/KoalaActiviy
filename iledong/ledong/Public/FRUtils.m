@@ -428,7 +428,7 @@ static FRUtils *instance = nil;
 //}
 
 + (void)queryUserInfoFromWeb:(void(^)())success  failBlock:(void(^)())fail {
-    [HttpClient JSONDataWithUrlSilent:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
         if ([[json objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[json objectForKey:@"msg"]];
             return;

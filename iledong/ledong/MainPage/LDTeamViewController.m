@@ -22,8 +22,10 @@ static NSString * const teamCell = @"teamCell";
     UIView * filterView;
     NSInteger currentButton;
     NSArray * locationArray;
+    NSMutableArray * teamArray;
     
     BOOL locationChange;
+    NSInteger currentPage;
 
 }
 
@@ -38,8 +40,12 @@ static NSString * const teamCell = @"teamCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    currentPage = 1;
+    teamArray = [NSMutableArray array];
     locationArray = @[@"全部地区",@"附近",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去"];
     [self setUpUI];
+    [self requestTeamData:currentPage parameter:nil];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -58,7 +64,38 @@ static NSString * const teamCell = @"teamCell";
 #pragma mark - NetWork
 
 - (void)requestTeamData:(NSInteger)pageIndex parameter:(NSDictionary *)dic {
-    
+    NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc] init];
+    [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"Page"];
+    [parameterDic setValue:[NSNumber numberWithInt:10] forKey:@"PageSize"];
+    [parameterDic setValue:[NSNumber numberWithBool:YES] forKey:@"IsHot"];
+    if (dic) {
+        [parameterDic setValuesForKeysWithDictionary:dic];
+    }
+    NSURL * url = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
+    [manager POST:@"Team/QueryTeams" parameters:parameterDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            [teamtableView reloadData];
+            return ;
+        }
+        NSDictionary * dic = [resultDic objectForKey:@"result"];
+        NSInteger topalPage = [[dic objectForKey:@"TotalPage"] integerValue];
+        NSArray * resultArr = [dic objectForKey:@"Data"];
+        if (pageIndex == 1) {
+            teamArray = [resultArr copy];
+        }
+        else{
+            [teamArray addObjectsFromArray:resultArr];
+        }
+        currentPage ++;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [teamtableView reloadData];
+        });
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
 }
 
 #pragma mark - TabledataSource
@@ -68,25 +105,38 @@ static NSString * const teamCell = @"teamCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.locationTableview]) {
-        return locationChange ? locationArray.count : _categoryArray.count;
+        return locationChange ? locationArray.count : _activityArray.count;
     }
-    return 5;
+    return teamArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.locationTableview]) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:locationIdentifier forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
         if (locationChange) {
+          
             label.text = locationArray[indexPath.row];
         }
-        else
-        {
-            NSDictionary * dic = _categoryArray[indexPath.row];
-            label.text = dic[@""];
+        else {
+              label.text = [_activityArray[indexPath.row] valueForKey:@"ClassName"];
         }
         return cell;
     }
-    LDTeamTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+    LDTeamTableViewCell * cell = (LDTeamTableViewCell*)[tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+    NSDictionary * dic =teamArray[indexPath.row];
+    NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
+    NSURL * teamUrl = [NSURL URLWithString:teamImage];
+    
+    NSString * name = [dic objectForKey:@"Name"];
+    NSString * member = [dic objectForKey:@"PersonNum"];
+    NSString * focus = [dic objectForKey:@"Concern"];
+    NSString * activity = [dic objectForKey:@"Liveness"];
+    
+    [cell.teamImageView sd_setImageWithURL:teamUrl placeholderImage:[UIImage imageNamed:@"img_avatar_100"]];
+    cell.teamMember.text = [NSString stringWithFormat:@"%@人",member];
+    cell.teamName.text = name;
+    cell.teamFocus.text = [NSString stringWithFormat:@"%@人关注",focus];
+    cell.teamActivity.text = [NSString stringWithFormat:@"团队活跃度%@",activity];
     return cell;
 }
 
@@ -95,6 +145,31 @@ static NSString * const teamCell = @"teamCell";
         return 37;
     }
     return 120;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.locationTableview]) {
+        if (locationChange) {
+            
+        }
+        else
+        {
+            
+        }
+        
+    }
+}
+- (void)changeActivity:(NSInteger)row {
+    NSNumber * activityId= [_activityArray[row] objectForKey:@"Id"];
+//    NSString * titleTemp = [_activityArray[row] objectForKey:@"ClassName"];
+//    [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
+//    [self.activityButton setSelected:NO];
+    NSDictionary * dic= @{
+                          @"ActivityClassId":activityId
+                          };
+    currentPage = 1;
+    [self.locationTableview setHidden:YES];
+    [self requestTeamData:currentPage parameter:dic];
 }
 #pragma mark - buttonAction
 - (IBAction)back:(id)sender {
