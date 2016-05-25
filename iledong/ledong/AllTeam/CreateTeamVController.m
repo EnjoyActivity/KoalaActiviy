@@ -368,73 +368,54 @@
     return NO;
 }
 
-//- (NSString *)postRequestWithURL: (NSString *)url
-//                      postParems: (NSMutableDictionary *)postParems
-//                     picFilePath: (UIImage *)image
-//                     picFileName: (NSString *)picFileName {
-//    NSString *TWITTERFON_FORM_BOUNDARY = @"0xKhTmLbOuNdArY";
-//    NSString *FORM_FLE_INPUT = @"file";
-//    //分界线 --AaB03x
-//    NSString *MPboundary=[[NSString alloc]initWithFormat:@"--%@",TWITTERFON_FORM_BOUNDARY];
-//    //结束符 AaB03x--
-//    NSString *endMPboundary=[[NSString alloc]initWithFormat:@"%@--",MPboundary];
-//
-//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-//                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-//                                                    timeoutInterval:10];
-//    //得到图片的data
-//    NSData* data;
-//    if (UIImagePNGRepresentation(image))
-//        data = UIImagePNGRepresentation(image);
-//    else
-//        data = UIImageJPEGRepresentation(image, 1.0);
-//
-//    NSMutableString *body=[[NSMutableString alloc]init];
-//    NSArray *keys = [postParems allKeys];
-////    for(int i=0; i<[keys count]; i++) {
-////        //得到当前key
-////        NSString *key=[keys objectAtIndex:i];
-////        //添加分界线，换行
-////        [body appendFormat:@"%@\r\n",MPboundary];
-////        //添加字段名称，换2行
-////        [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key];
-////        //添加字段的值
-////        [body appendFormat:@"%@\r\n",[postParems objectForKey:key]];
-////        
-////        NSLog(@"添加字段的值==%@",[postParems objectForKey:key]);
-////    }
-//    
-//    [body appendFormat:@"%@\r\n",MPboundary];
-//    //声明pic字段，文件名为boris.png
-//    [body appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",FORM_FLE_INPUT,picFileName];
-//    //声明上传文件的格式
-//    [body appendFormat:@"Content-Type: image/jpge,image/gif, image/jpeg, image/pjpeg, image/pjpeg\r\n\r\n"];
-//    
-//    NSString *end=[[NSString alloc]initWithFormat:@"\r\n%@",endMPboundary];
-//    NSMutableData *myRequestData = [NSMutableData data];
-//    
-//    //将body字符串转化为UTF8格式的二进制
-//    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-//    [myRequestData appendData:data];
-//    
-//    //加入结束符--AaB03x--
-//    [myRequestData appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",TWITTERFON_FORM_BOUNDARY];
-//    [request setValue:content forHTTPHeaderField:@"Content-Type"];
-//    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData length]] forHTTPHeaderField:@"Content-Length"];
-//    [request setHTTPBody:myRequestData];
-//    [request setHTTPMethod:@"POST"];
-//
-//    NSHTTPURLResponse *urlResponese = nil;
-//    NSError *error = [[NSError alloc]init];
-//    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-//    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-//    if([urlResponese statusCode] >=200&&[urlResponese statusCode]<300){
-//        NSLog(@"返回结果=====%@",result);
-//        return result;
-//    }
-//    return nil;
-//}
+- (IBAction)startBtnClick:(id)sender {
+    //    tag	true	string	团队标签
+    //    activityclassId	true	int	运动类别 （从活动类别接口获取）
+    //    provinceCode	true	string	省
+    //    cityCode	true	string	市
+    //    areaCode	true	string	区
+    
+    int maxPersonNum = [self.maxCountTextField.text intValue];
+    BOOL isNeedaudit = self.switchCtl.on;
+    NSMutableString* tag = [NSMutableString string];
+    for (int i=0; i<self.tagArray.count; i++) {
+        NSString* str = self.tagArray[i];
+        if (i == self.tagArray.count - 1) {
+            tag = (NSMutableString*)[tag stringByAppendingString:str];
+        }
+        else {
+            NSString* temp = [NSString stringWithFormat:@"%@、", str];
+            tag = (NSMutableString*)[tag stringByAppendingString:temp];
+        }
+    }
+    NSDictionary* dict = @{
+                           @"token":[HttpClient getTokenStr],
+                           @"name":self.teamNameTextField.text,
+                           @"intro":self.teamIntrodectionTextView.text,
+                           @"maxPersonNum":[NSNumber numberWithInt:maxPersonNum],
+                           @"needaudit":[NSNumber numberWithBool:isNeedaudit],
+                           @"tag":tag,
+                           @"activityclassId":@"",
+                           @"provinceCode":@"",
+                           @"cityCode":@"",
+                           @"areaCode":@"",
+                          };
+    
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATETEAM_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            [Dialog simpleToast:@"创建团队成功！" withDuration:1.5];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            NSString* msg = [dict objectForKey:@"msg"];
+            [Dialog simpleToast:msg withDuration:1.5];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"创建团队失败！" withDuration:1.5];
+    }];
+}
 
 @end
