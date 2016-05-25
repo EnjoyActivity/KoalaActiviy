@@ -11,8 +11,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="pbq-Sz-2NR">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="pbq-Sz-2NR">
                     <rect key="frame" x="12" y="29" width="21" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="21" id="9iM-kY-gpA"/>
+                        <constraint firstAttribute="height" constant="21" id="cHc-GM-Pav"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="皇马足球训练中心" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ve-Pz-214">
                     <rect key="frame" x="41" y="15" width="235" height="21"/>

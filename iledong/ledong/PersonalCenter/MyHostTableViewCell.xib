@@ -90,6 +90,7 @@
                 <outlet property="moneyLabel" destination="E2e-Iy-FBu" id="3q3-mn-z4W"/>
                 <outlet property="okBtn" destination="lXY-di-QrV" id="Vea-zF-2AG"/>
                 <outlet property="payLabel" destination="aQr-3l-UcA" id="kJf-75-lSR"/>
+                <outlet property="spaceLabel" destination="qg6-1s-kAa" id="Bld-5T-GEW"/>
             </connections>
             <point key="canvasLocation" x="213" y="362"/>
         </tableViewCell>

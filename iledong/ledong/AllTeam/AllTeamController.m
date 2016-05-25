@@ -148,6 +148,7 @@ typedef enum listType {
     if ([HttpClient isLogin])
     {
         CreateTeamVController *createViewController = [[CreateTeamVController alloc] init];
+        [createViewController setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:createViewController animated:YES];
     }
     else
@@ -162,6 +163,7 @@ typedef enum listType {
     if ([HttpClient isLogin])
     {
         JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
+        [joinTeamViewController setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:joinTeamViewController animated:YES];
     }
     else
@@ -273,6 +275,7 @@ typedef enum listType {
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
 
+    [teamHomeVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:teamHomeVC animated:YES];
 }
 

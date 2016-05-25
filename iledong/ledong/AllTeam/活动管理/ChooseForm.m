@@ -31,16 +31,10 @@
     
     self.signUpBtn.backgroundColor = RGB(227, 26, 26, 1);
     [self.signUpBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-}
-
-
-- (IBAction)cancelBtnClick:(id)sender {
-    [_maskView removeFromSuperview];
-    [self removeFromSuperview];
-}
-- (IBAction)okBtnClick:(id)sender {
-    [_maskView removeFromSuperview];
-    [self removeFromSuperview];
+    
+    self.toolbar.backgroundColor = RGB(242, 243, 244, 1);
+    [self.cancelBtn setTitleColor:RGB(51, 51, 51, 1) forState:UIControlStateNormal];
+    [self.okBtn setTitleColor:RGB(51, 51, 51, 1) forState:UIControlStateNormal];
 }
 
 @end

@@ -10,5 +10,7 @@
 
 @interface ActivityMessageViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableView;// 消息列表
+@property (strong, nonatomic) IBOutlet UIButton *myJoinBtn;
+@property (strong, nonatomic) IBOutlet UIButton *myHostBtn;
 
 @end

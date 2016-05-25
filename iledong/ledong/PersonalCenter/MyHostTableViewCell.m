@@ -20,7 +20,7 @@
     self.joinFormLabel.textColor = RGB(153, 153, 153, 1);
     self.payLabel.textColor = RGB(227, 26, 26, 1);
     self.moneyLabel.textColor = RGB(51, 51, 51, 1);
-    
+    self.spaceLabel.backgroundColor = RGB(242, 243, 244, 1);
     [self.cancelBtn setBackgroundImage:[FRUtils resizeImageWithImage:[UIImage imageNamed:@"btn_redline"]] forState:UIControlStateNormal];
 }
 

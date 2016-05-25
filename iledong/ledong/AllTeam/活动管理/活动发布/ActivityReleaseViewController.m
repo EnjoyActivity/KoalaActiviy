@@ -59,6 +59,11 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSIndexPath* textFieldPath;
 @property (nonatomic, strong)UILabel* tipLabel;
 @property (nonatomic, strong)UIScrollView* detailImageScrollView;
+@property (nonatomic, strong)UIButton* btn;
+@property (nonatomic, strong)UITextField* costTextField;
+@property (nonatomic, strong)UITextField* marginTextField;
+@property (nonatomic, strong)NSTimer* timer;
+@property (atomic, assign)BOOL isComplete;
 
 //发布请求参数
 @property (nonatomic, assign)gameType gameType;                                 //活动是否联赛
@@ -88,11 +93,15 @@ typedef enum imagePickerFromType {
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
     [self addKeyboardNotification];
+    
+    [self setupCheckParameterTimer];
 }
 
 - (void)dealloc {
     [self releaseResource];
     [self removeKeyboardNotification];
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +110,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)initParameter {
+    self.isComplete = NO;
     self.gameType = gameTypenonLeague;
     
     self.coverPhotoImages = [NSMutableArray array];
@@ -141,6 +151,10 @@ typedef enum imagePickerFromType {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+}
+
+- (void)setupCheckParameterTimer {
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(doTimer) userInfo:nil repeats:YES];
 }
 
 #pragma mark - drawUI
@@ -358,13 +372,6 @@ typedef enum imagePickerFromType {
     if (_scrollViewDidScroll)
         return;
     [self.view endEditing:YES];
-    if (self.gameType == gameTypenonLeague) {
-        
-    }
-    else if (self.gameType == gameTypeLeague) {
-        NSInteger section = self.textFieldPath.section;
-        NSInteger row = self.textFieldPath.row;
-    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -512,6 +519,7 @@ typedef enum imagePickerFromType {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
+        [self.view endEditing:YES];
         ParameterTableViewController* VC = [[ParameterTableViewController alloc]init];
         [self.navigationController pushViewController:VC animated:YES];
         VC.vcTitle = @"活动分类";
@@ -548,6 +556,7 @@ typedef enum imagePickerFromType {
             [self.view addSubview:datePickView];
         }
         else if (indexPath.section == 2) {
+            [self.view endEditing:YES];
             SessionInfoViewController* Vc = [[SessionInfoViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
         }
@@ -585,6 +594,7 @@ typedef enum imagePickerFromType {
             [self.view addSubview:datePickView];
         }
         else if (indexPath.section == 6) {
+            [self.view endEditing:YES];
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
             [Vc setCompleteSelect:^(NSString *str) {
@@ -593,6 +603,7 @@ typedef enum imagePickerFromType {
             }];
         }
         else if (indexPath.section == 5) {
+            [self.view endEditing:YES];
             ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
         }
@@ -967,13 +978,19 @@ typedef enum imagePickerFromType {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell4 forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    UIButton* btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
-    [cell.contentView addSubview:btn];
-    btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
-    [btn setTitle:@"发布" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btn.userInteractionEnabled = NO;
-    [btn addTarget:self action:@selector(startBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
+    [cell.contentView addSubview:self.btn];
+    self.btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
+    [self.btn setTitle:@"发布" forState:UIControlStateNormal];
+    [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.btn.userInteractionEnabled = NO;
+    if (self.isComplete) {
+        self.btn.backgroundColor = [UIColor redColor];
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = YES;
+    }
+
+    [self.btn addTarget:self action:@selector(startBtnClicked) forControlEvents:UIControlEventTouchUpInside];
 
     return cell;
 }
@@ -1110,45 +1127,45 @@ typedef enum imagePickerFromType {
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"费用";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:500];
-        if (!textField) {
-            textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 500;
-            textField.placeholder = @"请输入费用";
-            textField.font = [UIFont systemFontOfSize:14.0];
-            [cell.contentView addSubview:textField];
-            textField.delegate = self;
-            textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentCenter;
-            [textField sizeToFit];
+        self.costTextField = (UITextField*)[cell.contentView viewWithTag:500];
+        if (!self.costTextField) {
+            self.costTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
+            self.costTextField.tag = 500;
+            self.costTextField.placeholder = @"请输入费用";
+            self.costTextField.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:self.costTextField];
+            self.costTextField.delegate = self;
+            self.costTextField.keyboardType = UIKeyboardTypeNumberPad;
+            self.costTextField.textAlignment = NSTextAlignmentCenter;
+            [self.costTextField sizeToFit];
         }
         NSArray* keys = self.moneyDict.allKeys;
         if (self.moneyDict && [keys containsObject:@"cost"])
-            textField.text = [self.moneyDict objectForKey:@"cost"];
+            self.costTextField.text = [self.moneyDict objectForKey:@"cost"];
  
-        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
+        objc_setAssociatedObject(self.costTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.costTextField.center = CGPointMake(self.costTextField.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 1) {
         cell.textLabel.text = @"保证金";
-        UITextField* textField = (UITextField*)[cell.contentView viewWithTag:501];
-        if (!textField) {
-            textField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
-            textField.tag = 501;
-            textField.placeholder = @"请输入费用";
-            textField.font = [UIFont systemFontOfSize:14.0];
-            [cell.contentView addSubview:textField];
-            textField.delegate = self;
-            textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.textAlignment = NSTextAlignmentCenter;
-            [textField sizeToFit];
+        self.marginTextField = (UITextField*)[cell.contentView viewWithTag:501];
+        if (!self.marginTextField) {
+            self.marginTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
+            self.marginTextField.tag = 501;
+            self.marginTextField.placeholder = @"请输入费用";
+            self.marginTextField.font = [UIFont systemFontOfSize:14.0];
+            [cell.contentView addSubview:self.marginTextField];
+            self.marginTextField.delegate = self;
+            self.marginTextField.keyboardType = UIKeyboardTypeNumberPad;
+            self.marginTextField.textAlignment = NSTextAlignmentCenter;
+            [self.marginTextField sizeToFit];
         }
         NSArray* keys = self.moneyDict.allKeys;
         if (self.moneyDict && [keys containsObject:@"margin"])
-            textField.text = [self.moneyDict objectForKey:@"margin"];
+            self.marginTextField.text = [self.moneyDict objectForKey:@"margin"];
 
-        objc_setAssociatedObject(textField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        textField.center = CGPointMake(textField.center.x, cell.contentView.bounds.size.height/2);
+        objc_setAssociatedObject(self.marginTextField, KTextFieldAsObj, indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.marginTextField.center = CGPointMake(self.marginTextField.center.x, cell.contentView.bounds.size.height/2);
     }
 
     UILabel* lineLabel = (UILabel*)[cell.contentView viewWithTag:1000];
@@ -1325,5 +1342,114 @@ typedef enum imagePickerFromType {
     return  dateStr;
 }
 
+- (void)doTimer {
+    //检测参数是否填写完毕，完毕则打开发布按钮，否则置灰
+    //两table共有的
+    if (self.coverPhotoImages.count == 0) {//封面
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (self.titleStr.length == 0) {//活动标题
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (self.timeActivityDict) {    //活动时间
+        NSArray* keys = self.timeActivityDict.allKeys;
+        if (![keys containsObject:@"beginTime"] || ![keys containsObject:@"endTime"]) {
+            [self setStartBtnState:NO];
+            return;
+        }
+    }
+    else {
+        [self setStartBtnState:NO];
+        return;
+    }
+    if (!self.selectActivityDict) { //选择的活动类别
+        [self setStartBtnState:NO];
+        return;
+    }
+    
+    if (self.gameType == gameTypenonLeague) {   //nonleagueTableView独有
+//        if (self.activitySessionArray.count == 0) { //活动场次
+//            [self setStartBtnState:NO];
+//            return;
+//        }
+    }
+    else if (self.gameType == gameTypeLeague) { //leagueTableView独有
+        if (self.contactInfo.length == 0) { //联系方式
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.activityDetailText.length == 0) {  //活动详情
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.timeSigningUpDict) {   //报名时间
+            NSArray* keys = self.timeSigningUpDict.allKeys;
+            if (![keys containsObject:@"beginTime"] || ![keys containsObject:@"endTime"]) {
+                [self setStartBtnState:NO];
+                return;
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.signingUpPersonCountDict) {   //报名人数情况
+            NSArray* keys = self.signingUpPersonCountDict.allKeys;
+            if (self.joinType == joinTypePerson) {
+                if (![keys containsObject:@"planCount"]) {
+                    [self setStartBtnState:NO];
+                    return;
+                }
+            }
+            else if (self.joinType == joinTypeTeam) {
+                if (![keys containsObject:@"planCount"] || ![keys containsObject:@"lowerLimitCount"] ||
+                    ![keys containsObject:@"ceilingCount"]) {
+                    [self setStartBtnState:NO];
+                    return;
+                }
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+        if (self.moneyDict) {   //费用
+            NSArray* keys = self.moneyDict.allKeys;
+            if (![keys containsObject:@"cost"] || ![keys containsObject:@"margin"]) {
+                [self setStartBtnState:NO];
+                return;
+            }
+        }
+        else {
+            [self setStartBtnState:NO];
+            return;
+        }
+//        if (self.activityAddress) { //活动地点
+//            // @property (nonatomic, strong)NSMutableDictionary* activityAddress;
+//        }
+//        else {
+//            [self setStartBtnState:NO];
+//            return;
+//        }
+    }
+    
+    [self setStartBtnState:YES];
+}
+
+- (void)setStartBtnState:(BOOL)isEnable {
+    self.isComplete = isEnable;
+    if (isEnable) {
+        self.btn.backgroundColor = [UIColor redColor];
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = YES;
+    }
+    else {
+        self.btn.backgroundColor = UIColorFromRGB(0xDEDEDE);
+        [self.btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.btn.userInteractionEnabled = NO;
+    }
+}
 
 @end

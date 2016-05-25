@@ -18,9 +18,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *inTeamBtn;
 @property (strong, nonatomic) IBOutlet UIButton *chooseFormBtn;
 @property (strong, nonatomic) IBOutlet UIButton *signUpBtn;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelBtn;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *okBtn;
-
-@property (strong, nonatomic) UIView *maskView;
+@property (strong, nonatomic) IBOutlet UIView *toolbar;
+@property (strong, nonatomic) IBOutlet UIButton *cancelBtn;
+@property (strong, nonatomic) IBOutlet UIButton *okBtn;
 
 @end

@@ -120,7 +120,7 @@ static CGFloat const teamHeight = 280;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     [self adTimerStop];
     [self activityTimerStop];
     [self teamTimerStop];
