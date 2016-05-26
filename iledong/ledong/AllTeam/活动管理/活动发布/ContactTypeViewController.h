@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^completeSelect)(NSString* str);
+typedef void (^completeSelect)(NSString* phoneNum, NSString* complainTelNum);
 
 @interface ContactTypeViewController : UIViewController
 

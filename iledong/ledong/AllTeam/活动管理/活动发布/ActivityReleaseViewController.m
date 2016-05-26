@@ -70,7 +70,8 @@ typedef enum imagePickerFromType {
 //发布请求参数
 @property (nonatomic, assign)gameType gameType;                                 //活动是否联赛
 @property (nonatomic, assign)joinType joinType;                                 //参加类型
-@property (nonatomic, strong)NSString* contactInfo;                             //联系方式
+@property (nonatomic, strong)NSString* phoneNum;                                //联系电话
+@property (nonatomic, strong)NSString* complainTelNum;                          //举报电话
 @property (nonatomic, strong)NSString* activityDetailText;                      //活动详情
 @property (nonatomic, strong)NSString* titleStr;                                //活动标题
 @property (nonatomic, strong)NSString* corverImgPath;                           //封面图片路径
@@ -90,6 +91,7 @@ typedef enum imagePickerFromType {
     [super viewDidLoad];
     
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    self.joinType = joinTypePerson;
     [self initParameter];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
@@ -280,7 +282,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)startBtnClicked {
-    
+    [self commitActivity];
 }
 
 - (void)typeBtnClicked {
@@ -621,8 +623,9 @@ typedef enum imagePickerFromType {
             [self.view endEditing:YES];
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
-            [Vc setCompleteSelect:^(NSString *str) {
-                self.contactInfo = str;
+            [Vc setCompleteSelect:^(NSString* phoneNum, NSString* complainTelNum) {
+                self.phoneNum = phoneNum;
+                self.complainTelNum = complainTelNum;
                 [self.leagueTableView reloadData];
             }];
         }
@@ -941,13 +944,15 @@ typedef enum imagePickerFromType {
     CGFloat x = imageView.frame.size.width + imageView.frame.origin.x + 10;
     UILabel* nameLabel = (UILabel*)[cell.contentView viewWithTag:100];
     if (!nameLabel) {
-        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, 5, 0, 0)];
+        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, 10, 0, 0)];
         nameLabel.font = [UIFont systemFontOfSize:16.0];
         nameLabel.tag = 100;
         nameLabel.textColor = UIColorFromRGB(0x333333);
         [cell.contentView addSubview:nameLabel];
     }
-    nameLabel.text = [dict objectForKey:@"activityVenue"];
+    
+    NSDictionary* tempDict = [dict objectForKey:@"activityVenue"];
+    nameLabel.text = [tempDict objectForKey:@"placeName"];
     [nameLabel sizeToFit];
     if (nameLabel.frame.size.width > 150) {
         nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, 150, nameLabel.frame.size.height);
@@ -961,7 +966,7 @@ typedef enum imagePickerFromType {
         addLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:addLabel];
     }
-    addLabel.text = [dict objectForKey:@"activitySite"];
+    addLabel.text = [tempDict objectForKey:@"Address"];
     [addLabel sizeToFit];
     if (addLabel.frame.size.width > 150) {
         addLabel.frame = CGRectMake(addLabel.frame.origin.x, addLabel.frame.origin.y, 150, addLabel.frame.size.height);
@@ -976,19 +981,19 @@ typedef enum imagePickerFromType {
         timeLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:timeLabel];
     }
-    timeLabel.text = [NSString stringWithFormat:@"报名时间:%@-%@", [dict objectForKey:@"beginTime"], [dict objectForKey:@"endTime"]];
+    timeLabel.text = [NSString stringWithFormat:@"报名时间:%@-%@", [dict objectForKey:@"applyBeginTime"], [dict objectForKey:@"applyEndTime"]];
     [timeLabel sizeToFit];
     
-    UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:103];
-    if (!personLabel) {
-        personLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, timeLabel.frame.origin.y+timeLabel.frame.size.height+5, 0, 0)];
-        personLabel.font = [UIFont systemFontOfSize:12.0];
-        personLabel.tag = 103;
-        personLabel.textColor = UIColorFromRGB(0x999999);
-        [cell.contentView addSubview:personLabel];
-    }
-    personLabel.text = [NSString stringWithFormat:@"组织者：%@", [dict objectForKey:@"organizers"]];
-    [personLabel sizeToFit];
+//    UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:103];
+//    if (!personLabel) {
+//        personLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, timeLabel.frame.origin.y+timeLabel.frame.size.height+5, 0, 0)];
+//        personLabel.font = [UIFont systemFontOfSize:12.0];
+//        personLabel.tag = 103;
+//        personLabel.textColor = UIColorFromRGB(0x999999);
+//        [cell.contentView addSubview:personLabel];
+//    }
+//    personLabel.text = [NSString stringWithFormat:@"组织者：%@", [dict objectForKey:@"organizers"]];
+//    [personLabel sizeToFit];
     
     UILabel* moneyLabel = (UILabel*)[cell.contentView viewWithTag:104];
     if (!moneyLabel) {
@@ -1345,10 +1350,10 @@ typedef enum imagePickerFromType {
         [cell.contentView addSubview:addLabel];
     }
     addLabel.hidden = NO;
-    if (self.contactInfo.length == 0)
+    if (self.phoneNum.length == 0)
         addLabel.text = @"未添加";
     else
-        addLabel.text = self.contactInfo;
+        addLabel.text = self.phoneNum;
     [addLabel sizeToFit];
     CGFloat width = addLabel.frame.size.width;
     if (addLabel.frame.size.width > 150) {
@@ -1406,6 +1411,7 @@ typedef enum imagePickerFromType {
 
 - (void)commitActivity {
     NSMutableDictionary* ActivityInfo = [NSMutableDictionary dictionary];
+
     if (self.activityId.length > 0)
         [ActivityInfo setValue:self.activityId forKey:@"Id"];
 
@@ -1429,8 +1435,8 @@ typedef enum imagePickerFromType {
     [ActivityInfo setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
     [ActivityInfo setValue:self.teamId forKey:@"ReleaseUserId"];            //团队id
     [ActivityInfo setValue:@0 forKey:@"ReleaseState"];                      //0未发布，1已发布
-    [ActivityInfo setValue:self.contactInfo forKey:@"Tel"];
-    [ActivityInfo setValue:@"" forKey:@"ComplainTel"];                      //举报电话
+    [ActivityInfo setValue:self.phoneNum forKey:@"Tel"];
+    [ActivityInfo setValue:self.complainTelNum forKey:@"ComplainTel"];
     [ActivityInfo setValue:self.teamId forKey:@"TeamId"];
     [ActivityInfo setValue:beginTime forKey:@"BeginTime"];
     [ActivityInfo setValue:endTime forKey:@"EndTime"];
@@ -1458,12 +1464,13 @@ typedef enum imagePickerFromType {
         NSDictionary* tempDict = [dict objectForKey:@"activityVenue"];
         
         NSMutableDictionary* item = [NSMutableDictionary dictionary];
-        [item setValue:@"" forKey:@"Id"];                               //活动id 编辑时用
+        if ([dict.allKeys containsObject:@"Id"])
+            [item setValue:[dict objectForKey:@"Id"] forKey:@"Id"];//编辑时有id
         [item setValue:[dict objectForKey:@"remark"] forKey:@"Remark"];
         [item setValue:[dict objectForKey:@"beginTime"] forKey:@"BeginTime"];
         [item setValue:[dict objectForKey:@"endTime"] forKey:@"EndTime"];
-        [item setValue:applyBeginTime forKey:@"ApplyBeginTime"];    //
-        [item setValue:applyEndTime forKey:@"ApplyEndTime"];        //
+        [item setValue:[dict objectForKey:@"applyBeginTime"] forKey:@"ApplyBeginTime"];
+        [item setValue:[dict objectForKey:@"applyEndTime"] forKey:@"ApplyEndTime"];
         [item setValue:costNum forKey:@"EntryMoney"];
         [item setValue:minNum forKey:@"WillNum"];
         [item setValue:maxNum forKey:@"MaxNum"];
@@ -1481,14 +1488,16 @@ typedef enum imagePickerFromType {
     }
 
     NSString* token = [HttpClient getTokenStr];
-    NSDictionary* dict = @{
-                           @"token":token,
-                           @"ActivityCreateUpdateModel":@{
-                                @"ActivityInfo":ActivityInfo,
-                                @"ActivityItems":ActivityItems
-                                }
-                           };
     
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    [dict setValue:token forKey:@"token"];
+    NSMutableDictionary* ActivityCreateUpdateModel = [NSMutableDictionary dictionary];
+    [ActivityCreateUpdateModel setValue:ActivityInfo forKey:@"ActivityInfo"];
+    if (self.gameType == gameTypenonLeague) {
+        [ActivityCreateUpdateModel setValue:ActivityItems forKey:@"ActivityItems"];
+    }
+    [dict setValue:ActivityCreateUpdateModel forKey:@"ActivityCreateUpdateModel"];
+
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATE_ACTIVITY_URL];
     [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
         NSDictionary* dict = (NSDictionary*)responseObject;
@@ -1572,7 +1581,7 @@ typedef enum imagePickerFromType {
         }
     }
     else if (self.gameType == gameTypeLeague) { //leagueTableView独有
-        if (self.contactInfo.length == 0) { //联系方式
+        if (self.phoneNum.length == 0) { //联系方式
             [self setStartBtnState:NO];
             return;
         }

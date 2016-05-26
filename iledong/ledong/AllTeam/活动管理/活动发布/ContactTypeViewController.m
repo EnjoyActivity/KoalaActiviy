@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy)completeSelect block;
 @property (nonatomic, strong)UITextField* textField;
+@property (nonatomic, strong)UITextField* complainTelTextField;
 
 @end
 
@@ -33,13 +34,22 @@
     [self.view addSubview:self.textField];
     self.textField.placeholder = @"请输入联系电话";
     self.textField.font = [UIFont systemFontOfSize:14.0];
-    self.textField.center = CGPointMake(APP_WIDTH/2, APP_HEIGHT/2-20);
+    self.textField.center = CGPointMake(APP_WIDTH/2, APP_HEIGHT/2-60);
     self.textField.textAlignment = NSTextAlignmentCenter;
     self.textField.keyboardType = UIKeyboardTypeNumberPad;
     self.textField.layer.borderColor = UIColorFromRGB(0xEFEFEF).CGColor;
     self.textField.layer.borderWidth = 1;
     
-    UIButton* btn = [[UIButton alloc]initWithFrame:CGRectMake(0, self.textField.frame.origin.y+self.textField.frame.size.height+10, 100, 40)];
+    self.complainTelTextField = [[UITextField alloc]initWithFrame:CGRectMake(self.textField.frame.origin.x, self.textField.frame.size.height+self.textField.frame.origin.y+10, APP_WIDTH-30, 40)];
+    [self.view addSubview:self.complainTelTextField];
+    self.complainTelTextField.placeholder = @"请输入举报电话";
+    self.complainTelTextField.font = [UIFont systemFontOfSize:14.0];
+    self.complainTelTextField.textAlignment = NSTextAlignmentCenter;
+    self.complainTelTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.complainTelTextField.layer.borderColor = UIColorFromRGB(0xEFEFEF).CGColor;
+    self.complainTelTextField.layer.borderWidth = 1;
+    
+    UIButton* btn = [[UIButton alloc]initWithFrame:CGRectMake(0, self.complainTelTextField.frame.origin.y+self.complainTelTextField.frame.size.height+10, 100, 40)];
     [btn setTitle:@"确定" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -59,9 +69,13 @@
 
 - (void)btnClicked {
     [self.view endEditing:YES];
-    NSString* str = self.textField.text;
+    if (self.textField.text.length == 0 ||
+        self.complainTelTextField.text.length == 0) {
+        [Dialog simpleToast:@"请填写相关参数！" withDuration:1.5];
+        return;
+    }
     if (self.block) {
-        self.block(str);
+        self.block(self.textField.text, self.complainTelTextField.text);
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

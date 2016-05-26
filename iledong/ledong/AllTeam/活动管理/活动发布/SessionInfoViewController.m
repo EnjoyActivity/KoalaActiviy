@@ -29,6 +29,8 @@
 @property (nonatomic, strong)NSMutableDictionary* dataDict;
 @property (nonatomic, strong)NSString* beginTime;
 @property (nonatomic, strong)NSString* endTime;
+@property (nonatomic, strong)NSString* applyBeginTime;
+@property (nonatomic, strong)NSString* applyEndTime;
 @property (nonatomic, assign)BOOL isModify;
 
 @end
@@ -108,7 +110,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 9;
+    return 11;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -133,28 +135,54 @@
         cell.textLabel.text = @"活动场馆";
     }
     else if (indexPath.section == 1) {
-        cell.textLabel.text = @"报名开始时间";
+        cell.textLabel.text = @"活动开始时间";
         timeLabel.hidden = NO;
         if (self.dataDict) {
             timeLabel.text = [self.dataDict objectForKey:@"beginTime"];
             [timeLabel sizeToFit];
             timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
             timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
-            self.beginTime = [self.dataDict objectForKey:@"beginTime"];
+            if (self.dataDict)
+                self.beginTime = [self.dataDict objectForKey:@"beginTime"];
         }
     }
     else if (indexPath.section == 2) {
-        cell.textLabel.text = @"报名结束时间";
+        cell.textLabel.text = @"活动结束时间";
         timeLabel.hidden = NO;
         if (self.dataDict) {
             timeLabel.text = [self.dataDict objectForKey:@"endTime"];
             [timeLabel sizeToFit];
             timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
             timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
-            self.endTime = [self.dataDict objectForKey:@"endTime"];
+            if (self.dataDict)
+                self.endTime = [self.dataDict objectForKey:@"endTime"];
         }
     }
     else if (indexPath.section == 3) {
+        cell.textLabel.text = @"报名开始时间";
+        timeLabel.hidden = NO;
+        if (self.dataDict) {
+            timeLabel.text = [self.dataDict objectForKey:@"applyBeginTime"];
+            [timeLabel sizeToFit];
+            timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
+            timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
+            if (self.dataDict)
+                self.applyBeginTime = [self.dataDict objectForKey:@"applyBeginTime"];
+        }
+    }
+    else if (indexPath.section == 4) {
+        cell.textLabel.text = @"报名结束时间";
+        timeLabel.hidden = NO;
+        if (self.dataDict) {
+            timeLabel.text = [self.dataDict objectForKey:@"applyEndTime"];
+            [timeLabel sizeToFit];
+            timeLabel.frame = CGRectMake(APP_WIDTH-timeLabel.frame.size.width-15, timeLabel.frame.origin.y, timeLabel.frame.size.width, timeLabel.frame.size.height);
+            timeLabel.center = CGPointMake(timeLabel.center.x, cell.contentView.bounds.size.height/2);
+            if (self.dataDict)
+                self.applyEndTime = [self.dataDict objectForKey:@"applyEndTime"];
+        }
+    }
+    else if (indexPath.section == 5) {
         self.planCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.planCountTextField.font = [UIFont systemFontOfSize:14.0];
         [cell.contentView addSubview:self.planCountTextField];
@@ -165,7 +193,7 @@
         if (self.dataDict)
             self.planCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"planCount"]).intValue];
     }
-    else if (indexPath.section == 4) {
+    else if (indexPath.section == 6) {
         cell.textLabel.text = @"活动报名数上限";
         self.maxCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.maxCountTextField.font = [UIFont systemFontOfSize:14.0];
@@ -176,7 +204,7 @@
         if (self.dataDict)
             self.maxCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"maxCount"]).intValue];
     }
-    else if (indexPath.section == 5) {
+    else if (indexPath.section == 7) {
         cell.textLabel.text = @"活动报名数下限";
         self.minCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.minCountTextField.font = [UIFont systemFontOfSize:14.0];
@@ -187,7 +215,7 @@
         if (self.dataDict)
             self.minCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"minCount"]).intValue];
     }
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 8) {
         self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.activityCostTextField.font = [UIFont systemFontOfSize:14.0];
         [cell.contentView addSubview:self.activityCostTextField];
@@ -198,7 +226,7 @@
         if (self.dataDict)
             self.activityCostTextField.text = [self.dataDict objectForKey:@"activityCost"];
     }
-    else if (indexPath.section == 7) {
+    else if (indexPath.section == 9) {
         self.remarkTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.remarkTextField.font = [UIFont systemFontOfSize:14.0];
         [cell.contentView addSubview:self.remarkTextField];
@@ -209,7 +237,7 @@
         if (self.dataDict)
             self.remarkTextField.text = [self.dataDict objectForKey:@"activityRemark"];
     }
-    else if (indexPath.section == 8) {
+    else if (indexPath.section == 10) {
         btn.hidden = NO;
     }
     
@@ -217,7 +245,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 || indexPath.section == 2) {
+    if (indexPath.section == 1 || indexPath.section == 2 ||
+        indexPath.section == 3 || indexPath.section == 4) {
         [self.view endEditing:YES];
         CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.tableView completeDateInt:nil completeDateStr:^(NSString *str) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -236,6 +265,10 @@
                 self.beginTime = dateStr;
             else if (indexPath.section == 2)
                 self.endTime = dateStr;
+            else if (indexPath.section == 3)
+                self.applyBeginTime = dateStr;
+            else if (indexPath.section == 4)
+                self.applyEndTime = dateStr;
         }];
         [self.tableView addSubview:datePickView];
     }
@@ -264,8 +297,9 @@
             self.minCountTextField.text.length == 0 ||
             self.remarkTextField.text.length == 0 ||
             self.activityCostTextField.text.length == 0 ||
-            self.beginTime.length == 0 ||
-            self.endTime.length == 0) {
+            self.beginTime.length == 0 || self.endTime.length == 0||
+            self.applyBeginTime.length == 0 || self.applyEndTime.length == 0
+            ) {
             [Dialog simpleToast:@"请填写相关参数！" withDuration:1.5];
             return;
         }
@@ -273,9 +307,11 @@
         self.dataDict = [NSMutableDictionary dictionary];
         [self.dataDict setValue:self.beginTime forKey:@"beginTime"];
         [self.dataDict setValue:self.endTime forKey:@"endTime"];
+        [self.dataDict setValue:self.applyBeginTime forKey:@"applyBeginTime"];
+        [self.dataDict setValue:self.applyEndTime forKey:@"applyEndTime"];
         [self.dataDict setValue:
             @{@"provinceCode":@"510000", @"cityCode":@"510100", @"areaCode":@"510104",
-                @"mapX":@"", @"mapY":@"", @"placeName":@"成都市体育馆", @"Address":@"成都市顺城街2号"} forKey:@"activityVenue"];
+                @"mapX":@"103.5", @"mapY":@"53.3", @"placeName":@"成都市体育馆", @"Address":@"成都市顺城街2号"} forKey:@"activityVenue"];
 
         [self.dataDict setValue:self.activityCostTextField.text forKey:@"activityCost"];
         [self.dataDict setValue:self.planCountTextField.text forKey:@"planCount"];
