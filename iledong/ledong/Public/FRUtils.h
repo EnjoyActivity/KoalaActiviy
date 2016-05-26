@@ -79,12 +79,10 @@ typedef enum : NSUInteger
 + (NSString*)getSign;//签名
 + (NSString*)getinterest;//爱好
 + (NSString*)getBirthday;
-<<<<<<< Updated upstream
 + (UIImage*)getHeaderImage;
-=======
+
 + (NSString*)getAddressDetail;//详细地址
 + (NSDictionary*)getAddressInfo;//地址信息
->>>>>>> Stashed changes
 
 + (void)setPhoneNum:(NSString*)phone;
 + (void)setNickName:(NSString*)name;
@@ -96,11 +94,10 @@ typedef enum : NSUInteger
 + (void)setAvatarUrl:(NSString*)url;
 + (void)setBirthday:(NSString*)birth;
 + (void)setToken:(NSString *)token;
-<<<<<<< Updated upstream
 + (void)setHeaderImage:(UIImage*)headerImage;
-=======
+
 + (void)setAddressDetail:(NSString *)detail;
 + (void)setAddressInfo:(NSDictionary *)addressInfo;
->>>>>>> Stashed changes
+
 
 @end

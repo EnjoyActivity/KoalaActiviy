@@ -567,7 +567,6 @@ static FRUtils *instance = nil;
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     return [defs objectForKey:@"birthday"];
 }
-<<<<<<< Updated upstream
 + (UIImage*)getHeaderImage {
     NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg/"];
     NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
@@ -578,7 +577,6 @@ static FRUtils *instance = nil;
         return nil;
     }
 }
-=======
 + (NSString *)getAddressDetail {
     NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
     return [userDefault objectForKey:@"addressDetail"];
@@ -590,7 +588,6 @@ static FRUtils *instance = nil;
 }
 
 
->>>>>>> Stashed changes
 //set
 + (void)setNickName:(NSString*)name {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
@@ -640,7 +637,6 @@ static FRUtils *instance = nil;
     [defs setObject:token forKey:@"kToken"];
     [defs synchronize];
 }
-<<<<<<< Updated upstream
 + (void)setHeaderImage:(UIImage*)headerImage {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
@@ -651,7 +647,7 @@ static FRUtils *instance = nil;
     NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
     NSData *imgData = UIImagePNGRepresentation(headerImage);
     [imgData writeToFile:fileName atomically:NO];
-=======
+}
 
 + (void)setAddressDetail:(NSString *)detail {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -662,6 +658,5 @@ static FRUtils *instance = nil;
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:addressInfo forKey:@"addressInfo"];
     [userDefault synchronize];
->>>>>>> Stashed changes
 }
 @end
