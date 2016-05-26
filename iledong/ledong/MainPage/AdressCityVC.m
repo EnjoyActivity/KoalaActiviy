@@ -87,7 +87,7 @@
     location = [[LDLocationManager alloc] init];
     [location getLocationSuccess:^(NSDictionary * locationInfo) {
 //        [selfWeak loadUserLocationInfo:locationInfo];
-        NSString * city = locationInfo[@"city"];
+        NSString * city = locationInfo[@"city"];//longitude  //latitude
         if ([city isEqualToString:@"NULL"]) {
             return ;
         }

@@ -7,15 +7,15 @@
 //
 
 #import "MainPageController.h"
-//#import "TeamsCell.h"
 #import "SearchViewController.h"
 #import "ScanViewController.h"
 #import "FRUtils.h"
 #import "LDActivityViewController.h"
 #import "LDTeamViewController.h"
-//#import "GoodActivViewController.h"
-//#import "HotTeamViewController.h"
 #import "LDMainPageTeamTableViewCell.h"
+
+#import "LDLocationManager.h"
+#import "TeamHomeViewController.h"
 
 static NSString * const topAdCellIdentifier = @"TopAdCell";
 static NSString * const activityCellIdentifier = @"ActivityCell";
@@ -30,6 +30,8 @@ static CGFloat const teamHeight = 280;
 @interface MainPageController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate>
 {
     
+    LDLocationManager * location;
+    
     
     NSTimer *topAdTimer;
     NSInteger currentAd;
@@ -42,8 +44,6 @@ static CGFloat const teamHeight = 280;
     
     NSTimer *teamTimer;
     NSInteger currentTeam;
-//    NSMutableArray *teamImageArray;
-//    NSMutableArray *teamHeadImageArray;
     NSMutableArray * teamArray;
     
     UIScrollView * mainScrollView;
@@ -61,6 +61,8 @@ static CGFloat const teamHeight = 280;
     CALayer * hotTeamProgressLayer;
     
     UIImage * moreImage;
+    
+    NSDictionary * locationInfo;
 
     
 }
@@ -85,8 +87,8 @@ static CGFloat const teamHeight = 280;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     
     
     
@@ -102,7 +104,7 @@ static CGFloat const teamHeight = 280;
     [self requestAdData];
     [self requestTeamData:5];
 
-    
+    [self getLocationInfo];
  
 }
 
@@ -213,6 +215,36 @@ static CGFloat const teamHeight = 280;
     }];
 }
 
+- (void)requestLocationInfo:(double)latitude longitude:(double)longitude {
+    NSDictionary * dic = @{
+                           @"lng":[NSNumber numberWithDouble:longitude],
+                           @"lat":[NSNumber numberWithDouble:latitude]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSInteger code = [[dic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSDictionary * result = [dic objectForKey:@"result"];
+        locationInfo = [result objectForKey:@"addressComponent"];
+        NSString * addressDetail = [result objectForKey:@"formatted_address"];
+        [FRUtils setAddressDetail:addressDetail];
+        [FRUtils setAddressInfo:locationInfo];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString * city = [locationInfo objectForKey:@"city"];
+            [locationButton setTitle:city forState:UIControlStateNormal];
+            CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
+            [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
 
 
 #pragma mark - ButtonClick
@@ -236,6 +268,18 @@ static CGFloat const teamHeight = 280;
         searchViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:searchViewController animated:YES];
     }
+}
+
+- (void)getLocationInfo {
+    location = [[LDLocationManager alloc] init];
+    [location getLocationSuccess:^(NSDictionary * locationDic) {
+        double longitude = [[locationDic objectForKey:@"longitude"] doubleValue];
+        double latitude = [[locationDic objectForKey:@"latitude"] doubleValue];
+        [self requestLocationInfo:latitude longitude:longitude];
+        
+    } fail:^(NSError * error) {
+        
+    }];
 }
 
 
@@ -356,6 +400,7 @@ static CGFloat const teamHeight = 280;
     }
     activityVC.activityClassArray = [activityArray copy];
     activityVC.hidesBottomBarWhenPushed = YES;
+    activityVC.locationDic = locationInfo;
     [self.navigationController pushViewController:activityVC animated:YES];
 }
 
@@ -364,11 +409,16 @@ static CGFloat const teamHeight = 280;
         LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
          teamVc.activityArray = [activityArray copy];
         teamVc.hidesBottomBarWhenPushed = YES;
+        teamVc.locationDic = locationInfo;
         [self.navigationController pushViewController:teamVc animated:YES];
     }
     else
     {
-        
+        TeamHomeViewController * teamVc = [[TeamHomeViewController alloc] init];
+        NSDictionary * dic = teamArray[row];
+        NSString * teamId = [dic objectForKey:@"Id"];
+        teamVc.teamId = teamId;
+        [self.navigationController pushViewController:teamVc animated:YES];
     }
 
 }

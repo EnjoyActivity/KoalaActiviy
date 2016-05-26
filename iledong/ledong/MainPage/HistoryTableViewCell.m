@@ -21,11 +21,8 @@
 
 }
 
-- (void)updatedata:(UIImage *)image name:(NSString *)name detail:(NSString *)detail {
-    self.sImageView.image = [FRUtils circleImage:image withParam:1];
+- (void)updateName:(NSString *)name detail:(NSString *)detail {
     self.sDetailLabel.text = detail;
-//    self.sNameLabel.text = name;
-    
     NSRange keyRange = [name rangeOfString:self.keyWords];
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
     [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];

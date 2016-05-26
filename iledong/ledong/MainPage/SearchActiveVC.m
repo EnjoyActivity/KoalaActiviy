@@ -8,9 +8,10 @@
 
 #import "SearchActiveVC.h"
 #import "HistoryTableViewCell.h"
+#import "SearchTableViewCell.h"
 
 static NSString * const historyCell = @"HistoryCell";
-static NSString * const activityCell = @"ActivityCell";
+static NSString * const activityCell = @"sActivityCell";
 static NSString * const hotSearchCell = @"hotSearchCell";
 
 @interface SearchActiveVC ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITextFieldDelegate>
@@ -18,6 +19,8 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     NSMutableArray * historyArray;
     NSMutableArray * resultArray;
     NSMutableArray * hotSearchArray;
+    
+    NSString * searchKeyWord;
 }
 
 @end
@@ -31,11 +34,8 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     [historyArray addObjectsFromArray:[self getSearchHistory]];
     resultArray = [NSMutableArray array];
     hotSearchArray = [NSMutableArray array];
-    for (int i =1; i<9; i++) {
-        NSString * str = [NSString stringWithFormat:@"热门搜索%d",i];
-        [hotSearchArray addObject:str];
-    }
     [self setUpUI];
+    [self requestHotSearch];
     
   
 }
@@ -59,20 +59,29 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 #pragma mark - NetWork
 
 - (void)requestWithKeyWord:(NSString *)keyWord {
+    NSString * token = [HttpClient getTokenStr];
+    if (token.length == 0) {
+        return;
+    }
+    
     NSDictionary * dic = @{
-                           @"keywoords":keyWord,
-                           @"ownertype":[NSNumber numberWithInt:0]
+                           @"token":token,
+                           @"page":[NSNumber numberWithInt:1],
+                           @"PageSize":[NSNumber numberWithInt:10],
+                           @"tag":keyWord
                            };
+    
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
             [SVProgressHUD showErrorWithStatus:@"error"];
             return ;
         }
-        
+        NSArray * result = [resultDic objectForKey:@"result"];
+        resultArray = [result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
             [self.resultTableView reloadData];
@@ -84,6 +93,28 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 }
 
 - (void)requestHotSearch {
+    NSDictionary * dic = @{
+                           @"keywords":@"",
+                           @"pagesize":[NSNumber numberWithInt:6],
+                           @"ownertype":[NSNumber numberWithInt:0]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/GetKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSArray * result = [resultDic objectForKey:@"result"];
+        hotSearchArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
     
 }
 #pragma mark - SearchHistory
@@ -148,14 +179,13 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     [self addSearchHistory];
     
     [self requestWithKeyWord:textField.text];
-//    self.contentView.hidden = YES;
     [self.resultTableView setHidden:NO];
     return YES;
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
     [self.resultTableView setHidden:YES];
-//    self.contentView.hidden = NO;
+
     [self.historyTableView reloadData];
     return YES;
 }
@@ -200,10 +230,26 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     }
     else
     {
-        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
-        cell.sNameLabel.text = @"sdasd";
-//        cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
-//        cell.sDetailLabel.text
+        SearchTableViewCell *cell = (SearchTableViewCell*)[tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
+        NSDictionary * dic = resultArray[indexPath.row];
+        NSString * imageStr = [dic objectForKey:@"Cover"];
+        NSURL * imageUrl = [NSURL URLWithString:imageStr];
+        NSString * name = [dic objectForKey:@"Title"];
+        
+        NSString * minMoney = [dic objectForKey:@"EntryMoneyMin"];
+        NSString * maxMOney = [dic objectForKey:@"EntryMoneyMax"];
+        
+        NSString * className = [dic objectForKey:@"ClassName"];
+        NSString * area = [dic objectForKey:@"areaName"];
+        
+        NSString * time = [dic objectForKey:@"BeginTime"];
+        [cell.headImageView sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
+        cell.activityName.text = name;
+        NSString * price = [NSString stringWithFormat:@"%@-%@元",minMoney,maxMOney];
+        
+        NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
+        
+        [cell updateName:name detail:detail price:price];
         return cell;
     }
 }
@@ -221,25 +267,27 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 6;
+    return MIN(6, hotSearchArray.count);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
-    label.text = hotSearchArray[indexPath.row];
+    NSDictionary * dic = hotSearchArray[indexPath.row];
+    label.text = [dic objectForKey:@"Name"];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString * str = hotSearchArray[indexPath.row];
-    self.textField.text = str;
+    NSDictionary * dic = hotSearchArray[indexPath.row];
+    searchKeyWord = dic[@"Name"];
+    self.textField.text = searchKeyWord;
     [self.resultTableView setHidden:NO];
-    [historyArray insertObject:str atIndex:0];
+    [historyArray insertObject:searchKeyWord atIndex:0];
     [self addSearchHistory];
     
-    [self requestWithKeyWord:str];
+    [self requestWithKeyWord:searchKeyWord];
 }
 
 #pragma mark - UI
@@ -269,7 +317,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
         _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _resultTableView.tableHeaderView = self.headerView;
         _resultTableView.hidden = YES;
-        [_resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
+        [_resultTableView registerNib:[UINib nibWithNibName:@"SearchTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:activityCell];
     }
     return _resultTableView;
 }

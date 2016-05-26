@@ -29,6 +29,8 @@ static NSString * friendCell = @"ActivityCell";
     NSMutableArray * activityArray;
     NSMutableArray * teamArray;
     NSMutableArray * friendArray;
+    
+    NSString * searchkeyWord;
 }
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 
@@ -67,7 +69,7 @@ static NSString * friendCell = @"ActivityCell";
 
 #pragma mark - NetWork
 
-- (void)requestDataKeyWord:(NSString *)keyWord {
+- (void)requestActivityData:(NSString *)keyWord {
     NSDictionary * dic = @{
                            @"keywords":keyWord,
                            @"ownertype":[NSNumber numberWithInt:0]
@@ -81,10 +83,38 @@ static NSString * friendCell = @"ActivityCell";
             [SVProgressHUD showErrorWithStatus:@"error"];
             return ;
         }
+        
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         
     }];
     
+}
+
+- (void)requestTeamData:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"Page":[NSNumber numberWithInt:1],
+                           @"PageSize":[NSNumber numberWithInt:100],
+                           @"IsHot":[NSNumber numberWithBool:NO],
+                           @"KeyWord":keyWord
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSDictionary * data = [resultDic objectForKey:@"result"];
+        NSArray * resultArr = [data objectForKey:@"Data"];
+        teamArray  = [resultArr copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.resultTableView reloadData];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (NSString *)getPlistPath {
@@ -122,10 +152,13 @@ static NSString * friendCell = @"ActivityCell";
         return YES;
     }
     [textField resignFirstResponder];
+    searchkeyWord = textField.text;
     
-    [historyArray insertObject:textField.text atIndex:0];
+    [historyArray insertObject:searchkeyWord atIndex:0];
     [self addSearchHistory];
-    [self requestDataKeyWord:textField.text];
+    [self requestActivityData:searchkeyWord];
+    [self requestTeamData:searchkeyWord];
+    
     self.contentView.hidden = YES;
     self.resultTableView.hidden = NO;
     
@@ -176,17 +209,17 @@ static NSString * friendCell = @"ActivityCell";
         switch (section) {
             case 0:
             {
-                return activityArray.count;
+                return MIN(3, activityArray.count);
             }
                 break;
             case 1:
             {
-                return teamArray.count;
+                return MIN(3, teamArray.count);
             }
                 break;
             default:
             {
-                return friendArray.count;
+                return MIN(3, friendArray.count);
             }
                 break;
         }
@@ -206,29 +239,68 @@ static NSString * friendCell = @"ActivityCell";
     else
     {
         if (indexPath.section == 0) {
-            SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
-            cell.activityName.text = @"dasda";
-            cell.activityPrice.text = @"ewqq";
-//            cell.activityDetail.text
-//            cell.headImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
-            return cell;
+            return [self activityCell:tableView indexPath:indexPath];
         }
         else if (indexPath.section == 1) {
-            HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
-            cell.sNameLabel.text = @"hahahahh";
-//            cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
-//            cell.sDetailLabel.text
-            return cell;
+            return [self teamCell:tableView indexPath:indexPath];
         }
         else {
-            HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCell forIndexPath:indexPath];
-            cell.sNameLabel.text = @"oooo";
-//            cell.sDetailLabel.text
-//            cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
-            return cell;
+            return [self friendCell:tableView indexPath:indexPath];
         }
     }
 }
+
+- (SearchTableViewCell *)activityCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    SearchTableViewCell *cell = (SearchTableViewCell *)[tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
+    NSDictionary * dic = activityArray[indexPath.row];
+    NSString * imageStr = [dic objectForKey:@"Cover"];
+    NSURL * imageUrl = [NSURL URLWithString:imageStr];
+    NSString * name = [dic objectForKey:@"Title"];
+    
+    NSString * minMoney = [dic objectForKey:@"EntryMoneyMin"];
+    NSString * maxMOney = [dic objectForKey:@"EntryMoneyMax"];
+    
+    NSString * className = [dic objectForKey:@"ClassName"];
+    NSString * area = [dic objectForKey:@"areaName"];
+    
+    NSString * time = [dic objectForKey:@"BeginTime"];
+    [cell.headImageView sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
+    cell.activityName.text = name;
+    NSString * price = [NSString stringWithFormat:@"%@-%@元",minMoney,maxMOney];
+    
+    NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
+    
+    [cell updateName:name detail:detail price:price];
+    return cell;
+}
+- (HistoryTableViewCell *)teamCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+    NSDictionary * dic =teamArray[indexPath.row];
+    NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
+    NSURL * teamUrl = [NSURL URLWithString:teamImage];
+    
+    NSString * name = [dic objectForKey:@"Name"];
+    NSString * member = [dic objectForKey:@"PersonNum"];
+    cell.keyWords = searchkeyWord;
+    [cell.sImageView sd_setImageWithURL:teamUrl placeholderImage:[UIImage imageNamed:@"img_avatar_100"]];
+    [cell updateName:name detail:[NSString stringWithFormat:@"%@人",member]];
+    return cell;
+}
+
+- (HistoryTableViewCell *)friendCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+    NSDictionary * dic =teamArray[indexPath.row];
+    NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
+    NSURL * teamUrl = [NSURL URLWithString:teamImage];
+    
+    NSString * name = [dic objectForKey:@"Name"];
+    NSString * member = [dic objectForKey:@"PersonNum"];
+    cell.keyWords = searchkeyWord;
+    [cell.sImageView sd_setImageWithURL:teamUrl placeholderImage:[UIImage imageNamed:@"img_avatar_100"]];
+    [cell updateName:name detail:[NSString stringWithFormat:@"%@人",member]];
+    return cell;
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -271,10 +343,11 @@ static NSString * friendCell = @"ActivityCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.tableView]) {
-        NSString * historyTemp =historyArray[indexPath.row];
-        [self requestDataKeyWord:historyTemp];
+        searchkeyWord =historyArray[indexPath.row];
+        [self requestActivityData:searchkeyWord];
+        [self requestTeamData:searchkeyWord];
         [self.resultTableView setHidden:NO];
-        self.textFiled.text = historyTemp;
+        self.textFiled.text = searchkeyWord;
     }
     else {
         

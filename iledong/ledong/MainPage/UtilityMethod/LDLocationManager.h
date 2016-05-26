@@ -16,4 +16,8 @@ typedef void(^locationFail)(NSError *);
 
 - (void)getLocationSuccess:(locationSuccess)success fail:(locationFail)fail;
 
+- (void)getCityByProvinceCode:(NSString *)code
+                      success:(void(^)(NSArray * ))successResult
+                      failure:(void(^)(NSError * ))failReason;
+
 @end

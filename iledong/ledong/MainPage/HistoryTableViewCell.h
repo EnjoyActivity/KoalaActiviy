@@ -16,6 +16,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *sNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *sDetailLabel;
 
-- (void)updatedata:(UIImage *)image name:(NSString *)name detail:(NSString *)detail;
+- (void)updateName:(NSString *)name detail:(NSString *)detail;
 
 @end

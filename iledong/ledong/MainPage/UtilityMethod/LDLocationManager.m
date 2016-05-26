@@ -73,40 +73,67 @@
     CLLocation * location = [locations firstObject];
     CLLocationCoordinate2D  coordinate = location.coordinate;
     
-    [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-        if (error) {
-            if (failResult != nil) {
-                failResult(error);
-            }
-        }
-        if (placemarks.count == 0) {
-            return ;
-        }
-        CLPlacemark * mark = [placemarks firstObject];
-        
-        NSString * city = mark.locality;
-        if (!city) {
-            city = mark.administrativeArea;
-        }
-        if (!city) {
-            city = @"NULL";
-        }
-        NSString * postalCode = mark.postalCode;
-        if (postalCode == nil) {
-            postalCode = @"NULL";
-        }
-        
-        NSDictionary * infoDic = @{
+    NSDictionary * infoDic = @{
                                @"longitude"   :[NSNumber numberWithDouble:coordinate.longitude],
                                @"latitude"    :[NSNumber numberWithDouble:coordinate.latitude],
-                               @"areaCode"    :postalCode,
-                                 @"city"      :city
                                };
-        if (successResult != nil) {
-            successResult(infoDic);
+    if (successResult != nil) {
+        successResult(infoDic);
+    }
+    [self.locationManager stopUpdatingLocation];
+    
+}
+
+#pragma mark - NetWork
+- (void)requestLocationInfo:(double)latitude longitude:(double)longitude {
+    NSDictionary * dic = @{
+                           @"lng":[NSNumber numberWithDouble:longitude],
+                           @"lat":[NSNumber numberWithDouble:latitude]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSInteger code = [[dic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
         }
-        [self.locationManager stopUpdatingLocation];
+        NSDictionary * result = [dic objectForKey:@"result"];
+        NSDictionary * locationInfo = [result objectForKey:@"addressComponent"];
+        NSString * addressDetail = [result objectForKey:@"formatted_address"];
+        
+        [FRUtils setAddressDetail:addressDetail];
+        [FRUtils setAddressInfo:locationInfo];
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
     }];
 }
+
+- (void)getCityByProvinceCode:(NSString *)code success:(void (^)(NSArray * result))success failure :(void (^)(NSError * failReason))failReason {
+    NSDictionary * dic = @{
+                           @"ProvinceCode":code
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        
+        NSArray * result = [resultDic objectForKey:@"result"];
+        if (success) {
+            success(result);
+        }
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        if (failReason) {
+            failReason(error);
+        }
+    }];
+}
+
 
 @end

@@ -17,11 +17,9 @@
     // Initialization code
 }
 
-- (void)updateImage:(UIImage *)image
-               name:(NSString *)name
+- (void)updateName:(NSString *)name
              detail:(NSString *)detail
               price:(NSString *)price {
-    self.headImageView.image = [FRUtils resizeImageWithImage:image];
     self.activityDetail.text = detail;
     
     NSRange keyRange = [name rangeOfString:self.keyWord];

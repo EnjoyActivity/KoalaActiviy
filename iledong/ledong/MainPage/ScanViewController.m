@@ -50,13 +50,13 @@
 - (IBAction)gobackButtonClick:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)openPhoto:(id)sender {
-    UIImagePickerController * imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
+//- (IBAction)openPhoto:(id)sender {
+//    UIImagePickerController * imagePicker = [[UIImagePickerController alloc] init];
+//    imagePicker.delegate = self;
+//    imagePicker.allowsEditing = YES;
+//    
+//    [self presentViewController:imagePicker animated:YES completion:nil];
+//}
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];

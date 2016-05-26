@@ -23,9 +23,10 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="皇家贝蒂斯球队" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9d-6R-31I">
-                        <rect key="frame" x="18" y="198" width="126" height="18"/>
+                        <rect key="frame" x="18" y="198" width="161" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="9yb-Jv-N9k"/>
+                            <constraint firstAttribute="width" constant="161" id="DUG-aG-ovA"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>

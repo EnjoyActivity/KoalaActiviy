@@ -43,9 +43,12 @@ static NSString * const teamCell = @"teamCell";
     
     currentPage = 1;
     teamArray = [NSMutableArray array];
-    locationArray = @[@"全部地区",@"附近",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去",@"曹杨去"];
     [self setUpUI];
     [self requestTeamData:currentPage parameter:nil];
+    if (_locationDic) {
+        NSString * cityCode = [self.locationDic objectForKey:@"citycode"];
+        [self getAreaByCityCode:cityCode];
+    }
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -66,7 +69,7 @@ static NSString * const teamCell = @"teamCell";
 - (void)requestTeamData:(NSInteger)pageIndex parameter:(NSDictionary *)dic {
     NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc] init];
     [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"Page"];
-    [parameterDic setValue:[NSNumber numberWithInt:10] forKey:@"PageSize"];
+    [parameterDic setValue:[NSNumber numberWithInt:20] forKey:@"PageSize"];
     [parameterDic setValue:[NSNumber numberWithBool:YES] forKey:@"IsHot"];
     if (dic) {
         [parameterDic setValuesForKeysWithDictionary:dic];
@@ -98,6 +101,58 @@ static NSString * const teamCell = @"teamCell";
     }];
 }
 
+
+- (void)getAreaByCityCode:(NSString *)cityCode {
+    if (cityCode.length ==0) {
+        return;
+    }
+    NSDictionary * dic = @{
+                           @"CityCode":cityCode
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager GET:@"other/GetAreas" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSArray * result = [resultDic objectForKey:@"result"];
+        locationArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.locationTableview reloadData];
+        });
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
+
+
+- (void)getCityByProvinceCode:(NSString *)code {
+    NSDictionary * dic = @{
+                           @"ProvinceCode":code
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        
+        NSArray * result = [resultDic objectForKey:@"result"];
+        locationArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.locationTableview reloadData];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
+
+
 #pragma mark - TabledataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -114,8 +169,7 @@ static NSString * const teamCell = @"teamCell";
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:locationIdentifier forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
         if (locationChange) {
-          
-            label.text = locationArray[indexPath.row];
+            label.text = [locationArray[indexPath.row] objectForKey:@"Name"];
         }
         else {
               label.text = [_activityArray[indexPath.row] valueForKey:@"ClassName"];
@@ -150,20 +204,30 @@ static NSString * const teamCell = @"teamCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.locationTableview]) {
         if (locationChange) {
-            
+            [self changeLocation:indexPath.row];
         }
         else
         {
-            
+            [self changeActivity:indexPath.row];
         }
         
     }
 }
+
+- (void)changeLocation:(NSInteger)row {
+    NSDictionary * area = locationArray[row];
+    NSString * code = [area objectForKey:@"Code"];
+    //CityCode ProvinceCode
+    NSDictionary * dic = @{
+                           @"AreaCode":code
+                           };
+    [self.locationTableview setHidden:YES];
+    currentPage = 1;
+    [self requestTeamData:currentPage parameter:dic];
+}
+
 - (void)changeActivity:(NSInteger)row {
     NSNumber * activityId= [_activityArray[row] objectForKey:@"Id"];
-//    NSString * titleTemp = [_activityArray[row] objectForKey:@"ClassName"];
-//    [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
-//    [self.activityButton setSelected:NO];
     NSDictionary * dic= @{
                           @"ActivityClassId":activityId
                           };
@@ -191,6 +255,8 @@ static NSString * const teamCell = @"teamCell";
     switch (sender.tag) {
         case hotButtonTag:
         {
+            currentPage = 1;
+            [self requestTeamData:currentPage parameter:nil];
             [self.locationTableview setHidden:YES];
         }
             break;

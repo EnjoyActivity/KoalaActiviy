@@ -16,8 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *activityDetail;
 @property (strong, nonatomic) IBOutlet UILabel *activityPrice;
 
-- (void)updateImage:(UIImage *)image
-               name:(NSString *)name
+- (void)updateName:(NSString *)name
              detail:(NSString *)detail
               price:(NSString *)price;
 @end

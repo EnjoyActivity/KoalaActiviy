@@ -18,6 +18,8 @@ static NSString * const teamCell = @"ActivityCell";
     NSMutableArray * historyArray;
     NSMutableArray * resultArray;
     NSMutableArray * hotSearchArray;
+    
+    NSString * searchKeyWord;
 }
 @end
 
@@ -31,10 +33,8 @@ static NSString * const teamCell = @"ActivityCell";
     [historyArray addObjectsFromArray:[self getSearchHistory]];
     
     hotSearchArray = [NSMutableArray array];
-    for (int i =1; i<9; i++) {
-        NSString * str = [NSString stringWithFormat:@"热门团队%d",i];
-        [hotSearchArray addObject:str];
-    }
+  
+    [self requestHotSearch];
     
     [self setUpUI];
     self.textField.delegate = self;
@@ -57,29 +57,59 @@ static NSString * const teamCell = @"ActivityCell";
 
 #pragma mark - NetWork
 
-- (void)requestWithKeyWord:(NSString *)keyWord {
+- (void)requestTeamData:(NSString *)keyWord {
     NSDictionary * dic = @{
-                           @"keywoords":keyWord,
-                           @"ownertype":[NSNumber numberWithInt:1]
+                           @"Page":[NSNumber numberWithInt:1],
+                           @"PageSize":[NSNumber numberWithInt:100],
+                           @"IsHot":[NSNumber numberWithBool:NO],
+                           @"KeyWord":keyWord
                            };
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
         if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"error"];
             return ;
         }
-        
+        NSDictionary * data = [resultDic objectForKey:@"result"];
+        NSArray * result = [data objectForKey:@"Data"];
+        resultArray  = [result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
             [self.resultTableView reloadData];
         });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+        
     }];
+}
+
+
+- (void)requestHotSearch {
+    NSDictionary * dic = @{
+                           @"keywords":@"",
+                           @"pagesize":[NSNumber numberWithInt:6],
+                           @"ownertype":[NSNumber numberWithInt:1]
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Other/GetKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSArray * result = [resultDic objectForKey:@"result"];
+        hotSearchArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+    
 }
 
 
@@ -134,11 +164,12 @@ static NSString * const teamCell = @"ActivityCell";
     if (textField.text.length == 0) {
         return YES;
     }
+    searchKeyWord = textField.text;
     [textField resignFirstResponder];
-    [historyArray insertObject:textField.text atIndex:0];
+    [historyArray insertObject:searchKeyWord atIndex:0];
     [self addSearchHistory];
     
-    [self requestWithKeyWord:textField.text];
+    [self requestTeamData:searchKeyWord];
 //    self.contentView.hidden = YES;
     [self.resultTableView setHidden:NO];
     return YES;
@@ -193,18 +224,24 @@ static NSString * const teamCell = @"ActivityCell";
     else
     {
         HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
-        cell.sNameLabel.text = @"hahahahh";
-//        cell.sImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>
-//        cell.sDetailLabel.text
+        NSDictionary * dic =resultArray[indexPath.row];
+        NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
+        NSURL * teamUrl = [NSURL URLWithString:teamImage];
+        
+        NSString * name = [dic objectForKey:@"Name"];
+        NSString * member = [dic objectForKey:@"PersonNum"];
+        cell.keyWords = searchKeyWord;
+        [cell.sImageView sd_setImageWithURL:teamUrl placeholderImage:[UIImage imageNamed:@"img_avatar_100"]];
+        [cell updateName:name detail:[NSString stringWithFormat:@"%@人",member]];
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.contentTableView]) {
-        NSString * historyTemp = historyArray[indexPath.row];
-        self.textField.text = historyTemp;
-        [self requestWithKeyWord:historyTemp];
+        searchKeyWord = historyArray[indexPath.row];
+        self.textField.text = searchKeyWord;
+        [self requestTeamData:searchKeyWord];
         [self.resultTableView setHidden:NO];
     }
 }
@@ -213,7 +250,7 @@ static NSString * const teamCell = @"ActivityCell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 6;
+    return MIN(6, hotSearchArray.count);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -225,13 +262,13 @@ static NSString * const teamCell = @"ActivityCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString * str = hotSearchArray[indexPath.row];
-    self.textField.text = str;
+    searchKeyWord = hotSearchArray[indexPath.row];
+    self.textField.text = searchKeyWord;
     [self.resultTableView setHidden:NO];
-    [historyArray insertObject:str atIndex:0];
+    [historyArray insertObject:searchKeyWord atIndex:0];
     [self addSearchHistory];
     
-    [self requestWithKeyWord:str];
+    [self requestTeamData:searchKeyWord];
 }
 
 #pragma mark - UI
