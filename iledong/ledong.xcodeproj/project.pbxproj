@@ -370,6 +370,8 @@
 		ECC5AF501CF6A6E200643CE1 /* LDChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */; };
 		ECC5AF541CF6BCC400643CE1 /* LDCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC5AF521CF6BCC400643CE1 /* LDCityViewController.m */; };
 		ECC5AF551CF6BCC400643CE1 /* LDCityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECC5AF531CF6BCC400643CE1 /* LDCityViewController.xib */; };
+		ECC5AF591CF6FDDD00643CE1 /* LDSearchMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC5AF571CF6FDDD00643CE1 /* LDSearchMoreViewController.m */; };
+		ECC5AF5A1CF6FDDD00643CE1 /* LDSearchMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECC5AF581CF6FDDD00643CE1 /* LDSearchMoreViewController.xib */; };
 		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
 		ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */; };
 		ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */; };
@@ -957,6 +959,9 @@
 		ECC5AF511CF6BCC400643CE1 /* LDCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDCityViewController.h; sourceTree = "<group>"; };
 		ECC5AF521CF6BCC400643CE1 /* LDCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDCityViewController.m; sourceTree = "<group>"; };
 		ECC5AF531CF6BCC400643CE1 /* LDCityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDCityViewController.xib; sourceTree = "<group>"; };
+		ECC5AF561CF6FDDD00643CE1 /* LDSearchMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDSearchMoreViewController.h; sourceTree = "<group>"; };
+		ECC5AF571CF6FDDD00643CE1 /* LDSearchMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDSearchMoreViewController.m; sourceTree = "<group>"; };
+		ECC5AF581CF6FDDD00643CE1 /* LDSearchMoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDSearchMoreViewController.xib; sourceTree = "<group>"; };
 		ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTeamMoreCell.xib; sourceTree = "<group>"; };
 		ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageTeamTableViewCell.h; sourceTree = "<group>"; };
 		ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageTeamTableViewCell.m; sourceTree = "<group>"; };
@@ -1504,6 +1509,9 @@
 				3627C2F41CA8C7E400A5D7EB /* SearchViewController.h */,
 				3627C2F51CA8C7E400A5D7EB /* SearchViewController.m */,
 				3627C2F61CA8C7E400A5D7EB /* SearchViewController.xib */,
+				ECC5AF561CF6FDDD00643CE1 /* LDSearchMoreViewController.h */,
+				ECC5AF571CF6FDDD00643CE1 /* LDSearchMoreViewController.m */,
+				ECC5AF581CF6FDDD00643CE1 /* LDSearchMoreViewController.xib */,
 				3627C2F91CA8CF6700A5D7EB /* SearchTableViewCell.h */,
 				3627C2FA1CA8CF6700A5D7EB /* SearchTableViewCell.m */,
 				3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */,
@@ -2260,6 +2268,7 @@
 				2054C1C81CEEFF7200FF7FDD /* TradeDetailTableViewCell.xib in Resources */,
 				7F8F734B1C8FB5F300CCFE41 /* MyWalletDetailTableViewCell.xib in Resources */,
 				36B2C1BC1CBB4845001D842B /* ManageTableViewCell.xib in Resources */,
+				ECC5AF5A1CF6FDDD00643CE1 /* LDSearchMoreViewController.xib in Resources */,
 				36FF6F461CA3E3D100387203 /* UserProtocolVC.xib in Resources */,
 				3693F2841CA4D5F200E48BD9 /* parent2_i5.png in Resources */,
 				3693F2851CA4D5F200E48BD9 /* parent3_i5.png in Resources */,
@@ -2564,6 +2573,7 @@
 				362F85EF1CABB6C9006FFE61 /* PublicDetailViewController.m in Sources */,
 				905515F11CEC3CED001C4F51 /* ELCAlbumPickerController.m in Sources */,
 				905516211CEC3CED001C4F51 /* UIImageView+WebCache.m in Sources */,
+				ECC5AF591CF6FDDD00643CE1 /* LDSearchMoreViewController.m in Sources */,
 				205375931CF2B13C005902B3 /* MemberView.m in Sources */,
 				36B2C1C91CBB4E0B001D842B /* SexViewController.m in Sources */,
 				EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */,

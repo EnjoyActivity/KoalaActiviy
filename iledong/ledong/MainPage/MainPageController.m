@@ -158,18 +158,18 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)requestActivityData {
-    NSString * token =[HttpClient getTokenStr];
-    if (token.length == 0) {
-        [activityCollectionView reloadData];
-        return;
-    }
+//    NSString * token =[HttpClient getTokenStr];
+//    if (token.length == 0) {
+//        [activityCollectionView reloadData];
+//        return;
+//    }
     
-    NSDictionary * dic = @{
-                           @"token":token
-                           };
+//    NSDictionary * dic = @{
+//                           @"token":token
+//                           };
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"ActivityClass/GetActivityClass" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [requestManager GET:@"ActivityClass/GetActivityClass" parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {

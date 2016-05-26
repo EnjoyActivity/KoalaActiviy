@@ -269,6 +269,9 @@ static NSString * const teamCell = @"ActivityCell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
     NSDictionary * dic = hotSearchArray[indexPath.row];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
+    label.layer.borderWidth = 1;
+    label.layer.borderColor = [UIColor blackColor].CGColor;
+    
     label.text = [dic objectForKey:@"Name"];
     return cell;
 }

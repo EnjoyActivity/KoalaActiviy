@@ -64,6 +64,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     if (token.length == 0) {
         return;
     }
+
     NSDictionary * dic = @{
                            @"token":token,
                            @"page":[NSNumber numberWithInt:1],
@@ -73,7 +74,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
@@ -282,6 +283,8 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
+    label.layer.borderWidth = 1;
+    label.layer.borderColor = [UIColor blackColor].CGColor;
     NSDictionary * dic = hotSearchArray[indexPath.row];
     label.text = [dic objectForKey:@"Name"];
     return cell;

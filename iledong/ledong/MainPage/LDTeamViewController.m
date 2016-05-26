@@ -8,6 +8,7 @@
 
 #import "LDTeamViewController.h"
 #import "LDTeamTableViewCell.h"
+#import "TeamHomeViewController.h"
 
 static NSInteger const hotButtonTag = 101;
 static NSInteger const categoryButtonTag = 102;
@@ -25,6 +26,7 @@ static NSString * const teamCell = @"teamCell";
     NSMutableArray * teamArray;
     
     BOOL locationChange;
+    BOOL activityChange;
     NSInteger currentPage;
 
 }
@@ -176,6 +178,7 @@ static NSString * const teamCell = @"teamCell";
         }
         return cell;
     }
+    
     LDTeamTableViewCell * cell = (LDTeamTableViewCell*)[tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
     NSDictionary * dic =teamArray[indexPath.row];
     NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
@@ -212,6 +215,13 @@ static NSString * const teamCell = @"teamCell";
         }
         
     }
+    else
+    {
+        NSDictionary * dic = teamArray[indexPath.row];
+        TeamHomeViewController * teamVc = [[TeamHomeViewController alloc] init];
+        teamVc.teamId = [dic objectForKey:@"Id"];
+        [self.navigationController pushViewController:teamVc animated:YES];
+    }
 }
 
 - (void)changeLocation:(NSInteger)row {
@@ -223,6 +233,7 @@ static NSString * const teamCell = @"teamCell";
                            };
     [self.locationTableview setHidden:YES];
     currentPage = 1;
+    locationChange = NO;
     [self requestTeamData:currentPage parameter:dic];
 }
 
@@ -232,6 +243,7 @@ static NSString * const teamCell = @"teamCell";
                           @"ActivityClassId":activityId
                           };
     currentPage = 1;
+    activityChange = NO;
     [self.locationTableview setHidden:YES];
     [self requestTeamData:currentPage parameter:dic];
 }
@@ -242,7 +254,16 @@ static NSString * const teamCell = @"teamCell";
 
 
 - (void)filterButtonClicked:(UIButton *)sender {
-    if (sender.tag == currentButton) {
+    if (sender.tag == categoryButtonTag && activityChange) {
+        [self.locationTableview setHidden:YES];
+        activityChange = NO;
+        [sender setSelected:NO];
+        return;
+    }
+    if (sender.tag == areaButtonTag && locationChange) {
+        [self.locationTableview setHidden:YES];
+        locationChange = NO;
+        [sender setSelected:NO];
         return;
     }
     
@@ -269,7 +290,7 @@ static NSString * const teamCell = @"teamCell";
             break;
         case categoryButtonTag:
         {
-            locationChange = NO;
+            activityChange = YES;
             [self.locationTableview setHidden:NO];
             [self.locationTableview reloadData];
         }

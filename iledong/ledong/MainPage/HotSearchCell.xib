@@ -14,12 +14,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="95" height="30"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="btn_white.png" highlightedImage="btn_white_press.png" translatesAutoresizingMaskIntoConstraints="NO" id="vHA-Vj-GoO">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" highlightedImage="btn_white_press.png" translatesAutoresizingMaskIntoConstraints="NO" id="vHA-Vj-GoO">
                         <rect key="frame" x="0.0" y="0.0" width="95" height="30"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AG4-S6-CeW">
-                        <rect key="frame" x="0.0" y="0.0" width="95" height="30"/>
+                        <rect key="frame" x="2" y="0.0" width="91" height="30"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -32,7 +32,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="btn_white.png" width="15" height="15"/>
         <image name="btn_white_press.png" width="15" height="15"/>
     </resources>
 </document>

@@ -17,6 +17,7 @@
 
 #import "ActiveDetailViewController.h"
 #import "TeamHomeViewController.h"
+#import "LDSearchMoreViewController.h"
 
 static NSString * historyCell = @"HistoryCell";
 static NSString * activityCell = @"sActivityCell";
@@ -73,24 +74,36 @@ static NSString * friendCell = @"ActivityCell";
 #pragma mark - NetWork
 
 - (void)requestActivityData:(NSString *)keyWord {
+    NSString * token = [HttpClient getTokenStr];
+    if (token.length == 0) {
+        return;
+    }
+    
     NSDictionary * dic = @{
-                           @"keywords":keyWord,
-                           @"ownertype":[NSNumber numberWithInt:0]
+                           @"token":token,
+                           @"page":[NSNumber numberWithInt:1],
+                           @"PageSize":[NSNumber numberWithInt:10],
+                           @"tag":keyWord
                            };
+    
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Other/AddKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
             [SVProgressHUD showErrorWithStatus:@"error"];
             return ;
         }
+        NSArray * result = [resultDic objectForKey:@"result"];
+        activityArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.resultTableView reloadData];
+        });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
     }];
-    
 }
 
 - (void)requestTeamData:(NSString *)keyWord {
@@ -425,7 +438,9 @@ static NSString * friendCell = @"ActivityCell";
             break;
         case 1:
         {
-            
+            LDSearchMoreViewController * moreVc = [[LDSearchMoreViewController alloc] init];
+            moreVc.keyWord = searchkeyWord;
+            [self.navigationController pushViewController:moreVc animated:YES];
         }
             break;
         case 2:
