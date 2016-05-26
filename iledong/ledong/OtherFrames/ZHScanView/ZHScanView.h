@@ -49,6 +49,8 @@ typedef void(^resultBlock)(NSString * result);
  */
 - (void)outPutResult:(resultBlock)result;
 
+- (void)startcScanningQrcord;
+
 
 @end
 // 版权属于原作者

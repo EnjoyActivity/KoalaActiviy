@@ -7,7 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "ZHScanView.h"
 
-@interface ScanViewController : BaseViewController
+@interface ScanViewController : BaseViewController<UIAlertViewDelegate>
+{
+    ZHScanView *scanView;
+}
 
 @end

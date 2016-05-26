@@ -7,7 +7,6 @@
 //
 
 #import "ScanViewController.h"
-#import "ZHScanView.h"
 
 @interface ScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *goBackButton;
@@ -21,17 +20,38 @@
     self.titleName = @"扫描";
     [super viewDidLoad];
 //    [self.goBackButton setBackgroundImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
-    ZHScanView *scanf = [ZHScanView scanViewWithFrame:CGRectMake(0, 62, APP_WIDTH, APP_HEIGHT)];
+    scanView = [ZHScanView scanViewWithFrame:CGRectMake(0, 62, APP_WIDTH, APP_HEIGHT)];
 //    scanf.promptMessage = @"您可以直接输入或者选择扫描二维码";
-    [self.view addSubview:scanf];
+    [self.view addSubview:scanView];
     
-    [scanf startScaning];
+    [scanView startScaning];
     
-    [scanf outPutResult:^(NSString *result)
+    [scanView outPutResult:^(NSString *result)
     {
-        NSLog(@"%@",result);
-        
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:result]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:result]];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:result delegate:self cancelButtonTitle:@"退出" otherButtonTitles:nil];
+            [alert show];
+        }
     }];
+}
+
+#pragma mark - Alert Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+        {
+            [self gobackButtonClick:nil];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
