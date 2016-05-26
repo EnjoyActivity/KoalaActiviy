@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2027C3001CF6E445004A939F /* bg_popup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2027C2FF1CF6E445004A939F /* bg_popup@2x.png */; };
 		203416881CF550C30002D8B5 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 203416861CF550C30002D8B5 /* SignUpViewController.m */; };
 		203416891CF550C30002D8B5 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203416871CF550C30002D8B5 /* SignUpViewController.xib */; };
 		2034168D1CF5530C0002D8B5 /* SignTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2034168C1CF5530C0002D8B5 /* SignTitleView.m */; };
@@ -389,6 +390,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2027C2FF1CF6E445004A939F /* bg_popup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_popup@2x.png"; sourceTree = "<group>"; };
 		203416851CF550C30002D8B5 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		203416861CF550C30002D8B5 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		203416871CF550C30002D8B5 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
@@ -1768,6 +1770,7 @@
 				3629CEC11CDB4C5000BEF297 /* bg_timebox_mid@2x.png */,
 				3629CEC21CDB4C5000BEF297 /* bg_timebox_start@2x.png */,
 				36F194D71CD2F5E30050EE6F /* start.png */,
+				2027C2FF1CF6E445004A939F /* bg_popup@2x.png */,
 				362F491B1CD20B0B000777F0 /* hd002_72.png */,
 				362E30121CCF5C5200EBADCF /* ic_close@2x.png */,
 				362F49141CD1F1FB000777F0 /* ic_manage@2x.png */,
@@ -2310,6 +2313,7 @@
 				362F7E7A1CC0C05900C91090 /* ic_more@2x.png in Resources */,
 				3664D0521CA0FA7300BC6805 /* img_4@2x.png in Resources */,
 				205375A01CF2E1B1005902B3 /* ChooseForm.xib in Resources */,
+				2027C3001CF6E445004A939F /* bg_popup@2x.png in Resources */,
 				36B2C1D11CBB4FA4001D842B /* ic_female_on@2x.png in Resources */,
 				36F194D81CD2F5E30050EE6F /* start.png in Resources */,
 				90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */,

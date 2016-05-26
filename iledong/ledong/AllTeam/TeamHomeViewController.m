@@ -10,9 +10,15 @@
 #import "FRUtils.h"
 #import "TeamManagerTableViewController.h"
 #import "TeamHomeTableViewCell.h"
+#import "LDDeleteTagView.h"
 
 @interface TeamHomeViewController ()<UITableViewDataSource,UITableViewDelegate>
-
+{
+    UIButton *quitTeamButton;
+    NSDictionary *teamInfo;
+}
+@property (nonatomic,strong) LDDeleteTagView *deleteTagView;
+@property (nonatomic,assign) BOOL quitBtnShow;
 @end
 
 @implementation TeamHomeViewController
@@ -29,10 +35,19 @@
     
     CGFloat hight = self.headerImage.frame.size.height + self.middleView.frame.size.height + self.ActiveView.frame.size.height + self.footerView.frame.size.height + 90;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
-    
+    [self refreshUI];
     [self queryTeamInfo];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [quitTeamButton removeFromSuperview];
+}
+- (void)setQuitBtnShow:(BOOL)quitBtnShow {
+    _quitBtnShow = quitBtnShow;
+    if (!_quitBtnShow) {
+        [quitTeamButton removeFromSuperview];
+    }
+}
 
 - (void)setButton
 {
@@ -56,9 +71,32 @@
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    //创建的团队不显示关注和申请加入
+    //我的团队不显示关注和申请加入，显示我是成员和聊天
     if (_teamType == teamTypeCreate) {
-        _footerView.hidden = YES;
+        UIButton *memberButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        memberButton.titleLabel.font = [UIFont systemFontOfSize:15];
+        memberButton.frame =_focusButton.frame;
+        [memberButton setTitle:@"我是成员 " forState:UIControlStateNormal];
+        [memberButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [memberButton addTarget:self action:@selector(memberBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [memberButton setImage:[UIImage imageNamed:@"ic_triangle_grey"] forState:UIControlStateNormal];
+        memberButton.transform = CGAffineTransformMakeScale(-1,1);
+        memberButton.titleLabel.transform = CGAffineTransformMakeScale(-1, 1);
+        memberButton.imageView.transform = CGAffineTransformMakeScale(-1, 1);
+        
+        
+        UIButton *chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        chatButton.titleLabel.font = [UIFont systemFontOfSize:15];
+        chatButton.frame = _applyJoinButton.frame;
+        [chatButton setTitle:@"聊天" forState:UIControlStateNormal];
+        [chatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [chatButton addTarget:self action:@selector(chatBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+
+        [_focusButton removeFromSuperview];
+        [_applyJoinButton removeFromSuperview];
+        [_footerView addSubview:memberButton];
+        [_footerView addSubview:chatButton];
     }
 }
 - (void)didReceiveMemoryWarning {
@@ -69,7 +107,47 @@
 - (void)backBtnClicked {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+//我是成员
+- (void)memberBtnClick:(UIButton*)sender {
+    if (_quitBtnShow) {
+        self.quitBtnShow = NO;
+        return;
+    }
+    _quitBtnShow = YES;
+    quitTeamButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [quitTeamButton setTitle:@"退出团队" forState:UIControlStateNormal];
+    quitTeamButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [quitTeamButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 8, 0)];
+    [quitTeamButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [quitTeamButton setBackgroundImage:[UIImage imageNamed:@"bg_popup"] forState:UIControlStateNormal];
+    quitTeamButton.backgroundColor = [UIColor clearColor];
+    quitTeamButton.frame = CGRectMake(0, 0, 150, 40);
+    quitTeamButton.center = CGPointMake(APP_WIDTH/4, APP_HEIGHT - 50 - 30);
+    [quitTeamButton addTarget:self action:@selector(quitTeamClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:quitTeamButton];
+}
+//聊天
+- (void)chatBtnClick:(UIButton*)sender {
+    
+}
+//退出团队
+- (void)quitTeamClick:(UIButton*)sender {
+    NSString* token = [HttpClient getTokenStr];
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_EXIT_TEAM_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:@{@"teamid":_teamId,@"token":token} success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* result = [dict objectForKey:@"Result"];
+        if (!result.boolValue) {
+            NSString* str = [dict objectForKey:@"Message"];
+            [Dialog simpleToast:str withDuration:1.5];
+        }
+        else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"退出团队失败！" withDuration:1.5];
+    }];
+}
 - (IBAction)memberButton:(id)sender {
     
 }
@@ -120,11 +198,23 @@
         NSDictionary* dict = (NSDictionary*)responseObject;
         NSNumber* codeNum = [dict objectForKey:@"code"];
         if (codeNum.intValue == 0) {
-            
+            teamInfo = [dict objectForKey:@"result"];
+            [self refreshUI];
         }
     } fail:^{
         [Dialog simpleToast:@"获取团队信息失败！" withDuration:1.5];
     }];
+}
+
+- (void)refreshUI {
+    self.nameLabel.text = [teamInfo objectForKey:@"Name"];
+    self.signatureLabel.text = [teamInfo objectForKey:@"Intro"];
+    NSString *url = [teamInfo objectForKey:@"AvatarUrl"];
+    if (!url||[url isKindOfClass:[NSNull class]]||url.length==0) {
+        self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_teamavatar_120"] withParam:1];
+        return;
+    }
+    self.headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[teamInfo objectForKey:@"AvatarUrl"]]] withParam:1];
 }
 
 @end

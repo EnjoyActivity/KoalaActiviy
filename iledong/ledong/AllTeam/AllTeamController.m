@@ -132,6 +132,9 @@ typedef enum listType {
 
 #pragma mark -- UIButtonClick
 - (IBAction)myTeamButton:(id)sender {
+    if (self.tableViewListType == listTypeStartTeam) {
+        return;
+    }
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
@@ -141,6 +144,9 @@ typedef enum listType {
 }
 
 - (IBAction)TeamAgree:(id)sender {
+    if (self.tableViewListType == listTypeJoinTeam) {
+        return;
+    }
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];

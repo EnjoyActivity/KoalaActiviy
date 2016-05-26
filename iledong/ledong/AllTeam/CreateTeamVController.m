@@ -17,6 +17,7 @@
     CGFloat _mainScrollViewContentHeight;
     CGFloat _mainScrollViewContentOffsetY;
     BOOL _keyboardShow;
+    NSString *teamAvatar;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -208,7 +209,7 @@
 
 - (void)keyboardDidHide:(NSNotification *) notif {
     _keyboardShow = NO;
-    [self changeStartBtnBgColor];
+//    [self changeStartBtnBgColor];
     [UIView animateWithDuration:0.5 animations:^{
         [_mainScrollView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentHeight)];
         [_mainScrollView setContentOffset:CGPointMake(0, _mainScrollViewContentOffsetY) animated:YES];
@@ -223,7 +224,7 @@
     tagLabel.text = str;
     if (!isReDraw) {
         [self.tagArray addObject:tagLabel.text];
-        [self changeStartBtnBgColor];
+//        [self changeStartBtnBgColor];
     }
 
     tagLabel.font = [UIFont systemFontOfSize:14.0];
@@ -350,6 +351,10 @@
         
         NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
         [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[image] success:^(id responseObject) {
+            SBJsonParser* json = [[SBJsonParser alloc]init];
+            id jsonObject = [json objectWithString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+            NSDictionary* temp = (NSDictionary*)jsonObject;
+            teamAvatar = [temp objectForKey:@"result"];
             [Dialog simpleToast:@"上传团队头像成功！" withDuration:1.5];
         } fail:^{
             [Dialog simpleToast:@"上传团队头像失败！" withDuration:1.5];
@@ -389,6 +394,29 @@
     //    cityCode	true	string	市
     //    areaCode	true	string	区
     
+    NSString *teamName = self.teamNameTextField.text;
+    NSString *trimmedTeamName = [teamName stringByTrimmingCharactersInSet:
+                               [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedTeamName.length==0) {
+        [Dialog toast:@"请输入团队名"];
+        return;
+    }
+    NSString *intro = self.teamIntrodectionTextView.text;
+    NSString *trimmedIntro = [intro stringByTrimmingCharactersInSet:
+                                 [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedIntro.length==0) {
+        [Dialog toast:@"请输入团队介绍"];
+        return;
+    }
+    
+    NSString *personNum = self.maxCountTextField.text;
+    NSString *trimmedPersonNum = [personNum stringByTrimmingCharactersInSet:
+                              [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedPersonNum.length==0) {
+        [Dialog toast:@"请输入人数上限"];
+        return;
+    }
+    
     int maxPersonNum = [self.maxCountTextField.text intValue];
     BOOL isNeedaudit = self.switchCtl.on;
     NSMutableString* tag = [NSMutableString string];
@@ -413,6 +441,7 @@
                            @"provinceCode":@"510000",
                            @"cityCode":@"510100",
                            @"areaCode":@"510104",
+                           @"AvatarUrl":teamAvatar?teamAvatar:@""
                           };
     
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATETEAM_URL];
