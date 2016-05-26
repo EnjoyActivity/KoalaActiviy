@@ -7,14 +7,17 @@
 //
 
 #import "ActivityAddressViewController.h"
+#import "GeographicInfoViewController.h"
 
 #define kCell           @"cell"
 
 @interface ActivityAddressViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong)UITableView* tableView;
-@property (nonatomic, strong)NSMutableDictionary* dataDict;
 @property (nonatomic, copy)completeActivityAddressInfo block;
+@property (nonatomic, strong)NSMutableDictionary* provinceDict;
+@property (nonatomic, strong)NSMutableDictionary* cityDict;
+@property (nonatomic, strong)NSMutableDictionary* areasDict;
 
 @end
 
@@ -24,7 +27,6 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    self.dataDict = [NSMutableDictionary dictionary];
     [self setupNavigationBar];
     [self setupTableView];
 }
@@ -79,18 +81,21 @@
         [cell.contentView addSubview:infoLabel];
     }
     infoLabel.text = @"未设置";
-    [infoLabel sizeToFit];
-    infoLabel.frame = CGRectMake(APP_WIDTH-infoLabel.frame.size.width-30, 0, infoLabel.frame.size.width, infoLabel.frame.size.height);
-    infoLabel.center = CGPointMake(infoLabel.center.x, cell.contentView.bounds.size.height/2);
     
     if (indexPath.row == 0) {
         cell.textLabel.text = @"省";
+        if (self.provinceDict)
+            infoLabel.text = [self.provinceDict objectForKey:@"Name"];
     }
     else if (indexPath.row == 1) {
         cell.textLabel.text = @"市";
+        if (self.cityDict)
+            infoLabel.text = [self.cityDict objectForKey:@"Name"];
     }
     else if (indexPath.row == 2) {
         cell.textLabel.text = @"区";
+        if (self.areasDict)
+            infoLabel.text = [self.areasDict objectForKey:@"Name"];
     }
     else if (indexPath.row == 3) {
         UIButton* btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
@@ -101,6 +106,9 @@
         infoLabel.hidden = YES;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    [infoLabel sizeToFit];
+    infoLabel.frame = CGRectMake(APP_WIDTH-infoLabel.frame.size.width-30, 0, infoLabel.frame.size.width, infoLabel.frame.size.height);
+    infoLabel.center = CGPointMake(infoLabel.center.x, cell.contentView.bounds.size.height/2);
     
     return cell;
 }
@@ -110,20 +118,42 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row > 2)
+        return;
+    GeographicInfoViewController* Vc = [[GeographicInfoViewController alloc]init];
+    NSNumber* num = nil;
     if (indexPath.row == 0) {
-        
+        Vc.type = GeographicTypeProvinces;
     }
     else if (indexPath.row == 1) {
-        
+        num = [self.provinceDict objectForKey:@"Code"];
+        Vc.preCode = num.intValue;
+        Vc.type = GeographicTypeCity;
     }
     else if (indexPath.row == 2) {
-        
+        num = [self.cityDict objectForKey:@"Code"];
+        Vc.preCode = num.intValue;
+        Vc.type = GeographicTypeAreas;
     }
+
+    [Vc setSelectBlock:^(GeographicType type, NSDictionary *dict) {
+        if (type == GeographicTypeProvinces) {
+            self.provinceDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+        }
+        else if (type == GeographicTypeCity) {
+            self.cityDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+        }
+        else if (type == GeographicTypeAreas) {
+            self.areasDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+        }
+        [self.tableView reloadData];
+    }];
+    [self.navigationController pushViewController:Vc animated:YES];
 }
 
 - (void)btnClicked {
     if (self.block) {
-        self.block(self.dataDict);
+        self.block(self.provinceDict, self.cityDict, self.areasDict);
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

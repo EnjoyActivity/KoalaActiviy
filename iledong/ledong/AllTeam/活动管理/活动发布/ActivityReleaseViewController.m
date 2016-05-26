@@ -627,8 +627,32 @@ typedef enum imagePickerFromType {
             [self.view endEditing:YES];
             ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
-            [Vc setCompleteActivityAddressInfo:^(NSDictionary *dict) {
-                
+            __weak typeof(self)weakSelf = self;
+            [Vc setCompleteActivityAddressInfo:^(NSDictionary* provinceDict, NSDictionary* cityDict, NSDictionary* areasDict) {
+                NSString* name = nil;
+                NSNumber* num = nil;
+                weakSelf.activityAddress = nil;
+                weakSelf.activityAddress = [NSMutableDictionary dictionary];
+                if (provinceDict) {
+                    name = [provinceDict objectForKey:@"Name"];
+                    num = [provinceDict objectForKey:@"Code"];
+                    [weakSelf.activityAddress setValue:name forKey:@"provinceName"];
+                    [weakSelf.activityAddress setValue:num forKey:@"provinceCode"];
+                }
+                if (cityDict) {
+                    name = [cityDict objectForKey:@"Name"];
+                    num = [cityDict objectForKey:@"Code"];
+                    [weakSelf.activityAddress setValue:name forKey:@"cityName"];
+                    [weakSelf.activityAddress setValue:num forKey:@"cityCode"];
+                }
+                if (areasDict) {
+                    name = [areasDict objectForKey:@"Name"];
+                    num = [areasDict objectForKey:@"Code"];
+                    [weakSelf.activityAddress setValue:name forKey:@"areasName"];
+                    [weakSelf.activityAddress setValue:num forKey:@"areasCode"];
+                }
+                [weakSelf.leagueTableView reloadData];
+                [weakSelf.nonleagueTableView reloadData];
             }];
         }
     }
@@ -1248,11 +1272,37 @@ typedef enum imagePickerFromType {
         addLabel = [[UILabel alloc]initWithFrame:CGRectMake(APP_WIDTH-70, 0, 0, 0)];
         addLabel.font = [UIFont systemFontOfSize:14.0];
         addLabel.tag = 101;
+        addLabel.numberOfLines = 0;
         addLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:addLabel];
     }
-    addLabel.text = @"去定位";
+    
+    NSString* preVince, *city, *areas;
+    NSMutableString* addressTemp = [NSMutableString string];
+    NSArray* keys = self.activityAddress.allKeys;
+    if ([keys containsObject:@"provinceName"]) {
+        preVince = [self.activityAddress objectForKey:@"provinceName"];
+        addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:preVince];
+        addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:@"\r\n"];
+    }
+    if ([keys containsObject:@"cityName"]) {
+        city = [self.activityAddress objectForKey:@"cityName"];
+        addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:city];
+        addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:@"\r\n"];
+    }
+    if ([keys containsObject:@"areasName"]) {
+        areas = [self.activityAddress objectForKey:@"areasName"];
+        addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:areas];
+    }
+    if (addressTemp.length > 0)
+        addLabel.text = addressTemp;
+    else
+        addLabel.text = @"去定位";
     [addLabel sizeToFit];
+    CGFloat width = addLabel.frame.size.width;
+    if (addLabel.frame.size.width > 250)
+        width = 250;
+    addLabel.frame = CGRectMake(APP_WIDTH-width-30, 0, width, addLabel.frame.size.height);
     addLabel.center = CGPointMake(addLabel.center.x, cell.contentView.bounds.size.height/2);
     
     return cell;

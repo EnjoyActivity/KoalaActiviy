@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^completeActivityAddressInfo)(NSDictionary* dict);
+typedef void (^completeActivityAddressInfo)(NSDictionary* provinceDict, NSDictionary* cityDict, NSDictionary* areasDict);
 
 @interface ActivityAddressViewController : UIViewController
 

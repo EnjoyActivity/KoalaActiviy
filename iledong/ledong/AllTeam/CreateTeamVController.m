@@ -8,6 +8,7 @@
 
 #import "CreateTeamVController.h"
 #import "LDDeleteTagView.h"
+#import "ActivityAddressViewController.h"
 
 #define kOrighHeight 64
 
@@ -26,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView *teamIntroductionView;
 @property (weak, nonatomic) IBOutlet UIView *teamOtherInfoView;
 @property (weak, nonatomic) IBOutlet UIView *teamAuditView;
+@property (weak, nonatomic) IBOutlet UIView *addressView;
 @property (weak, nonatomic) IBOutlet UIButton *StartBtn;
 @property (weak, nonatomic) IBOutlet UITextField *teamNameTextField;
 @property (weak, nonatomic) IBOutlet UITextView *teamIntrodectionTextView;
@@ -51,6 +53,7 @@
     [self layoutSubView];
     [self addKeyBoardNotification];
     [self setupTapGestureRecognizer];
+    [self setupAddressTapGesture];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -129,6 +132,12 @@
     [self.mainScrollView addGestureRecognizer:tapGes];
 }
 
+- (void)setupAddressTapGesture {
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] init];
+    [tapGes addTarget:self action:@selector(addressViewClicked)];
+    [self.addressView addGestureRecognizer:tapGes];
+}
+
 #pragma mark - btn Clicked
 - (void)backBtnClicked {
     [self.navigationController popViewControllerAnimated:YES];
@@ -142,6 +151,11 @@
         [self addTagView:self.addTagTextField.text isReDraw:NO index:index];
     }
     [self.view endEditing:YES];
+}
+
+- (void)addressViewClicked {
+    ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+    [self.navigationController pushViewController:Vc animated:YES];
 }
 
 - (IBAction)uploadImageBtnClicked:(id)sender {

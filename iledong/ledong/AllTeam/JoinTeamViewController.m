@@ -66,8 +66,9 @@
     NSDictionary *dic = @{@"token":[HttpClient getTokenStr],@"teamid":self.teamId,@"message":_textView.text};
     [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject)
      {
-         AuditViewController *auditViewController = [[AuditViewController alloc] init];
-         [self.navigationController pushViewController:auditViewController animated:YES];
+         //AuditViewController *auditViewController = [[AuditViewController alloc] init];
+         //[self.navigationController pushViewController:auditViewController animated:YES];
+         [self.navigationController popViewControllerAnimated:YES];
      } fail:^{
          [Dialog simpleToast:@"加入团队失败！" withDuration:1.5];
      }];

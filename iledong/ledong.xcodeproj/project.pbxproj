@@ -341,6 +341,8 @@
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 		9063BBCC1CF30C7D0057289D /* ContactTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */; };
 		90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */; };
+		90FADECB1CF684B000961294 /* GeographicInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECA1CF684B000961294 /* GeographicInfoViewController.m */; };
+		90FADECE1CF694D500961294 /* LocationChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECD1CF694D500961294 /* LocationChoiceViewController.m */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
 		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
 		90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90FB7D691CEEECB50055B493 /* ic_new@2x.png */; };
@@ -909,6 +911,10 @@
 		9063BBCA1CF30C7D0057289D /* ContactTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTypeViewController.h; sourceTree = "<group>"; };
 		9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTypeViewController.m; sourceTree = "<group>"; };
 		90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_location@2x.png"; sourceTree = "<group>"; };
+		90FADEC91CF684B000961294 /* GeographicInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeographicInfoViewController.h; sourceTree = "<group>"; };
+		90FADECA1CF684B000961294 /* GeographicInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeographicInfoViewController.m; sourceTree = "<group>"; };
+		90FADECC1CF694D500961294 /* LocationChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChoiceViewController.h; sourceTree = "<group>"; };
+		90FADECD1CF694D500961294 /* LocationChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChoiceViewController.m; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
 		90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamManagerTableViewController.h; sourceTree = "<group>"; };
@@ -2101,6 +2107,10 @@
 				90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */,
 				90467B511CF45A320086FE5E /* ActivityAddressViewController.h */,
 				90467B521CF45A320086FE5E /* ActivityAddressViewController.m */,
+				90FADEC91CF684B000961294 /* GeographicInfoViewController.h */,
+				90FADECA1CF684B000961294 /* GeographicInfoViewController.m */,
+				90FADECC1CF694D500961294 /* LocationChoiceViewController.h */,
+				90FADECD1CF694D500961294 /* LocationChoiceViewController.m */,
 			);
 			path = "活动发布";
 			sourceTree = "<group>";
@@ -2520,7 +2530,6 @@
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,
 				205375881CF29496005902B3 /* ActiveDetailViewController.m in Sources */,
-
 				ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */,
 				904D484E1CF5969C006338C1 /* SelectTeamViewController.m in Sources */,
 				36B2C1B01CBB481A001D842B /* MemberTableViewCell.m in Sources */,
@@ -2563,6 +2572,7 @@
 				20B63E5E1CEDC02B00D5C551 /* SBJsonTokeniser.m in Sources */,
 				36B2C1D61CBB7F72001D842B /* UserNameViewController.m in Sources */,
 				36E3E1F91CC46E4700294509 /* AffirmPayViewController.m in Sources */,
+				90FADECB1CF684B000961294 /* GeographicInfoViewController.m in Sources */,
 				2054E9091CF4096000CD3FDD /* SessionTableViewCell.m in Sources */,
 				905515FD1CEC3CED001C4F51 /* MBProgressHUD+Add.m in Sources */,
 				9055160B1CEC3CED001C4F51 /* MJRefreshGifHeader.m in Sources */,
@@ -2586,6 +2596,7 @@
 				905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */,
 				905516131CEC3CED001C4F51 /* MKAnnotationView+WebCache.m in Sources */,
 				2054C1C71CEEFF7200FF7FDD /* TradeDetailTableViewCell.m in Sources */,
+				90FADECE1CF694D500961294 /* LocationChoiceViewController.m in Sources */,
 				7F8F191D1C87D68A00570B79 /* MySettingViewController.m in Sources */,
 				905516111CEC3CED001C4F51 /* UIScrollView+MJRefresh.m in Sources */,
 				905516121CEC3CED001C4F51 /* UIView+MJExtension.m in Sources */,
