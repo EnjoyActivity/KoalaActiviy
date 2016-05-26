@@ -61,7 +61,6 @@
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_repost"] style:UIBarButtonItemStylePlain target:self action:@selector(repostBtnClick:)];
     item2.tintColor = RGB(227, 26, 26,1);
     
-//    scrollViewHeight = 0;
     startPos = 0;
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
@@ -157,11 +156,12 @@
     [self.view addSubview:scrollView];
 }
 - (void)setupCoverImageView {
-    UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 200)];
+    UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 211)];
     coverImage.backgroundColor = [UIColor purpleColor];
+    coverImage.image = [UIImage imageNamed:@"img_1"];
 //    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
     [scrollView addSubview:coverImage];
-    startPos = 200;
+    startPos = 211;
 }
 
 - (void)setupTitleView {
@@ -199,6 +199,8 @@
         locationView.locationLabel.text = [dic objectForKey:@"PlaceName"];
         locationView.detailLocationLabel.text = [dic objectForKey:@"Address"];
     }
+    locationView.distanceLabel.text = @"0.0km";
+    [locationView.distanceLabel sizeToFit];
     locationView.frame = CGRectMake(0,startPos , APP_WIDTH, 80);
     startPos += 80;
     [scrollView addSubview:locationView];
@@ -306,13 +308,15 @@
     chooseFormView = (ChooseForm*)[[[NSBundle mainBundle]loadNibNamed:@"ChooseForm" owner:self options:nil]lastObject];
     [chooseFormView.inPersonBtn addTarget:self action:@selector(choosePersonForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.inTeamBtn addTarget:self action:@selector(chooseTeamForm:) forControlEvents:UIControlEventTouchUpInside];
-    [chooseFormView.signUpBtn addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
+    [chooseFormView.signUpBtn addTarget:self action:@selector(signUpInChooseForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.cancelBtn addTarget:self action:@selector(cancelBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.okBtn addTarget:self action:@selector(okBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     maskView.backgroundColor = [UIColor blackColor];
     maskView.alpha = 0.5;
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideMask:)];
+    [maskView addGestureRecognizer:tapGes];
     chooseFormView.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 216);
     [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
     [[[UIApplication sharedApplication]keyWindow]addSubview:chooseFormView];
@@ -323,12 +327,20 @@
 }
 
 - (void)signUp:(UIButton*)sender {
-    [maskView removeFromSuperview];
-    [chooseFormView removeFromSuperview];
+//    [maskView removeFromSuperview];
+//    [chooseFormView removeFromSuperview];
     if ([chooseFormBtn.currentTitle isEqualToString:@"选择参加形式"]) {
         [Dialog toast:@"请选择参加形式"];
         return;
     }
+    SignUpViewController *vc = [[SignUpViewController alloc]init];
+    vc.joinType = _joinType;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)signUpInChooseForm:(UIButton*)sender {
+    [maskView removeFromSuperview];
+    [chooseFormView removeFromSuperview];
     SignUpViewController *vc = [[SignUpViewController alloc]init];
     vc.joinType = _joinType;
     [self.navigationController pushViewController:vc animated:YES];
@@ -371,7 +383,10 @@
     }
 }
 
-
+- (void)hideMask:(UIGestureRecognizer*)ges {
+    [maskView removeFromSuperview];
+    [chooseFormView removeFromSuperview];
+}
 #pragma mark - inner methods
 - (void)queryActiveDetailInfo {
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Activity/GetActivityById"];

@@ -13,6 +13,7 @@
 {
     UIImageView *headerImageView;
     UIView *maskView;
+    ChangeAvatarView* sheet;
 //    UIImage *headImage;
 }
 
@@ -98,9 +99,11 @@
     maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     maskView.backgroundColor = [UIColor blackColor];
     maskView.alpha = 0.5;
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideMask:)];
+    [maskView addGestureRecognizer:tapGes];
 //
 //    [[[UIApplication sharedApplication]keyWindow]addSubview:maskView];
-    ChangeAvatarView* sheet = [[ChangeAvatarView alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 160, APP_WIDTH, 160)];
+    sheet = [[ChangeAvatarView alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 160, APP_WIDTH, 160)];
     sheet.frame = CGRectMake(0, APP_HEIGHT, APP_WIDTH, 160);
     sheet.maskView = maskView;
     sheet.delegate = self;
@@ -181,6 +184,11 @@
     else {
         [SVProgressHUD showErrorWithStatus:@"不支持获取图库及相片库，请设置权限"];
     }
+}
+
+- (void)hideMask:(UIGestureRecognizer*)ges {
+    [maskView removeFromSuperview];
+    [sheet removeFromSuperview];
 }
 
 #pragma mark - image picker delegate

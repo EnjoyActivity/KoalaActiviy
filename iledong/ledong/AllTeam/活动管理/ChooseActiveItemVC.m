@@ -96,6 +96,8 @@
     cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(11, 5)]];
     cell.constitutorNameLabel.text = [NSString stringWithFormat:@"组织人：%@",model.constitutorName];
     cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余 %d",model.maxNum - model.willNum,model.maxApplyNum - model.applyNum];
+    cell.distanceLabel.text = @"0.0km";
+    [cell.distanceLabel sizeToFit];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
