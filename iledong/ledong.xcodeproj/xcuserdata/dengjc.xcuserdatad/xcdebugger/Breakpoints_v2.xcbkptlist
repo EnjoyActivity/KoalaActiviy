@@ -107,11 +107,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/PersonalCenter/PersonalCenterController.m"
-            timestampString = "485876757.371869"
+            timestampString = "485918491.448569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "288"
+            endingLineNumber = "288"
             landmarkName = "-showGuide:"
             landmarkType = "5">
          </BreakpointContent>

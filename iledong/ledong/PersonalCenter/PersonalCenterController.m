@@ -103,8 +103,10 @@
     
     _nameLabel.text = [FRUtils getNickName];
     _signatureLabel.text = [FRUtils getSign];
-    if ([FRUtils getHeaderImage]) {
-        _headerImage.image = [FRUtils circleImage:[FRUtils getHeaderImage] withParam:1];
+    
+    UIImage *headImage = [FRUtils getHeaderImage];
+    if (headImage) {
+        _headerImage.image = [FRUtils circleImage:headImage withParam:1];
     } else {
         _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
     }
@@ -293,8 +295,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         _nameLabel.text = [FRUtils getNickName];
         _signatureLabel.text = [FRUtils getSign];
-        if ([FRUtils getHeaderImage]) {
-            _headerImage.image = [FRUtils circleImage:[FRUtils getHeaderImage] withParam:1];
+        UIImage *headImage = [FRUtils getHeaderImage];
+        if (headImage) {
+            _headerImage.image = [FRUtils circleImage:headImage withParam:1];
         } else {
             _headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_avatar_44"] withParam:1];
         }
