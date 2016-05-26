@@ -409,10 +409,10 @@
                            @"maxPersonNum":[NSNumber numberWithInt:maxPersonNum],
                            @"needaudit":[NSNumber numberWithBool:isNeedaudit],
                            @"tag":tag,
-                           @"activityclassId":@"",
-                           @"provinceCode":@"",
-                           @"cityCode":@"",
-                           @"areaCode":@"",
+                           @"activityclassId":@1,
+                           @"provinceCode":@"510000",
+                           @"cityCode":@"510100",
+                           @"areaCode":@"510104",
                           };
     
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATETEAM_URL];

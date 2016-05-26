@@ -94,9 +94,9 @@
     
     [self.messageButton setImage:[UIImage imageNamed:@"ic_message"] forState:UIControlStateNormal];
     [self.messageButton setImageEdgeInsets:UIEdgeInsetsMake(-20, 150, 0, 0)];
-    [self.messageButton setTitle:@"160条新消息" forState:UIControlStateNormal];
+    [self.messageButton setTitle:@"0条新消息" forState:UIControlStateNormal];
     [self.messageButton setTitleEdgeInsets:UIEdgeInsetsMake(-20, 0, 0, 0)];
-    self.messageButton.hidden = YES;
+//    self.messageButton.hidden = YES;
     
     CGFloat hight = self.headerView.frame.size.height + self.signView.frame.size.height + self.tableView.frame.size.height + 100;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);

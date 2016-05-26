@@ -136,7 +136,7 @@
                             <rect key="frame" x="0.0" y="654" width="396" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="入团审核" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gEn-rn-4Ih">
-                                    <rect key="frame" x="15" y="10" width="56" height="17"/>
+                                    <rect key="frame" x="15" y="11" width="56" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -149,7 +149,7 @@
                             <constraints>
                                 <constraint firstItem="gEn-rn-4Ih" firstAttribute="leading" secondItem="sqY-wY-5VP" secondAttribute="leading" constant="15" id="0hV-kf-VT2"/>
                                 <constraint firstItem="VQ9-ED-S4I" firstAttribute="top" secondItem="sqY-wY-5VP" secondAttribute="top" constant="5" id="CIv-qC-5ok"/>
-                                <constraint firstItem="gEn-rn-4Ih" firstAttribute="top" secondItem="sqY-wY-5VP" secondAttribute="top" constant="10" id="KBM-gw-Thp"/>
+                                <constraint firstItem="gEn-rn-4Ih" firstAttribute="top" secondItem="sqY-wY-5VP" secondAttribute="top" constant="11" id="KBM-gw-Thp"/>
                                 <constraint firstAttribute="trailing" secondItem="VQ9-ED-S4I" secondAttribute="trailing" constant="10" id="Vra-eQ-Dib"/>
                                 <constraint firstAttribute="height" constant="40" id="gP3-L9-8zv"/>
                             </constraints>
@@ -186,9 +186,9 @@
                             <rect key="frame" x="0.0" y="704" width="396" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队地点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-9y-cKr">
-                                    <rect key="frame" x="15" y="15" width="56" height="17"/>
+                                    <rect key="frame" x="15" y="11" width="56" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -196,7 +196,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="Asv-6t-Qou"/>
                                 <constraint firstItem="3EP-9y-cKr" firstAttribute="leading" secondItem="DSu-f5-8xs" secondAttribute="leading" constant="15" id="Ky9-Tr-PRZ"/>
-                                <constraint firstItem="3EP-9y-cKr" firstAttribute="top" secondItem="DSu-f5-8xs" secondAttribute="top" constant="15" id="La1-VE-Z46"/>
+                                <constraint firstItem="3EP-9y-cKr" firstAttribute="top" secondItem="DSu-f5-8xs" secondAttribute="top" constant="11" id="La1-VE-Z46"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23J-PC-0ty">

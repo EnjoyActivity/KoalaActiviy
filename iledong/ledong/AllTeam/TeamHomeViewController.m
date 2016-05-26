@@ -55,6 +55,11 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
+    
+    //创建的团队不显示关注和申请加入
+    if (_teamType == teamTypeCreate) {
+        _footerView.hidden = YES;
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

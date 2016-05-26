@@ -36,5 +36,7 @@ typedef enum teamType {
 
 @property (assign,nonatomic)teamType teamType;
 @property (strong,nonatomic)NSString* teamId;
+@property (strong, nonatomic) IBOutlet UIButton *focusButton;
+@property (strong, nonatomic) IBOutlet UIButton *applyJoinButton;
 
 @end

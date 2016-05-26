@@ -65,13 +65,18 @@ typedef enum listType {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];//有动画的隐藏
     self.tabBarController.tabBar.hidden = NO;
-    [self updateStartTeamData];
+    if (self.tableViewListType == listTypeStartTeam) {
+        [self updateStartTeamData];
+    } else {
+        [self updateJoinTeamData];
+    }
+    
 }
 
 #pragma mark -- API
 - (void)updateStartTeamData {
     if ([HttpClient isLogin]) {
-        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_STARTTEAMS_URL];
+        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_JOINTEAMS_URL];
         NSDictionary *dic = @{@"token":[HttpClient getTokenStr]};
         [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject) {
             NSDictionary* dict = (NSDictionary*)responseObject;
@@ -97,7 +102,7 @@ typedef enum listType {
 
 - (void)updateJoinTeamData {
     if ([HttpClient isLogin]) {
-        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_JOINTEAMS_URL];
+        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_TEAMAPPLY_URL];
         NSDictionary *dic = @{@"token":[HttpClient getTokenStr]};
         [HttpClient postJSONWithUrl:urlStr parameters:dic success:^(id responseObject) {
             NSDictionary* dict = (NSDictionary*)responseObject;
@@ -105,17 +110,19 @@ typedef enum listType {
             if (codeNum.intValue == 0) {
                 NSArray* array = [dict objectForKey:@"result"];
                 self.myJoinTeamData = [NSMutableArray arrayWithArray:array];
-                if (self.myJoinTeamData.count > 0) {
-                    self.tableView.hidden = NO;
-                    self.bgImageView.hidden = YES;
-                    self.bgLabel.hidden = YES;
-                    [self.tableView reloadData];
-                }
-                else {
-                    self.bgImageView.hidden = NO;
-                    self.bgLabel.hidden = NO;
-                    self.tableView.hidden = YES;
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.myJoinTeamData.count > 0) {
+                        self.tableView.hidden = NO;
+                        self.bgImageView.hidden = YES;
+                        self.bgLabel.hidden = YES;
+                        [self.tableView reloadData];
+                    }
+                    else {
+                        self.bgImageView.hidden = NO;
+                        self.bgLabel.hidden = NO;
+                        self.tableView.hidden = YES;
+                    }
+                });
             }
          } fail:^{
              [Dialog simpleToast:@"获取我申请的团队失败！" withDuration:1.5];
@@ -198,21 +205,32 @@ typedef enum listType {
     else if (self.tableViewListType == listTypeStartTeam)
         dict = self.myStartTeamData[indexPath.row];
 
-    NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
-    cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
+    if (self.tableViewListType == listTypeJoinTeam) {
+        cell.personCountLabel.hidden = YES;
+        cell.payAttentionCountLabel.hidden = YES;
+        
+        cell.teamActiveCountLabel.text = @"审核中";
+        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xE3191A);
+    }
+    else {
+        NSNumber* maxPersonNum = [dict objectForKey:@"PersonNum"];
+        cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
+        [cell.personCountLabel sizeToFit];
+        
+        NSNumber* livenessNum = [dict objectForKey:@"Liveness"];
+        cell.teamActiveCountLabel.text = [NSString stringWithFormat:@"团队活跃度 %d", livenessNum.intValue];
+        NSNumber* concernNum  = [dict objectForKey:@"Concern"];
+        cell.payAttentionCountLabel.text = [NSString stringWithFormat:@"%d人关注", concernNum.intValue];
+        [cell.teamActiveCountLabel sizeToFit];
+        [cell.payAttentionCountLabel sizeToFit];
+        
+        cell.personCountLabel.hidden = NO;
+        cell.payAttentionCountLabel.hidden = NO;
+        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xBABABA);
+    }
     cell.teamNameLabel.text = [dict objectForKey:@"Name"];
     [cell.teamNameLabel sizeToFit];
-    NSNumber* maxPersonNum = [dict objectForKey:@"PersonNum"];
-    cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
-    [cell.personCountLabel sizeToFit];
     
-    NSNumber* livenessNum = [dict objectForKey:@"Liveness"];
-    cell.teamActiveCountLabel.text = [NSString stringWithFormat:@"团队活跃度 %d", livenessNum.intValue];
-    NSNumber* concernNum  = [dict objectForKey:@"Concern"];
-    cell.payAttentionCountLabel.text = [NSString stringWithFormat:@"%d人关注", concernNum.intValue];
-    [cell.teamActiveCountLabel sizeToFit];
-    [cell.payAttentionCountLabel sizeToFit];
-
     NSString* avatarUrl = [dict objectForKey:@"AvatarUrl"];
     if (avatarUrl.length > 0) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -228,21 +246,11 @@ typedef enum listType {
                 [cell setNeedsLayout];
             });
         });
-    }
-    
-    if (self.tableViewListType == listTypeJoinTeam) {
-        cell.personCountLabel.hidden = YES;
-        cell.payAttentionCountLabel.hidden = YES;
-        
-        cell.teamActiveCountLabel.text = @"审核中";
-        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xE3191A);
-    }
-    else {
-        cell.personCountLabel.hidden = NO;
-        cell.payAttentionCountLabel.hidden = NO;
-        cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xBABABA);
-    }
+    } else {
+        NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
+        cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
 
+    }
     return cell;
 }
 

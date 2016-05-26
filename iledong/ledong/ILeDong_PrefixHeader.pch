@@ -35,6 +35,7 @@
 #define API_USERPROTOCOL_URL       @"Config/Agreement"     //用户协议
 #define API_JOINTEAMS_URL       @"Team/GetMyJoinTeams"     //我申请的团队
 #define API_STARTTEAMS_URL       @"Team/GetMyStartTeams"    //我的团队
+#define API_TEAMAPPLY_URL       @"Team/GetTeamApply"     //团队申请
 #define API_CREATETEAM_URL       @"Team/Create"            //创建团队
 #define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
 #define API_UPLOAD_HEADERIMAGE_URL   @"User/UploadAvatarUrl"   //上传头像
