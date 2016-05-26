@@ -33,13 +33,15 @@
     
     [self.view addSubview:self.searchResultTable];
     
-    
+    if (_locationDic) {
+        NSString * cityName =[self.locationDic objectForKey:@"city"];
+        self.adressCity.text = cityName;
+    }
     
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
     [self.tableView registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
     self.searchTextfile.delegate = self;
-    [self getLocationInfo];
     searchResultArray = [NSMutableArray array];
     cityIndex = @[@"热门城市", @"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
     
@@ -80,30 +82,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#pragma mark - location
+#pragma mark - NetWork
 
-- (void)getLocationInfo {
-//    @WeakObj(self);
-    location = [[LDLocationManager alloc] init];
-    [location getLocationSuccess:^(NSDictionary * locationInfo) {
-//        [selfWeak loadUserLocationInfo:locationInfo];
-        NSString * city = locationInfo[@"city"];//longitude  //latitude
-        if ([city isEqualToString:@"NULL"]) {
+- (void)requestCityData {
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager GET:@"other/getprovinces" parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSInteger code = [[dic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
             return ;
         }
-        self.adressCity.text = city;
-    } fail:^(NSError * error) {
+        
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         
     }];
 }
 
-//- (void)loadUserLocationInfo:(NSDictionary *)dic {
-//    NSString * city = dic[@"city"];
-//    double  longitude = [dic[@"longitude"] doubleValue];
-//    double latitude = [dic[@"latitude"] doubleValue];
-//    NSString * areaCode = dic[@"areaCode"];
-//    
-//}
 
 #pragma mark - ButtonClick
 - (IBAction)gobackButtonClick:(id)sender
