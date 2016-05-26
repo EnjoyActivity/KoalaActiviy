@@ -32,8 +32,8 @@ typedef enum gameType {
 }gameType;
 
 typedef enum joinType {
-    joinTypePerson = 1,
-    joinTypeTeam = 2
+    joinTypePerson = 0,
+    joinTypeTeam = 1
 }joinType;
 
 typedef enum imagePickerFromType {
@@ -1202,12 +1202,12 @@ typedef enum imagePickerFromType {
     cell.textLabel.textColor = UIColorFromRGB(0x333333);
     
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"费用";
+        cell.textLabel.text = @"活动最小金额";//@"费用";
         self.costTextField = (UITextField*)[cell.contentView viewWithTag:500];
         if (!self.costTextField) {
             self.costTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
             self.costTextField.tag = 500;
-            self.costTextField.placeholder = @"请输入费用";
+            self.costTextField.placeholder = @"请输入金额";//@"请输入费用";
             self.costTextField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:self.costTextField];
             self.costTextField.delegate = self;
@@ -1223,12 +1223,12 @@ typedef enum imagePickerFromType {
         self.costTextField.center = CGPointMake(self.costTextField.center.x, cell.contentView.bounds.size.height/2);
     }
     else if (indexPath.row == 1) {
-        cell.textLabel.text = @"保证金";
+        cell.textLabel.text = @"活动最大金额";//@"保证金";
         self.marginTextField = (UITextField*)[cell.contentView viewWithTag:501];
         if (!self.marginTextField) {
             self.marginTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-15-70, 0, 0, 0)];
             self.marginTextField.tag = 501;
-            self.marginTextField.placeholder = @"请输入费用";
+            self.marginTextField.placeholder = @"请输入金额";//@"请输入保证金";
             self.marginTextField.font = [UIFont systemFontOfSize:14.0];
             [cell.contentView addSubview:self.marginTextField];
             self.marginTextField.delegate = self;
@@ -1509,6 +1509,54 @@ typedef enum imagePickerFromType {
     } fail:^{
         [Dialog simpleToast:@"创建活动失败！" withDuration:1.5];
     }];  
+}
+
+- (void)saveActivity {
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    [dict setValue:[HttpClient getTokenStr] forKey:@"token"];
+    if (self.activityId.length > 0)
+        [dict setValue:self.activityId forKey:@"id"];
+    
+    NSString* ActivityClassId = [self.selectActivityDict objectForKey:@"Id"];
+    [dict setValue:[NSNumber numberWithInt:ActivityClassId.intValue] forKey:@"ActivityClassId"];//int
+    [dict setValue:self.titleStr forKey:@"Title"];
+    [dict setValue:self.corverImgPath forKey:@"Cover"];
+    [dict setValue:@1 forKey:@"ActivityType"];  //0:系统活动；1:团队活动
+    [dict setValue:[NSNumber numberWithInt:self.gameType] forKey:@"IsLeague"];
+    [dict setValue:[NSNumber numberWithInt:self.joinType] forKey:@"JionType"];//0 个人 1 团队
+    [dict setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
+    [dict setValue:[NSNumber numberWithInt:self.phoneNum.intValue] forKey:@"Tel"];    //int?
+    [dict setValue:[NSNumber numberWithInt:self.complainTelNum.intValue] forKey:@"ComplainTel"];//int?
+    [dict setValue:[NSNumber numberWithInt:self.teamId.intValue] forKey:@"TeamId"];   //int?
+    [dict setValue:@0 forKey:@"ReleaseState"];//0 未发布 1 已发布
+    //[dict setValue:@0 forKey:@"ReleaseTime"];  //发布时间
+    NSString* beginTime = [self.timeActivityDict objectForKey:@"beginTime"];
+    NSString* endTime = [self.timeActivityDict objectForKey:@"endTime"];
+    [dict setValue:beginTime forKey:@"BeginTime"];
+    [dict setValue:endTime forKey:@"EndTime"];
+    [dict setValue:@510000 forKey:@"ProvinceCode"];
+    [dict setValue:@510100 forKey:@"CityCode"];
+    [dict setValue:@510104 forKey:@"AreaCode"];
+    //[dict setValue:@"" forKey:@"ConstitutorId"];//组织者Id
+
+    NSNumber* minMoneyNum = [self.moneyDict objectForKey:@"cost"];
+    NSNumber* maxMoneyNum = [self.moneyDict objectForKey:@"margin"];
+    [dict setValue:minMoneyNum forKey:@"EntryMoneyMin"];//活动费用最少额
+    [dict setValue:maxMoneyNum forKey:@"EntryMoneyMax"];//活动费用最大额
+    [dict setValue:@0 forKey:@"ReadFlag"];  //0:默认,1:精彩活动,2:推荐活动,4:预留
+    //[dict setValue:@"" forKey:@"tag"];  //活动标签 int?
+
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_SAVE_ACTIVITY_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"创建活动失败！" withDuration:1.5];
+    }];
 }
 
 - (void)uploadImg:(UIImage*)img {

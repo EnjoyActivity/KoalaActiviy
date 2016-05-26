@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "485939886.176854"
+            timestampString = "485948665.299604"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1504"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "485939886.176854"
+            timestampString = "485948665.299604"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1510"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "485939999.149767"
+            timestampString = "485948665.299604"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1502"
@@ -58,7 +58,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/liuxu/Documents/code/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/%E6%B4%BB%E5%8A%A8%E5%8F%91%E5%B8%83/ActivityReleaseViewController.m"
-                  timestampString = "485939999.153049"
+                  timestampString = "485948666.348379"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1502"
@@ -73,7 +73,7 @@
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/liuxu/Documents/code/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/%E6%B4%BB%E5%8A%A8%E5%8F%91%E5%B8%83/ActivityReleaseViewController.m"
-                  timestampString = "485939999.153217"
+                  timestampString = "485948666.348599"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1503"
@@ -81,6 +81,22 @@
                   offsetFromSymbolStart = "44">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
+            timestampString = "485948665.299604"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1521"
+            endingLineNumber = "1521"
+            landmarkName = "-saveActivity"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
