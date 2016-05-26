@@ -639,7 +639,7 @@ static FRUtils *instance = nil;
 }
 + (void)setHeaderImage:(UIImage*)headerImage {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg"];
+    NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg/"];
     if (![fileManager fileExistsAtPath:headerImageDirectory]) {
         [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
     }

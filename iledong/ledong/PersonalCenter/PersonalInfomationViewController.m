@@ -65,6 +65,10 @@
 
 - (IBAction)exitButtonClick:(id)sender {
     [FRUtils setToken:@""];
+    [FRUtils setNickName:@""];
+    [FRUtils setAvatarUrl:@""];
+    [FRUtils setSign:@""];
+    [FRUtils setRemark:@""];
     [AppDelegate showMainView];
 }
 
