@@ -9,15 +9,22 @@
 #import "SessionInfoViewController.h"
 #import "CHDatePickerView.h"
 
-#define kCell1      @"cell1"
+#define kCell1      @"cell"
 
-@interface SessionInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface SessionInfoViewController ()<UITableViewDelegate,UITableViewDataSource> {
+    @private
+    CGFloat _mainScrollViewContentSizeheight;
+    CGFloat _mainScrollViewoffsetY;
+    BOOL _keyboardShow;
+    BOOL _scrollViewDidScroll;
+}
 
 @property (nonatomic, copy)completeBlock block;
 @property (nonatomic, strong)UITableView* tableView;
-@property (nonatomic, strong)UITextField* activityVenueTextField;
-@property (nonatomic, strong)UITextField* activitySiteTextField;
-@property (nonatomic, strong)UITextField* organizersTextField;
+@property (nonatomic, strong)UITextField* planCountTextField;
+@property (nonatomic, strong)UITextField* maxCountTextField;
+@property (nonatomic, strong)UITextField* minCountTextField;
+@property (nonatomic, strong)UITextField* remarkTextField;
 @property (nonatomic, strong)UITextField* activityCostTextField;
 @property (nonatomic, strong)NSMutableDictionary* dataDict;
 @property (nonatomic, strong)NSString* beginTime;
@@ -33,13 +40,40 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    //self.dataDict = [NSMutableDictionary dictionary];
     [self setupTableView];
     [self setupNavigationBar];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self addKeyboardNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self removeKeyboardNotification];
+}
+
+- (void)addKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)removeKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)setupTableView {
@@ -74,13 +108,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 7;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section != 0)
-        return 10;
-    return 0;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -102,32 +130,9 @@
     timeLabel.hidden = YES;
 
     if (indexPath.section == 0) {
-        self.activityVenueTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
-        self.activityVenueTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.activityVenueTextField];
-        self.activityVenueTextField.hidden = YES;
-        self.activityVenueTextField.keyboardType = UIKeyboardTypeDefault;
-        self.activityVenueTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动场馆";
-        self.activityVenueTextField.hidden = NO;
-        self.activityVenueTextField.placeholder = @"请输入活动场馆";
-        if (self.dataDict)
-            self.activityVenueTextField.text = [self.dataDict objectForKey:@"activityVenue"];
     }
     else if (indexPath.section == 1) {
-        self.activitySiteTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
-        self.activitySiteTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.activitySiteTextField];
-        self.activitySiteTextField.hidden = YES;
-        self.activitySiteTextField.keyboardType = UIKeyboardTypeDefault;
-        self.activitySiteTextField.textAlignment = NSTextAlignmentRight;
-        cell.textLabel.text = @"活动地点";
-        self.activitySiteTextField.hidden = NO;
-        self.activitySiteTextField.placeholder = @"请输入活动地点";
-        if (self.dataDict)
-            self.activitySiteTextField.text = [self.dataDict objectForKey:@"activitySite"];
-    }
-    else if (indexPath.section == 2) {
         cell.textLabel.text = @"报名开始时间";
         timeLabel.hidden = NO;
         if (self.dataDict) {
@@ -138,7 +143,7 @@
             self.beginTime = [self.dataDict objectForKey:@"beginTime"];
         }
     }
-    else if (indexPath.section == 3) {
+    else if (indexPath.section == 2) {
         cell.textLabel.text = @"报名结束时间";
         timeLabel.hidden = NO;
         if (self.dataDict) {
@@ -149,33 +154,62 @@
             self.endTime = [self.dataDict objectForKey:@"endTime"];
         }
     }
-    else if (indexPath.section == 4) {
-        self.organizersTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
-        self.organizersTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.organizersTextField];
-        self.organizersTextField.hidden = YES;
-        self.organizersTextField.textAlignment = NSTextAlignmentRight;
-        cell.textLabel.text = @"组织者";
-        self.organizersTextField.hidden = NO;
-        self.organizersTextField.keyboardType = UIKeyboardTypeDefault;
-        self.organizersTextField.placeholder = @"请输入活动组织者";
+    else if (indexPath.section == 3) {
+        self.planCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.planCountTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.planCountTextField];
+        self.planCountTextField.textAlignment = NSTextAlignmentRight;
+        cell.textLabel.text = @"计划报名数";
+        self.planCountTextField.keyboardType = UIKeyboardTypeNumberPad;
+        self.planCountTextField.placeholder = @"请输入计划报名数";
         if (self.dataDict)
-            self.organizersTextField.text = [self.dataDict objectForKey:@"organizers"];
+            self.planCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"planCount"]).intValue];
+    }
+    else if (indexPath.section == 4) {
+        cell.textLabel.text = @"活动报名数上限";
+        self.maxCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.maxCountTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.maxCountTextField];
+        self.maxCountTextField.textAlignment = NSTextAlignmentRight;
+        self.maxCountTextField.keyboardType = UIKeyboardTypeNumberPad;
+        self.maxCountTextField.placeholder = @"请输入活动报名数上限";
+        if (self.dataDict)
+            self.maxCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"maxCount"]).intValue];
     }
     else if (indexPath.section == 5) {
+        cell.textLabel.text = @"活动报名数下限";
+        self.minCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.minCountTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.minCountTextField];
+        self.minCountTextField.textAlignment = NSTextAlignmentRight;
+        self.minCountTextField.keyboardType = UIKeyboardTypeNumberPad;
+        self.minCountTextField.placeholder = @"请输入活动报名数下限";
+        if (self.dataDict)
+            self.minCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"minCount"]).intValue];
+    }
+    else if (indexPath.section == 6) {
         self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.activityCostTextField.font = [UIFont systemFontOfSize:14.0];
         [cell.contentView addSubview:self.activityCostTextField];
-        self.activityCostTextField.hidden = YES;
         self.activityCostTextField.keyboardType = UIKeyboardTypeNumberPad;
         self.activityCostTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动费用";
-        self.activityCostTextField.hidden = NO;
         self.activityCostTextField.placeholder = @"请输入活动费用";
         if (self.dataDict)
             self.activityCostTextField.text = [self.dataDict objectForKey:@"activityCost"];
     }
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 7) {
+        self.remarkTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+        self.remarkTextField.font = [UIFont systemFontOfSize:14.0];
+        [cell.contentView addSubview:self.remarkTextField];
+        self.remarkTextField.textAlignment = NSTextAlignmentRight;
+        cell.textLabel.text = @"活动备注";
+        self.remarkTextField.hidden = NO;
+        self.remarkTextField.placeholder = @"请输入活动备注";
+        if (self.dataDict)
+            self.remarkTextField.text = [self.dataDict objectForKey:@"activityRemark"];
+    }
+    else if (indexPath.section == 8) {
         btn.hidden = NO;
     }
     
@@ -183,7 +217,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2 || indexPath.section == 3) {
+    if (indexPath.section == 1 || indexPath.section == 2) {
         [self.view endEditing:YES];
         CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.tableView completeDateInt:nil completeDateStr:^(NSString *str) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -198,9 +232,9 @@
             label.frame = CGRectMake(APP_WIDTH-label.frame.size.width-15, label.frame.origin.y, label.frame.size.width, label.frame.size.height);
             label.center = CGPointMake(label.center.x, cell.contentView.bounds.size.height/2);
             
-            if (indexPath.section == 2)
+            if (indexPath.section == 1)
                 self.beginTime = dateStr;
-            else if (indexPath.section == 3)
+            else if (indexPath.section == 2)
                 self.endTime = dateStr;
         }];
         [self.tableView addSubview:datePickView];
@@ -217,15 +251,18 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (_scrollViewDidScroll)
+        return;
     [self.view endEditing:YES];
 }
 
 - (void)btnClicked {
     [self.view endEditing:YES];
     if (self.block) {
-        if (self.activityVenueTextField.text.length == 0 ||
-            self.activitySiteTextField.text.length == 0 ||
-            self.organizersTextField.text.length == 0 ||
+        if (self.planCountTextField.text.length == 0 ||
+            self.maxCountTextField.text.length == 0 ||
+            self.minCountTextField.text.length == 0 ||
+            self.remarkTextField.text.length == 0 ||
             self.activityCostTextField.text.length == 0 ||
             self.beginTime.length == 0 ||
             self.endTime.length == 0) {
@@ -236,10 +273,16 @@
         self.dataDict = [NSMutableDictionary dictionary];
         [self.dataDict setValue:self.beginTime forKey:@"beginTime"];
         [self.dataDict setValue:self.endTime forKey:@"endTime"];
-        [self.dataDict setValue:self.activityVenueTextField.text forKey:@"activityVenue"];
-        [self.dataDict setValue:self.activitySiteTextField.text forKey:@"activitySite"];
-        [self.dataDict setValue:self.organizersTextField.text forKey:@"organizers"];
+        [self.dataDict setValue:
+            @{@"provinceCode":@"510000", @"cityCode":@"510100", @"areaCode":@"510104",
+                @"mapX":@"", @"mapY":@"", @"placeName":@"成都市体育馆", @"Address":@"成都市顺城街2号"} forKey:@"activityVenue"];
+
         [self.dataDict setValue:self.activityCostTextField.text forKey:@"activityCost"];
+        [self.dataDict setValue:self.planCountTextField.text forKey:@"planCount"];
+        [self.dataDict setValue:self.maxCountTextField.text forKey:@"maxCount"];
+        [self.dataDict setValue:self.minCountTextField.text forKey:@"minCount"];
+        [self.dataDict setValue:self.remarkTextField.text forKey:@"remark"];
+        
         self.block(self.isModify, self.dataDict);
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -248,6 +291,39 @@
 - (void)setPreDict:(NSDictionary*)dict {
     self.dataDict = [NSMutableDictionary dictionaryWithDictionary:dict];
     [self.tableView reloadData];
+}
+
+- (void)keyboardWillShow:(NSNotification *) notif {
+    if (_keyboardShow)
+        return;
+    _scrollViewDidScroll = YES;
+    _mainScrollViewContentSizeheight = self.tableView.contentSize.height;
+    _mainScrollViewoffsetY = self.tableView.contentOffset.y;
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    
+    CGFloat y = _mainScrollViewoffsetY+keyboardSize.height-80;
+    CGFloat sizeHeigth = 0;
+    sizeHeigth = _mainScrollViewContentSizeheight+keyboardSize.height;
+    _keyboardShow = YES;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.tableView setContentSize:CGSizeMake(APP_WIDTH, sizeHeigth)];
+        [self.tableView setContentOffset:CGPointMake(0, y) animated:YES];
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            _scrollViewDidScroll = NO;
+        });
+    }];
+}
+
+- (void)keyboardDidHide:(NSNotification *) notif {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.tableView setContentSize:CGSizeMake(APP_WIDTH, _mainScrollViewContentSizeheight)];
+        [self.tableView setContentOffset:CGPointMake(0, _mainScrollViewoffsetY) animated:YES];
+        _keyboardShow = NO;
+    } completion:nil];
 }
 
 @end

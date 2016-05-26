@@ -11,5 +11,6 @@
 @interface ActivityReleaseViewController : UIViewController
 
 @property (nonatomic, strong)NSString* teamId;
+@property (nonatomic, strong)NSString* activityId;
 
 @end

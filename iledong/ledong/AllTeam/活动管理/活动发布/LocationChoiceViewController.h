@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^completeLocationChoice)(NSDictionary* dict);
+
 @interface LocationChoiceViewController : UIViewController
+
+- (void)setCompleteBlock:(completeLocationChoice)block;
 
 @end

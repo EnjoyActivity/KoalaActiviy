@@ -13,10 +13,10 @@
 @interface LocationChoiceViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong)UITableView* tableView;
-@property (nonatomic, strong)NSDictionary* localDict;
 @property (nonatomic, strong)NSMutableArray* datas;
 @property (nonatomic, strong)UIView* searchView;
 @property (nonatomic, strong)UITextField* textField;
+@property (nonatomic, copy)completeLocationChoice block;
 
 @end
 
@@ -26,8 +26,11 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    self.localDict = [FRUtils getAddressInfo];
     self.datas = [NSMutableArray array];
+    NSDictionary* dict = [FRUtils getAddressInfo];
+    if (dict)
+        [self.datas addObject:dict];
+
     [self setupNavigationBar];
     [self setupSearchView];
     [self setupTableView];
@@ -85,21 +88,24 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1+self.datas.count;
+    return self.datas.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell forIndexPath:indexPath];
 
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"成都";
-    }
-    else {
-        NSDictionary* dict = self.datas[indexPath.row];
-        cell.textLabel.text = [dict objectForKey:@"name"];
-    }
+    NSDictionary* dict = self.datas[indexPath.row];
+    cell.textLabel.text = [dict objectForKey:@"name"];
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary* dict = self.datas[indexPath.row];
+    if (self.block) {
+        self.block(dict);
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)searchBtnClicked {
@@ -112,12 +118,17 @@
         NSDictionary* dict = (NSDictionary*)responseObject;
         NSNumber* codeNum = [dict objectForKey:@"code"];
         if (codeNum.intValue == 0) {
-            weakSelf.datas = [dic objectForKey:@"result"];
+            NSArray* array = [dic objectForKey:@"result"];
+            [weakSelf.datas addObjectsFromArray:array];
             [weakSelf.tableView reloadData];
         }
     } fail:^{
         [Dialog simpleToast:@"查询失败！" withDuration:1.5];
     }];
+}
+
+- (void)setCompleteBlock:(completeLocationChoice)block {
+    self.block = block;
 }
 
 @end

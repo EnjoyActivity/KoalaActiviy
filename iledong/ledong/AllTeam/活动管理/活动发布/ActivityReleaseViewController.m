@@ -27,13 +27,13 @@
 #define KTextFieldAsObj     @"textFieldAssociatedObject"
 
 typedef enum gameType {
-    gameTypeLeague = 0,
-    gameTypenonLeague
+    gameTypeLeague = 1,
+    gameTypenonLeague = 0
 }gameType;
 
 typedef enum joinType {
-    joinTypePerson = 0,
-    joinTypeTeam
+    joinTypePerson = 1,
+    joinTypeTeam = 2
 }joinType;
 
 typedef enum imagePickerFromType {
@@ -65,6 +65,7 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)UITextField* marginTextField;
 @property (nonatomic, strong)NSTimer* timer;
 @property (atomic, assign)BOOL isComplete;
+@property (nonatomic, strong)UIImageView* corverImgView;
 
 //发布请求参数
 @property (nonatomic, assign)gameType gameType;                                 //活动是否联赛
@@ -72,12 +73,13 @@ typedef enum imagePickerFromType {
 @property (nonatomic, strong)NSString* contactInfo;                             //联系方式
 @property (nonatomic, strong)NSString* activityDetailText;                      //活动详情
 @property (nonatomic, strong)NSString* titleStr;                                //活动标题
+@property (nonatomic, strong)NSString* corverImgPath;                           //封面图片路径
 @property (nonatomic, strong)NSMutableDictionary* selectActivityDict;           //选择的活动类别
 @property (nonatomic, strong)NSMutableDictionary* timeSigningUpDict;            //报名时间
 @property (nonatomic, strong)NSMutableDictionary* timeActivityDict;             //活动时间
 @property (nonatomic, strong)NSMutableDictionary* signingUpPersonCountDict;     //报名人数情况
 @property (nonatomic, strong)NSMutableDictionary* moneyDict;                    //费用
-@property (nonatomic, strong)NSMutableDictionary* activityAddress;              //活动地点      1
+@property (nonatomic, strong)NSMutableDictionary* activityAddress;              //活动地点
 @property (nonatomic, strong)NSMutableArray* activitySessionArray;              //活动场次
 
 @end
@@ -626,8 +628,9 @@ typedef enum imagePickerFromType {
         }
         else if (indexPath.section == 5) {
             [self.view endEditing:YES];
-            LocationChoiceViewController* Vc = [[LocationChoiceViewController alloc]init];
-            [self.navigationController pushViewController:Vc animated:YES];
+            //LocationChoiceViewController* Vc = [[LocationChoiceViewController alloc]init];
+            //[self.navigationController pushViewController:Vc animated:YES];
+
 //            ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
 //            [self.navigationController pushViewController:Vc animated:YES];
 //            __weak typeof(self)weakSelf = self;
@@ -673,13 +676,17 @@ typedef enum imagePickerFromType {
         UIImage* newImage = smallImage;
 
         if (weakSelf.imgFromType == imagePickerFromTypeHeader) {
-            UIImageView* imageView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
-            imageView.image = newImage;
-            [weakSelf.headerScrollView addSubview:imageView];
+            if (!weakSelf.corverImgView) {
+                weakSelf.corverImgView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
+            }
+            weakSelf.corverImgView.image = newImage;
+            [weakSelf.headerScrollView addSubview:weakSelf.corverImgView];
             
-            weakSelf.addImgBtnView.frame = CGRectMake(imageView.frame.size.width+imageView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
+            weakSelf.addImgBtnView.frame = CGRectMake(weakSelf.corverImgView.frame.size.width+weakSelf.corverImgView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
             weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
             
+            weakSelf.coverPhotoImages = nil;
+            weakSelf.coverPhotoImages = [NSMutableArray array];
             [weakSelf.coverPhotoImages addObject:image];
             [weakSelf uploadImg:image];
         }
@@ -792,8 +799,10 @@ typedef enum imagePickerFromType {
         }
         if (self.joinType == joinTypePerson)
             [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
-        else
+        else if (self.joinType == joinTypeTeam)
             [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        else
+            [teamTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
         [teamTypeBtn sizeToFit];
         teamTypeBtn.center = CGPointMake(teamTypeBtn.center.x, cell.contentView.bounds.size.height/2);
         
@@ -818,8 +827,10 @@ typedef enum imagePickerFromType {
         }
         if (self.joinType == joinTypeTeam)
             [personTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
-        else
+        else if (self.joinType == joinTypePerson)
             [personTypeBtn setImage:[UIImage imageNamed:@"ckb_checked"] forState:UIControlStateNormal];
+        else
+            [personTypeBtn setImage:[UIImage imageNamed:@"ckb_uncheck"] forState:UIControlStateNormal];
         [personTypeBtn sizeToFit];
         personTypeBtn.center = CGPointMake(personTypeBtn.center.x, cell.contentView.bounds.size.height/2);
     }
@@ -1394,8 +1405,101 @@ typedef enum imagePickerFromType {
 }
 
 - (void)commitActivity {
+    NSMutableDictionary* ActivityInfo = [NSMutableDictionary dictionary];
+    if (self.activityId.length > 0)
+        [ActivityInfo setValue:self.activityId forKey:@"Id"];
 
+    NSString* ActivityClassId = [self.selectActivityDict objectForKey:@"Id"];
+    NSString* beginTime = [self.timeActivityDict objectForKey:@"beginTime"];
+    NSString* endTime = [self.timeActivityDict objectForKey:@"endTime"];
+    NSString* applyBeginTime = [self.timeSigningUpDict objectForKey:@"beginTime"];
+    NSString* applyEndTime = [self.timeSigningUpDict objectForKey:@"endTime"];
+    NSNumber* planNum = [self.signingUpPersonCountDict objectForKey:@"planCount"];
+    NSNumber* lowerNum = [self.signingUpPersonCountDict objectForKey:@"lowerLimitCount"];
+    NSNumber* maxNum = [self.signingUpPersonCountDict objectForKey:@"ceilingCount"];
+    NSNumber* minMoneyNum = [self.moneyDict objectForKey:@"cost"];
+    NSNumber* maxMoneyNum = [self.moneyDict objectForKey:@"margin"];
+
+    [ActivityInfo setValue:ActivityClassId forKey:@"ActivityClassId"];      //活动分类id
+    [ActivityInfo setValue:self.titleStr forKey:@"Title"];
+    [ActivityInfo setValue:self.corverImgPath forKey:@"Cover"];
+    [ActivityInfo setValue:@0 forKey:@"ActivityType"];
+    [ActivityInfo setValue:[NSNumber numberWithInt:self.gameType] forKey:@"IsLeague"];
+    [ActivityInfo setValue:[NSNumber numberWithInt:self.joinType] forKey:@"JionType"];
+    [ActivityInfo setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
+    [ActivityInfo setValue:self.teamId forKey:@"ReleaseUserId"];            //团队id
+    [ActivityInfo setValue:@0 forKey:@"ReleaseState"];                      //0未发布，1已发布
+    [ActivityInfo setValue:self.contactInfo forKey:@"Tel"];
+    [ActivityInfo setValue:@"" forKey:@"ComplainTel"];                      //举报电话
+    [ActivityInfo setValue:self.teamId forKey:@"TeamId"];
+    [ActivityInfo setValue:beginTime forKey:@"BeginTime"];
+    [ActivityInfo setValue:endTime forKey:@"EndTime"];
+    [ActivityInfo setValue:applyBeginTime forKey:@"ApplyBeginTime"];
+    [ActivityInfo setValue:applyEndTime forKey:@"ApplyEndTime"];
+    [ActivityInfo setValue:lowerNum forKey:@"WillNum"];
+    [ActivityInfo setValue:maxNum forKey:@"MaxNum"];
+    [ActivityInfo setValue:planNum forKey:@"MaxApplyNum"];      //
+    [ActivityInfo setValue:@0 forKey:@"ApplyNum"];         //已经报名数
+    [ActivityInfo setValue:@"510000" forKey:@"provinceCode"];
+    [ActivityInfo setValue:@"510100" forKey:@"cityCode"];
+    [ActivityInfo setValue:@"510104" forKey:@"areaCode"];
+    //[ActivityInfo setValue: forKey:@"ConstitutorId"];     组织者id
+    [ActivityInfo setValue:minMoneyNum forKey:@"EntryMoneyMin"];    //活动费用最少额
+    [ActivityInfo setValue:maxMoneyNum forKey:@"EntryMoneyMax"];    //活动费用最大额
+    [ActivityInfo setValue:@0 forKey:@"ReadFlag"];
+    [ActivityInfo setValue:@"" forKey:@"tag"];                      //活动标签
+
+    NSMutableArray* ActivityItems = [NSMutableArray array];
+    for (NSDictionary* dict in self.activitySessionArray) {
+        NSNumber* planNum = [dict objectForKey:@"planCount"];
+        NSNumber* maxNum = [dict objectForKey:@"maxCount"];
+        NSNumber* minNum = [dict objectForKey:@"minCount"];
+        NSNumber* costNum = [dict objectForKey:@"activityCost"];
+        NSDictionary* tempDict = [dict objectForKey:@"activityVenue"];
+        
+        NSMutableDictionary* item = [NSMutableDictionary dictionary];
+        [item setValue:@"" forKey:@"Id"];                               //活动id 编辑时用
+        [item setValue:[dict objectForKey:@"remark"] forKey:@"Remark"];
+        [item setValue:[dict objectForKey:@"beginTime"] forKey:@"BeginTime"];
+        [item setValue:[dict objectForKey:@"endTime"] forKey:@"EndTime"];
+        [item setValue:applyBeginTime forKey:@"ApplyBeginTime"];    //
+        [item setValue:applyEndTime forKey:@"ApplyEndTime"];        //
+        [item setValue:costNum forKey:@"EntryMoney"];
+        [item setValue:minNum forKey:@"WillNum"];
+        [item setValue:maxNum forKey:@"MaxNum"];
+        [item setValue:planNum forKey:@"MaxApplyNum"];
+        [item setValue:@0 forKey:@"ApplyNum"];
+        //[item setValue: forKey:@"ConstitutorId"];
+        [item setValue:[tempDict objectForKey:@"placeName"] forKey:@"PlaceName"];
+        [item setValue:[tempDict objectForKey:@"Address"] forKey:@"Address"];
+        [item setValue:[tempDict objectForKey:@"mapX"] forKey:@"MapX"];
+        [item setValue:[tempDict objectForKey:@"mapY"] forKey:@"MapY"];
+        [item setValue:[tempDict objectForKey:@"provinceCode"] forKey:@"ProvinceCode"];
+        [item setValue:[tempDict objectForKey:@"cityCode"] forKey:@"CityCode"];
+        [item setValue:[tempDict objectForKey:@"areaCode"] forKey:@"AreaCode"];
+        [ActivityItems addObject:item];
+    }
+
+    NSString* token = [HttpClient getTokenStr];
+    NSDictionary* dict = @{
+                           @"token":token,
+                           @"ActivityCreateUpdateModel":@{
+                                @"ActivityInfo":ActivityInfo,
+                                @"ActivityItems":ActivityItems
+                                }
+                           };
     
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATE_ACTIVITY_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"创建活动失败！" withDuration:1.5];
+    }];  
 }
 
 - (void)uploadImg:(UIImage*)img {
@@ -1410,8 +1514,14 @@ typedef enum imagePickerFromType {
     [dict setValue:fileName forKey:@"FileName"];
 
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
+    
+    __weak typeof(self)weakSelf = self;
     [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[img] success:^(id responseObject) {
         [[HttpClient shareHttpClient] hiddenMessageHUD];
+        SBJsonParser* json = [[SBJsonParser alloc]init];
+        id jsonObject = [json objectWithString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+        NSDictionary* temp = (NSDictionary*)jsonObject;
+        weakSelf.corverImgPath = [temp objectForKey:@"result"];
         [Dialog simpleToast:@"上传成功！" withDuration:1.5];
     } fail:^{
         [[HttpClient shareHttpClient] hiddenMessageHUD];
