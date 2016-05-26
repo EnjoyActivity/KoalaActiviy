@@ -9,16 +9,21 @@
 #import "AdressCityVC.h"
 #import "FRUtils.h"
 #import "LDLocationManager.h"
+#import "LDChineseToPinyin.h"
+#import "LDCityViewController.h"
 
 
 @interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     
-    LDLocationManager * location;
-    NSMutableDictionary * cityDic;
+    NSArray * cityArray;
     NSArray * cityIndex;
-    
+    NSArray * provinceArray;
     NSMutableArray * searchResultArray;
+    
+    NSMutableArray * provinceIndex;
+    NSDictionary * provinceDic;
+    BOOL isProvince;
 
 }
 @property (nonatomic, strong) UITableView * searchResultTable;
@@ -29,8 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    cityDic = [NSMutableDictionary dictionaryWithDictionary:[self cityData]];
-    
+    isProvince = YES;
     [self.view addSubview:self.searchResultTable];
     
     if (_locationDic) {
@@ -43,7 +47,11 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
     self.searchTextfile.delegate = self;
     searchResultArray = [NSMutableArray array];
-    cityIndex = @[@"热门城市", @"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    
+    cityIndex = @[@"A", @"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    
+    provinceIndex = [NSMutableArray arrayWithArray:cityIndex];
+    [self requestCityData];
     
 }
 
@@ -56,27 +64,22 @@
  
 }
 
-- (NSDictionary *)cityData {
+- (NSMutableDictionary *)cityData {
     NSMutableDictionary * cityDicTemp = [NSMutableDictionary dictionary];
     int a = 65;
     
-    NSArray * hotCity = @[@"北京",@"上海",@"广州",@"成都"];
-    [cityDicTemp setObject:hotCity forKey:@"热门城市"];
+//    NSArray * hotCity = @[@"北京",@"上海",@"广州",@"成都"];
+//    [cityDicTemp setObject:hotCity forKey:@"热门城市"];
     
     for (int i = 0; i<26; i++) {
         NSString * title = [NSString stringWithFormat:@"%c",a];
         NSMutableArray * cityArrTemp = [NSMutableArray array];
-        int random = arc4random()%10;
-        for (int j= 0; j<random+1; j++) {
-            NSString * strTemp = [NSString stringWithFormat:@"%@City%d",title,j];
-            [cityArrTemp addObject:strTemp];
-        }
-        
         [cityDicTemp setObject:cityArrTemp forKey:title];
         a++;
     }
     return [cityDicTemp copy];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -94,13 +97,63 @@
             [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
             return ;
         }
+//        NSArray * cityArray = [dic objectForKey:@"result"];
+//        provinceArray = [cityArray copy];
+//        [
+        [self dealProvinceData:[dic objectForKey:@"result"]];
         
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.tableView reloadData];
+//        });
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
+    }];
+}
+
+
+- (void)getCityByProvinceCode:(NSString *)code {
+    NSDictionary * dic = @{
+                           @"ProvinceCode":code
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [resultDic[@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        
+        NSArray * result = [resultDic objectForKey:@"result"];
+//        locationArray = [result copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         
     }];
 }
 
+- (void)dealProvinceData:(NSArray *)provinceArr {
+    NSMutableDictionary * dicTemp = [self cityData];
+    for (NSDictionary * dic in provinceArr) {
+        NSString * name = dic[@"Name"];
+        NSString * title = [LDChineseToPinyin getSectionTitle:name];
+        NSMutableArray * arrTemp = [dicTemp objectForKey:title];
+        [arrTemp addObject:dic];
+    }
+    provinceDic = [dicTemp copy];
+    
+    [provinceDic enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSMutableArray * obj, BOOL * _Nonnull stop) {
+        if (obj.count == 0) {
+            [provinceIndex removeObject:key];
+        }
+        
+    }];
+    
+    [self.tableView reloadData];
+}
 
 #pragma mark - ButtonClick
 - (IBAction)gobackButtonClick:(id)sender
@@ -119,6 +172,9 @@
     if ([tableView isEqual:self.searchResultTable]) {
         return 1;
     }
+    if (isProvince) {
+        return provinceIndex.count;
+    }
     return cityIndex.count;//[cityDic allKeys].count;
 }
 
@@ -128,12 +184,18 @@
     if ([tableView isEqual:self.searchResultTable]) {
         return searchResultArray.count;
     }
-    NSString * index = cityIndex[section];
-// 
+    if (isProvince) {
+        NSString * index = provinceIndex[section];
+        NSMutableArray * arr = [provinceDic objectForKey:index];
+        return arr.count;
+    }
+    
+//    NSString * index = cityIndex[section];
+//
 //    int sectionValu = (int)section;
 //    NSString * str = [NSString stringWithFormat:@"%c",sectionValu+64];
-    NSArray * arr = [cityDic objectForKey:index];
-    return arr.count;
+//    NSArray * arr = [cityDic objectForKey:index];
+    return cityArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,9 +207,19 @@
     }
     else
     {
-        NSString * index = cityIndex[indexPath.section];
-        NSArray * arr = [cityDic objectForKey:index];
-        cityLabel.text = arr[indexPath.row];
+//        NSString * index = cityIndex[indexPath.section];
+//        NSArray * arr =  [cityArray objectForKey:index];
+//        cityLabel.text = arr[indexPath.row];
+        if (isProvince) {
+            NSString * index = provinceIndex[indexPath.section];
+            NSMutableArray * arr = [provinceDic objectForKey:index];
+            NSDictionary * dic = arr[indexPath.row];
+            cityLabel.text = [dic objectForKey:@"Name"];
+        }
+        else
+        {
+//            NSDictionary 
+        }
     }
 
     return cell;
@@ -166,7 +238,13 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 100, 30)];
     label.textColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
     label.font = [UIFont systemFontOfSize:15];
-    label.text = cityIndex[section];
+    if (isProvince) {
+        label.text = provinceIndex[section];
+    }
+    else
+    {
+        label.text = cityIndex[section];
+    }
     [view addSubview:label];
     return view;
 }
@@ -178,16 +256,35 @@
     if ([tableView isEqual:self.searchResultTable]) {
         return @[];
     }
+    if (isProvince) {
+        return provinceIndex;
+    }
     return cityIndex;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString * str = cityIndex[indexPath.section];
-    NSArray * arr = [cityDic objectForKey:str];
-    if (_locationResult != nil) {
-        _locationResult(arr[indexPath.row]);
+    if ([tableView isEqual:self.tableView]) {
+        NSString * index = provinceIndex[indexPath.section];
+        NSMutableArray * arr = [provinceDic objectForKey:index];
+        NSDictionary * dic = arr[indexPath.row];
+        
+        LDCityViewController * cityVc = [[LDCityViewController alloc] init];
+        cityVc.provinceCode = [dic objectForKey:@"Code"];
+        cityVc.cityName = [dic objectForKey:@"Name"];
+        cityVc.city = ^(NSDictionary * cityDic) {
+            if (self.locationResult) {
+                self.locationResult(cityDic);
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        [self.navigationController pushViewController:cityVc animated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
+//    NSString * str = cityIndex[indexPath.section];
+////    NSArray * arr = [cityArray objectForKey:str];
+//    if (_locationResult != nil) {
+//        _locationResult(arr[indexPath.row]);
+//    }
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

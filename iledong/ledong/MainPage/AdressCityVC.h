@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^getLocation)(NSString *);
+typedef void(^getLocation)(NSDictionary *);
 
 @interface AdressCityVC : UIViewController
 

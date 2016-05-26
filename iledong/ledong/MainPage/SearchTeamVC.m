@@ -8,6 +8,8 @@
 
 #import "SearchTeamVC.h"
 #import "HistoryTableViewCell.h"
+#import "ActiveDetailViewController.h"
+
 
 static NSString * const historyCell = @"HistoryCell";
 static NSString * const hotSearchCell = @"hotSearchCell";
@@ -244,6 +246,15 @@ static NSString * const teamCell = @"ActivityCell";
         [self requestTeamData:searchKeyWord];
         [self.resultTableView setHidden:NO];
     }
+    else
+    {
+        ActiveDetailViewController * acDetail = [[ActiveDetailViewController alloc] init];
+        NSDictionary * dic = resultArray[indexPath.row];
+        acDetail.Id = [[dic objectForKey:@"Id"] intValue];
+        [self.navigationController pushViewController:acDetail animated:YES];
+    }
+
+    
 }
 
 #pragma mark - UICollectionViewDataSource,UICollectionViewDelegate
@@ -256,13 +267,15 @@ static NSString * const teamCell = @"ActivityCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:hotSearchCell forIndexPath:indexPath];
+    NSDictionary * dic = hotSearchArray[indexPath.row];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
-    label.text = hotSearchArray[indexPath.row];
+    label.text = [dic objectForKey:@"Name"];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    searchKeyWord = hotSearchArray[indexPath.row];
+    NSDictionary * dic = hotSearchArray[indexPath.row];
+    searchKeyWord = [dic objectForKey:@"Name"];
     self.textField.text = searchKeyWord;
     [self.resultTableView setHidden:NO];
     [historyArray insertObject:searchKeyWord atIndex:0];

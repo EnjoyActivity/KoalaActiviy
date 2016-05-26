@@ -9,6 +9,7 @@
 #import "SearchActiveVC.h"
 #import "HistoryTableViewCell.h"
 #import "SearchTableViewCell.h"
+#import "ActiveDetailViewController.h"
 
 static NSString * const historyCell = @"HistoryCell";
 static NSString * const activityCell = @"sActivityCell";
@@ -63,7 +64,6 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     if (token.length == 0) {
         return;
     }
-    
     NSDictionary * dic = @{
                            @"token":token,
                            @"page":[NSNumber numberWithInt:1],
@@ -73,7 +73,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
@@ -261,6 +261,14 @@ static NSString * const hotSearchCell = @"hotSearchCell";
         [self requestWithKeyWord:historyTemp];
         [self.resultTableView setHidden:NO];
     }
+    else
+    {
+        ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+        NSDictionary * dic = resultArray[indexPath.row];
+        activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+        [self.navigationController pushViewController:activityVc animated:YES];
+    }
+    
 }
 
 #pragma mark - UICollectionViewDataSource,UICollectionViewDelegate

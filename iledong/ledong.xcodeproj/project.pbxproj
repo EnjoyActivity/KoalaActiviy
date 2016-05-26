@@ -367,6 +367,9 @@
 		ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */; };
 		ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */; };
 		ECC5AF4D1CF69C9300643CE1 /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECC5AF4C1CF69C9300643CE1 /* ScanViewController.xib */; };
+		ECC5AF501CF6A6E200643CE1 /* LDChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */; };
+		ECC5AF541CF6BCC400643CE1 /* LDCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC5AF521CF6BCC400643CE1 /* LDCityViewController.m */; };
+		ECC5AF551CF6BCC400643CE1 /* LDCityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECC5AF531CF6BCC400643CE1 /* LDCityViewController.xib */; };
 		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
 		ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */; };
 		ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */; };
@@ -949,6 +952,11 @@
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
 		ECC5AF4C1CF69C9300643CE1 /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
+		ECC5AF4E1CF6A6E200643CE1 /* LDChineseToPinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDChineseToPinyin.h; sourceTree = "<group>"; };
+		ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDChineseToPinyin.m; sourceTree = "<group>"; };
+		ECC5AF511CF6BCC400643CE1 /* LDCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDCityViewController.h; sourceTree = "<group>"; };
+		ECC5AF521CF6BCC400643CE1 /* LDCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDCityViewController.m; sourceTree = "<group>"; };
+		ECC5AF531CF6BCC400643CE1 /* LDCityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDCityViewController.xib; sourceTree = "<group>"; };
 		ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTeamMoreCell.xib; sourceTree = "<group>"; };
 		ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageTeamTableViewCell.h; sourceTree = "<group>"; };
 		ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageTeamTableViewCell.m; sourceTree = "<group>"; };
@@ -1489,6 +1497,9 @@
 				3608E2071CA23C3200AC23A4 /* AdressCityVC.h */,
 				3608E2081CA23C3200AC23A4 /* AdressCityVC.m */,
 				3608E2091CA23C3200AC23A4 /* AdressCityVC.xib */,
+				ECC5AF511CF6BCC400643CE1 /* LDCityViewController.h */,
+				ECC5AF521CF6BCC400643CE1 /* LDCityViewController.m */,
+				ECC5AF531CF6BCC400643CE1 /* LDCityViewController.xib */,
 				3608E2101CA26FEC00AC23A4 /* CityTableViewCell.xib */,
 				3627C2F41CA8C7E400A5D7EB /* SearchViewController.h */,
 				3627C2F51CA8C7E400A5D7EB /* SearchViewController.m */,
@@ -2147,6 +2158,8 @@
 			children = (
 				EC9A93191CED9D3D00F6009B /* LDLocationManager.h */,
 				EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */,
+				ECC5AF4E1CF6A6E200643CE1 /* LDChineseToPinyin.h */,
+				ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */,
 			);
 			path = UtilityMethod;
 			sourceTree = "<group>";
@@ -2320,6 +2333,7 @@
 				365AEDF61CD9A6BD0019EBF0 /* FooterTableViewCell.xib in Resources */,
 				3664D0551CA0FA7300BC6805 /* img_5@3x.png in Resources */,
 				905516251CEC3CED001C4F51 /* SVProgressHUD.bundle in Resources */,
+				ECC5AF551CF6BCC400643CE1 /* LDCityViewController.xib in Resources */,
 				362E30131CCF5C5200EBADCF /* ic_close@2x.png in Resources */,
 				36E1E6E21C9F84C90085C457 /* ic_home_on@2x.png in Resources */,
 				7F8F19241C87DAA700570B79 /* ReBindingViewController.xib in Resources */,
@@ -2496,6 +2510,7 @@
 				9040CD0D1CF2957800C18476 /* CHDatePickerView.m in Sources */,
 				ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */,
 				365AEDF51CD9A6BD0019EBF0 /* FooterTableViewCell.m in Sources */,
+				ECC5AF501CF6A6E200643CE1 /* LDChineseToPinyin.m in Sources */,
 				905516091CEC3CED001C4F51 /* MJRefreshBackNormalFooter.m in Sources */,
 				905515FF1CEC3CED001C4F51 /* MBProgressHUD.m in Sources */,
 				361A765D1CBCEB81002FE6B2 /* GoodActivViewController.m in Sources */,
@@ -2530,6 +2545,7 @@
 				361A76571CBCD46B002FE6B2 /* SearchHotViewController.m in Sources */,
 				20B63E591CEDC02B00D5C551 /* SBJsonStreamParserAdapter.m in Sources */,
 				203416981CF5584A0002D8B5 /* ContactInfoView.m in Sources */,
+				ECC5AF541CF6BCC400643CE1 /* LDCityViewController.m in Sources */,
 				361001311CD1DB69002C0FCF /* TeamHomeViewController.m in Sources */,
 				9055161B1CEC3CED001C4F51 /* SDWebImagePrefetcher.m in Sources */,
 				626DD4821C8426D6006BC53C /* MainPageController.m in Sources */,

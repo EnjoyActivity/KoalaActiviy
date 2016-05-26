@@ -15,6 +15,9 @@
 
 #import "HistoryTableViewCell.h"
 
+#import "ActiveDetailViewController.h"
+#import "TeamHomeViewController.h"
+
 static NSString * historyCell = @"HistoryCell";
 static NSString * activityCell = @"sActivityCell";
 static NSString * teamCell   = @"ActivityCell";
@@ -350,7 +353,29 @@ static NSString * friendCell = @"ActivityCell";
         self.textFiled.text = searchkeyWord;
     }
     else {
-        
+        switch (indexPath.section) {
+            case 0:
+            {
+             
+            }
+                break;
+            case 1:
+            {
+                NSDictionary * dic =teamArray[indexPath.row];
+                TeamHomeViewController * teamVc = [[TeamHomeViewController alloc] init];
+                teamVc.teamId = [dic objectForKey:@"Id"];
+                [self.navigationController pushViewController:teamVc animated:YES];
+            }
+                break;
+            default:
+            {
+                NSDictionary * dic = activityArray[indexPath.row];
+                ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+                activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+                [self.navigationController pushViewController:activityVc animated:YES];
+            }
+                break;
+        }
     }
 }
 

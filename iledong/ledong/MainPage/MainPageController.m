@@ -252,8 +252,9 @@ static CGFloat const teamHeight = 280;
 - (void)buttonClicked:(UIButton *)sender {
     if ([sender isEqual:locationButton]) {
         AdressCityVC *adressCityVC = [[AdressCityVC alloc] init];
-        adressCityVC.locationResult = ^(NSString *city) {
-            [locationButton setTitle:city forState:UIControlStateNormal];
+        adressCityVC.locationResult = ^(NSDictionary *city) {
+            NSString * title = [city objectForKey:@"Name"];
+            [locationButton setTitle:title forState:UIControlStateNormal];
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
             [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
         };
@@ -415,6 +416,7 @@ static CGFloat const teamHeight = 280;
     else
     {
         TeamHomeViewController * teamVc = [[TeamHomeViewController alloc] init];
+        teamVc.hidesBottomBarWhenPushed = YES;
         NSDictionary * dic = teamArray[row];
         NSString * teamId = [dic objectForKey:@"Id"];
         teamVc.teamId = teamId;
