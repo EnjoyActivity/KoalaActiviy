@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -16,23 +16,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oba-7P-YSX">
-                    <rect key="frame" x="18" y="21" width="10" height="19"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="gobackButtonClick:" destination="-1" eventType="touchUpInside" id="7ck-uo-PTs"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="二维码扫描" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5V1-Sf-E6G">
-                    <rect key="frame" x="91" y="21" width="139" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="二维码扫描" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5V1-Sf-E6G">
+                    <rect key="frame" x="91" y="29" width="139" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.90980392156862744" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5VH-Uw-vmO">
-                    <rect key="frame" x="259" y="21" width="30" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VH-Uw-vmO">
+                    <rect key="frame" x="259" y="24" width="30" height="30"/>
                     <state key="normal" title="相册">
                         <color key="titleColor" red="0.90980392156862744" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
@@ -40,9 +31,28 @@
                         <action selector="openPhoto:" destination="-1" eventType="touchUpInside" id="tF8-J6-3uy"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oba-7P-YSX">
+                    <rect key="frame" x="17" y="28" width="10" height="22"/>
+                    <state key="normal" image="ic_back"/>
+                    <connections>
+                        <action selector="gobackButtonClick:" destination="-1" eventType="touchUpInside" id="7ck-uo-PTs"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="5V1-Sf-E6G" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="29" id="1oW-z5-QWJ"/>
+                <constraint firstItem="oba-7P-YSX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="28" id="Bs0-58-bLc"/>
+                <constraint firstItem="5VH-Uw-vmO" firstAttribute="leading" secondItem="5V1-Sf-E6G" secondAttribute="trailing" constant="29" id="H34-DG-EZo"/>
+                <constraint firstItem="oba-7P-YSX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="17" id="NeE-rU-q1a"/>
+                <constraint firstItem="5V1-Sf-E6G" firstAttribute="leading" secondItem="oba-7P-YSX" secondAttribute="trailing" constant="64" id="cYD-yl-4uc"/>
+                <constraint firstItem="5VH-Uw-vmO" firstAttribute="centerY" secondItem="5V1-Sf-E6G" secondAttribute="centerY" id="cx5-h9-NJt"/>
+                <constraint firstAttribute="trailing" secondItem="5VH-Uw-vmO" secondAttribute="trailing" constant="31" id="rTs-y0-zSf"/>
+            </constraints>
             <point key="canvasLocation" x="139" y="17"/>
         </view>
     </objects>
+    <resources>
+        <image name="ic_back" width="10" height="19"/>
+    </resources>
 </document>

@@ -20,7 +20,7 @@
 {
     self.titleName = @"扫描";
     [super viewDidLoad];
-    [self.goBackButton setBackgroundImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
+//    [self.goBackButton setBackgroundImage:[UIImage imageNamed:@"ic_back@2x"] forState:UIControlStateNormal];
     ZHScanView *scanf = [ZHScanView scanViewWithFrame:CGRectMake(0, 62, APP_WIDTH, APP_HEIGHT)];
 //    scanf.promptMessage = @"您可以直接输入或者选择扫描二维码";
     [self.view addSubview:scanf];
