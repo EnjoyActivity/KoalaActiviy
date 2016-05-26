@@ -26,6 +26,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
+    self.localDict = [FRUtils getAddressInfo];
     self.datas = [NSMutableArray array];
     [self setupNavigationBar];
     [self setupSearchView];

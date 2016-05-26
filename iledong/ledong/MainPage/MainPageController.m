@@ -104,7 +104,7 @@ static CGFloat const teamHeight = 280;
     [self requestAdData];
     [self requestTeamData:5];
 
-    [self getLocationInfo];
+//    [self getLocationInfo];
  
 }
 

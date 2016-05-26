@@ -78,7 +78,6 @@
 		3627C2FC1CA8CF6700A5D7EB /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627C2FA1CA8CF6700A5D7EB /* SearchTableViewCell.m */; };
 		3627C2FD1CA8CF6700A5D7EB /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */; };
 		3627C3011CA8D62A00A5D7EB /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */; };
-		3627C3021CA8D62A00A5D7EB /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */; };
 		3627C5D01CA8DBD400A5D7EB /* scan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CA1CA8DBD400A5D7EB /* scan@2x.png */; };
 		3627C5D11CA8DBD400A5D7EB /* scan@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CB1CA8DBD400A5D7EB /* scan@3x.png */; };
 		3627C5D21CA8DBD400A5D7EB /* scan_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CC1CA8DBD400A5D7EB /* scan_1@2x.png */; };
@@ -343,6 +342,7 @@
 		90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */; };
 		90FADECB1CF684B000961294 /* GeographicInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECA1CF684B000961294 /* GeographicInfoViewController.m */; };
 		90FADECE1CF694D500961294 /* LocationChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECD1CF694D500961294 /* LocationChoiceViewController.m */; };
+		90FADED01CF69EE100961294 /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90FADECF1CF69EE100961294 /* ScanViewController.xib */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
 		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
 		90FB7D6A1CEEECB50055B493 /* ic_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90FB7D691CEEECB50055B493 /* ic_new@2x.png */; };
@@ -498,7 +498,6 @@
 		3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		3627C2FE1CA8D62A00A5D7EB /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
 		3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
-		3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		3627C5CA1CA8DBD400A5D7EB /* scan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan@2x.png"; sourceTree = "<group>"; };
 		3627C5CB1CA8DBD400A5D7EB /* scan@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan@3x.png"; sourceTree = "<group>"; };
 		3627C5CC1CA8DBD400A5D7EB /* scan_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_1@2x.png"; sourceTree = "<group>"; };
@@ -915,6 +914,7 @@
 		90FADECA1CF684B000961294 /* GeographicInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeographicInfoViewController.m; sourceTree = "<group>"; };
 		90FADECC1CF694D500961294 /* LocationChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChoiceViewController.h; sourceTree = "<group>"; };
 		90FADECD1CF694D500961294 /* LocationChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChoiceViewController.m; sourceTree = "<group>"; };
+		90FADECF1CF69EE100961294 /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
 		90FB7D661CEEE3E40055B493 /* TeamManagerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamManagerTableViewController.h; sourceTree = "<group>"; };
@@ -1496,7 +1496,7 @@
 				3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */,
 				3627C2FE1CA8D62A00A5D7EB /* ScanViewController.h */,
 				3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */,
-				3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */,
+				90FADECF1CF69EE100961294 /* ScanViewController.xib */,
 				62091BA91C8E81A300DB9804 /* 查找 */,
 			);
 			path = MainPage;
@@ -2229,7 +2229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3627C3021CA8D62A00A5D7EB /* ScanViewController.xib in Resources */,
+				90FADED01CF69EE100961294 /* ScanViewController.xib in Resources */,
 				3664D0511CA0FA7300BC6805 /* img_3@3x.png in Resources */,
 				626DD4881C8426F9006BC53C /* PersonalCenterController.xib in Resources */,
 				361A76581CBCD46B002FE6B2 /* SearchHotViewController.xib in Resources */,
