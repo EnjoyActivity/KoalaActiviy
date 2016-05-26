@@ -506,7 +506,7 @@ static FRUtils *instance = nil;
             [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
         }
         NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-        NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
         if (![fileManager fileExistsAtPath:fileName]) {
             NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
             [imgData writeToFile:fileName atomically:NO];
@@ -570,11 +570,12 @@ static FRUtils *instance = nil;
 + (UIImage*)getHeaderImage {
     NSString *headerImageDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/headerImg/"];
     NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-    NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
-    
-    return [UIImage imageWithContentsOfFile:fileName];
-
-
+    if ([FRUtils getAvatarUrl]&&[FRUtils getAvatarUrl].length!=0) {
+        NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
+        return [UIImage imageWithContentsOfFile:fileName];
+    } else {
+        return nil;
+    }
 }
 //set
 + (void)setNickName:(NSString*)name {
@@ -632,7 +633,7 @@ static FRUtils *instance = nil;
         [fileManager createDirectoryAtPath:headerImageDirectory withIntermediateDirectories:YES attributes:nil error:nil];
     }
     NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
-    NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@.png",[aUrl lastPathComponent]]];
+    NSString *fileName = [headerImageDirectory stringByAppendingString:[aUrl lastPathComponent]];
     NSData *imgData = UIImagePNGRepresentation(headerImage);
     [imgData writeToFile:fileName atomically:NO];
 }

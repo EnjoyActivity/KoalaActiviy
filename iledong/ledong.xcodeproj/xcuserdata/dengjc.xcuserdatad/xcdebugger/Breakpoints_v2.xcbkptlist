@@ -43,11 +43,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/PersonalCenter/ModificationPhoneVC.m"
-            timestampString = "485852098.164626"
+            timestampString = "485917834.003103"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "-sendButtonClick:"
             landmarkType = "5">
          </BreakpointContent>
@@ -113,6 +113,22 @@
             startingLineNumber = "286"
             endingLineNumber = "286"
             landmarkName = "-showGuide:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/Public/FRUtils.m"
+            timestampString = "485917388.885627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "637"
+            endingLineNumber = "637"
+            landmarkName = "+setHeaderImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -28,6 +28,10 @@
     self.phoneNum.text = [self modifityPhoneNumber:[FRUtils getPhoneNum]];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

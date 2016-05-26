@@ -38,7 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleName = @"用户信息";
+    self.title = @"用户信息";
     if (!_image) {
         _image = [UIImage imageNamed:@"img_avatar_44"];
     }
