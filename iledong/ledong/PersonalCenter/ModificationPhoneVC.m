@@ -87,7 +87,7 @@
     manager.responseSerializer.acceptableContentTypes  =[NSSet setWithObjects:@"application/json",@"text/html",nil];
     
     NSString *str = [API_BASE_URL stringByAppendingString:API_USER_LOGIN_URL];
-    NSDictionary *parameters = @{@"phone": self.phoneNum.text,@"validateCode":self.textField.text};
+    NSDictionary *parameters = @{@"phone": [FRUtils getPhoneNum],@"validateCode":self.textField.text};
     [manager POST:str parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSLog(@"%@",responseObject);
@@ -129,7 +129,7 @@
     if (timeNum == -1)
     {
         self.sendButton.enabled = YES;
-        [self.sendButton setTitle:@"获取短信验证码" forState:UIControlStateNormal];
+        [self.sendButton setTitle:@"获取验证码" forState:UIControlStateNormal];
         timeNum = 60;
         [timers invalidate];
         timers = nil;

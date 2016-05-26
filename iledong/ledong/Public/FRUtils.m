@@ -511,7 +511,6 @@ static FRUtils *instance = nil;
             NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
             [imgData writeToFile:fileName atomically:NO];
         }
-       
     }
     int sex = [[result objectForKey:@"Sex"]intValue];
     [FRUtils setGender:sex];

@@ -86,9 +86,39 @@
 }
 
 - (IBAction)okBtnClick:(id)sender {
-    NSInteger index = self.navigationController.viewControllers.count;
-    UIViewController *vc = self.navigationController.viewControllers[index - 3];
-    [self.navigationController popToViewController:vc animated:YES];
+    if (self.phoneField.text.length == 0) {
+        [Dialog simpleToast:@"验证码为空！" withDuration:1.5];
+        return;
+    }
+    
+    [[HttpClient shareHttpClient] showMessageHUD:@""];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes  =[NSSet setWithObjects:@"application/json",@"text/html",nil];
+    
+    NSString *str = [API_BASE_URL stringByAppendingString:API_USER_LOGIN_URL];
+    NSDictionary *parameters = @{@"phone": self.phoneField.text,@"validateCode":self.codeField.text};
+    [manager POST:str parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"%@",responseObject);
+         if ([[responseObject objectForKey:@"code"] intValue] == 0)
+         {
+             NSInteger index = self.navigationController.viewControllers.count;
+             UIViewController *vc = self.navigationController.viewControllers[index - 3];
+             [self.navigationController popToViewController:vc animated:YES];
+         }
+         else
+         {
+             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
+         }
+         
+         [[HttpClient shareHttpClient] hiddenMessageHUD];
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [FRUtils simpleToast:@"网络失败，请稍后再试！" withDuration:kDuration];
+         [[HttpClient shareHttpClient] hiddenMessageHUD];
+     }];
+
 }
 - (IBAction)backBtnClick:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -99,7 +129,7 @@
     if (timeNum == -1)
     {
         self.sendCodeBtn.enabled = YES;
-        [self.sendCodeBtn setTitle:@"获取短信验证码" forState:UIControlStateNormal];
+        [self.sendCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
         timeNum = 60;
         [timers invalidate];
         timers = nil;
