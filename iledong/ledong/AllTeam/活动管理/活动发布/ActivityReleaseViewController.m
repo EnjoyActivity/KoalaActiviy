@@ -12,7 +12,8 @@
 #import "ParameterTableViewController.h"
 #import "ContactTypeViewController.h"
 #import "SessionInfoViewController.h"
-#import "ActivityAddressViewController.h"
+#import "ActivityAddressViewController.h"//废弃
+#import "LocationChoiceViewController.h"
 
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
@@ -625,35 +626,37 @@ typedef enum imagePickerFromType {
         }
         else if (indexPath.section == 5) {
             [self.view endEditing:YES];
-            ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+            LocationChoiceViewController* Vc = [[LocationChoiceViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
-            __weak typeof(self)weakSelf = self;
-            [Vc setCompleteActivityAddressInfo:^(NSDictionary* provinceDict, NSDictionary* cityDict, NSDictionary* areasDict) {
-                NSString* name = nil;
-                NSNumber* num = nil;
-                weakSelf.activityAddress = nil;
-                weakSelf.activityAddress = [NSMutableDictionary dictionary];
-                if (provinceDict) {
-                    name = [provinceDict objectForKey:@"Name"];
-                    num = [provinceDict objectForKey:@"Code"];
-                    [weakSelf.activityAddress setValue:name forKey:@"provinceName"];
-                    [weakSelf.activityAddress setValue:num forKey:@"provinceCode"];
-                }
-                if (cityDict) {
-                    name = [cityDict objectForKey:@"Name"];
-                    num = [cityDict objectForKey:@"Code"];
-                    [weakSelf.activityAddress setValue:name forKey:@"cityName"];
-                    [weakSelf.activityAddress setValue:num forKey:@"cityCode"];
-                }
-                if (areasDict) {
-                    name = [areasDict objectForKey:@"Name"];
-                    num = [areasDict objectForKey:@"Code"];
-                    [weakSelf.activityAddress setValue:name forKey:@"areasName"];
-                    [weakSelf.activityAddress setValue:num forKey:@"areasCode"];
-                }
-                [weakSelf.leagueTableView reloadData];
-                [weakSelf.nonleagueTableView reloadData];
-            }];
+//            ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+//            [self.navigationController pushViewController:Vc animated:YES];
+//            __weak typeof(self)weakSelf = self;
+//            [Vc setCompleteActivityAddressInfo:^(NSDictionary* provinceDict, NSDictionary* cityDict, NSDictionary* areasDict) {
+//                NSString* name = nil;
+//                NSNumber* num = nil;
+//                weakSelf.activityAddress = nil;
+//                weakSelf.activityAddress = [NSMutableDictionary dictionary];
+//                if (provinceDict) {
+//                    name = [provinceDict objectForKey:@"Name"];
+//                    num = [provinceDict objectForKey:@"Code"];
+//                    [weakSelf.activityAddress setValue:name forKey:@"provinceName"];
+//                    [weakSelf.activityAddress setValue:num forKey:@"provinceCode"];
+//                }
+//                if (cityDict) {
+//                    name = [cityDict objectForKey:@"Name"];
+//                    num = [cityDict objectForKey:@"Code"];
+//                    [weakSelf.activityAddress setValue:name forKey:@"cityName"];
+//                    [weakSelf.activityAddress setValue:num forKey:@"cityCode"];
+//                }
+//                if (areasDict) {
+//                    name = [areasDict objectForKey:@"Name"];
+//                    num = [areasDict objectForKey:@"Code"];
+//                    [weakSelf.activityAddress setValue:name forKey:@"areasName"];
+//                    [weakSelf.activityAddress setValue:num forKey:@"areasCode"];
+//                }
+//                [weakSelf.leagueTableView reloadData];
+//                [weakSelf.nonleagueTableView reloadData];
+//            }];
         }
     }
 }
