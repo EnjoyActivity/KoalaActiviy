@@ -125,7 +125,7 @@
     }
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
-    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/UploadAvatarUrl"];
+    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,API_UPLOAD_HEADERIMAGE_URL];
     [HttpClient postJSONWithUrl:url parameters:postDic withImages:@[_headImage] success:^(id response){
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         id jsonObject = [jsonParser objectWithString:[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];

@@ -105,7 +105,7 @@
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
     [postDic setObject:@(self.Id) forKey:@"id"];
-    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Activity/GetActivityItemsByActivityId"];
+    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,API_ACTIVITYITEMS_URL];
     [HttpClient postJSONWithUrl:url parameters:postDic success:^(id response){
         NSDictionary* temp = (NSDictionary*)response;
         if ([[temp objectForKey:@"code"]intValue]!=0) {

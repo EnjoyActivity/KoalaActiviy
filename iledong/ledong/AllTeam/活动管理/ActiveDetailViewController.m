@@ -389,7 +389,7 @@
 }
 #pragma mark - inner methods
 - (void)queryActiveDetailInfo {
-    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Activity/GetActivityById"];
+    NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,API_ACTIVITYDETAIL_URL];
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
     [postDic setObject:@"token" forKey:[HttpClient getTokenStr]];
     [postDic setObject:@"id" forKey:@(self.Id)];

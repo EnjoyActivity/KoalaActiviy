@@ -88,7 +88,7 @@
         return;
     }
     
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/GetUserInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,API_USERINFO_URL] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
         NSDictionary* temp = (NSDictionary*)json;
         if ([[temp objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[temp objectForKey:@"msg"]];
@@ -100,7 +100,7 @@
         if (_isGuide) {
             [postDic setObject:@([FRUtils getGender]) forKey:@"Sex"];
         }
-        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"User/SaveUserInfo"] parameters:postDic success:^(id response){
+        [HttpClient postJSONWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,API_SAVEUSERINFO_URL] parameters:postDic success:^(id response){
             NSDictionary* temp = (NSDictionary*)json;
             if ([[temp objectForKey:@"code"]intValue]!=0) {
                 [Dialog toast:[temp objectForKey:@"msg"]];
