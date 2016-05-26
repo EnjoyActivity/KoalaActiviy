@@ -18,5 +18,7 @@ typedef void(^getLocation)(NSString *);
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 
 @property (nonatomic, copy) getLocation locationResult;
+@property (nonatomic, copy) NSDictionary * locationDic;
+
 
 @end

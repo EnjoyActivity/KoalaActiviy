@@ -22,7 +22,6 @@
                     <color key="textColor" red="0.90980392156862744" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-<<<<<<< Updated upstream
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VH-Uw-vmO">
                     <rect key="frame" x="259" y="24" width="30" height="30"/>
                     <state key="normal" title="相册">
@@ -39,8 +38,6 @@
                         <action selector="gobackButtonClick:" destination="-1" eventType="touchUpInside" id="7ck-uo-PTs"/>
                     </connections>
                 </button>
-=======
->>>>>>> Stashed changes
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>

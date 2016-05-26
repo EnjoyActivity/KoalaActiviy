@@ -78,7 +78,6 @@
 		3627C2FC1CA8CF6700A5D7EB /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627C2FA1CA8CF6700A5D7EB /* SearchTableViewCell.m */; };
 		3627C2FD1CA8CF6700A5D7EB /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */; };
 		3627C3011CA8D62A00A5D7EB /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */; };
-		3627C3021CA8D62A00A5D7EB /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */; };
 		3627C5D01CA8DBD400A5D7EB /* scan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CA1CA8DBD400A5D7EB /* scan@2x.png */; };
 		3627C5D11CA8DBD400A5D7EB /* scan@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CB1CA8DBD400A5D7EB /* scan@3x.png */; };
 		3627C5D21CA8DBD400A5D7EB /* scan_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3627C5CC1CA8DBD400A5D7EB /* scan_1@2x.png */; };
@@ -366,6 +365,7 @@
 		ECBB8A4C1CEDB97A007D4756 /* LDActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4A1CEDB97A007D4756 /* LDActivityTableViewCell.xib */; };
 		ECBB8A501CEDBF7D007D4756 /* LDActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */; };
 		ECBB8A511CEDBF7D007D4756 /* LDActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */; };
+		ECC5AF4D1CF69C9300643CE1 /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECC5AF4C1CF69C9300643CE1 /* ScanViewController.xib */; };
 		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
 		ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */; };
 		ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */; };
@@ -498,7 +498,6 @@
 		3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		3627C2FE1CA8D62A00A5D7EB /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
 		3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
-		3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		3627C5CA1CA8DBD400A5D7EB /* scan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan@2x.png"; sourceTree = "<group>"; };
 		3627C5CB1CA8DBD400A5D7EB /* scan@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan@3x.png"; sourceTree = "<group>"; };
 		3627C5CC1CA8DBD400A5D7EB /* scan_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_1@2x.png"; sourceTree = "<group>"; };
@@ -947,6 +946,7 @@
 		ECBB8A4D1CEDBF7D007D4756 /* LDActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActivityViewController.h; sourceTree = "<group>"; };
 		ECBB8A4E1CEDBF7D007D4756 /* LDActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActivityViewController.m; sourceTree = "<group>"; };
 		ECBB8A4F1CEDBF7D007D4756 /* LDActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDActivityViewController.xib; sourceTree = "<group>"; };
+		ECC5AF4C1CF69C9300643CE1 /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainPageTeamMoreCell.xib; sourceTree = "<group>"; };
 		ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageTeamTableViewCell.h; sourceTree = "<group>"; };
 		ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageTeamTableViewCell.m; sourceTree = "<group>"; };
@@ -1496,7 +1496,7 @@
 				3627C2FB1CA8CF6700A5D7EB /* SearchTableViewCell.xib */,
 				3627C2FE1CA8D62A00A5D7EB /* ScanViewController.h */,
 				3627C2FF1CA8D62A00A5D7EB /* ScanViewController.m */,
-				3627C3001CA8D62A00A5D7EB /* ScanViewController.xib */,
+				ECC5AF4C1CF69C9300643CE1 /* ScanViewController.xib */,
 				62091BA91C8E81A300DB9804 /* 查找 */,
 			);
 			path = MainPage;
@@ -2229,7 +2229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3627C3021CA8D62A00A5D7EB /* ScanViewController.xib in Resources */,
+				ECC5AF4D1CF69C9300643CE1 /* ScanViewController.xib in Resources */,
 				3664D0511CA0FA7300BC6805 /* img_3@3x.png in Resources */,
 				626DD4881C8426F9006BC53C /* PersonalCenterController.xib in Resources */,
 				361A76581CBCD46B002FE6B2 /* SearchHotViewController.xib in Resources */,
