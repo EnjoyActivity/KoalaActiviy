@@ -133,10 +133,10 @@
     if (!self.activityCostTextField)
         self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
     if (!self.btn) {
-        self.btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
-        [self.btn setTitle:@"  确定" forState:UIControlStateNormal];
-        self.btn.titleLabel.textAlignment = NSTextAlignmentCenter;
- 
+        self.btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, cell.contentView.bounds.size.height)];
+        [self.btn setTitle:@"确定" forState:UIControlStateNormal];
+        [self.btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+        //self.btn.contentEdgeInsets = UIEdgeInsetsMake(0,20, 0, 0);
         [self.btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [self.btn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
     }
