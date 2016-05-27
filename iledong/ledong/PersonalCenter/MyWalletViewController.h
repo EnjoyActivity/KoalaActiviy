@@ -10,5 +10,5 @@
 
 @interface MyWalletViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,copy) NSString *navTitle;
-
+@property (nonatomic,assign) int teamId;
 @end

@@ -13,7 +13,8 @@
 @interface MyWalletViewController ()
 {
     NSArray *dataArrSection1;
-    NSArray *contentArrSection1;
+    NSMutableArray *contentArrSection1;
+    NSDictionary *walletInfo;
     
 }
 @property (strong, nonatomic) IBOutlet UILabel *balanceMoneyLabel;
@@ -35,7 +36,7 @@
     self.navigationController.navigationBarHidden = NO;
     
     dataArrSection1 = @[@"工商银行",@"添加银行卡...",@"微信钱包"];
-    contentArrSection1 = @[@"尾号9999",@"",@"未绑定"];
+    contentArrSection1 = [NSMutableArray arrayWithObjects:@"尾号9999",@"",@"未绑定", nil];//@[@"尾号9999",@"",@"未绑定"];
     
     _headSpaceLabel.backgroundColor = RGB(240, 240, 240, 1);
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 36)];
@@ -51,6 +52,8 @@
     self.tableView.backgroundColor = RGB(240, 240, 240, 1);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    [self queryWalletInfo];
 }
 
 #pragma mark - setup ui
@@ -121,19 +124,36 @@
 }
 
 - (void)queryWalletInfo {
-    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,@"Wallet/GetWalletInfo"] parameters:@{@"token":[HttpClient getTokenStr]} success:^(id json){
+    NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
+    [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+    if ([_navTitle isEqualToString:@"团队钱包"]) {
+        [postDic setObject:@2 forKey:@"ownertype"];
+        [postDic setObject:@(_teamId) forKey:@"ownerId"];
+    } else {
+        [postDic setObject:@1 forKey:@"ownertype"];
+    }
+    [HttpClient JSONDataWithUrl:[NSString stringWithFormat:@"%@%@",API_BASE_URL,API_WALLETINFO_URL] parameters:postDic success:^(id json){
         NSDictionary* temp = (NSDictionary*)json;
         if ([[temp objectForKey:@"code"]intValue]!=0) {
             [Dialog toast:[temp objectForKey:@"msg"]];
             return;
         }
-       
-        
+        walletInfo = [temp objectForKey:@"result"];
+        if (walletInfo) {
+            //余额
+            NSDecimal money = [[walletInfo objectForKey:@"TotalMoney"]decimalValue];
+            NSLocale *zhLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+            _balanceMoneyLabel.text = NSDecimalString(&money,zhLocale);
+            //帐号
+            NSString *account = [walletInfo objectForKey:@"Account"];
+            NSString *last4 = [account substringFromIndex:account.length - 4];
+            contentArrSection1[0] = [NSString stringWithFormat:@"尾号%@",last4];
+            
+            [self.tableView reloadData];
+        }
     }fail:^{
         [Dialog toast:@"网络失败，请稍后再试"];
     }];
 }
-
-
 
 @end

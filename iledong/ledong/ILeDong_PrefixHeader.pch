@@ -42,6 +42,7 @@
 #define API_UPLOADFILE_URL          @"User/UploadFile"      //上传文件
 #define API_ACTIVITYDETAIL_URL      @"Activity/GetActivityById"//根据ID获取活动详情
 #define API_ACTIVITYITEMS_URL       @"Activity/GetActivityItemsByActivityId"//根据ID获取活动项
+#define API_WALLETINFO_URL          @"Wallet/GetWalletInfo"//钱包信息
 #define API_USERINFO_URL            @"User/GetUserInfo"//用户信息
 #define API_SAVEUSERINFO_URL        @"User/SaveUserInfo"//修改用户信息
 #define API_EXIT_TEAM_URL           @"Team/QuitTeam"        //退出团队
