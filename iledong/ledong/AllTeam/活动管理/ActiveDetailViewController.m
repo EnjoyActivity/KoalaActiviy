@@ -169,11 +169,14 @@
 - (void)setupTitleView {
     titleView = (TitleView*)[[[NSBundle mainBundle]loadNibNamed:@"TitleView" owner:self options:nil]lastObject];
     titleView.frame = CGRectMake(0,startPos , APP_WIDTH, 180);
-    titleView.activeTitleLabel = [activityInfo objectForKey:@"Title"];
+    titleView.activeTitleLabel.text = [activityInfo objectForKey:@"Title"];
     NSString *beginTime = [self formatStringFromString:[activityInfo objectForKey:@"BeginTime"]];
     NSString *endTime = [self formatStringFromString:[activityInfo objectForKey:@"EndTime"]];
     titleView.activeTimeLabel.text = [NSString stringWithFormat:@"%@ - %@",beginTime,endTime];
-    NSInteger days = [self howManyDaysSinceNow:[activityInfo objectForKey:@"ApplyEndTime"]];
+    NSInteger days = 0;
+    if (![[activityInfo objectForKey:@"ApplyEndTime"] isKindOfClass:[NSNull class]]) {
+        days = [self howManyDaysSinceNow:[activityInfo objectForKey:@"ApplyEndTime"]];
+    }
     titleView.timeRemainLabel.text = [NSString stringWithFormat:@"报名剩余 %ld 天",(long)days];
     titleView.personMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMin"]];
     [titleView.personMoneyLabel sizeToFit];

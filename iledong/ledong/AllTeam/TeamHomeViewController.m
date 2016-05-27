@@ -11,6 +11,8 @@
 #import "TeamManagerTableViewController.h"
 #import "TeamHomeTableViewCell.h"
 #import "LDDeleteTagView.h"
+#import "UIImageView+WebCache.h"
+#import "ActiveDetailViewController.h"
 
 @interface TeamHomeViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -179,7 +181,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return teamActivity.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -190,7 +192,21 @@
     {
         cell = [[NSBundle mainBundle] loadNibNamed:@"TeamHomeTableViewCell" owner:self options:nil][0];
     }
+    NSDictionary *dic = teamActivity[indexPath.row];
+    cell.name.text = [dic objectForKey:@"Title"];
+    cell.address.text = [NSString stringWithFormat:@"%@ | 已报名%d",[dic objectForKey:@"ClassName"],[[dic objectForKey:@"WillNum"]intValue]];
+    cell.price.text = [NSString stringWithFormat:@"%d - %d元",[[dic objectForKey:@"EntryMoneyMin"]intValue],[[dic objectForKey:@"EntryMoneyMax"]intValue]];
+    [cell.headerImage sd_setImageWithURL:[NSURL URLWithString:[dic objectForKey:@"Cover"]] placeholderImage:[UIImage imageNamed:@"img_5"]];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *dic = teamActivity[indexPath.row];
+    ActiveDetailViewController *vc = [[ActiveDetailViewController alloc]init];
+    vc.Id = [[dic objectForKey:@"Id"]intValue];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)queryTeamInfo {
