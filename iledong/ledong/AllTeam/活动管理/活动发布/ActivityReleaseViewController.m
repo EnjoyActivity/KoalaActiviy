@@ -634,6 +634,7 @@ typedef enum imagePickerFromType {
             [self.view endEditing:YES];
             AdressCityVC* Vc = [[AdressCityVC alloc]init];
             Vc.isSearch = YES;
+            Vc.destinationVc = self;
             Vc.locationResult = ^(NSDictionary *dict) {
                 weakSelf.activityAddress = [NSMutableDictionary dictionaryWithDictionary:dict];
                 [weakSelf.leagueTableView reloadData];
@@ -929,7 +930,7 @@ typedef enum imagePickerFromType {
     }
     
     NSDictionary* tempDict = [dict objectForKey:@"activityVenue"];
-    nameLabel.text = [tempDict objectForKey:@"placeName"];
+    nameLabel.text = [tempDict objectForKey:@"name"];
     [nameLabel sizeToFit];
     if (nameLabel.frame.size.width > 150) {
         nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, 150, nameLabel.frame.size.height);
@@ -943,7 +944,9 @@ typedef enum imagePickerFromType {
         addLabel.textColor = UIColorFromRGB(0x999999);
         [cell.contentView addSubview:addLabel];
     }
-    addLabel.text = [tempDict objectForKey:@"Address"];
+    NSString* city = [tempDict objectForKey:@"city"];
+    NSString* district = [tempDict objectForKey:@"district"];
+    addLabel.text = [NSString stringWithFormat:@"%@%@",city, district];
     [addLabel sizeToFit];
     if (addLabel.frame.size.width > 150) {
         addLabel.frame = CGRectMake(addLabel.frame.origin.x, addLabel.frame.origin.y, 150, addLabel.frame.size.height);

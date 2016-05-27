@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486020340.165726"
+            timestampString = "486022452.576777"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1490"
-            endingLineNumber = "1490"
+            startingLineNumber = "1493"
+            endingLineNumber = "1493"
             landmarkName = "-commitActivity"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,91 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486020340.165726"
+            timestampString = "486022452.576777"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1496"
-            endingLineNumber = "1496"
-            landmarkName = "-commitActivity"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486020340.165726"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1488"
-            endingLineNumber = "1488"
-            landmarkName = "-commitActivity"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ActivityReleaseViewController commitActivity]"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/liuxu/Documents/code/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/%E6%B4%BB%E5%8A%A8%E5%8F%91%E5%B8%83/ActivityReleaseViewController.m"
-                  timestampString = "486020356.213991"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1488"
-                  endingLineNumber = "1488"
-                  offsetFromSymbolStart = "6808">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__47-[ActivityReleaseViewController commitActivity]_block_invoke"
-                  moduleName = "ledong"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/liuxu/Documents/code/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/%E6%B4%BB%E5%8A%A8%E5%8F%91%E5%B8%83/ActivityReleaseViewController.m"
-                  timestampString = "486020356.214175"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1489"
-                  endingLineNumber = "1489"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486020340.165726"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1466"
-            endingLineNumber = "1466"
-            landmarkName = "-commitActivity"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486020342.482414"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1408"
-            endingLineNumber = "1408"
+            startingLineNumber = "1491"
+            endingLineNumber = "1491"
             landmarkName = "-commitActivity"
             landmarkType = "5">
          </BreakpointContent>

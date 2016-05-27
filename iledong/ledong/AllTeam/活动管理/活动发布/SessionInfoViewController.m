@@ -27,6 +27,7 @@
 @property (nonatomic, strong)UITextField* minCountTextField;
 @property (nonatomic, strong)UITextField* remarkTextField;
 @property (nonatomic, strong)UITextField* activityCostTextField;
+@property (nonatomic, strong)UIButton* btn;
 @property (nonatomic, strong)NSMutableDictionary* dataDict;
 @property (nonatomic, strong)NSMutableDictionary* addressInfoDict;
 @property (nonatomic, strong)NSString* beginTime;
@@ -120,17 +121,26 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kCell1];
     }
-
+    
+    if (!self.planCountTextField)
+        self.planCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+    if (!self.maxCountTextField)
+        self.maxCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+    if (!self.minCountTextField)
+        self.minCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+    if (!self.remarkTextField)
+        self.remarkTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+    if (!self.activityCostTextField)
+        self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
+    if (!self.btn) {
+        self.btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
+        [self.btn setTitle:@"确定" forState:UIControlStateNormal];
+        [self.btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [self.btn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
+    }
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    UIButton* btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
-    [btn setTitle:@"确定" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:btn];
-    btn.hidden = YES;
-    
     UILabel* timeLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     timeLabel.font = [UIFont systemFontOfSize:14.0];
     [cell.contentView addSubview:timeLabel];
@@ -156,6 +166,7 @@
             if ([keys containsObject:@"name"])
                 name = [self.addressInfoDict objectForKey:@"name"];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", province,city,district,name];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
         }
     }
     else if (indexPath.section == 1) {
@@ -207,65 +218,65 @@
         }
     }
     else if (indexPath.section == 5) {
-        self.planCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.planCountTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.planCountTextField];
         self.planCountTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"计划报名数";
         self.planCountTextField.keyboardType = UIKeyboardTypeNumberPad;
         self.planCountTextField.placeholder = @"请输入计划报名数";
         if (self.dataDict)
             self.planCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"planCount"]).intValue];
+        
+        [cell.contentView addSubview:self.planCountTextField];
     }
     else if (indexPath.section == 6) {
         cell.textLabel.text = @"活动报名数上限";
-        self.maxCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.maxCountTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.maxCountTextField];
         self.maxCountTextField.textAlignment = NSTextAlignmentRight;
         self.maxCountTextField.keyboardType = UIKeyboardTypeNumberPad;
         self.maxCountTextField.placeholder = @"请输入活动报名数上限";
         if (self.dataDict)
             self.maxCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"maxCount"]).intValue];
+        
+        [cell.contentView addSubview:self.maxCountTextField];
     }
     else if (indexPath.section == 7) {
         cell.textLabel.text = @"活动报名数下限";
-        self.minCountTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.minCountTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.minCountTextField];
         self.minCountTextField.textAlignment = NSTextAlignmentRight;
         self.minCountTextField.keyboardType = UIKeyboardTypeNumberPad;
         self.minCountTextField.placeholder = @"请输入活动报名数下限";
         if (self.dataDict)
             self.minCountTextField.text = [NSString stringWithFormat:@"%d", ((NSNumber*)[self.dataDict objectForKey:@"minCount"]).intValue];
+        
+        [cell.contentView addSubview:self.minCountTextField];
     }
     else if (indexPath.section == 8) {
-        self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.activityCostTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.activityCostTextField];
         self.activityCostTextField.keyboardType = UIKeyboardTypeNumberPad;
         self.activityCostTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动费用";
         self.activityCostTextField.placeholder = @"请输入活动费用";
         if (self.dataDict)
             self.activityCostTextField.text = [self.dataDict objectForKey:@"activityCost"];
+        
+        [cell.contentView addSubview:self.activityCostTextField];
     }
     else if (indexPath.section == 9) {
-        self.remarkTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
         self.remarkTextField.font = [UIFont systemFontOfSize:14.0];
-        [cell.contentView addSubview:self.remarkTextField];
         self.remarkTextField.textAlignment = NSTextAlignmentRight;
         cell.textLabel.text = @"活动备注";
         self.remarkTextField.hidden = NO;
         self.remarkTextField.placeholder = @"请输入活动备注";
         if (self.dataDict)
             self.remarkTextField.text = [self.dataDict objectForKey:@"activityRemark"];
+        
+        [cell.contentView addSubview:self.remarkTextField];
     }
     else if (indexPath.section == 10) {
-        btn.hidden = NO;
+        [cell.contentView addSubview:self.btn];
     }
     
-    //[cell layoutSubviews];
+    [cell layoutSubviews];
     return cell;
 }
 
@@ -273,6 +284,7 @@
     if (indexPath.section == 0) {
         AdressCityVC* Vc = [[AdressCityVC alloc]init];
         Vc.isSearch = YES;
+        Vc.destinationVc = self;
         __weak typeof(self)weakSelf = self;
         Vc.locationResult = ^(NSDictionary *dict) {
             weakSelf.addressInfoDict = [NSMutableDictionary dictionaryWithDictionary:dict];
