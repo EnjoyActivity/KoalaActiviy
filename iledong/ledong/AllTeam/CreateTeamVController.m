@@ -349,7 +349,7 @@
         //[dict setValue:imageData forKey:@"InputStream"];
         //[weakSelf uploadHeaderImage:dict];
         
-        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
+        NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOADFILE_URL];
         [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[image] success:^(id responseObject) {
             SBJsonParser* json = [[SBJsonParser alloc]init];
             id jsonObject = [json objectWithString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
@@ -441,7 +441,7 @@
                            @"provinceCode":@"510000",
                            @"cityCode":@"510100",
                            @"areaCode":@"510104",
-                           @"AvatarUrl":teamAvatar?teamAvatar:@""
+                           @"avatarUrl":teamAvatar?teamAvatar:@""
                           };
     
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATETEAM_URL];

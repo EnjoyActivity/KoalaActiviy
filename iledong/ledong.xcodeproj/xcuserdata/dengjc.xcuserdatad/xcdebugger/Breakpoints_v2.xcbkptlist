@@ -58,22 +58,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
-            timestampString = "485921311.376635"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
-            landmarkName = "-queryActiveDetailInfo"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "ledong/PersonalCenter/LoginAndRegistViewController.m"
             timestampString = "485923141.573055"
             startingColumnNumber = "9223372036854775807"
@@ -106,13 +90,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ChooseActiveItemVC.m"
-            timestampString = "486006251.052848"
+            filePath = "ledong/AllTeam/CreateTeamVController.m"
+            timestampString = "486008985.973088"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "-queryItemById"
+            startingLineNumber = "447"
+            endingLineNumber = "447"
+            landmarkName = "-startBtnClick:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,62 +106,78 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
-            timestampString = "486006586.876367"
+            filePath = "ledong/AllTeam/CreateTeamVController.m"
+            timestampString = "486009361.348734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397"
-            landmarkName = "-queryActiveDetailInfo"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/TeamHomeViewController.m"
+            timestampString = "486013601.522859"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "-queryTeamActivity"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/TeamHomeViewController.m"
+            timestampString = "486013601.522859"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "-queryTeamActivity"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[ActiveDetailViewController queryActiveDetailInfo]"
+                  symbolName = "-[TeamHomeViewController queryTeamActivity]"
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "486006586.878521"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/TeamHomeViewController.m"
+                  timestampString = "486013601.635105"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "397"
-                  endingLineNumber = "397"
-                  offsetFromSymbolStart = "404">
+                  startingLineNumber = "221"
+                  endingLineNumber = "221"
+                  offsetFromSymbolStart = "602">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__51-[ActiveDetailViewController queryActiveDetailInfo]_block_invoke"
+                  symbolName = "__43-[TeamHomeViewController queryTeamActivity]_block_invoke"
                   moduleName = "ledong"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86/ActiveDetailViewController.m"
-                  timestampString = "486006586.879805"
+                  urlString = "file:///Users/dengjc/Desktop/KoalaActiviy/iledong/ledong/AllTeam/TeamHomeViewController.m"
+                  timestampString = "486013601.635258"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "398"
-                  endingLineNumber = "398"
-                  offsetFromSymbolStart = "47">
+                  startingLineNumber = "222"
+                  endingLineNumber = "222"
+                  offsetFromSymbolStart = "44">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/ActiveDetailViewController.m"
-            timestampString = "486006620.143327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
-            landmarkName = "-queryActiveDetailInfo"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -16,6 +16,8 @@
 {
     UIButton *quitTeamButton;
     NSDictionary *teamInfo;
+    NSArray *teamActivity;
+    
 }
 @property (nonatomic,strong) LDDeleteTagView *deleteTagView;
 @property (nonatomic,assign) BOOL quitBtnShow;
@@ -37,6 +39,7 @@
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
     [self refreshUI];
     [self queryTeamInfo];
+    [self queryTeamActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -203,6 +206,27 @@
         }
     } fail:^{
         [Dialog simpleToast:@"获取团队信息失败！" withDuration:1.5];
+    }];
+}
+
+- (void)queryTeamActivity {
+    //暂不使用分页,设置第一页获取1000个数据
+    NSInteger pageSize = 1000;
+    //
+    
+    NSString* strToken = [HttpClient getTokenStr];
+    NSDictionary* parameter = @{@"token":strToken,@"page":[NSNumber numberWithInteger:1/*pageIndex*/],@"PageSize":[NSNumber numberWithInteger:pageSize],@"ActivityType":@1,
+                                @"TeamId":self.teamId};
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_QUERY_ACTIVITY_URL];
+    [HttpClient postJSONWithUrl:urlStr parameters:parameter success:^(id responseObject) {
+        NSDictionary* dict = (NSDictionary*)responseObject;
+        NSNumber* codeNum = [dict objectForKey:@"code"];
+        if (codeNum.intValue == 0) {
+            teamActivity = [dict objectForKey:@"result"];
+            [self.tableView reloadData];
+        }
+    } fail:^{
+        [Dialog simpleToast:@"查询活动列表失败！" withDuration:1.5];
     }];
 }
 

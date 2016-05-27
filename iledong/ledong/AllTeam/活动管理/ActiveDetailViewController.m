@@ -13,6 +13,7 @@
 #import "ContactView.h"
 #import "ChooseForm.h"
 #import "SignUpViewController.h"
+#import "UIImageView+WebCache.h"
 
 @interface ActiveDetailViewController ()
 {
@@ -65,71 +66,71 @@
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
     
-    activityInfo  = @{
-                          @"Id": @7,
-                          @"ActivityClassId": @1,
-                          @"Title": @"2016四川中学生足球联赛 ",
-                          @"Cover": @"../../images/2016050801.gif",
-                          @"ActivityType": @0,
-                          @"IsLeague": @1,
-                          @"JionType": @1,
-                          @"Demand": @"要求年龄12-18岁之间",
-                          @"Tel": @"15399998888",
-                          @"ComplainTel": @"028-11111111",
-                          @"ReleaseUserId": @0,
-                          @"ReleaseState": @0,
-                          @"ReleaseTime": @"",
-                          @"BeginTime": @"2016-08-01 00:00:00",
-                          @"EndTime": @"2016-09-01 00:00:00",
-                          @"ApplyBeginTime": @"2016-06-01 00:00:00",
-                          @"ApplyEndTime": @"2016-06-10 00:00:00",
-                          @"WillNum": @11,
-                          @"MaxNum": @16,
-                          @"MaxApplyNum": @32,
-                          @"ApplyNum": @0,
-                          @"provinceCode": @"510000",
-                          @"cityCode": @"510100",
-                          @"areaCode": @"0",
-                          @"ConstitutorId": @1,
-                          @"Constitutor": @"",
-                          @"EntryMoneyMin": @200,
-                          @"EntryMoneyMax": @200,
-                          @"ReadFlag": @1,
-                          @"tag": @"足球",
-                          @"activityitems": @[
-                                            @{
-                                                @"Id": @17,
-                                                @"ActivityId": @7,
-                                                @"Remark": @"2016四川中学生足球联赛第一场",
-                                                @"BeginTime": @"2016-08-01 00:00:00",
-                                                @"EndTime": @"2016-08-01 00:00:00",
-                                                @"ApplyBeginTime": @"2016-06-01 00:00:00",
-                                                @"ApplyEndTime": @"2016-06-10 00:00:00",
-                                                @"EntryMoney": @200,
-                                                @"WillNum": @20,
-                                                @"MaxNum": @30,
-                                                @"MaxApplyNum": @2,
-                                                @"ApplyNum": @0,
-                                                @"ConstitutorId": @1,
-                                                @"PlaceName": @"成都市体育馆",
-                                                @"Address": @"成都市顺城街2号",
-                                                @"MapX": @103.5,
-                                                @"MapY": @53.3,
-                                                @"ProvinceCode": @"510000",
-                                                @"CityCode": @"510100",
-                                                @"AreaCode": @"510107",
-                                                @"provinceName": @"四川省",
-                                                @"cityName": @"成都市",
-                                                @"areaName": @"武侯区",
-                                                @"ConstitutorName": @"",
-                                                @"activityItemTeams": @[],
-                                                @"activityItemUsers": @[]
-                                            }                                            ],
-                          @"activityTeams": @[],
-                          @"activityUsers": @[]
-                      };
-
-    [self setupUI];
+//    activityInfo  = @{
+//                          @"Id": @7,
+//                          @"ActivityClassId": @1,
+//                          @"Title": @"2016四川中学生足球联赛 ",
+//                          @"Cover": @"../../images/2016050801.gif",
+//                          @"ActivityType": @0,
+//                          @"IsLeague": @1,
+//                          @"JionType": @1,
+//                          @"Demand": @"要求年龄12-18岁之间",
+//                          @"Tel": @"15399998888",
+//                          @"ComplainTel": @"028-11111111",
+//                          @"ReleaseUserId": @0,
+//                          @"ReleaseState": @0,
+//                          @"ReleaseTime": @"",
+//                          @"BeginTime": @"2016-08-01 00:00:00",
+//                          @"EndTime": @"2016-09-01 00:00:00",
+//                          @"ApplyBeginTime": @"2016-06-01 00:00:00",
+//                          @"ApplyEndTime": @"2016-06-10 00:00:00",
+//                          @"WillNum": @11,
+//                          @"MaxNum": @16,
+//                          @"MaxApplyNum": @32,
+//                          @"ApplyNum": @0,
+//                          @"provinceCode": @"510000",
+//                          @"cityCode": @"510100",
+//                          @"areaCode": @"0",
+//                          @"ConstitutorId": @1,
+//                          @"Constitutor": @"",
+//                          @"EntryMoneyMin": @200,
+//                          @"EntryMoneyMax": @200,
+//                          @"ReadFlag": @1,
+//                          @"tag": @"足球",
+//                          @"activityitems": @[
+//                                            @{
+//                                                @"Id": @17,
+//                                                @"ActivityId": @7,
+//                                                @"Remark": @"2016四川中学生足球联赛第一场",
+//                                                @"BeginTime": @"2016-08-01 00:00:00",
+//                                                @"EndTime": @"2016-08-01 00:00:00",
+//                                                @"ApplyBeginTime": @"2016-06-01 00:00:00",
+//                                                @"ApplyEndTime": @"2016-06-10 00:00:00",
+//                                                @"EntryMoney": @200,
+//                                                @"WillNum": @20,
+//                                                @"MaxNum": @30,
+//                                                @"MaxApplyNum": @2,
+//                                                @"ApplyNum": @0,
+//                                                @"ConstitutorId": @1,
+//                                                @"PlaceName": @"成都市体育馆",
+//                                                @"Address": @"成都市顺城街2号",
+//                                                @"MapX": @103.5,
+//                                                @"MapY": @53.3,
+//                                                @"ProvinceCode": @"510000",
+//                                                @"CityCode": @"510100",
+//                                                @"AreaCode": @"510107",
+//                                                @"provinceName": @"四川省",
+//                                                @"cityName": @"成都市",
+//                                                @"areaName": @"武侯区",
+//                                                @"ConstitutorName": @"",
+//                                                @"activityItemTeams": @[],
+//                                                @"activityItemUsers": @[]
+//                                            }                                            ],
+//                          @"activityTeams": @[],
+//                          @"activityUsers": @[]
+//                      };
+//
+//    [self setupUI];
     [self queryActiveDetailInfo];
 }
 
@@ -144,7 +145,7 @@
     [self setupCoverImageView];
     [self setupTitleView];
     [self setupLocationView];
-    [self setupMemberView];
+//    [self setupMemberView];
     [self setupContactView];
     [self setupDetailView];
     [self setupButton];
@@ -158,8 +159,9 @@
 - (void)setupCoverImageView {
     UIImageView *coverImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 211)];
     coverImage.backgroundColor = [UIColor purpleColor];
-    coverImage.image = [UIImage imageNamed:@"img_1"];
+//    coverImage.image = [UIImage imageNamed:@"img_1"];
 //    coverImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[activityInfo objectForKey:@"Cover"]]];//[UIImage imageNamed:@"img_nodata"];
+    [coverImage sd_setImageWithURL:[NSURL URLWithString:[activityInfo objectForKey:@"Cover"]] placeholderImage:[UIImage imageNamed:@"img_1"]];
     [scrollView addSubview:coverImage];
     startPos = 211;
 }
@@ -180,8 +182,10 @@
     //剩余人、团队
     int remainPerson = [[activityInfo objectForKey:@"MaxNum"]intValue] - [[activityInfo objectForKey:@"WillNum"]intValue];
     titleView.remainPersonLabel.text = [NSString stringWithFormat:@"剩余 %d",remainPerson];
+    titleView.remainPersonLabel.hidden = YES;
     int remainTeam = [[activityInfo objectForKey:@"MaxApplyNum"]intValue] - [[activityInfo objectForKey:@"ApplyNum"]intValue];
     titleView.remainTeamLabel.text = [NSString stringWithFormat:@"剩余 %d",remainTeam];
+    titleView.remainTeamLabel.hidden = YES;
     
     startPos += 180;
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
@@ -391,8 +395,8 @@
 - (void)queryActiveDetailInfo {
     NSString *url = [NSString stringWithFormat:@"%@%@",API_BASE_URL,API_ACTIVITYDETAIL_URL];
     NSMutableDictionary *postDic = [[NSMutableDictionary alloc]init];
-    [postDic setObject:@"token" forKey:[HttpClient getTokenStr]];
-    [postDic setObject:@"id" forKey:@(self.Id)];
+    [postDic setObject:[HttpClient getTokenStr] forKey:@"token"];
+    [postDic setObject:@(self.Id) forKey:@"Id"];
     
     [HttpClient postJSONWithUrl:url parameters:postDic success:^(id reponseObject){
         NSDictionary* temp = (NSDictionary*)reponseObject;
@@ -409,7 +413,7 @@
     }];
 }
 
-//格式为8月1日 周一 00：00
+//格式为“8月1日 周一 00：00”
 - (NSString*)formatStringFromString:(NSString*)dateStr {
     NSArray *weekday = @[@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六"];
     

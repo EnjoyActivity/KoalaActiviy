@@ -39,6 +39,7 @@
 #define API_CREATETEAM_URL       @"Team/Create"            //创建团队
 #define API_TEAMJOINTEAM_URL       @"Team/JoinTeam"       //加入团队
 #define API_UPLOAD_HEADERIMAGE_URL   @"User/UploadAvatarUrl"   //上传头像
+#define API_UPLOADFILE_URL          @"User/UploadFile"      //上传文件
 #define API_ACTIVITYDETAIL_URL      @"Activity/GetActivityById"//根据ID获取活动详情
 #define API_ACTIVITYITEMS_URL       @"Activity/GetActivityItemsByActivityId"//根据ID获取活动项
 #define API_USERINFO_URL            @"User/GetUserInfo"//用户信息

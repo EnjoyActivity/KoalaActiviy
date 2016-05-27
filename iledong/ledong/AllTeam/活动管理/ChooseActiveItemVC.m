@@ -92,8 +92,8 @@
 - (void)setupCell:(SessionTableViewCell*)cell model:(ActiveItemModel*)model {
     cell.placeNameLabel.text = model.placeName;
     cell.addressLabel.text = model.address;
-    cell.beginTimeLabel.text = [model.beginTime substringWithRange:NSMakeRange(11, 5)];
-    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(11, 5)]];
+    cell.beginTimeLabel.text = [model.beginTime substringWithRange:NSMakeRange(5, 11)];
+    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(5, 11)]];
     cell.constitutorNameLabel.text = [NSString stringWithFormat:@"组织人：%@",model.constitutorName];
     cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余 %d",model.maxNum - model.willNum,model.maxApplyNum - model.applyNum];
     cell.distanceLabel.text = @"0.0km";

@@ -31,20 +31,20 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5t-NA-vdU">
-                        <rect key="frame" x="49" y="70" width="121" height="21"/>
+                        <rect key="frame" x="49" y="70" width="161" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="mgA-td-hPc"/>
-                            <constraint firstAttribute="width" constant="121" id="zcY-Su-62P"/>
+                            <constraint firstAttribute="width" constant="161" id="zcY-Su-62P"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00结束" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEs-lv-2Pe">
-                        <rect key="frame" x="51" y="93" width="119" height="21"/>
+                        <rect key="frame" x="51" y="93" width="159" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="HIq-ue-aZd"/>
-                            <constraint firstAttribute="width" constant="119" id="VMU-U2-4Oy"/>
+                            <constraint firstAttribute="width" constant="159" id="VMU-U2-4Oy"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
