@@ -11,7 +11,7 @@
 #import "ChooseTeamView.h"
 #import "ContactInfoView.h"
 
-@interface SignUpViewController ()
+@interface SignUpViewController ()<UITextFieldDelegate>
 {
     UIScrollView *scrollView;
     
@@ -43,6 +43,11 @@
     [self setupInfoView];
     [self setupPreferentialView];
     [self setupTotalMoneyView:@"200"];
+    [self addKeyboardNotification];
+}
+
+- (void)dealloc {
+    [self removeKeyboardNotification];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,6 +55,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - setup UI
 - (void)setupScrollView {
     scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT -  50 - 64)];
     
@@ -75,6 +81,8 @@
 //填写联系人信息
 - (void)setupInfoView {
     infoView = (ContactInfoView*)[[[NSBundle mainBundle]loadNibNamed:@"ContactInfoView" owner:self options:nil]lastObject];
+    infoView.nameLabel.delegate = self;
+    infoView.phoneLabel.delegate = self;
     infoView.frame = CGRectMake(0,startPos , APP_WIDTH, 137);
     startPos += 146;
     [scrollView addSubview:infoView];
@@ -107,7 +115,7 @@
     
     [scrollView addSubview:containView];
     
-    startPos +=59;
+    startPos +=50;
     
     scrollView.contentSize = CGSizeMake(APP_WIDTH, startPos);
 }
@@ -139,6 +147,52 @@
     [_totalMoneyView addSubview:tipLabel];
     [_totalMoneyView addSubview:totalMoneyLabel];
     [_totalMoneyView addSubview:unitLabel];
+}
+
+#pragma mark - keyboard Noti
+
+- (void)addKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)removeKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *) notif {
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    CGFloat offset = startPos + keyboardSize.height + 64 - APP_HEIGHT;
+    [UIView animateWithDuration:0.5 animations:^{
+        scrollView.contentOffset = CGPointMake(0, offset);
+        } completion:^(BOOL finished) {
+    }];
+}
+
+- (void)keyboardDidHide:(NSNotification *) notif {
+    [UIView animateWithDuration:0.5 animations:^{
+        scrollView.contentOffset = CGPointMake(0, 0);
+    } completion:^(BOOL finished) {
+    }];
+}
+#pragma mark - UITextField delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end
