@@ -114,6 +114,10 @@ typedef enum imagePickerFromType {
     [self releaseResource];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
 - (void)initParameter {
     self.isComplete = NO;
     self.gameType = gameTypenonLeague;

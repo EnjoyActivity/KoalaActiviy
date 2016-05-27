@@ -54,6 +54,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self addKeyboardNotification];
 }
 
