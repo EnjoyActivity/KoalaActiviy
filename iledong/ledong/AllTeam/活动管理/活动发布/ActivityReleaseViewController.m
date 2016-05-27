@@ -1449,11 +1449,11 @@ typedef enum imagePickerFromType {
     NSString* districtCode = [self.activityAddress objectForKey:@"districtCode"];
     
     if (self.phoneNum.length == 0)
-        self.phoneNum = @"";
+        self.phoneNum = @"0";
     if (self.complainTelNum.length == 0)
-        self.complainTelNum = @"";
+        self.complainTelNum = @"0";
     if (self.activityDetailText.length == 0)
-        self.activityDetailText = @"";
+        self.activityDetailText = @"0";
     if (beginTime.length == 0)
         beginTime = @"";
     if (endTime.length == 0)
