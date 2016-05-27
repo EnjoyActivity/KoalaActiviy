@@ -270,6 +270,7 @@ static CGFloat const teamHeight = 280;
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
             [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
         };
+        adressCityVC.locationDic = locationInfo;
         adressCityVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:adressCityVC animated:YES];
     } else if ([sender isEqual:scannerButton]) {
