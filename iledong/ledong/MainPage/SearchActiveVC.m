@@ -74,7 +74,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
@@ -175,12 +175,12 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     if (textField.text.length == 0) {
         return YES;
     }
-    
+    searchKeyWord = textField.text;
     [textField resignFirstResponder];
-    [historyArray insertObject:textField.text atIndex:0];
+    [historyArray insertObject:searchKeyWord atIndex:0];
     [self addSearchHistory];
     
-    [self requestWithKeyWord:textField.text];
+    [self requestWithKeyWord:searchKeyWord];
     [self.resultTableView setHidden:NO];
     return YES;
 }
@@ -247,6 +247,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
         NSString * time = [dic objectForKey:@"BeginTime"];
         [cell.headImageView sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
         cell.activityName.text = name;
+        cell.keyWord = searchKeyWord;
         NSString * price = [NSString stringWithFormat:@"%@-%@元",minMoney,maxMOney];
         
         NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
@@ -258,9 +259,9 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.historyTableView]) {
-        NSString * historyTemp = historyArray[indexPath.row];
-        self.textField.text = historyTemp;
-        [self requestWithKeyWord:historyTemp];
+        searchKeyWord = historyArray[indexPath.row];
+        self.textField.text = searchKeyWord;
+        [self requestWithKeyWord:searchKeyWord];
         [self.resultTableView setHidden:NO];
     }
     else

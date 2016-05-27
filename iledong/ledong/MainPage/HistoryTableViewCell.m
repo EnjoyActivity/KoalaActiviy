@@ -23,10 +23,17 @@
 
 - (void)updateName:(NSString *)name detail:(NSString *)detail {
     self.sDetailLabel.text = detail;
-    NSRange keyRange = [name rangeOfString:self.keyWords];
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
-    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];
-    self.sNameLabel.attributedText = attr;
+    if (self.keyWords) {
+        NSRange keyRange = [name rangeOfString:self.keyWords];
+        NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
+        [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];
+        self.sNameLabel.attributedText = attr;
+    }
+    else
+    {
+        self.sNameLabel.text = name;
+    }
+  
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

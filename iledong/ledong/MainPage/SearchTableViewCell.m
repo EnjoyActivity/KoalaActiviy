@@ -22,12 +22,18 @@
               price:(NSString *)price {
     self.activityDetail.text = detail;
     
-    NSRange keyRange = [name rangeOfString:self.keyWord];
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
-    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];
-    self.activityName.attributedText = attr;
+    if (self.keyWord) {
+        NSRange keyRange = [name rangeOfString:self.keyWord];
+        NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:name];
+        [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:keyRange];
+        self.activityName.attributedText = attr;
+    }
+    else
+    {
+          self.activityName.text = name;  
+    }
+    NSRange yuanRange = [price rangeOfString:@"元"];
     
-    NSRange yuanRange = [name rangeOfString:@"元"];
     NSMutableAttributedString * attrYuan = [[NSMutableAttributedString alloc] initWithString:price];
     [attrYuan addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:yuanRange];
     self.activityPrice.attributedText = attrYuan;

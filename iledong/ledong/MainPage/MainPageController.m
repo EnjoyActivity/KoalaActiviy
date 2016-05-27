@@ -424,6 +424,8 @@ static CGFloat const teamHeight = 280;
     activityVC.hidesBottomBarWhenPushed = YES;
 //    activityVC.locationDic = locationInfo;
     activityVC.cityCode = cityCode;
+    activityVC.isHot = YES;
+    
     [self.navigationController pushViewController:activityVC animated:YES];
 }
 
@@ -746,7 +748,7 @@ static CGFloat const teamHeight = 280;
     
     locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
     locationButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    [locationButton setTitle:@"成都 " forState:UIControlStateNormal];
+    [locationButton setTitle:@"未知 " forState:UIControlStateNormal];
     [locationButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [locationButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     

@@ -10,6 +10,8 @@
 #import "HistoryTableViewCell.h"
 
 #import "SearchTableViewCell.h"
+#import "ActiveDetailViewController.h"
+#import "TeamHomeViewController.h"
 
 
 static NSString * historyCell = @"HistoryCell";
@@ -59,6 +61,10 @@ static NSString * friendCell = @"ActivityCell";
     // Do any additional setup after loading the view from its nib.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
 #pragma mark - netWork
 
 
@@ -71,13 +77,13 @@ static NSString * friendCell = @"ActivityCell";
     NSDictionary * dic = @{
                            @"token":token,
                            @"page":[NSNumber numberWithInt:1],
-                           @"PageSize":[NSNumber numberWithInt:10],
+                           @"PageSize":[NSNumber numberWithInt:100],
                            @"tag":keyWord
                            };
     
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
@@ -171,6 +177,7 @@ static NSString * friendCell = @"ActivityCell";
     NSString * time = [dic objectForKey:@"BeginTime"];
     [cell.headImageView sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
     cell.activityName.text = name;
+    cell.keyWord = self.keyWord;
     NSString * price = [NSString stringWithFormat:@"%@-%@元",minMoney,maxMOney];
     
     NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
@@ -194,6 +201,32 @@ static NSString * friendCell = @"ActivityCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 100;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (self.searchType) {
+        case moreTypeActivity:
+        {
+            NSDictionary * dic = self.activityArray[indexPath.row];
+            ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+            activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+            [self.navigationController pushViewController:activityVc animated:YES];
+        }
+            break;
+        case moreTypeFriend:
+        {
+            
+        }
+            break;
+        case moreTypeTeam:
+        {
+            NSDictionary * dic =self.activityArray[indexPath.row];
+            TeamHomeViewController * teamVc = [[TeamHomeViewController alloc] init];
+            teamVc.teamId = [dic objectForKey:@"Id"];
+            [self.navigationController pushViewController:teamVc animated:YES];
+        }
+            break;
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

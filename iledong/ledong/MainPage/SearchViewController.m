@@ -93,7 +93,7 @@ static NSString * friendCell = @"ActivityCell";
     
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
         NSInteger code = [resultDic[@"code"] integerValue];
         if (code != 0) {
@@ -291,6 +291,7 @@ static NSString * friendCell = @"ActivityCell";
     
     NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
     
+    cell.keyWord = searchkeyWord;
     [cell updateName:name detail:detail price:price];
     return cell;
 }
@@ -336,7 +337,7 @@ static NSString * friendCell = @"ActivityCell";
 {
     if (tableView == self.resultTableView)
     {
-        return section == 0 ? 0:49;
+        return 49;
     }
     return 0;
 }
@@ -352,9 +353,6 @@ static NSString * friendCell = @"ActivityCell";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if ([tableView isEqual:self.tableView]) {
-        return nil;
-    }
-    if (section == 0) {
         return nil;
     }
     return [self viewForFooter:section];
@@ -374,7 +372,10 @@ static NSString * friendCell = @"ActivityCell";
         switch (indexPath.section) {
             case 0:
             {
-             
+                NSDictionary * dic = activityArray[indexPath.row];
+                ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+                activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+                [self.navigationController pushViewController:activityVc animated:YES];
             }
                 break;
             case 1:
@@ -387,10 +388,10 @@ static NSString * friendCell = @"ActivityCell";
                 break;
             default:
             {
-                NSDictionary * dic = activityArray[indexPath.row];
-                ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
-                activityVc.Id = [[dic objectForKey:@"Id"] intValue];
-                [self.navigationController pushViewController:activityVc animated:YES];
+//                NSDictionary * dic = activityArray[indexPath.row];
+//                ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+//                activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+//                [self.navigationController pushViewController:activityVc animated:YES];
             }
                 break;
         }
@@ -438,14 +439,18 @@ static NSString * friendCell = @"ActivityCell";
     switch (tag) {
         case 0:
         {
-            
+            LDSearchMoreViewController * moreVc = [[LDSearchMoreViewController alloc] init];
+            moreVc.keyWord = searchkeyWord;
+            //            moreVc.activityArray = [activityArray copy];
+            moreVc.searchType = moreTypeActivity;
+            [self.navigationController pushViewController:moreVc animated:YES];
         }
             break;
         case 1:
         {
             LDSearchMoreViewController * moreVc = [[LDSearchMoreViewController alloc] init];
             moreVc.keyWord = searchkeyWord;
-            moreVc.activityArray = [activityArray copy];
+//            moreVc.activityArray = [activityArray copy];
             moreVc.searchType = moreTypeTeam;
             [self.navigationController pushViewController:moreVc animated:YES];
         }

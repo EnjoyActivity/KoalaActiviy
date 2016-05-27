@@ -21,6 +21,11 @@ static NSString * const locationIdentifier = @"LocationCell";
     NSInteger currentPage;
     BOOL changeActivity;
     
+    NSString * gtime1;
+    NSString * gtime2;
+    NSString * gareaCode;
+    
+    
 }
 @property (strong, nonatomic) IBOutlet UIButton *activityButton;
 @property (nonatomic, strong) UIView * filterView;
@@ -43,11 +48,11 @@ static NSString * const locationIdentifier = @"LocationCell";
     }
     else
     {
-        NSDictionary * dic = @{
-                               @"ActivityClassId":[NSNumber numberWithInteger:self.activityId ],
-                               @"ReadFlag" :[NSNumber numberWithInt:1]
-                               };
-        [self requestActivityData:currentPage parameter:dic];
+//        NSDictionary * dic = @{
+//                               @"ActivityClassId":[NSNumber numberWithInteger:self.activityId ],
+//                               @"ReadFlag" :[NSNumber numberWithInt:1]
+//                               };
+        [self requestActivityData:currentPage parameter:nil];
         
     }
     if (self.cityCode) {
@@ -79,16 +84,30 @@ static NSString * const locationIdentifier = @"LocationCell";
     [parameterDic setValue:token forKey:@"token"];
     [parameterDic setValue:[NSNumber numberWithInt:10] forKey:@"PageSize"];
     [parameterDic setValue:[NSNumber numberWithInteger:pageIndex] forKey:@"page"];
-//    [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"ReadFlag"]; // @"ReadFlag" :[NSNumber numberWithInt:1]
     if (parameter) {
         [parameterDic setValuesForKeysWithDictionary:parameter];
     }
+    if (self.activityId != 0) {
+        [parameterDic setValue:[NSNumber numberWithInteger:self.activityId] forKey:@"ActivityClassId"];
+    }
+    if (gtime1.length != 0) {
+        [parameterDic setValue:gtime1 forKey:@"time1"];
+        [parameterDic setValue:gtime2 forKey:@"time2"];
+    }
+    if (gareaCode.length != 0) {
+        [parameterDic setValue:gareaCode forKey:@"AreaCode"];
+    }
+    if (self.isHot) {
+        [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"ReadFlag"];
+    }
+   
+    
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/GetActivityItemsByActivityId" parameters:parameterDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"Activity/QueryActivitys" parameters:parameterDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
+        NSInteger code = [resultDic[@"code"] integerValue];//Activity/GetActivityItemsByActivityId
+        if (code != 0) {  //Activity/QueryActivitys
             return ;
         }
         NSArray * array = resultDic[@"result"];
@@ -143,7 +162,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.locationTableview]) {
-        return changeActivity ? _activityClassArray.count:locationArray.count;
+        return changeActivity ? _activityClassArray.count:(locationArray.count+1);
     }
     return activityArray.count;
 }
@@ -156,7 +175,14 @@ static NSString * const locationIdentifier = @"LocationCell";
             label.text = [_activityClassArray[indexPath.row] valueForKey:@"ClassName"];
         }
         else {
-            label.text = [locationArray[indexPath.row] valueForKey:@"Name"];
+            if (indexPath.row == locationArray.count) {
+                label.text = @"全部地区";
+            }
+            else
+            {
+                label.text = [locationArray[indexPath.row] valueForKey:@"Name"];
+            }
+        
         }
         return cell;
     }
@@ -203,22 +229,42 @@ static NSString * const locationIdentifier = @"LocationCell";
     NSString * titleTemp = [_activityClassArray[row] objectForKey:@"ClassName"];
     [self.activityButton setTitle:[NSString stringWithFormat:@"精彩活动 %@",titleTemp] forState:UIControlStateNormal];
     [self.activityButton setSelected:NO];
-    NSDictionary * dic= @{
-                          @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-                          @"ReadFlag" :[NSNumber numberWithInt:1]
-                          };
+//    NSDictionary * dic= @{
+//                          @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+//                          @"ReadFlag" :[NSNumber numberWithInt:1]
+//                          };
     currentPage = 1;
+    self.isHot = NO;
     [self.locationTableview setHidden:YES];
-    [self requestActivityData:currentPage parameter:dic];
+    [self requestActivityData:currentPage parameter:nil];
 }
 
 - (void)changeLocation:(NSInteger)row {
+    if (row == locationArray.count) {
+        gtime1 = nil;
+        gtime2 = nil;
+        gareaCode = nil;
+        currentPage = 1;
+//        NSDictionary * dic = @{
+//                               @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+//                               @"ReadFlag" :[NSNumber numberWithInt:1]
+//                               };
+        self.isHot = NO;
+        [self requestActivityData:currentPage parameter:nil];
+        [self.locationTableview setHidden:YES];
+        return;
+    }
     NSDictionary * area = locationArray[row];
     NSString * areaCode = [area objectForKey:@"Code"];
     NSDictionary * dic = @{
+//                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
                            @"AreaCode":areaCode,
-                           @"ReadFlag" :[NSNumber numberWithInt:1]
+//                           @"ReadFlag" :[NSNumber numberWithInt:1]
                            };
+    self.isHot = NO;
+    gareaCode = areaCode;
+    gtime1 = nil;
+    gtime2 = nil;
     currentPage = 1;
     [self.locationTableview setHidden:YES];
     [self requestActivityData:currentPage parameter:dic];
@@ -255,23 +301,31 @@ static NSString * const locationIdentifier = @"LocationCell";
     switch (sender.tag) {
         case 1:
         {
-            NSDictionary * dic = @{
-                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-                                   @"ReadFlag" :[NSNumber numberWithInt:1]
-                                   };
+//            NSDictionary * dic = @{
+//                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+//                                   @"ReadFlag" :[NSNumber numberWithInt:1]
+//                                   };
+            self.isHot = YES;
             currentPage = 1;
-            [self requestActivityData:currentPage parameter:dic];
+            gtime2 = nil;
+            gtime1 = nil;
+            gareaCode = nil;
+            [self requestActivityData:currentPage parameter:nil];
             [self.locationTableview setHidden:YES];
         }
             break;
         case 2:
         {
-            NSDictionary * dic = @{
-                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-                                   @"ReadFlag" :[NSNumber numberWithInt:0]
-                                   };
+//            NSDictionary * dic = @{
+//                                   @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+//                                   @"ReadFlag" :[NSNumber numberWithInt:0]
+//                                   };
+            self.isHot = NO;
             currentPage = 1;
-            [self requestActivityData:currentPage parameter:dic];
+            gtime2 = nil;
+            gtime1 = nil;
+            gareaCode = nil;
+            [self requestActivityData:currentPage parameter:nil];
             [self.locationTableview setHidden:YES];
         }
             break;
@@ -305,13 +359,16 @@ static NSString * const locationIdentifier = @"LocationCell";
     
     NSString * mondayStr = [formatter stringFromDate:monday];
     NSString * sundayStr = [formatter stringFromDate:sunday];
-    
+    gtime1 = mondayStr;
+    gtime2 = sundayStr;
+    gareaCode = nil;
     NSDictionary * dic = @{
-                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-                           @"ReadFlag" :[NSNumber numberWithInt:1],
+//                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
+//                           @"ReadFlag" :[NSNumber numberWithInt:1],
                            @"time1" :mondayStr,
                            @"time2" :sundayStr
                            };
+    self.isHot =NO;
     currentPage = 1;
     [self requestActivityData:currentPage parameter:dic];
     

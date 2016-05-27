@@ -13,6 +13,7 @@
 @property (nonatomic,assign) NSInteger activityId;
 @property (nonatomic,copy) NSString * activityClassName;
 @property (nonatomic,copy) NSArray * activityClassArray;
-//@property (nonatomic,copy) NSDictionary * locationDic;
 @property (nonatomic,copy) NSString * cityCode;
+@property (nonatomic,assign) NSInteger isHot;
+
 @end
