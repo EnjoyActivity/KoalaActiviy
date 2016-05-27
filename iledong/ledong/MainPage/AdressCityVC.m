@@ -45,7 +45,15 @@
     }
     else
     {
-        [self.currentCityButton setTitle:@"当前城市未知" forState:UIControlStateNormal];
+        NSDictionary * dic = [FRUtils getAddressInfo];
+        if (dic != nil) {
+            self.locationDic = dic;
+            NSString * provinceName = [self.locationDic objectForKey:@"province"];
+            NSString * cityName =[self.locationDic objectForKey:@"city"];
+            NSString * str = [NSString stringWithFormat:@"%@ %@",provinceName,cityName];
+            [self.currentCityButton setTitle:str forState:UIControlStateNormal];
+        }
+        
     }
     self.currentCityButton.enabled = NO;
     

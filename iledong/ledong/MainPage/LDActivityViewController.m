@@ -240,16 +240,15 @@ static NSString * const locationIdentifier = @"LocationCell";
 }
 
 - (void)changeLocation:(NSInteger)row {
+    gtime1 = nil;
+    gtime2 = nil;
+    currentPage = 1;
+    self.isHot = NO;
     if (row == locationArray.count) {
-        gtime1 = nil;
-        gtime2 = nil;
         gareaCode = nil;
-        currentPage = 1;
-//        NSDictionary * dic = @{
-//                               @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-//                               @"ReadFlag" :[NSNumber numberWithInt:1]
-//                               };
-        self.isHot = NO;
+
+        UIButton * button  =(UIButton *)[self.filterView viewWithTag:4];
+        [button setTitle:@"全部地区" forState:UIControlStateNormal];
         [self requestActivityData:currentPage parameter:nil];
         [self.locationTableview setHidden:YES];
         return;
@@ -257,15 +256,11 @@ static NSString * const locationIdentifier = @"LocationCell";
     NSDictionary * area = locationArray[row];
     NSString * areaCode = [area objectForKey:@"Code"];
     NSDictionary * dic = @{
-//                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
                            @"AreaCode":areaCode,
-//                           @"ReadFlag" :[NSNumber numberWithInt:1]
                            };
-    self.isHot = NO;
+    UIButton * button  =(UIButton *)[self.filterView viewWithTag:4];
+    [button setTitle:[area objectForKey:@"Name"] forState:UIControlStateNormal];
     gareaCode = areaCode;
-    gtime1 = nil;
-    gtime2 = nil;
-    currentPage = 1;
     [self.locationTableview setHidden:YES];
     [self requestActivityData:currentPage parameter:dic];
 }
@@ -361,10 +356,7 @@ static NSString * const locationIdentifier = @"LocationCell";
     NSString * sundayStr = [formatter stringFromDate:sunday];
     gtime1 = mondayStr;
     gtime2 = sundayStr;
-    gareaCode = nil;
     NSDictionary * dic = @{
-//                           @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-//                           @"ReadFlag" :[NSNumber numberWithInt:1],
                            @"time1" :mondayStr,
                            @"time2" :sundayStr
                            };

@@ -29,6 +29,9 @@ static NSString * const teamCell = @"teamCell";
     BOOL activityChange;
     NSInteger currentPage;
 
+    NSInteger activityId;
+    NSString * areaCode;
+
 }
 
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -43,12 +46,13 @@ static NSString * const teamCell = @"teamCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    activityId = -1;
+    
     currentPage = 1;
     teamArray = [NSMutableArray array];
     [self setUpUI];
     [self requestTeamData:currentPage parameter:nil];
     if (self.cityCode) {
-//        NSString * cityCode = [self.locationDic objectForKey:@"citycode"];
         [self getAreaByCityCode:self.cityCode];
     }
     // Do any additional setup after loading the view from its nib.
@@ -56,7 +60,7 @@ static NSString * const teamCell = @"teamCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -74,6 +78,13 @@ static NSString * const teamCell = @"teamCell";
     [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"Page"];
     [parameterDic setValue:[NSNumber numberWithInt:20] forKey:@"PageSize"];
     [parameterDic setValue:[NSNumber numberWithBool:YES] forKey:@"IsHot"];
+    if (activityId > 0) {
+        [parameterDic setValue:[NSNumber numberWithInteger:activityId] forKey:@"ActivityClassId"];
+    }
+    if (areaCode.length != 0) {
+        [parameterDic setValue:areaCode forKey:@"AreaCode"];
+    }
+    
     if (dic) {
         [parameterDic setValuesForKeysWithDictionary:dic];
     }
@@ -163,7 +174,7 @@ static NSString * const teamCell = @"teamCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.locationTableview]) {
-        return locationChange ? locationArray.count : _activityArray.count;
+        return locationChange ? locationArray.count+1 : _activityArray.count+1;
     }
     return teamArray.count;
 }
@@ -172,10 +183,12 @@ static NSString * const teamCell = @"teamCell";
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:locationIdentifier forIndexPath:indexPath];
         UILabel * label = (UILabel *)[cell viewWithTag:2];
         if (locationChange) {
-            label.text = [locationArray[indexPath.row] objectForKey:@"Name"];
+            NSString * str = indexPath.row == locationArray.count ? @"全部地区":[locationArray[indexPath.row] objectForKey:@"Name"];
+            label.text = str;
         }
         else {
-              label.text = [_activityArray[indexPath.row] valueForKey:@"ClassName"];
+            NSString * str = indexPath.row == _activityArray.count ? @"全部活动":[_activityArray[indexPath.row] valueForKey:@"ClassName"];
+            label.text = str;
         }
         return cell;
     }
@@ -226,27 +239,48 @@ static NSString * const teamCell = @"teamCell";
 }
 
 - (void)changeLocation:(NSInteger)row {
-    NSDictionary * area = locationArray[row];
-    NSString * code = [area objectForKey:@"Code"];
-    //CityCode ProvinceCode
-    NSDictionary * dic = @{
-                           @"AreaCode":code
-                           };
-    [self.locationTableview setHidden:YES];
     currentPage = 1;
     locationChange = NO;
-    [self requestTeamData:currentPage parameter:dic];
+    NSString * str = @"";
+    [self.locationTableview setHidden:YES];
+    if (row == locationArray.count) {
+        areaCode = nil;
+        str = @"全部地区";
+    }
+    else
+    {
+        NSDictionary * area = locationArray[row];
+        areaCode = [area objectForKey:@"Code"];
+        str = [area objectForKey:@"Name"] ;
+    }
+    
+    [self requestTeamData:currentPage parameter:nil];
+    UIButton * button = (UIButton *)[filterView viewWithTag:areaButtonTag];
+    [button setTitle:str forState:UIControlStateNormal];
 }
 
 - (void)changeActivity:(NSInteger)row {
-    NSNumber * activityId= [_activityArray[row] objectForKey:@"Id"];
-    NSDictionary * dic= @{
-                          @"ActivityClassId":activityId
-                          };
     currentPage = 1;
     activityChange = NO;
+    NSString * str;
     [self.locationTableview setHidden:YES];
-    [self requestTeamData:currentPage parameter:dic];
+    if (row == _activityArray.count) {
+        str = @"全部活动";
+        activityId = -1;
+    }
+    else
+    {
+        NSDictionary * dic = _activityArray[row];
+        
+        activityId= [[dic objectForKey:@"Id"] integerValue];
+        str =[dic objectForKey:@"ClassName"];
+    }
+    
+    [self requestTeamData:currentPage parameter:nil];
+    
+    UIButton * button = (UIButton *)[filterView viewWithTag:categoryButtonTag];
+    [button setTitle:str forState:UIControlStateNormal];
+    
 }
 #pragma mark - buttonAction
 - (IBAction)back:(id)sender {
@@ -329,6 +363,7 @@ static NSString * const teamCell = @"teamCell";
     areaButton.tag = areaButtonTag;
     currentButton = hotButtonTag;
     [hotButton setSelected:YES];
+    
     
     [filterView addSubview:hotButton];
     [filterView addSubview:cataryButton];

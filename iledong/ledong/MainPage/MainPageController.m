@@ -101,13 +101,13 @@ static CGFloat const teamHeight = 280;
     teamArray = [NSMutableArray array];
     [self setUpUI];
     //30.6509086063,104.0693664551
-//    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
+    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
     
     [self requestActivityData];
     [self requestAdData];
     [self requestTeamData:5];
 
-    [self getLocationInfo];
+//    [self getLocationInfo];
  
 }
 
@@ -239,15 +239,13 @@ static CGFloat const teamHeight = 280;
         
         locationInfo = [result objectForKey:@"addressComponent"];
         
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//            NSString * detailAddress = [result objectForKey:@"formatted_address"];
-//            NSDictionary * latlon = [result objectForKey:@"location"];
-//            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
-//            [FRUtils setAddressDetail:detailAddress];
-//            [FRUtils setUserLatitudeLongitude:latlon];
-//            [self saveLocationInfo:locationInfo];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
+            [FRUtils setAddressInfo:locationTemp];
+
             
-//        });
+        });
     
         dispatch_async(dispatch_get_main_queue(), ^{
             cityCode = [locationInfo objectForKey:@"citycode"];

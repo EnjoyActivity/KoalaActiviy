@@ -11,7 +11,5 @@
 @interface LDTeamViewController : UIViewController
 
 @property (nonatomic, copy) NSArray * activityArray;
-//@property (nonatomic, copy) NSDictionary * locationDic;
-
 @property (nonatomic, copy) NSString * cityCode;
 @end
