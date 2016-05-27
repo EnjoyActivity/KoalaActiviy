@@ -237,15 +237,15 @@ static CGFloat const teamHeight = 280;
         
         locationInfo = [result objectForKey:@"addressComponent"];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSString * detailAddress = [result objectForKey:@"formatted_address"];
-            NSDictionary * latlon = [result objectForKey:@"location"];
-            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
-            [FRUtils setAddressDetail:detailAddress];
-            [FRUtils setUserLatitudeLongitude:latlon];
-            [FRUtils setAddressInfo:locationTemp];
-        });
-    
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//            NSString * detailAddress = [result objectForKey:@"formatted_address"];
+//            NSDictionary * latlon = [result objectForKey:@"location"];
+//            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
+//            [FRUtils setAddressDetail:detailAddress];
+//            [FRUtils setUserLatitudeLongitude:latlon];
+//            [FRUtils setAddressInfo:locationTemp];
+//        });
+//    
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString * city = [locationInfo objectForKey:@"city"];
             [locationButton setTitle:city forState:UIControlStateNormal];
@@ -265,13 +265,15 @@ static CGFloat const teamHeight = 280;
     if ([sender isEqual:locationButton]) {
         AdressCityVC *adressCityVC = [[AdressCityVC alloc] init];
         adressCityVC.locationResult = ^(NSDictionary *city) {
+            
             NSString * title = [city objectForKey:@"Name"];
             [locationButton setTitle:title forState:UIControlStateNormal];
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
             [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
         };
-        adressCityVC.isSearch= YES;
+//        adressCityVC.isSearch= YES;
         adressCityVC.locationDic = locationInfo;
+        adressCityVC.destinationVc = self;
         adressCityVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:adressCityVC animated:YES];
     } else if ([sender isEqual:scannerButton]) {

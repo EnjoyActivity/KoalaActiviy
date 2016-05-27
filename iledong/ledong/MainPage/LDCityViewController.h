@@ -17,6 +17,6 @@ typedef void(^getCity)(NSDictionary *);
 
 @property (nonatomic,copy) getCity city;
 @property (nonatomic,assign) BOOL searchLocation;
-
+@property (nonatomic,weak) UIViewController * destinationVc;
 
 @end

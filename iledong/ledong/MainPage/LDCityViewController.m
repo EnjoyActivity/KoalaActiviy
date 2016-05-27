@@ -173,7 +173,8 @@ static NSString * const cityCell = @"cityCell";
         if (self.city) {
             self.city(dic);
         }
-        [self.navigationController popToRootViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToViewController:self.destinationVc animated:YES];
     }
     
 }
@@ -195,9 +196,8 @@ static NSString * const cityCell = @"cityCell";
         self.city(dicTemp);
     }
 //    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    
-
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popToViewController:self.destinationVc animated:YES];
 }
 
 #pragma mark - UItextFieldDelegate

@@ -17,6 +17,9 @@ typedef void(^getLocation)(NSDictionary *);
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 
+
+@property (nonatomic,weak) UIViewController * destinationVc;
+
 @property (nonatomic, copy) getLocation locationResult;
 @property (nonatomic, copy) NSDictionary * locationDic;
 

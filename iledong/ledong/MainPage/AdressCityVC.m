@@ -35,6 +35,7 @@
     [self.view addSubview:self.searchResultTable];
     
     if (_locationDic) {
+        NSString * provinceName = [self.locationDic objectForKey:@"province"];
         NSString * cityName =[self.locationDic objectForKey:@"city"];
         self.adressCity.text = cityName;
     }
@@ -266,6 +267,7 @@
     cityVc.provinceName = [dic objectForKey:@"Name"];
     cityVc.city = self.locationResult;
     cityVc.searchLocation = self.isSearch;
+    cityVc.destinationVc = self.destinationVc;
     
     [self.navigationController pushViewController:cityVc animated:YES];
     
