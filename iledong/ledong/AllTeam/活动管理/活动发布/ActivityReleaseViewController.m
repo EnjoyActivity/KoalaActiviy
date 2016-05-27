@@ -127,7 +127,7 @@ typedef enum imagePickerFromType {
     self.timeActivityDict = [NSMutableDictionary dictionary];
     self.signingUpPersonCountDict = [NSMutableDictionary dictionary];
     self.moneyDict = [NSMutableDictionary dictionary];
-    self.activityAddress = [NSMutableDictionary dictionary];
+    //self.activityAddress = [NSMutableDictionary dictionary];
 }
 
 - (void)releaseResource {
@@ -441,9 +441,7 @@ typedef enum imagePickerFromType {
             case 2:
                 return [self drawSection2ListCell:self.nonleagueTableView indexPath:indexPath];
             case 3:
-                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];//[self drawSection3Cell:self.nonleagueTableView indexPath:indexPath];
-//            case 4:
-//                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];
+                return [self drawSection4Cell:self.nonleagueTableView indexPath:indexPath];
             default:
                 break;
         }
@@ -485,7 +483,7 @@ typedef enum imagePickerFromType {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.nonleagueTableView == tableView) {
-        if (indexPath.section == 2)//|| indexPath.section == 3)
+        if (indexPath.section == 2)
             return 100;
     }
     else if (self.leagueTableView == tableView) {
@@ -494,7 +492,7 @@ typedef enum imagePickerFromType {
         else if (indexPath.section == 6)
             return 45;
         else if (indexPath.section == 7)
-            return 150;//250;
+            return 150;
     }
     return 50;
 }
@@ -527,15 +525,16 @@ typedef enum imagePickerFromType {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    __weak typeof(self)weakSelf = self;
     if (indexPath.section == 0 && indexPath.row == 1) {
         [self.view endEditing:YES];
         ParameterTableViewController* VC = [[ParameterTableViewController alloc]init];
         [self.navigationController pushViewController:VC animated:YES];
         VC.vcTitle = @"活动分类";
         [VC setSelectCellBlock:^(NSDictionary *dict) {
-            self.selectActivityDict = [NSMutableDictionary dictionaryWithDictionary:dict];
-            [self.leagueTableView reloadData];
-            [self.nonleagueTableView reloadData];
+            weakSelf.selectActivityDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+            [weakSelf.leagueTableView reloadData];
+            [weakSelf.nonleagueTableView reloadData];
         }];
         return;
     }
@@ -552,11 +551,11 @@ typedef enum imagePickerFromType {
                 UILabel* label = nil;
                 if (indexPath.row == 0)  {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                    [self.timeActivityDict setValue:dateStr forKey:@"beginTime"];
+                    [weakSelf.timeActivityDict setValue:dateStr forKey:@"beginTime"];
                 }
                 else if (indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
-                    [self.timeActivityDict setValue:dateStr forKey:@"endTime"];
+                    [weakSelf.timeActivityDict setValue:dateStr forKey:@"endTime"];
                 }
                 label.text = dateStr;
                 [label sizeToFit];
@@ -576,13 +575,13 @@ typedef enum imagePickerFromType {
             }
             [Vc setCompleteBlock:^(BOOL isMoidfy, NSDictionary *dict) {
                 if (isModify) {
-                    [self.activitySessionArray removeObjectAtIndex:indexPath.row];
-                    [self.activitySessionArray insertObject:dict atIndex:indexPath.row];
+                    [weakSelf.activitySessionArray removeObjectAtIndex:indexPath.row];
+                    [weakSelf.activitySessionArray insertObject:dict atIndex:indexPath.row];
                 }
                 else {
-                    [self.activitySessionArray addObject:dict];
+                    [weakSelf.activitySessionArray addObject:dict];
                 }
-                [self.nonleagueTableView reloadData];
+                [weakSelf.nonleagueTableView reloadData];
             } isModify:isModify];
             if (tempDict)
                 [Vc setPreDict:tempDict];
@@ -601,19 +600,19 @@ typedef enum imagePickerFromType {
                 UILabel* label = nil;
                 if (indexPath.section == 1 && indexPath.row == 0) {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                    [self.timeSigningUpDict setValue:dateStr forKey:@"beginTime"];
+                    [weakSelf.timeSigningUpDict setValue:dateStr forKey:@"beginTime"];
                 }
                 else if (indexPath.section == 1 && indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
-                    [self.timeSigningUpDict setValue:dateStr forKey:@"endTime"];
+                    [weakSelf.timeSigningUpDict setValue:dateStr forKey:@"endTime"];
                 }
                 else if (indexPath.section == 2 && indexPath.row == 0)  {
                     label = (UILabel*)[cell.contentView viewWithTag:300];
-                    [self.timeActivityDict setValue:dateStr forKey:@"beginTime"];
+                    [weakSelf.timeActivityDict setValue:dateStr forKey:@"beginTime"];
                 }
                 else if (indexPath.section == 2 && indexPath.row == 1) {
                     label = (UILabel*)[cell.contentView viewWithTag:400];
-                    [self.timeActivityDict setValue:dateStr forKey:@"endTime"];
+                    [weakSelf.timeActivityDict setValue:dateStr forKey:@"endTime"];
                 }
                 label.text = dateStr;
                 [label sizeToFit];
@@ -626,9 +625,9 @@ typedef enum imagePickerFromType {
             ContactTypeViewController* Vc = [[ContactTypeViewController alloc]init];
             [self.navigationController pushViewController:Vc animated:YES];
             [Vc setCompleteSelect:^(NSString* phoneNum, NSString* complainTelNum) {
-                self.phoneNum = phoneNum;
-                self.complainTelNum = complainTelNum;
-                [self.leagueTableView reloadData];
+                weakSelf.phoneNum = phoneNum;
+                weakSelf.complainTelNum = complainTelNum;
+                [weakSelf.leagueTableView reloadData];
             }];
         }
         else if (indexPath.section == 5) {
@@ -636,7 +635,8 @@ typedef enum imagePickerFromType {
             AdressCityVC* Vc = [[AdressCityVC alloc]init];
             Vc.isSearch = YES;
             Vc.locationResult = ^(NSDictionary *dict) {
-                
+                weakSelf.activityAddress = [NSMutableDictionary dictionaryWithDictionary:dict];
+                [weakSelf.leagueTableView reloadData];
             };
             
             [self.navigationController pushViewController:Vc animated:YES];
@@ -1276,18 +1276,18 @@ typedef enum imagePickerFromType {
     NSString* preVince, *city, *areas;
     NSMutableString* addressTemp = [NSMutableString string];
     NSArray* keys = self.activityAddress.allKeys;
-    if ([keys containsObject:@"provinceName"]) {
-        preVince = [self.activityAddress objectForKey:@"provinceName"];
+    if ([keys containsObject:@"province"]) {
+        preVince = [self.activityAddress objectForKey:@"province"];
         addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:preVince];
         addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:@"\r\n"];
     }
-    if ([keys containsObject:@"cityName"]) {
-        city = [self.activityAddress objectForKey:@"cityName"];
+    if ([keys containsObject:@"city"]) {
+        city = [self.activityAddress objectForKey:@"city"];
         addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:city];
         addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:@"\r\n"];
     }
-    if ([keys containsObject:@"areasName"]) {
-        areas = [self.activityAddress objectForKey:@"areasName"];
+    if ([keys containsObject:@"district"]) {
+        areas = [self.activityAddress objectForKey:@"district"];
         addressTemp = (NSMutableString*)[addressTemp stringByAppendingString:areas];
     }
     if (addressTemp.length > 0)
@@ -1402,6 +1402,9 @@ typedef enum imagePickerFromType {
     NSNumber* maxNum = [self.signingUpPersonCountDict objectForKey:@"ceilingCount"];
     NSNumber* minMoneyNum = [self.moneyDict objectForKey:@"cost"];
     NSNumber* maxMoneyNum = [self.moneyDict objectForKey:@"margin"];
+    NSString* provinceCode = [self.activityAddress objectForKey:@"provinceCode"];
+    NSString* cityCode = [self.activityAddress objectForKey:@"cityCode"];
+    NSString* districtCode = [self.activityAddress objectForKey:@"districtCode"];
 
     [ActivityInfo setValue:ActivityClassId forKey:@"ActivityClassId"];      //活动分类id
     [ActivityInfo setValue:self.titleStr forKey:@"Title"];
@@ -1423,9 +1426,9 @@ typedef enum imagePickerFromType {
     [ActivityInfo setValue:maxNum forKey:@"MaxNum"];
     [ActivityInfo setValue:planNum forKey:@"MaxApplyNum"];      //
     [ActivityInfo setValue:@0 forKey:@"ApplyNum"];         //已经报名数
-    [ActivityInfo setValue:@"510000" forKey:@"provinceCode"];
-    [ActivityInfo setValue:@"510100" forKey:@"cityCode"];
-    [ActivityInfo setValue:@"510104" forKey:@"areaCode"];
+    [ActivityInfo setValue:provinceCode forKey:@"provinceCode"];
+    [ActivityInfo setValue:cityCode forKey:@"cityCode"];
+    [ActivityInfo setValue:districtCode forKey:@"areaCode"];
     //[ActivityInfo setValue: forKey:@"ConstitutorId"];     组织者id
     [ActivityInfo setValue:minMoneyNum forKey:@"EntryMoneyMin"];    //活动费用最少额
     [ActivityInfo setValue:maxMoneyNum forKey:@"EntryMoneyMax"];    //活动费用最大额
@@ -1456,11 +1459,13 @@ typedef enum imagePickerFromType {
         //[item setValue: forKey:@"ConstitutorId"];
         [item setValue:[tempDict objectForKey:@"placeName"] forKey:@"PlaceName"];
         [item setValue:[tempDict objectForKey:@"Address"] forKey:@"Address"];
-        [item setValue:[tempDict objectForKey:@"mapX"] forKey:@"MapX"];
-        [item setValue:[tempDict objectForKey:@"mapY"] forKey:@"MapY"];
+        
+        NSDictionary* latlng = [tempDict objectForKey:@"latlng"];
+        [item setValue:[latlng objectForKey:@"lng"] forKey:@"MapX"];
+        [item setValue:[latlng objectForKey:@"lat"] forKey:@"MapY"];
         [item setValue:[tempDict objectForKey:@"provinceCode"] forKey:@"ProvinceCode"];
         [item setValue:[tempDict objectForKey:@"cityCode"] forKey:@"CityCode"];
-        [item setValue:[tempDict objectForKey:@"areaCode"] forKey:@"AreaCode"];
+        [item setValue:[tempDict objectForKey:@"districtCode"] forKey:@"AreaCode"];
         [ActivityItems addObject:item];
     }
 
@@ -1658,13 +1663,10 @@ typedef enum imagePickerFromType {
             [self setStartBtnState:NO];
             return;
         }
-//        if (self.activityAddress) { //活动地点
-//            // @property (nonatomic, strong)NSMutableDictionary* activityAddress;
-//        }
-//        else {
-//            [self setStartBtnState:NO];
-//            return;
-//        }
+        if (!self.activityAddress) { //活动地点
+            [self setStartBtnState:NO];
+            return;
+        }
     }
     
     [self setStartBtnState:YES];
