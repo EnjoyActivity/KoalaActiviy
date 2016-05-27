@@ -1473,12 +1473,10 @@ typedef enum imagePickerFromType {
     if (!maxMoneyNum)
         maxMoneyNum = @0;
 
-
-
     [ActivityInfo setValue:ActivityClassId forKey:@"ActivityClassId"];      //活动分类id
     [ActivityInfo setValue:self.titleStr forKey:@"Title"];
     [ActivityInfo setValue:self.corverImgPath forKey:@"Cover"];
-    [ActivityInfo setValue:@0 forKey:@"ActivityType"];
+    [ActivityInfo setValue:@1 forKey:@"ActivityType"];
     [ActivityInfo setValue:[NSNumber numberWithInt:self.gameType] forKey:@"IsLeague"];
     [ActivityInfo setValue:[NSNumber numberWithInt:self.joinType] forKey:@"JionType"];
     [ActivityInfo setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
