@@ -126,6 +126,10 @@
     NSString* title = [dict objectForKey:@"Title"];
     NSString* beginTime = [dict objectForKey:@"BeginTime"];
     NSString* endTime = [dict objectForKey:@"EndTime"];
+    NSString* className = [dict objectForKey:@"ClassName"];
+    NSString* demand = [dict objectForKey:@"Demand"];
+    NSString* cityName = [dict objectForKey:@"cityName"];
+    NSNumber* isLeague = [dict objectForKey:@"IsLeague"];
     
     if (cover.length > 0) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -148,20 +152,25 @@
     }
     
     cell.activityName.text = title;
-
-    
-    if (indexPath.section == 0) {
-        //cell.activityName.text = @"朝阳区乐动杯足球联赛";
-        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
-        cell.activityState.text = @"进行中";
-        cell.state = activityStateOnGoing;
+    if (isLeague.intValue == 1) {
+        cell.activityDesc.text = demand;
     }
     else {
-        //cell.activityName.text = @"朝阳区乐动杯足球联赛";
-        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
-        cell.activityState.text = @"已结束";
-        cell.state = activityStateEnd;
+        cell.activityDesc.text = [NSString stringWithFormat:@"%@|%@", className, cityName];
     }
+
+//    if (indexPath.section == 0) {
+//        cell.activityName.text = @"朝阳区乐动杯足球联赛";
+//        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
+//        cell.activityState.text = @"进行中";
+//        cell.state = activityStateOnGoing;
+//    }
+//    else {
+//        cell.activityName.text = @"朝阳区乐动杯足球联赛";
+//        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
+//        cell.activityState.text = @"已结束";
+//        cell.state = activityStateEnd;
+//    }
     [cell.activityName sizeToFit];
     [cell.activityDesc sizeToFit];
     [cell.activityState sizeToFit];
@@ -177,6 +186,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ActiveDetailViewController* Vc = [[ActiveDetailViewController alloc]init];
+    NSDictionary* dict = self.datas[indexPath.row];
+    NSNumber* activeId = [dict objectForKey:@"Id"];
+    Vc.Id = activeId.intValue;
+    
     [self.navigationController pushViewController:Vc animated:YES];
 }
 
