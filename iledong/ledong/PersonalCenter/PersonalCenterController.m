@@ -216,6 +216,7 @@
     } else if (indexPath.section == 1) {
         // 点击进入钱包
         MyWalletViewController *myWalletViewController = [[MyWalletViewController alloc] init];
+        myWalletViewController.navTitle = @"我的钱包";
         myWalletViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myWalletViewController animated:YES];
     } else {

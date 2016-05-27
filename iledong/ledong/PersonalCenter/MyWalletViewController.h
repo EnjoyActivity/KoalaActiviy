@@ -9,5 +9,6 @@
 #import "BaseViewController.h"
 
 @interface MyWalletViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,copy) NSString *navTitle;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "TeamManagerTableViewController.h"
 #import "ActiveViewController.h"
+#import "MyWalletViewController.h"
 
 #define kCell      @"cell"
 
@@ -112,6 +113,16 @@
         VC.teamId = self.teamId;
         [self.navigationController pushViewController:VC animated:YES];
     }
+    
+    if (indexPath.section == 2) {
+        if (indexPath.row == 2) {
+            MyWalletViewController *vc = [[MyWalletViewController alloc]init];
+            vc.navTitle = @"团队钱包";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            
+    }
+
 }
 
 @end

@@ -27,7 +27,7 @@
 @implementation MyWalletViewController
 
 - (void)viewDidLoad {
-    self.titleName = @"我的钱包";
+    self.titleName = _navTitle;//@"我的钱包";
     [super viewDidLoad];
     self.rightButton.hidden = NO;
     [self.rightButton setTitle:@"查看明细" forState:UIControlStateNormal];
