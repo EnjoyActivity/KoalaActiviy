@@ -39,7 +39,7 @@
 }
 
 - (void)setupUI {
-    headerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 50, 156 - 32, 100, 100)];
+    headerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 50, 210 - 32, 100, 100)];
     headerImageView.layer.cornerRadius = 50;
     headerImageView.clipsToBounds = YES;
     headerImageView.image = _headImage;
@@ -59,7 +59,7 @@
     tipLabel.textColor = RGB(153, 153, 153, 1);
     tipLabel.font = [UIFont systemFontOfSize:15];
     [tipLabel sizeToFit];
-    tipLabel.center = CGPointMake(APP_WIDTH/2, APP_HEIGHT - 64 - 45 - 18 - tipLabel.frame.size.height/2);
+    tipLabel.center = CGPointMake(APP_WIDTH/2, APP_HEIGHT  - 45 - 18 - tipLabel.frame.size.height/2);
     
     
     UILabel *tmpLabel = [[UILabel alloc]initWithFrame:CGRectZero];
@@ -79,7 +79,7 @@
         tipLabel.hidden = YES;
     }
     //完成
-    UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
+    UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
     [doneBtn setTitle:@"完成" forState:UIControlStateNormal];
     [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

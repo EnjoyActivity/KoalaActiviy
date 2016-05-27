@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBarHidden = NO;
     self.title = @"您的性别";
     self.view.backgroundColor = [UIColor whiteColor];
@@ -53,7 +53,7 @@
     tipLabel.textColor = RGB(51, 51, 51, 1);
     tipLabel.font = [UIFont systemFontOfSize:15];
     [tipLabel sizeToFit];
-    tipLabel.center = CGPointMake(APP_WIDTH/2, 170);
+    tipLabel.center = CGPointMake(APP_WIDTH/2, 170+64);
     
     maleImageView = [[UIImageView alloc]initWithFrame:CGRectMake(90, CGRectGetMaxY(tipLabel.frame) + 20, 50, 50)];
     maleImageView.userInteractionEnabled = YES;
@@ -74,7 +74,7 @@
     }
     
     //完成
-    UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH, 45)];
+    UIButton *doneBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45, APP_WIDTH, 45)];
     doneBtn.backgroundColor = [UIColor redColor];
     if (_isGuide) {
         [doneBtn setTitle:@"下一步" forState:UIControlStateNormal];
