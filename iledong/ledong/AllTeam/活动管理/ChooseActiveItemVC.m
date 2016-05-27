@@ -92,8 +92,27 @@
 - (void)setupCell:(SessionTableViewCell*)cell model:(ActiveItemModel*)model {
     cell.placeNameLabel.text = model.placeName;
     cell.addressLabel.text = model.address;
-    cell.beginTimeLabel.text = [model.beginTime substringWithRange:NSMakeRange(5, 11)];
-    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(5, 11)]];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *beginDate= [dateFormatter dateFromString:model.beginTime];
+    NSDate *endDate = [dateFormatter dateFromString:model.endTime];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags =NSCalendarUnitYear | NSCalendarUnitMonth |NSCalendarUnitDay | NSCalendarUnitWeekday |
+    NSCalendarUnitHour |NSCalendarUnitMinute | NSCalendarUnitSecond;
+    
+    comps = [calendar components:unitFlags fromDate:beginDate];
+    NSString *beginDateStr = [NSString stringWithFormat:@"%ld月%ld日 %02ld:%02ld",(long)[comps month],(long)[comps day],(long)[comps hour],(long)[comps minute]];
+    comps = [calendar components:unitFlags fromDate:endDate];
+    NSString *endDateStr = [NSString stringWithFormat:@"%ld月%ld日 %02ld:%02ld",(long)[comps month],(long)[comps day],(long)[comps hour],(long)[comps minute]];
+    cell.beginTimeLabel.text = beginDateStr;
+    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",endDateStr];
+//    cell.beginTimeLabel.text = [model.beginTime substringWithRange:NSMakeRange(5, 11)];
+//    cell.endTimeLabel.text = [NSString stringWithFormat:@"%@结束",[model.beginTime substringWithRange:NSMakeRange(5, 11)]];
     cell.constitutorNameLabel.text = [NSString stringWithFormat:@"组织人：%@",model.constitutorName];
     cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余 %d",model.maxNum - model.willNum,model.maxApplyNum - model.applyNum];
     cell.distanceLabel.text = @"0.0km";
