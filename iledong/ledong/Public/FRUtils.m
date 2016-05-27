@@ -583,9 +583,13 @@ static FRUtils *instance = nil;
 
 + (NSDictionary *)getAddressInfo {
     NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-    return [userDefault objectForKey:@"ddressInfo"];
+    return [userDefault objectForKey:@"userAddressInfo"];
 }
 
++ (NSDictionary *)getUserLatitudeLongitude {
+    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+    return [userDefault objectForKey:@"userLatitude"];
+}
 
 //set
 + (void)setNickName:(NSString*)name {
@@ -655,7 +659,15 @@ static FRUtils *instance = nil;
 }
 + (void)setAddressInfo:(NSDictionary *)addressInfo {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setObject:addressInfo forKey:@"addressInfo"];
+    [userDefault setObject:addressInfo forKey:@"userAddressInfo"];
     [userDefault synchronize];
 }
+
++ (void)setUserLatitudeLongitude:(NSDictionary *)latlon {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:latlon forKey:@"userLatitude"];
+    [userDefault synchronize];
+}
+
+
 @end

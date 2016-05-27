@@ -11,5 +11,6 @@
 @interface LDSearchMoreViewController : UIViewController
 
 @property (nonatomic, copy) NSString * keyWord;
+@property (nonatomic, copy) NSMutableArray * activityArray;
 
 @end

@@ -12,9 +12,11 @@ typedef void(^getCity)(NSDictionary *);
 
 @interface LDCityViewController : UIViewController
 
-@property (nonatomic,copy) NSString * cityName;
+@property (nonatomic,copy) NSString * provinceName;
 @property (nonatomic,copy) NSString * provinceCode;
 
 @property (nonatomic,copy) getCity city;
+@property (nonatomic,assign) BOOL searchLocation;
+
 
 @end

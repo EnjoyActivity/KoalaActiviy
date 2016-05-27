@@ -321,6 +321,7 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 
 - (void)thisWeakActivity {
+    
     NSDate * currentDate = [NSDate date];
     NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];

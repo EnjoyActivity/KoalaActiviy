@@ -14,10 +14,8 @@ static NSString * const cityCell = @"cityCell";
 {
     NSArray * cityArray;
     NSArray * resultArray;
-    BOOL isChangeCity;
-    NSArray * filterArray;
-    
     BOOL isSearching;
+    NSDictionary * currentCityDic;
 }
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
@@ -26,8 +24,8 @@ static NSString * const cityCell = @"cityCell";
 @property (strong, nonatomic) IBOutlet UIButton *currentCity;
 @property (strong, nonatomic) IBOutlet UITextField *searchTextField;
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
-@property (strong, nonatomic) IBOutlet UITableView *changeCityTable;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *contentTopLayout;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *cityTableTopLayout;
 
 
 @end
@@ -40,7 +38,10 @@ static NSString * const cityCell = @"cityCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.cityLabel.text = self.cityName;
+    if (!self.searchLocation) {
+        self.cityTableTopLayout.constant = 64;
+    }
+    self.cityLabel.text = self.provinceName;
     
     [self.currentCity setImage:[UIImage imageNamed:@"ic_triangle_grey@2x"] forState:UIControlStateNormal];
   
@@ -49,11 +50,6 @@ static NSString * const cityCell = @"cityCell";
     self.currentCity.imageView.transform = CGAffineTransformMakeScale(-1, 1);
     
     [self.cityTableView registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
-    
-    [self.changeCityTable registerNib:[UINib nibWithNibName:@"CityTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cityCell"];
-    self.changeCityTable.delegate   =self;
-    self.changeCityTable.dataSource = self;
-    
     
     self.cityTableView.tableFooterView = [UIView new];
     
@@ -78,8 +74,10 @@ static NSString * const cityCell = @"cityCell";
         }
         NSArray * result = [resultDic objectForKey:@"result"];
         cityArray = [result copy];
-        filterArray = [result copy];
+        currentCityDic = [cityArray firstObject];
         dispatch_async(dispatch_get_main_queue(), ^{
+            NSString * name = [currentCityDic objectForKey:@"Name"];
+            [self.currentCity setTitle:name forState:UIControlStateNormal];
             [self.cityTableView reloadData];
         });
         
@@ -89,8 +87,8 @@ static NSString * const cityCell = @"cityCell";
 }
 
 - (void)searchCity:(NSString *)keyWord City:(NSString *)city {
-    [SVProgressHUD showWithStatus:@"搜索中..."];
     isSearching = YES;
+    [SVProgressHUD showWithStatus:@"搜索中..."];
     if (keyWord.length == 0) {
         return;
     }
@@ -99,10 +97,9 @@ static NSString * const cityCell = @"cityCell";
     if (city.length != 0) {
         [dic setObject:city forKey:@"region"];
     }
-    
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager GET:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * dic = (NSDictionary *)responseObject;
         NSInteger code = [[dic objectForKey:@"code"] integerValue];
         if (code != 0) {
@@ -111,13 +108,14 @@ static NSString * const cityCell = @"cityCell";
         [SVProgressHUD dismiss];
         NSArray * result = [dic objectForKey:@"result"];
         resultArray = [result copy];
-   
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.cityTableView reloadData];
         });
+        
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+         [SVProgressHUD showErrorWithStatus:@"搜索失败"];
     }];
 }
 
@@ -128,9 +126,6 @@ static NSString * const cityCell = @"cityCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([tableView isEqual:self.changeCityTable]) {
-        return filterArray.count;
-    }
     if (isSearching) {
         return resultArray.count;
     }
@@ -140,12 +135,6 @@ static NSString * const cityCell = @"cityCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cityCell forIndexPath:indexPath];
     UILabel * label = (UILabel *)[cell viewWithTag:2];
-    if ([tableView isEqual:self.changeCityTable]) {
-        NSDictionary * dic = filterArray[indexPath.row];
-        label.text = [dic objectForKey:@"Name"];
-    }
-    else
-    {
         if (isSearching) {
             NSDictionary * dic = resultArray[indexPath.row];
             NSString * name = [dic objectForKey:@"name"];
@@ -156,58 +145,63 @@ static NSString * const cityCell = @"cityCell";
         }
         else
         {
-            
+            NSDictionary * dic = cityArray[indexPath.row];
+            label.text = [dic objectForKey:@"Name"];
         }
-        NSDictionary * dic = cityArray[indexPath.row];
-        label.text = [dic objectForKey:@"Name"];
-    }
- 
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isEqual:self.changeCityTable]) {
-        NSDictionary * dic = filterArray[indexPath.row];
-        NSString * title = [dic objectForKey:@"Name"];
-        [self.currentCity setTitle:title forState:UIControlStateNormal];
-        
-        [UIView animateWithDuration:0.5 animations:^{
-            self.contentTopLayout.constant = 64;
-        } completion:^(BOOL finished) {
-            filterArray = [cityArray copy];
-            isChangeCity = NO;
-            [self.changeCityTable setHidden:YES];
-            self.searchTextField.text = nil;
-            [self.searchButton setTitle:@"搜索" forState:UIControlStateNormal];
-        }];
-    }
-    else
-    {
+    if (self.searchLocation) {
         if (isSearching) {
-            NSDictionary * dic = resultArray[indexPath.row];
-            if (self.city) {
-                self.city(dic);
-            }
+            [self backPlaceDic:indexPath.row];
+            
         }
         else
         {
-            NSDictionary * dic = cityArray[indexPath.row];
-            if (self.city) {
-                self.city(dic);
-            }
-            [self.navigationController popViewControllerAnimated:YES];
+            currentCityDic = cityArray[indexPath.row];
+            NSString * name = [currentCityDic objectForKey:@"Name"];
+            [self.currentCity setTitle:name forState:UIControlStateNormal];
+            
         }
-
+      
     }
-  
+    else
+    {
+        NSDictionary * dic = cityArray[indexPath.row];
+        if (self.city) {
+            self.city(dic);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+}
+
+- (void)backPlaceDic:(NSInteger)row {
+    NSDictionary * dic = resultArray[row];
+    NSDictionary * dicTemp = @{
+                               @"province":self.provinceName,
+                               @"provinceCode":self.provinceCode,
+                               @"city":[currentCityDic objectForKey:@"Name"],
+                               @"cityCode":[currentCityDic objectForKey:@"Code"],
+                               @"district":[dic objectForKey:@"district"],
+                               @"districtCode":[dic objectForKey:@"districtCode"],//暂未返回
+                               @"name":[dic objectForKey:@"name"],
+                               @"latlng":[dic objectForKey:@"location"],
+                               };
+#warning 区域ID暂未返回
+    if (self.city) {
+        self.city(dicTemp);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+    
+
 }
 
 #pragma mark - UItextFieldDelegate
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
-    if (isChangeCity) {
-        [self.changeCityTable reloadData];
-    }
     if (isSearching) {
         isSearching = NO;
         [self.cityTableView reloadData];
@@ -216,44 +210,14 @@ static NSString * const cityCell = @"cityCell";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (isChangeCity) {
-        [self searchCityLocal:textField.text];
-    }
-    else
-    {
         NSString * title = self.currentCity.titleLabel.text;
         if ([title isEqualToString:@"全部城市"]) {
             title = nil;
         }
         [self searchCity:self.searchTextField.text City:title];
-    }
     return YES;
 }
 
-- (IBAction)editingChanged:(id)sender {
-    if (isSearching) {
-        return;
-    }
-    UITextField * textFiled = (UITextField *)sender;
-    if (textFiled.text.length == 0) {
-        filterArray = [cityArray mutableCopy];
-        [self.changeCityTable reloadData];
-        return;
-    }
-    [self searchCityLocal:textFiled.text];
-}
-
-- (void)searchCityLocal:(NSString *)keyWord {
-    NSMutableArray * tempArray = [NSMutableArray array];
-    for (NSDictionary * dic in cityArray) {
-        NSString * name =[dic objectForKey:@"Name"];
-        if ([name containsString:keyWord]) {
-            [tempArray addObject:dic];
-        }
-    }
-    filterArray = [tempArray copy];
-    [self.changeCityTable reloadData];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -263,42 +227,16 @@ static NSString * const cityCell = @"cityCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)changeCurrentCity:(id)sender {
-    self.searchTextField.text = nil;
-    isChangeCity  = YES;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.contentTopLayout.constant = 20;
 
-    } completion:^(BOOL finished) {
-        [self.changeCityTable setHidden:NO];
-        [self.changeCityTable reloadData];
-        [self.searchButton setTitle:@"取消" forState:UIControlStateNormal];
-    }];
 }
 - (IBAction)searchButton:(id)sender {
-    if (isChangeCity) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.contentTopLayout.constant = 64;
-        } completion:^(BOOL finished) {
-            isChangeCity = NO;
-            filterArray = [cityArray copy];
-            [self.changeCityTable setHidden:YES];
-            self.searchTextField.text = nil;
-            [self.searchButton setTitle:@"搜索" forState:UIControlStateNormal];
-        }];
+    NSString * title = self.currentCity.titleLabel.text;
+    if ([title isEqualToString:@"全部城市"]) {
+        title = nil;
     }
-    else
-    {
-        NSString * title = self.currentCity.titleLabel.text;
-        if ([title isEqualToString:@"全部城市"]) {
-            title = nil;
-        }
-        [self searchCity:self.searchTextField.text City:title];
-    }
+    [self searchCity:self.searchTextField.text City:title];
     
 }
-
-
-
 
 
 @end
