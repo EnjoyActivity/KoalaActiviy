@@ -98,7 +98,8 @@ static CGFloat const teamHeight = 280;
     activityArray = [NSMutableArray array];
     teamArray = [NSMutableArray array];
     [self setUpUI];
-    
+    //30.6509086063,104.0693664551
+    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
     
     [self requestActivityData];
     [self requestAdData];
@@ -215,6 +216,7 @@ static CGFloat const teamHeight = 280;
     }];
 }
 
+
 - (void)requestLocationInfo:(double)latitude longitude:(double)longitude {
     NSDictionary * dic = @{
                            @"lng":[NSNumber numberWithDouble:longitude],
@@ -222,18 +224,28 @@ static CGFloat const teamHeight = 280;
                            };
     NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
     AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager POST:@"map/Geolocate" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSDictionary * dic = (NSDictionary *)responseObject;
         NSInteger code = [[dic objectForKey:@"code"] integerValue];
         if (code != 0) {
             return ;
         }
         NSDictionary * result = [dic objectForKey:@"result"];
-        locationInfo = [result objectForKey:@"addressComponent"];
-        NSString * addressDetail = [result objectForKey:@"formatted_address"];
-        [FRUtils setAddressDetail:addressDetail];
-        [FRUtils setAddressInfo:locationInfo];
+        if (result == nil) {
+            return;
+        }
         
+        locationInfo = [result objectForKey:@"addressComponent"];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString * detailAddress = [result objectForKey:@"formatted_address"];
+            NSDictionary * latlon = [result objectForKey:@"location"];
+            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
+            [FRUtils setAddressDetail:detailAddress];
+            [FRUtils setUserLatitudeLongitude:latlon];
+            [FRUtils setAddressInfo:locationTemp];
+        });
+    
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString * city = [locationInfo objectForKey:@"city"];
             [locationButton setTitle:city forState:UIControlStateNormal];
@@ -242,7 +254,7 @@ static CGFloat const teamHeight = 280;
         });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
+//        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 
@@ -368,7 +380,7 @@ static CGFloat const teamHeight = 280;
     [cell.teamImageView sd_setImageWithURL:teamUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
     [cell.teamCaptainImage sd_setImageWithURL:capatinUrl placeholderImage:[UIImage imageNamed:@"user01_44@2x"]];
     cell.teamCaptain.text = captainName;
-    cell.teamConcernLabel.text = [NSString stringWithFormat:@"%@人",teamConcern];
+    cell.teamConcernLabel.text = [NSString stringWithFormat:@"%@人关注",teamConcern];
     cell.teamNameLabel.text = teamName;
     cell.teamDeatilLabel.text = [NSString stringWithFormat:@"%@ %@ %@",teamMember,area,teamClass];
     return cell;

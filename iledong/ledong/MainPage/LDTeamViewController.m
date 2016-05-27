@@ -284,6 +284,7 @@ static NSString * const teamCell = @"teamCell";
         case areaButtonTag:
         {
             locationChange = YES;
+            activityChange = NO;
             [self.locationTableview setHidden:NO];
             [self.locationTableview reloadData];
         }
@@ -291,6 +292,7 @@ static NSString * const teamCell = @"teamCell";
         case categoryButtonTag:
         {
             activityChange = YES;
+            locationChange = NO;
             [self.locationTableview setHidden:NO];
             [self.locationTableview reloadData];
         }

@@ -20,5 +20,7 @@ typedef void(^getLocation)(NSDictionary *);
 @property (nonatomic, copy) getLocation locationResult;
 @property (nonatomic, copy) NSDictionary * locationDic;
 
+@property (nonatomic, assign) BOOL isSearch;
+
 
 @end

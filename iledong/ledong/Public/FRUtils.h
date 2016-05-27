@@ -81,8 +81,11 @@ typedef enum : NSUInteger
 + (NSString*)getBirthday;
 + (UIImage*)getHeaderImage;
 
+//userLocation
 + (NSString*)getAddressDetail;//详细地址
 + (NSDictionary*)getAddressInfo;//地址信息
++ (NSDictionary*)getUserLatitudeLongitude;//经纬度
+
 
 + (void)setPhoneNum:(NSString*)phone;
 + (void)setNickName:(NSString*)name;
@@ -98,6 +101,7 @@ typedef enum : NSUInteger
 
 + (void)setAddressDetail:(NSString *)detail;
 + (void)setAddressInfo:(NSDictionary *)addressInfo;
++ (void)setUserLatitudeLongitude:(NSDictionary *)latlon;//经纬度
 
 
 @end

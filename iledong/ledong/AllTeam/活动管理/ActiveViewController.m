@@ -10,6 +10,7 @@
 #import "ActiveTableViewCell.h"
 #import "ActivityReleaseViewController.h"
 #import "ActivityReleaseViewController.h"
+#import "ActiveDetailViewController.h"
 
 @interface ActiveViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -41,16 +42,19 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
-    [self queryDatas:self.currentPageIndex++];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self queryDatas:self.currentPageIndex++];
+}
+
 #pragma mark -- UITableViewDataSource,UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return self.datas.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -58,12 +62,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 140;
-    }
-    else {
+    //if (indexPath.section == 0) {
+    //    return 140;
+    //}
+    //else {
         return 100;
-    }
+   // }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -79,16 +83,81 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!cell)
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
+    
+    
+    
+//    ActivityClassId = 5;
+//    ActivityType = 1;
+//    ApplyBeginTime = "<null>";
+//    ApplyEndTime = "<null>";
+//    ApplyNum = 0;
+//    BeginTime = "<null>";
+//    ClassName = "\U6a44\U6984\U7403";
+//    ComplainTel = 1;
+//    ConstitutorId = 0;
+//    ConstitutorName = "";
+//    Cover = "";
+//    Demand = 11;
+//    EndTime = "<null>";
+//    EntryMoneyMax = 3;
+//    EntryMoneyMin = 9;
+//    Id = 8;
+//    IsLeague = 1;
+//    JionType = 1;
+//    MaxApplyNum = 0;
+//    MaxNum = 0;
+//    ReadFlag = 0;
+//    ReleaseState = 0;
+//    ReleaseTime = "<null>";
+//    ReleaseUserId = 0;
+//    Tel = 1;
+//    Title = 1;
+//    WillNum = 0;
+//    areaCode = 510104;
+//    areaName = "\U9526\U6c5f\U533a";
+//    cityCode = 510100;
+//    cityName = "\U6210\U90fd\U5e02";
+//    provinceCode = 510000;
+//    provinceName = "\U56db\U5ddd\U7701";
+//    tag = "";
 
-    cell.activityImageView.image = [UIImage imageNamed:@"img_1"];
+    NSDictionary* dict = self.datas[indexPath.row];
+    NSString* cover = [dict objectForKey:@"Cover"];
+    NSString* title = [dict objectForKey:@"Title"];
+    NSString* beginTime = [dict objectForKey:@"BeginTime"];
+    NSString* endTime = [dict objectForKey:@"EndTime"];
+    
+    if (cover.length > 0) {
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:[NSURL URLWithString:cover]];
+            [request setHTTPMethod:@"GET"];
+            NSError *error = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+            if (data == nil)
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.activityImageView.image = [UIImage imageWithData:data];
+                [cell setNeedsLayout];
+            });
+        });
+    }
+    else {
+        NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
+        cell.activityImageView.image = [UIImage imageWithContentsOfFile:path];
+    }
+    
+    cell.activityName.text = title;
+
+    
     if (indexPath.section == 0) {
-        cell.activityName.text = @"朝阳区乐动杯足球联赛";
+        //cell.activityName.text = @"朝阳区乐动杯足球联赛";
         cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
         cell.activityState.text = @"进行中";
         cell.state = activityStateOnGoing;
     }
     else {
-        cell.activityName.text = @"朝阳区乐动杯足球联赛";
+        //cell.activityName.text = @"朝阳区乐动杯足球联赛";
         cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
         cell.activityState.text = @"已结束";
         cell.state = activityStateEnd;
@@ -104,6 +173,11 @@
     }];
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ActiveDetailViewController* Vc = [[ActiveDetailViewController alloc]init];
+    [self.navigationController pushViewController:Vc animated:YES];
 }
 
 - (void)startActivityBtnClicked {

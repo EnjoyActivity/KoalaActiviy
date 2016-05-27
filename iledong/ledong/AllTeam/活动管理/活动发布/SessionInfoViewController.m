@@ -132,7 +132,7 @@
     timeLabel.hidden = YES;
 
     if (indexPath.section == 0) {
-        cell.textLabel.text = @"活动场馆";
+        cell.textLabel.text = @"活动地点";
     }
     else if (indexPath.section == 1) {
         cell.textLabel.text = @"活动开始时间";

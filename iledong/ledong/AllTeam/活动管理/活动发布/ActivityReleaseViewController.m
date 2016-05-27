@@ -282,6 +282,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)startBtnClicked {
+    //[self saveActivity];
     [self commitActivity];
 }
 

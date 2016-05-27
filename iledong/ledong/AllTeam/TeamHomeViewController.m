@@ -238,7 +238,9 @@
         self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"img_teamavatar_120"] withParam:1];
         return;
     }
-    self.headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[teamInfo objectForKey:@"AvatarUrl"]]] withParam:1];
+    
+    NSURL* dataUrl = [NSURL URLWithString:url];
+    self.headerImage.image = [FRUtils circleImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:dataUrl]] withParam:1];
 }
 
 @end

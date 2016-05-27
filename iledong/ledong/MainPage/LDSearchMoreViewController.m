@@ -13,7 +13,7 @@ static NSString * const teamCell = @"ActivityCell";
 
 @interface LDSearchMoreViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    NSMutableArray * activityArray;
+//    NSMutableArray * activityArray;
     
 }
 
@@ -29,6 +29,8 @@ static NSString * const teamCell = @"ActivityCell";
     [self.titleLabel setText:self.keyWord];
    [self.resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
     
+    [self requestActivityData:self.keyWord];
+    
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -43,7 +45,7 @@ static NSString * const teamCell = @"ActivityCell";
     NSDictionary * dic = @{
                            @"token":token,
                            @"page":[NSNumber numberWithInt:1],
-                           @"PageSize":[NSNumber numberWithInt:10],
+                           @"PageSize":[NSNumber numberWithInt:100],
                            @"tag":keyWord
                            };
     
@@ -57,7 +59,7 @@ static NSString * const teamCell = @"ActivityCell";
             return ;
         }
         NSArray * result = [resultDic objectForKey:@"result"];
-        activityArray = [result copy];
+        self.activityArray = [result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
         });
@@ -74,12 +76,12 @@ static NSString * const teamCell = @"ActivityCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return activityArray.count;
+    return self.activityArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HistoryTableViewCell * cell = (HistoryTableViewCell *)[tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
-    NSDictionary * dic =activityArray[indexPath.row];
+    NSDictionary * dic =self.activityArray[indexPath.row];
     NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
     NSURL * teamUrl = [NSURL URLWithString:teamImage];
     
@@ -99,6 +101,7 @@ static NSString * const teamCell = @"ActivityCell";
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)back:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
