@@ -53,6 +53,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"活动详情";
     // Do any additional setup after loading the view from its nib.
@@ -62,7 +63,7 @@
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_repost"] style:UIBarButtonItemStylePlain target:self action:@selector(repostBtnClick:)];
     item2.tintColor = RGB(227, 26, 26,1);
     
-    startPos = 0;
+    startPos = 64;
     
     self.navigationItem.rightBarButtonItems = @[item1,item2];
     
@@ -152,7 +153,7 @@
 }
 
 - (void)setupScrollView {
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT - 45 - 64)];
+    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, startPos, APP_WIDTH, APP_HEIGHT - 45 - 64)];
     scrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:scrollView];
 }
@@ -279,7 +280,7 @@
 }
 
 - (void)setupButton {
-    chooseFormBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45 - 64, APP_WIDTH/2, 45)];
+    chooseFormBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, APP_HEIGHT - 45, APP_WIDTH/2, 45)];
     [chooseFormBtn setTitle:@"选择参加形式" forState:UIControlStateNormal];
     [chooseFormBtn setImage:[UIImage imageNamed:@"ic_add"] forState:UIControlStateNormal];
     [chooseFormBtn setTitleColor:RGB(227, 26, 26,1) forState:UIControlStateNormal];
@@ -290,7 +291,7 @@
     [chooseFormBtn addSubview:sepLabel];
     [chooseFormBtn addTarget:self action:@selector(chooseForm:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *signUpBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2, APP_HEIGHT - 45 - 64, APP_WIDTH/2, 45)];
+    UIButton *signUpBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2, APP_HEIGHT - 45, APP_WIDTH/2, 45)];
     [signUpBtn setTitle:@"报名" forState:UIControlStateNormal];
     signUpBtn.titleLabel.textColor = [UIColor whiteColor];
     signUpBtn.backgroundColor = RGB(227, 26, 26,1);

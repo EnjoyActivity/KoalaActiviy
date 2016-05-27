@@ -57,14 +57,14 @@
 
 #pragma mark - setup UI
 - (void)setupScrollView {
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT -  50 - 64)];
+    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT -  50 - 64)];
     
     [self.view addSubview:scrollView];
 }
 
 - (void)setupTitleView {
     titleView = (SignTitleView*)[[[NSBundle mainBundle]loadNibNamed:@"SignTitleView" owner:self options:nil]lastObject];
-    titleView.frame = CGRectMake(0,startPos , APP_WIDTH, 100);
+    titleView.frame = CGRectMake(0,0 , APP_WIDTH, 100);
     startPos += 100;
     if (_joinType == 2) {
         startPos += 9;
@@ -176,10 +176,12 @@
     NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGSize keyboardSize = [value CGRectValue].size;
     CGFloat offset = startPos + keyboardSize.height + 64 - APP_HEIGHT;
-    [UIView animateWithDuration:0.5 animations:^{
-        scrollView.contentOffset = CGPointMake(0, offset);
+    if (offset>0) {
+        [UIView animateWithDuration:0.5 animations:^{
+            scrollView.contentOffset = CGPointMake(0, offset);
         } completion:^(BOOL finished) {
-    }];
+        }];
+    }
 }
 
 - (void)keyboardDidHide:(NSNotification *) notif {

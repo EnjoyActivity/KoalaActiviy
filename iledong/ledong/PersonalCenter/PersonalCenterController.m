@@ -56,7 +56,6 @@
 {
     self.tabBarController.tabBar.hidden = NO;
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
     if (![HttpClient isLogin]) {
         LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
         loginView.isPersonalCenterPage = YES;

@@ -33,7 +33,7 @@
 
 #pragma mark - setup UI
 - (void)setupTableView {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
 //    [_tableView registerClass:[TradeDetailTableViewCell class] forCellReuseIdentifier:@"Cell"];
@@ -77,7 +77,7 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 15;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
