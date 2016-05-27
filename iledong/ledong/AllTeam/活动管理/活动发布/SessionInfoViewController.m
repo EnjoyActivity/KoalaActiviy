@@ -8,6 +8,7 @@
 
 #import "SessionInfoViewController.h"
 #import "CHDatePickerView.h"
+#import "AdressCityVC.h"
 
 #define kCell1      @"cell"
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong)UITextField* remarkTextField;
 @property (nonatomic, strong)UITextField* activityCostTextField;
 @property (nonatomic, strong)NSMutableDictionary* dataDict;
+@property (nonatomic, strong)NSMutableDictionary* addressInfoDict;
 @property (nonatomic, strong)NSString* beginTime;
 @property (nonatomic, strong)NSString* endTime;
 @property (nonatomic, strong)NSString* applyBeginTime;
@@ -81,7 +83,7 @@
 - (void)setupTableView {
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64)];
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell1];
+   // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell1];
     [self.view addSubview:self.tableView];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -114,7 +116,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell1 forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCell1];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kCell1];
+    }
+
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -131,8 +137,26 @@
     timeLabel.tag = 100;
     timeLabel.hidden = YES;
 
+    cell.accessoryType = UITableViewCellAccessoryNone;
     if (indexPath.section == 0) {
         cell.textLabel.text = @"活动地点";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        NSString* province = @"";
+        NSString* city = @"";
+        NSString* district = @"";
+        NSString* name = @"";
+        if (self.addressInfoDict) {
+            NSArray* keys = self.addressInfoDict.allKeys;
+            if ([keys containsObject:@"province"])
+                province = [self.addressInfoDict objectForKey:@"province"];
+            if ([keys containsObject:@"city"])
+                city = [self.addressInfoDict objectForKey:@"city"];
+            if ([keys containsObject:@"district"])
+                district = [self.addressInfoDict objectForKey:@"district"];
+            if ([keys containsObject:@"name"])
+                name = [self.addressInfoDict objectForKey:@"name"];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", province,city,district,name];
+        }
     }
     else if (indexPath.section == 1) {
         cell.textLabel.text = @"活动开始时间";
@@ -241,11 +265,23 @@
         btn.hidden = NO;
     }
     
+    //[cell layoutSubviews];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 || indexPath.section == 2 ||
+    if (indexPath.section == 0) {
+        AdressCityVC* Vc = [[AdressCityVC alloc]init];
+        Vc.isSearch = YES;
+        __weak typeof(self)weakSelf = self;
+        Vc.locationResult = ^(NSDictionary *dict) {
+            weakSelf.addressInfoDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+            [weakSelf.tableView reloadData];
+        };
+        
+        [self.navigationController pushViewController:Vc animated:YES];
+    }
+    else if (indexPath.section == 1 || indexPath.section == 2 ||
         indexPath.section == 3 || indexPath.section == 4) {
         [self.view endEditing:YES];
         CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.tableView completeDateInt:nil completeDateStr:^(NSString *str) {
@@ -309,9 +345,11 @@
         [self.dataDict setValue:self.endTime forKey:@"endTime"];
         [self.dataDict setValue:self.applyBeginTime forKey:@"applyBeginTime"];
         [self.dataDict setValue:self.applyEndTime forKey:@"applyEndTime"];
-        [self.dataDict setValue:
-            @{@"provinceCode":@"510000", @"cityCode":@"510100", @"areaCode":@"510104",
-                @"mapX":@"103.5", @"mapY":@"53.3", @"placeName":@"成都市体育馆", @"Address":@"成都市顺城街2号"} forKey:@"activityVenue"];
+        [self.dataDict setValue:self.addressInfoDict forKey:@"activityVenue"];
+    
+//        [self.dataDict setValue:
+//            @{@"provinceCode":@"510000", @"cityCode":@"510100", @"areaCode":@"510104",
+//                @"mapX":@"103.5", @"mapY":@"53.3", @"placeName":@"成都市体育馆", @"Address":@"成都市顺城街2号"} forKey:@"activityVenue"];
 
         [self.dataDict setValue:self.activityCostTextField.text forKey:@"activityCost"];
         [self.dataDict setValue:self.planCountTextField.text forKey:@"planCount"];

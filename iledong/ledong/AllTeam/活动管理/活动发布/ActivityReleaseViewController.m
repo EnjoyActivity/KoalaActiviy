@@ -634,6 +634,7 @@ typedef enum imagePickerFromType {
         else if (indexPath.section == 5) {
             [self.view endEditing:YES];
             AdressCityVC* Vc = [[AdressCityVC alloc]init];
+            Vc.isSearch = YES;
             Vc.locationResult = ^(NSDictionary *dict) {
                 
             };
