@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486022452.576777"
+            timestampString = "486024118.819981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1493"
-            endingLineNumber = "1493"
+            startingLineNumber = "1499"
+            endingLineNumber = "1499"
             landmarkName = "-commitActivity"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,12 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
-            timestampString = "486022452.576777"
+            timestampString = "486024118.819981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1491"
-            endingLineNumber = "1491"
+            startingLineNumber = "1497"
+            endingLineNumber = "1497"
             landmarkName = "-commitActivity"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ledong/AllTeam/&#x6d3b;&#x52a8;&#x7ba1;&#x7406;/&#x6d3b;&#x52a8;&#x53d1;&#x5e03;/ActivityReleaseViewController.m"
+            timestampString = "486024118.819981"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1572"
+            endingLineNumber = "1572"
+            landmarkName = "-uploadImg:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

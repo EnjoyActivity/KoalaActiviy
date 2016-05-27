@@ -33,7 +33,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="396" height="834"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JTi-hQ-MgR">
-                            <rect key="frame" x="0.0" y="249" width="396" height="55"/>
+                            <rect key="frame" x="0.0" y="189" width="396" height="55"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAJ-ur-uNp">
                                     <rect key="frame" x="15" y="19" width="56" height="17"/>
@@ -58,7 +58,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7C8-xy-Nkl">
-                            <rect key="frame" x="0.0" y="314" width="396" height="190"/>
+                            <rect key="frame" x="0.0" y="254" width="396" height="190"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队简介" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyl-tw-TCr">
                                     <rect key="frame" x="15" y="10" width="56" height="17"/>
@@ -85,7 +85,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpo-ln-UBX">
-                            <rect key="frame" x="0.0" y="514" width="396" height="130"/>
+                            <rect key="frame" x="0.0" y="454" width="396" height="130"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FNI-Ui-bNB">
                                     <rect key="frame" x="0.0" y="42" width="396" height="1"/>
@@ -133,7 +133,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sqY-wY-5VP">
-                            <rect key="frame" x="0.0" y="654" width="396" height="40"/>
+                            <rect key="frame" x="0.0" y="594" width="396" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="入团审核" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gEn-rn-4Ih">
                                     <rect key="frame" x="15" y="11" width="56" height="17"/>
@@ -155,7 +155,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tWb-cd-xMz">
-                            <rect key="frame" x="0.0" y="60" width="396" height="175"/>
+                            <rect key="frame" x="0.0" y="0.0" width="396" height="175"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_teamavatar_120.png" translatesAutoresizingMaskIntoConstraints="NO" id="hAl-pZ-MZU">
                                     <rect key="frame" x="138" y="10" width="120" height="120"/>
@@ -183,12 +183,18 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DSu-f5-8xs">
-                            <rect key="frame" x="0.0" y="704" width="396" height="40"/>
+                            <rect key="frame" x="0.0" y="644" width="396" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队地点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-9y-cKr">
                                     <rect key="frame" x="15" y="11" width="56" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="已设置" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-y5-44q">
+                                    <rect key="frame" x="269" y="8" width="78" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -225,7 +231,7 @@
                         <constraint firstItem="7C8-xy-Nkl" firstAttribute="leading" secondItem="ll8-zf-tbK" secondAttribute="leading" id="J1p-2S-495"/>
                         <constraint firstItem="JTi-hQ-MgR" firstAttribute="top" secondItem="tWb-cd-xMz" secondAttribute="bottom" constant="14" id="ODD-TH-470"/>
                         <constraint firstAttribute="trailing" secondItem="sqY-wY-5VP" secondAttribute="trailing" id="QsH-vc-fa1"/>
-                        <constraint firstItem="tWb-cd-xMz" firstAttribute="top" secondItem="ll8-zf-tbK" secondAttribute="top" constant="60" id="TFQ-Ou-cTH"/>
+                        <constraint firstItem="tWb-cd-xMz" firstAttribute="top" secondItem="ll8-zf-tbK" secondAttribute="top" id="TFQ-Ou-cTH"/>
                         <constraint firstItem="tWb-cd-xMz" firstAttribute="leading" secondItem="ll8-zf-tbK" secondAttribute="leading" id="X8k-rF-2k0"/>
                         <constraint firstAttribute="trailing" secondItem="23J-PC-0ty" secondAttribute="trailing" id="XPn-Zb-kR3"/>
                         <constraint firstItem="23J-PC-0ty" firstAttribute="leading" secondItem="ll8-zf-tbK" secondAttribute="leading" id="bdQ-yH-1Ql"/>

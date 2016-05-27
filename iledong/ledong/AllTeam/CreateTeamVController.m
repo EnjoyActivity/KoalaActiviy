@@ -9,6 +9,7 @@
 #import "CreateTeamVController.h"
 #import "LDDeleteTagView.h"
 #import "ActivityAddressViewController.h"
+#import "AdressCityVC.h"
 
 #define kOrighHeight 64
 
@@ -41,6 +42,7 @@
 @property (strong, nonatomic) LDDeleteTagView* deleteTagView;
 @property (strong, nonatomic) NSDictionary* currentDeleteTagDict;
 @property (strong, nonatomic) NSMutableDictionary* parameterDict;
+@property (strong, nonatomic) NSDictionary* addressDict;
 
 @end
 
@@ -76,7 +78,7 @@
 - (void)setupNavigationBar {
     self.navigationController.navigationBarHidden = NO;
     //self.tabBarController.tabBar.hidden = YES;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.automaticallyAdjustsScrollViewInsets = NO;
 
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
@@ -155,7 +157,17 @@
 }
 
 - (void)addressViewClicked {
-    ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+    //ActivityAddressViewController* Vc = [[ActivityAddressViewController alloc]init];
+    //[self.navigationController pushViewController:Vc animated:YES];
+
+    AdressCityVC* Vc = [[AdressCityVC alloc]init];
+    Vc.destinationVc = self;
+    Vc.isSearch = YES;
+    __weak typeof(self)weakSelf = self;
+    Vc.locationResult = ^(NSDictionary* dict) {
+        weakSelf.addressDict = [NSDictionary dictionaryWithDictionary:dict];
+        
+    };
     [self.navigationController pushViewController:Vc animated:YES];
 }
 

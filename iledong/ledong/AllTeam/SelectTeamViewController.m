@@ -26,7 +26,7 @@
     
     self.datas = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupNavigationBar];
     [self setupTableView];
     
@@ -40,7 +40,7 @@
 
 - (void)setupNavigationBar {
     self.navigationController.navigationBarHidden = NO;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.automaticallyAdjustsScrollViewInsets = NO;
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
@@ -51,7 +51,7 @@
 }
 
 - (void)setupTableView {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64)];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     [self.view addSubview:self.tableView];
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     [self.tableView registerClass:[AllTeamCell class] forCellReuseIdentifier:kCell];

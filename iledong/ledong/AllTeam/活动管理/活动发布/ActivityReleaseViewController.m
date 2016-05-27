@@ -93,6 +93,12 @@ typedef enum imagePickerFromType {
     
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
     self.joinType = joinTypePerson;
+    
+    
+    UIView* view = [[UIView alloc]initWithFrame:self.view.bounds];
+    self.view = view;
+    
+    
     [self initParameter];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
@@ -166,7 +172,7 @@ typedef enum imagePickerFromType {
     self.navigationItem.title = @"发布活动";
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
     self.navigationController.navigationBar.titleTextAttributes = dic;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.automaticallyAdjustsScrollViewInsets = NO;
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
@@ -174,7 +180,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)setupHeaderImgScrollView {
-    self.headerScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, 100)];
+    self.headerScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 100)];
     [self.view addSubview:self.headerScrollView];
     self.headerScrollView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     
@@ -196,7 +202,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)drawNonLeagueTableView {
-    self.nonleagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+100, APP_WIDTH, APP_HEIGHT-164)];
+    self.nonleagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, APP_WIDTH, APP_HEIGHT-100)];
     self.nonleagueTableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     [self.view addSubview:self.nonleagueTableView];
     self.nonleagueTableView.delegate = self;
@@ -1557,7 +1563,7 @@ typedef enum imagePickerFromType {
     [dict setValue:@"file" forKey:@"ContentType"];
     [dict setValue:fileName forKey:@"FileName"];
 
-    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOAD_HEADERIMAGE_URL];
+    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_UPLOADFILE_URL];
     
     __weak typeof(self)weakSelf = self;
     [HttpClient postJSONWithUrl:urlStr parameters:dict withImages:@[img] success:^(id responseObject) {
