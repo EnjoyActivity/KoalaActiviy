@@ -143,10 +143,11 @@ static NSString * const teamCell = @"ActivityCell";
 }
 #pragma mark - ButtonAction
 - (IBAction)cancelButtonClicked:(id)sender {
-    [self.textField resignFirstResponder];
-//    self.contentView.hidden = NO;
-    self.textField.text = nil;
-    [self.resultTableView setHidden:YES];
+//    [self.textField resignFirstResponder];
+////    self.contentView.hidden = NO;
+//    self.textField.text = nil;
+//    [self.resultTableView setHidden:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (IBAction)gobackButtonClick:(id)sender

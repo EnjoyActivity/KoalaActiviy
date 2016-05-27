@@ -110,9 +110,10 @@ static NSString * const friendCell = @"ActivityCell";
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
-    self.textField.text = nil;
-    [self.textField resignFirstResponder];
-    [self.resultTableView setHidden:YES];
+//    self.textField.text = nil;
+//    [self.textField resignFirstResponder];
+//    [self.resultTableView setHidden:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

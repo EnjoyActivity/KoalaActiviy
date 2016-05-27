@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AdressCityVC">
             <connections>
-                <outlet property="adressCity" destination="ePz-tF-jo1" id="bs5-mp-BJ1"/>
+                <outlet property="currentCityButton" destination="Kto-D1-sgG" id="72i-V6-tim"/>
                 <outlet property="searchButton" destination="JN3-nX-oXz" id="I6R-ih-BuM"/>
                 <outlet property="searchTextfile" destination="3fi-AM-ogc" id="VNJ-Pn-fBA"/>
                 <outlet property="tableView" destination="qVg-5g-aln" id="dya-3u-TPl"/>
@@ -52,13 +52,6 @@
                             <color key="textColor" red="0.8901960784313725" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="北京" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ePz-tF-jo1">
-                            <rect key="frame" x="18" y="71" width="139" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="搜索城市名" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="3fi-AM-ogc">
                             <rect key="frame" x="46" y="9" width="207" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -69,6 +62,16 @@
                                 <action selector="editingChanged:" destination="-1" eventType="editingChanged" id="Mej-6Y-qxU"/>
                             </connections>
                         </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kto-D1-sgG">
+                            <rect key="frame" x="18" y="71" width="139" height="40"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="currentCity:" destination="-1" eventType="touchUpInside" id="8Nb-B8-lKA"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="qVg-5g-aln">
@@ -82,7 +85,7 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="103" y="281"/>
+            <point key="canvasLocation" x="-34" y="281"/>
         </view>
     </objects>
 </document>

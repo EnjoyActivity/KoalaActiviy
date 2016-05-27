@@ -49,9 +49,8 @@ static NSString * const locationIdentifier = @"LocationCell";
         [self requestActivityData:currentPage parameter:dic];
         
     }
-    if (_locationDic) {
-          NSString * cityCode = [self.locationDic objectForKey:@"citycode"];
-        [self getAreaByCityCode:cityCode];
+    if (self.cityCode) {
+        [self getAreaByCityCode:self.cityCode];
     }
     
     [self setUpFilterView];

@@ -9,11 +9,18 @@
 #import "LDSearchMoreViewController.h"
 #import "HistoryTableViewCell.h"
 
-static NSString * const teamCell = @"ActivityCell";
+#import "SearchTableViewCell.h"
+
+
+static NSString * historyCell = @"HistoryCell";
+static NSString * activityCell = @"sActivityCell";
+static NSString * teamCell   = @"ActivityCell";
+static NSString * friendCell = @"ActivityCell";
 
 @interface LDSearchMoreViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
 //    NSMutableArray * activityArray;
+//     NSString * searchkeyWord;
     
 }
 
@@ -28,13 +35,32 @@ static NSString * const teamCell = @"ActivityCell";
     
     [self.titleLabel setText:self.keyWord];
    [self.resultTableView registerNib:[UINib nibWithNibName:@"HistoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
+    [self.resultTableView registerNib:[UINib nibWithNibName:@"SearchTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"sActivityCell"];
     
-    [self requestActivityData:self.keyWord];
+    switch (self.searchType) {
+        case moreTypeActivity:
+        {
+            [self requestActivityData:self.keyWord];
+        }
+            break;
+        case moreTypeFriend:
+        {
+            
+        }
+            break;
+        case moreTypeTeam:
+        {
+            [self requestTeamData:self.keyWord];
+        }
+            break;
+    }
+//    [self requestActivityData:self.keyWord];
     
     // Do any additional setup after loading the view from its nib.
 }
 
 #pragma mark - netWork
+
 
 - (void)requestActivityData:(NSString *)keyWord {
     NSString * token = [HttpClient getTokenStr];
@@ -45,7 +71,7 @@ static NSString * const teamCell = @"ActivityCell";
     NSDictionary * dic = @{
                            @"token":token,
                            @"page":[NSNumber numberWithInt:1],
-                           @"PageSize":[NSNumber numberWithInt:100],
+                           @"PageSize":[NSNumber numberWithInt:10],
                            @"tag":keyWord
                            };
     
@@ -69,6 +95,34 @@ static NSString * const teamCell = @"ActivityCell";
     }];
 }
 
+- (void)requestTeamData:(NSString *)keyWord {
+    NSDictionary * dic = @{
+                           @"Page":[NSNumber numberWithInt:1],
+                           @"PageSize":[NSNumber numberWithInt:100],
+                           @"IsHot":[NSNumber numberWithBool:NO],
+                           @"KeyWord":keyWord
+                           };
+    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
+    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSDictionary * resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code != 0) {
+            return ;
+        }
+        NSDictionary * data = [resultDic objectForKey:@"result"];
+        NSArray * resultArr = [data objectForKey:@"Data"];
+        self.activityArray  = [resultArr copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.resultTableView reloadData];
+        });
+        
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+    }];
+}
+
+
 #pragma mark - uitableViewDatasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -80,7 +134,52 @@ static NSString * const teamCell = @"ActivityCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    HistoryTableViewCell * cell = (HistoryTableViewCell *)[tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
+    switch (self.searchType) {
+        case moreTypeTeam:
+        {
+            return [self teamCell:tableView indexPath:indexPath];
+        }
+            break;
+        case moreTypeFriend:
+        {
+            return nil;
+        }
+            break;
+        case moreTypeActivity:
+        {
+            return [self activityCell:tableView indexPath:indexPath];
+        }
+            break;
+
+    }
+}
+
+
+- (SearchTableViewCell *)activityCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    SearchTableViewCell *cell = (SearchTableViewCell *)[tableView dequeueReusableCellWithIdentifier:activityCell forIndexPath:indexPath];
+    NSDictionary * dic = self.activityArray[indexPath.row];
+    NSString * imageStr = [dic objectForKey:@"Cover"];
+    NSURL * imageUrl = [NSURL URLWithString:imageStr];
+    NSString * name = [dic objectForKey:@"Title"];
+    
+    NSString * minMoney = [dic objectForKey:@"EntryMoneyMin"];
+    NSString * maxMOney = [dic objectForKey:@"EntryMoneyMax"];
+    
+    NSString * className = [dic objectForKey:@"ClassName"];
+    NSString * area = [dic objectForKey:@"areaName"];
+    
+    NSString * time = [dic objectForKey:@"BeginTime"];
+    [cell.headImageView sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"img_2@2x"]];
+    cell.activityName.text = name;
+    NSString * price = [NSString stringWithFormat:@"%@-%@元",minMoney,maxMOney];
+    
+    NSString * detail = [NSString stringWithFormat:@"%@|%@ %@",className,area,time];
+    
+    [cell updateName:name detail:detail price:price];
+    return cell;
+}
+- (HistoryTableViewCell *)teamCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:teamCell forIndexPath:indexPath];
     NSDictionary * dic =self.activityArray[indexPath.row];
     NSString * teamImage = [dic objectForKey:@"AvatarUrl"];
     NSURL * teamUrl = [NSURL URLWithString:teamImage];
