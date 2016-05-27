@@ -20,6 +20,8 @@
 + (void)JSONDataWithUrlSilent:(NSString *)url parameters:(id)parameters success:(void (^)(id json))success fail:(void (^)())fail;
 //POST
 + (void)postJSONWithUrl:(NSString *)urlStr parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail;
+
++ (void)postJSONWithUrl:(NSString *)urlStr header:(NSString*)header parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail;
 //Token获取
 +(NSString *)getTokenStr;
 //POST上传图片和内容

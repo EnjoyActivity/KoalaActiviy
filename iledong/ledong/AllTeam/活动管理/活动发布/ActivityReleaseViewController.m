@@ -1447,6 +1447,33 @@ typedef enum imagePickerFromType {
     NSString* provinceCode = [self.activityAddress objectForKey:@"provinceCode"];
     NSString* cityCode = [self.activityAddress objectForKey:@"cityCode"];
     NSString* districtCode = [self.activityAddress objectForKey:@"districtCode"];
+    
+    if (self.phoneNum.length == 0)
+        self.phoneNum = @"";
+    if (self.complainTelNum.length == 0)
+        self.complainTelNum = @"";
+    if (self.activityDetailText.length == 0)
+        self.activityDetailText = @"";
+    if (beginTime.length == 0)
+        beginTime = @"";
+    if (endTime.length == 0)
+        endTime = @"";
+    if (applyBeginTime.length == 0)
+        applyBeginTime = @"";
+    if (applyEndTime.length == 0)
+        applyEndTime = @"";
+    if (!planNum)
+        planNum = @0;
+    if (!lowerNum)
+        lowerNum = @0;
+    if (!maxNum)
+        maxNum = @0;
+    if (!minMoneyNum)
+        minMoneyNum = @0;
+    if (!maxMoneyNum)
+        maxMoneyNum = @0;
+
+
 
     [ActivityInfo setValue:ActivityClassId forKey:@"ActivityClassId"];      //活动分类id
     [ActivityInfo setValue:self.titleStr forKey:@"Title"];
@@ -1456,7 +1483,7 @@ typedef enum imagePickerFromType {
     [ActivityInfo setValue:[NSNumber numberWithInt:self.joinType] forKey:@"JionType"];
     [ActivityInfo setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
     [ActivityInfo setValue:self.teamId forKey:@"ReleaseUserId"];            //团队id
-    [ActivityInfo setValue:@0 forKey:@"ReleaseState"];                      //0未发布，1已发布
+    [ActivityInfo setValue:@0 forKey:@"ReleaseState"];//0未发布，1已发布
     [ActivityInfo setValue:self.phoneNum forKey:@"Tel"];
     [ActivityInfo setValue:self.complainTelNum forKey:@"ComplainTel"];
     [ActivityInfo setValue:self.teamId forKey:@"TeamId"];
@@ -1514,7 +1541,7 @@ typedef enum imagePickerFromType {
     NSString* token = [HttpClient getTokenStr];
     
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setValue:token forKey:@"token"];
+    //[dict setValue:token forKey:@"token"];
     NSMutableDictionary* ActivityCreateUpdateModel = [NSMutableDictionary dictionary];
     [ActivityCreateUpdateModel setValue:ActivityInfo forKey:@"ActivityInfo"];
     if (self.gameType == gameTypenonLeague) {
@@ -1525,16 +1552,33 @@ typedef enum imagePickerFromType {
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_CREATE_ACTIVITY_URL];
     SBJsonWriter* json = [[SBJsonWriter alloc]init];
     NSString *str = [json stringWithObject:dict];
-    [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
-        NSDictionary* dict = (NSDictionary*)responseObject;
-        NSNumber* codeNum = [dict objectForKey:@"code"];
-        if (codeNum.intValue == 0) {
-            [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
-            [self.navigationController popViewControllerAnimated:YES];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setHTTPMethod:@"POST"];
+     NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    [request setHTTPBody:data];
+    [request setValue:token forHTTPHeaderField:@"token"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSOperationQueue *queue = [NSOperationQueue mainQueue];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSLog(@"%@",response);
+        if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+            SBJsonParser* json = [[SBJsonParser alloc]init];
+            NSDictionary* dict  = [json objectWithData:data];
+            NSNumber* code = [dict objectForKey:@"code"];
+            if (code.intValue == 0) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }
+            else {
+                NSString* msg = [dict objectForKey:@"msg"];
+                [Dialog simpleToast:msg withDuration:1.5];
+            }
         }
-    } fail:^{
-        [Dialog simpleToast:@"创建活动失败！" withDuration:1.5];
-    }];  
+       }];
 }
 
 - (void)saveActivity {

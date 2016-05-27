@@ -184,6 +184,40 @@
 }
 
 #pragma mark - JSON方式post提交数据 POST
++ (void)postJSONWithUrl:(NSString *)urlStr header:(NSString*)header parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail {
+    [[HttpClient shareHttpClient] showMessageHUD:@""];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes  =[NSSet setWithObjects:@"application/json",@"text/html",nil];
+    
+    [manager.requestSerializer setValue:header forHTTPHeaderField:@"token"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager POST:urlStr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"%@",responseObject);
+         if ([[responseObject objectForKey:@"code"] intValue] == 0)
+         {
+             success(responseObject);
+         }
+         else
+         {
+             if ([[responseObject objectForKey:@"code"] intValue] == 20010) {
+                 [FRUtils setToken:@""];
+             }
+             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
+         }
+         [[HttpClient shareHttpClient] hiddenMessageHUD];
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"%@", error);
+         if (fail)
+         {
+             fail();
+         }
+         [[HttpClient shareHttpClient] hiddenMessageHUD];
+     }];
+}
+
 + (void)postJSONWithUrl:(NSString *)urlStr parameters:(id)parameters success:(void (^)(id responseObject))success fail:(void (^)())fail
 {
     [[HttpClient shareHttpClient] showMessageHUD:@""];
