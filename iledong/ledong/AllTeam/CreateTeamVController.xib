@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateTeamVController">
             <connections>
                 <outlet property="StartBtn" destination="23J-PC-0ty" id="W8Y-l3-kLi"/>
+                <outlet property="addressSetLabel" destination="EeF-y5-44q" id="AT9-Cc-XOk"/>
                 <outlet property="addressView" destination="DSu-f5-8xs" id="NgS-37-wrN"/>
                 <outlet property="headerImageView" destination="hAl-pZ-MZU" id="fNh-W3-GFb"/>
                 <outlet property="headerView" destination="tWb-cd-xMz" id="Gdy-pr-0cx"/>
@@ -182,29 +183,6 @@
                                 <constraint firstAttribute="height" constant="175" id="Rb9-AO-Fue"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DSu-f5-8xs">
-                            <rect key="frame" x="0.0" y="644" width="396" height="40"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队地点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-9y-cKr">
-                                    <rect key="frame" x="15" y="11" width="56" height="17"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="已设置" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-y5-44q">
-                                    <rect key="frame" x="269" y="8" width="78" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="Asv-6t-Qou"/>
-                                <constraint firstItem="3EP-9y-cKr" firstAttribute="leading" secondItem="DSu-f5-8xs" secondAttribute="leading" constant="15" id="Ky9-Tr-PRZ"/>
-                                <constraint firstItem="3EP-9y-cKr" firstAttribute="top" secondItem="DSu-f5-8xs" secondAttribute="top" constant="11" id="La1-VE-Z46"/>
-                            </constraints>
-                        </view>
                         <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23J-PC-0ty">
                             <rect key="frame" x="0.0" y="752" width="396" height="40"/>
                             <color key="backgroundColor" red="1" green="0.13370584799999999" blue="0.19681819659999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -218,6 +196,31 @@
                                 <action selector="startBtnClick:" destination="-1" eventType="touchUpInside" id="j5a-6T-7pm"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DSu-f5-8xs">
+                            <rect key="frame" x="0.0" y="642" width="396" height="40"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="团队地点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-9y-cKr">
+                                    <rect key="frame" x="15" y="11" width="56" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="未设置" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-y5-44q">
+                                    <rect key="frame" x="335" y="9" width="53" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="EeF-y5-44q" firstAttribute="top" secondItem="DSu-f5-8xs" secondAttribute="top" constant="9" id="6nx-OF-2Fr"/>
+                                <constraint firstAttribute="height" constant="40" id="Asv-6t-Qou"/>
+                                <constraint firstItem="3EP-9y-cKr" firstAttribute="leading" secondItem="DSu-f5-8xs" secondAttribute="leading" constant="15" id="Ky9-Tr-PRZ"/>
+                                <constraint firstItem="3EP-9y-cKr" firstAttribute="top" secondItem="DSu-f5-8xs" secondAttribute="top" constant="11" id="La1-VE-Z46"/>
+                                <constraint firstAttribute="trailing" secondItem="EeF-y5-44q" secondAttribute="trailing" constant="8" id="hj3-3j-3Ma"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.94901960784313721" green="0.95294117647058818" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>

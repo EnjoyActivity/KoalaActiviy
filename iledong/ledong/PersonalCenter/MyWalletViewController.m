@@ -139,7 +139,7 @@
             return;
         }
         walletInfo = [temp objectForKey:@"result"];
-        if (walletInfo) {
+        if (walletInfo&&![walletInfo isKindOfClass:[NSNull class]]) {
             //余额
             NSDecimal money = [[walletInfo objectForKey:@"TotalMoney"]decimalValue];
             NSLocale *zhLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];

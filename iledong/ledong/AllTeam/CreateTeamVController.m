@@ -19,6 +19,7 @@
     CGFloat _mainScrollViewContentOffsetY;
     BOOL _keyboardShow;
     NSString *teamAvatar;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -44,6 +45,7 @@
 @property (strong, nonatomic) NSMutableDictionary* parameterDict;
 @property (strong, nonatomic) NSDictionary* addressDict;
 
+@property (strong, nonatomic) IBOutlet UILabel *addressSetLabel;
 @end
 
 @implementation CreateTeamVController
@@ -166,6 +168,7 @@
     __weak typeof(self)weakSelf = self;
     Vc.locationResult = ^(NSDictionary* dict) {
         weakSelf.addressDict = [NSDictionary dictionaryWithDictionary:dict];
+        _addressSetLabel.text = @"已设置";
         
     };
     [self.navigationController pushViewController:Vc animated:YES];
@@ -429,6 +432,11 @@
         return;
     }
     
+    if (!teamAvatar) {
+        [Dialog toast:@"请设置团队头像"];
+        return;
+    }
+    
     int maxPersonNum = [self.maxCountTextField.text intValue];
     BOOL isNeedaudit = self.switchCtl.on;
     NSMutableString* tag = [NSMutableString string];
@@ -450,9 +458,9 @@
                            @"needaudit":[NSNumber numberWithBool:isNeedaudit],
                            @"tag":tag,
                            @"activityclassId":@1,
-                           @"provinceCode":@"510000",
-                           @"cityCode":@"510100",
-                           @"areaCode":@"510104",
+                           @"provinceCode":[_addressDict objectForKey:@"provinceCode"],
+                           @"cityCode":[_addressDict objectForKey:@"cityCode"],
+                           @"areaCode":[_addressDict objectForKey:@"districtCode"],
                            @"avatarUrl":teamAvatar?teamAvatar:@""
                           };
     
