@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "BaseViewController.h"
+
 @interface ActivityReleaseViewController : UIViewController
 
 @property (nonatomic, strong)NSString* teamId;

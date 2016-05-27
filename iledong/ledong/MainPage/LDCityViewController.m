@@ -57,6 +57,11 @@ static NSString * const cityCell = @"cityCell";
     // Do any additional setup after loading the view from its nib.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 #pragma mark - NetWork
 
 - (void)getCityByProvinceCode:(NSString *)code {

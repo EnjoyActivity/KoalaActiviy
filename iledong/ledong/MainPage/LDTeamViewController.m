@@ -47,9 +47,9 @@ static NSString * const teamCell = @"teamCell";
     teamArray = [NSMutableArray array];
     [self setUpUI];
     [self requestTeamData:currentPage parameter:nil];
-    if (_locationDic) {
-        NSString * cityCode = [self.locationDic objectForKey:@"citycode"];
-        [self getAreaByCityCode:cityCode];
+    if (self.cityCode) {
+//        NSString * cityCode = [self.locationDic objectForKey:@"citycode"];
+        [self getAreaByCityCode:self.cityCode];
     }
     // Do any additional setup after loading the view from its nib.
 }

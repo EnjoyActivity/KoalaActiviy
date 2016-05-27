@@ -63,6 +63,8 @@ static CGFloat const teamHeight = 280;
     UIImage * moreImage;
     
     NSDictionary * locationInfo;
+    
+    NSString * cityCode;
 
     
 }
@@ -99,13 +101,13 @@ static CGFloat const teamHeight = 280;
     teamArray = [NSMutableArray array];
     [self setUpUI];
     //30.6509086063,104.0693664551
-    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
+//    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
     
     [self requestActivityData];
     [self requestAdData];
     [self requestTeamData:5];
 
-//    [self getLocationInfo];
+    [self getLocationInfo];
  
 }
 
@@ -243,10 +245,12 @@ static CGFloat const teamHeight = 280;
 //            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
 //            [FRUtils setAddressDetail:detailAddress];
 //            [FRUtils setUserLatitudeLongitude:latlon];
-//            [FRUtils setAddressInfo:locationTemp];
+//            [self saveLocationInfo:locationInfo];
+            
 //        });
-//    
+    
         dispatch_async(dispatch_get_main_queue(), ^{
+            cityCode = [locationInfo objectForKey:@"citycode"];
             NSString * city = [locationInfo objectForKey:@"city"];
             [locationButton setTitle:city forState:UIControlStateNormal];
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
@@ -259,13 +263,14 @@ static CGFloat const teamHeight = 280;
 }
 
 
+
 #pragma mark - ButtonClick
 
 - (void)buttonClicked:(UIButton *)sender {
     if ([sender isEqual:locationButton]) {
         AdressCityVC *adressCityVC = [[AdressCityVC alloc] init];
         adressCityVC.locationResult = ^(NSDictionary *city) {
-            
+            cityCode = [city objectForKey:@"Code"];
             NSString * title = [city objectForKey:@"Name"];
             [locationButton setTitle:title forState:UIControlStateNormal];
             CGSize size = [locationButton sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
@@ -417,7 +422,8 @@ static CGFloat const teamHeight = 280;
     }
     activityVC.activityClassArray = [activityArray copy];
     activityVC.hidesBottomBarWhenPushed = YES;
-    activityVC.locationDic = locationInfo;
+//    activityVC.locationDic = locationInfo;
+    activityVC.cityCode = cityCode;
     [self.navigationController pushViewController:activityVC animated:YES];
 }
 
@@ -426,7 +432,8 @@ static CGFloat const teamHeight = 280;
         LDTeamViewController * teamVc = [[LDTeamViewController alloc] init];
          teamVc.activityArray = [activityArray copy];
         teamVc.hidesBottomBarWhenPushed = YES;
-        teamVc.locationDic = locationInfo;
+//        teamVc.locationDic = locationInfo;
+        teamVc.cityCode = cityCode;
         [self.navigationController pushViewController:teamVc animated:YES];
     }
     else
@@ -568,8 +575,9 @@ static CGFloat const teamHeight = 280;
 {
     // 滚动视图内容的跳转
 //    activPageIndex = ++activPageIndex % [activImageArr count];
+    
     currentActivity ++;
-    currentActivity = currentActivity % (activityArray.count+1);
+    currentActivity = currentActivity % MIN(activityArray.count+1, 3);
     CGFloat xOffset = (180 + 6) * currentActivity;
     CGFloat maxOffset = activityCollectionView.contentSize.width -APP_WIDTH-6;
     if (xOffset > maxOffset) {
@@ -599,7 +607,7 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)activityProgressMove {
-    NSInteger count = activityArray.count+1;
+    NSInteger count = MIN(activityArray.count+1, 3);
     CGFloat width = APP_WIDTH/count;
     NSInteger current = currentActivity%count;
     CGPoint oldPosition = activityProgressLayer.position;
@@ -621,7 +629,7 @@ static CGFloat const teamHeight = 280;
     // 滚动视图内容的跳转
     currentTeam++;
     
-    currentTeam = currentTeam % (teamArray.count+1);
+    currentTeam = currentTeam % MIN(teamArray.count+1, 6);
     
     CGFloat xOffset = (240 + 6) * currentTeam;
     CGFloat maxOffset = hotTeamCollectionView.contentSize.width -APP_WIDTH-6;
@@ -652,7 +660,7 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)teamProgressMove {
-    NSInteger count = teamArray.count+1;
+    NSInteger count = MIN(teamArray.count+1, 6);
     CGFloat width = APP_WIDTH/count;
     NSInteger current = currentTeam%count;
     CGPoint oldPosition = hotTeamProgressLayer.position;
@@ -759,6 +767,7 @@ static CGFloat const teamHeight = 280;
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     
+//    NSInteger count = MIN(<#A#>, <#B#>)
     CALayer * adProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH, 2) color:bgColor];
     topAdProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight, APP_WIDTH/topAdImageArray.count, 2) color:progressColor];
 
@@ -767,19 +776,21 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)addActivityProgress {
+    NSInteger count = MIN(activityArray.count +1, 3);
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     CALayer * activityLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH, 2) color:bgColor];
-    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/(activityArray.count+1), 2) color:progressColor];
+    activityProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55, APP_WIDTH/count, 2) color:progressColor];
     [mainScrollView.layer addSublayer:activityLayer];
     [mainScrollView.layer addSublayer:activityProgressLayer];
 }
 
 - (void)addTeamProgress {
+    NSInteger count = MIN(teamArray.count +1, 6);
     UIColor * bgColor = [UIColor colorWithRed:222.0/255.0 green:222.0/255.0 blue:222.0/255.0 alpha:1.0];
     UIColor * progressColor = [UIColor colorWithRed:226.0/255.0 green:26.0/255.0 blue:26.0/255.0 alpha:1.0];
     CALayer * teamLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH, 2) color:bgColor];
-    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/(teamArray.count+1), 2) color:progressColor];
+    hotTeamProgressLayer = [self layerWithFrame:CGRectMake(0, adHeight+activityHeight+55+55+teamHeight, APP_WIDTH/count, 2) color:progressColor];
     [mainScrollView.layer addSublayer:teamLayer];
     [mainScrollView.layer addSublayer:hotTeamProgressLayer];
 }

@@ -441,6 +441,7 @@ static NSString * friendCell = @"ActivityCell";
             LDSearchMoreViewController * moreVc = [[LDSearchMoreViewController alloc] init];
             moreVc.keyWord = searchkeyWord;
             moreVc.activityArray = [activityArray copy];
+            moreVc.searchType = moreTypeTeam;
             [self.navigationController pushViewController:moreVc animated:YES];
         }
             break;

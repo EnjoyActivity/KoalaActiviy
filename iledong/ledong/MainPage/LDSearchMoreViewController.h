@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger,moreType)
+{
+    moreTypeActivity,
+    moreTypeTeam,
+    moreTypeFriend
+};
+
 @interface LDSearchMoreViewController : UIViewController
 
 @property (nonatomic, copy) NSString * keyWord;
 @property (nonatomic, copy) NSMutableArray * activityArray;
-
+@property (nonatomic, assign) moreType searchType;
 
 
 @end

@@ -20,9 +20,12 @@
     
     NSMutableArray * provinceIndex;
     NSDictionary * provinceDic;
+    
+    NSDictionary * currentProvinceDic;
 
 
 }
+@property (strong, nonatomic) IBOutlet UIButton *currentCityButton;
 @property (nonatomic, strong) UITableView * searchResultTable;
 @end
 
@@ -37,8 +40,14 @@
     if (_locationDic) {
         NSString * provinceName = [self.locationDic objectForKey:@"province"];
         NSString * cityName =[self.locationDic objectForKey:@"city"];
-        self.adressCity.text = cityName;
+        NSString * str = [NSString stringWithFormat:@"%@ %@",provinceName,cityName];
+        [self.currentCityButton setTitle:str forState:UIControlStateNormal];
     }
+    else
+    {
+        [self.currentCityButton setTitle:@"当前城市未知" forState:UIControlStateNormal];
+    }
+    self.currentCityButton.enabled = NO;
     
     [self.searchButton setBackgroundImage:[FRUtils resizeImageWithImageName:@"ic_search_a"] forState:UIControlStateNormal];
     self.tableView.sectionIndexColor = [UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1];
@@ -55,11 +64,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear: animated];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
- 
+   [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (NSMutableDictionary *)cityData {
@@ -92,6 +102,7 @@
             return ;
         }
 
+        self.currentCityButton.enabled = YES;
         [self dealProvinceData:[dic objectForKey:@"result"]];
 
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
@@ -100,29 +111,6 @@
 }
 
 
-- (void)getCityByProvinceCode:(NSString *)code {
-    NSDictionary * dic = @{
-                           @"ProvinceCode":code
-                           };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        
-        NSArray * result = [resultDic objectForKey:@"result"];
-//        locationArray = [result copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
-    }];
-}
 
 - (void)searchProvince:(NSString *)keyWord{
     NSMutableArray * tempArray = [NSMutableArray array];
@@ -158,7 +146,32 @@
         
     }];
     
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+         [self.tableView reloadData];
+    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self getCurrentProvince];
+    });
+
+}
+
+- (void)getCurrentProvince {
+    if (self.locationDic == nil) {
+        return;
+    }
+    NSString * provinceName = [self.locationDic objectForKey:@"province"];
+    
+    [provinceDic enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSMutableArray * obj, BOOL * _Nonnull stop) {
+        for (NSDictionary * dic in obj) {
+            NSString * name = [dic objectForKey:@"Name"];
+            if ([name isEqualToString:provinceName]) {
+                currentProvinceDic = dic;
+               *stop = YES;
+            }
+        }
+    }];
+
+    
 }
 
 #pragma mark - ButtonClick
@@ -170,6 +183,21 @@
     
 }
 
+- (IBAction)currentCity:(id)sender {
+    if (currentProvinceDic == nil) {
+        return;
+    }
+    
+    LDCityViewController * cityVc = [[LDCityViewController alloc] init];
+    cityVc.provinceCode = [currentProvinceDic objectForKey:@"Code"];
+    cityVc.provinceName = [currentProvinceDic objectForKey:@"Name"];
+    
+    cityVc.city = self.locationResult;
+    cityVc.searchLocation = self.isSearch;
+    cityVc.destinationVc = self.destinationVc;
+    
+    [self.navigationController pushViewController:cityVc animated:YES];
+}
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate
 
