@@ -264,12 +264,7 @@
     LDCityViewController * cityVc = [[LDCityViewController alloc] init];
     cityVc.provinceCode = [dic objectForKey:@"Code"];
     cityVc.provinceName = [dic objectForKey:@"Name"];
-    cityVc.city = ^(NSDictionary * cityDic) {
-        if (self.locationResult) {
-            self.locationResult(cityDic);
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    };
+    cityVc.city = self.locationResult;
     cityVc.searchLocation = self.isSearch;
     
     [self.navigationController pushViewController:cityVc animated:YES];

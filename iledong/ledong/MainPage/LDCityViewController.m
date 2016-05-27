@@ -173,7 +173,7 @@ static NSString * const cityCell = @"cityCell";
         if (self.city) {
             self.city(dic);
         }
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
     
 }
@@ -186,7 +186,7 @@ static NSString * const cityCell = @"cityCell";
                                @"city":[currentCityDic objectForKey:@"Name"],
                                @"cityCode":[currentCityDic objectForKey:@"Code"],
                                @"district":[dic objectForKey:@"district"],
-                               @"districtCode":[dic objectForKey:@"districtCode"],//暂未返回
+                               @"districtCode":[dic objectForKey:@"areacode"],//暂未返回
                                @"name":[dic objectForKey:@"name"],
                                @"latlng":[dic objectForKey:@"location"],
                                };
@@ -194,7 +194,8 @@ static NSString * const cityCell = @"cityCell";
     if (self.city) {
         self.city(dicTemp);
     }
-    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
     
 
 }
