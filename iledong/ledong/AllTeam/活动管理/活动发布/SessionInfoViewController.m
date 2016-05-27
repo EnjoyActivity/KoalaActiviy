@@ -44,7 +44,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    //self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupTableView];
     [self setupNavigationBar];
 }
@@ -82,7 +82,7 @@
 }
 
 - (void)setupTableView {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64)];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
    // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell1];
     [self.view addSubview:self.tableView];
@@ -94,7 +94,6 @@
     self.navigationItem.title = @"场次信息";
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
     self.navigationController.navigationBar.titleTextAttributes = dic;
-    self.automaticallyAdjustsScrollViewInsets = NO;
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
@@ -133,8 +132,10 @@
     if (!self.activityCostTextField)
         self.activityCostTextField = [[UITextField alloc]initWithFrame:CGRectMake(APP_WIDTH-200-15, 5, 200, 40)];
     if (!self.btn) {
-        self.btn = [[UIButton alloc]initWithFrame:cell.contentView.bounds];
-        [self.btn setTitle:@"确定" forState:UIControlStateNormal];
+        self.btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        [self.btn setTitle:@"  确定" forState:UIControlStateNormal];
+        self.btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+ 
         [self.btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [self.btn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -296,7 +297,7 @@
     else if (indexPath.section == 1 || indexPath.section == 2 ||
         indexPath.section == 3 || indexPath.section == 4) {
         [self.view endEditing:YES];
-        CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.tableView completeDateInt:nil completeDateStr:^(NSString *str) {
+        CHDatePickerView* datePickView = [[CHDatePickerView alloc]initWithSuperView:self.view completeDateInt:nil completeDateStr:^(NSString *str) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
             NSDate *date = [formatter dateFromString:str];
@@ -318,7 +319,7 @@
             else if (indexPath.section == 4)
                 self.applyEndTime = dateStr;
         }];
-        [self.tableView addSubview:datePickView];
+        [self.view addSubview:datePickView];
     }
 }
 

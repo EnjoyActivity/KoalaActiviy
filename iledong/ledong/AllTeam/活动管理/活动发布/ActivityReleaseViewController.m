@@ -52,7 +52,7 @@ typedef enum imagePickerFromType {
 
 @property (nonatomic, strong)UITableView* leagueTableView;
 @property (nonatomic, strong)UITableView* nonleagueTableView;
-@property (nonatomic, strong)UIScrollView* headerScrollView;
+@property (nonatomic, strong)/*UIScrollView*/UIView* headerScrollView;
 @property (nonatomic, strong)UIView* addImgBtnView;
 @property (nonatomic, assign)imagePickerFromType imgFromType;
 @property (nonatomic, strong)NSMutableArray* coverPhotoImages;
@@ -93,12 +93,7 @@ typedef enum imagePickerFromType {
     
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
     self.joinType = joinTypePerson;
-    
-    
-    UIView* view = [[UIView alloc]initWithFrame:self.view.bounds];
-    self.view = view;
-    
-    
+
     [self initParameter];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
@@ -180,8 +175,8 @@ typedef enum imagePickerFromType {
 }
 
 - (void)setupHeaderImgScrollView {
-    self.headerScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 100)];
-    [self.view addSubview:self.headerScrollView];
+    self.headerScrollView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 100)];
+    //[self.view addSubview:self.headerScrollView];
     self.headerScrollView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     
     self.addImgBtnView = [[UIView alloc]initWithFrame:CGRectMake(15, 15, 70, 70)];
@@ -202,7 +197,7 @@ typedef enum imagePickerFromType {
 }
 
 - (void)drawNonLeagueTableView {
-    self.nonleagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, APP_WIDTH, APP_HEIGHT-100)];
+    self.nonleagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     self.nonleagueTableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     [self.view addSubview:self.nonleagueTableView];
     self.nonleagueTableView.delegate = self;
@@ -213,10 +208,12 @@ typedef enum imagePickerFromType {
     [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell3];
     [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell4];
     self.nonleagueTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.nonleagueTableView setTableHeaderView:self.headerScrollView];
 }
 
 - (void)drawLeagueTableView {
-    self.leagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+100, APP_WIDTH, APP_HEIGHT-164)];
+    self.leagueTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64)];
     self.leagueTableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
     [self.view addSubview:self.leagueTableView];
     self.leagueTableView.delegate = self;
@@ -232,7 +229,10 @@ typedef enum imagePickerFromType {
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell8];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell9];
     self.leagueTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
     self.leagueTableView.hidden = YES;
+    
+    //[self.leagueTableView setTableHeaderView:self.headerScrollView];
 }
 
 #pragma mark - btn clicked 
@@ -298,12 +298,38 @@ typedef enum imagePickerFromType {
         self.gameType = gameTypenonLeague;
         self.leagueTableView.hidden = YES;
         self.nonleagueTableView.hidden = NO;
+        
+        
+        self.leagueTableView.tableHeaderView = nil;
+        [self.nonleagueTableView setTableHeaderView:self.headerScrollView];
+        
+//        [self.headerScrollView removeFromSuperview];
+//        self.headerScrollView = nil;
+//        [self setupHeaderImgScrollView];
+//        [self.leagueTableView removeFromSuperview];
+//        self.leagueTableView = nil;
+//        if (!self.nonleagueTableView) {
+//            [self drawNonLeagueTableView];
+//        }
         [self.nonleagueTableView reloadData];
     }
     else {
         self.gameType = gameTypeLeague;
         self.leagueTableView.hidden = NO;
         self.nonleagueTableView.hidden = YES;
+        
+        self.nonleagueTableView.tableHeaderView = nil;
+        [self.leagueTableView setTableHeaderView:self.headerScrollView];
+        
+//        [self.headerScrollView removeFromSuperview];
+//        self.headerScrollView = nil;
+//        [self setupHeaderImgScrollView];
+//        
+//        [self.nonleagueTableView removeFromSuperview];
+//        self.nonleagueTableView = nil;
+//        if (!self.leagueTableView) {
+//            [self drawLeagueTableView];
+//        }
         [self.leagueTableView reloadData];
     }
 }
@@ -499,6 +525,8 @@ typedef enum imagePickerFromType {
             return 45;
         else if (indexPath.section == 7)
             return 150;
+//        else if (indexPath.section == 8)
+//            return 64+50;
     }
     return 50;
 }
@@ -507,6 +535,7 @@ typedef enum imagePickerFromType {
     UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
     label.font = [UIFont systemFontOfSize:15.0];
     label.textColor = UIColorFromRGB(0xB2B2B2);
+ 
     if (self.nonleagueTableView == tableView) {
         if (section == 2) {
             label.text = @"    活动场次";
@@ -670,7 +699,7 @@ typedef enum imagePickerFromType {
             [weakSelf.headerScrollView addSubview:weakSelf.corverImgView];
             
             weakSelf.addImgBtnView.frame = CGRectMake(weakSelf.corverImgView.frame.size.width+weakSelf.corverImgView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
-            weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
+            //weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
             
             weakSelf.coverPhotoImages = nil;
             weakSelf.coverPhotoImages = [NSMutableArray array];
