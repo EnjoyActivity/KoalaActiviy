@@ -61,6 +61,11 @@ static NSString * friendCell = @"ActivityCell";
     friendArray = [NSMutableArray array];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+      [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
@@ -447,6 +452,11 @@ static NSString * friendCell = @"ActivityCell";
             break;
         case 2:
         {
+            LDSearchMoreViewController * moreVc = [[LDSearchMoreViewController alloc] init];
+            moreVc.keyWord = searchkeyWord;
+            moreVc.activityArray = [activityArray copy];
+            moreVc.searchType = moreTypeFriend;
+//            [self.navigationController pushViewController:moreVc animated:YES];
             
         }
             break;
@@ -498,7 +508,6 @@ static NSString * friendCell = @"ActivityCell";
     [footerView addSubview:button];
     return footerView;
 }
-
 
 
 - (UIView *)viewForHeader:(NSInteger)section {

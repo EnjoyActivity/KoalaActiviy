@@ -150,8 +150,6 @@
 		3664D0531CA0FA7300BC6805 /* img_4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3664D0471CA0FA7300BC6805 /* img_4@3x.png */; };
 		3664D0551CA0FA7300BC6805 /* img_5@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3664D0491CA0FA7300BC6805 /* img_5@3x.png */; };
 		3664D0571CA0FA7300BC6805 /* img_6@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3664D04B1CA0FA7300BC6805 /* img_6@3x.png */; };
-		3664D05B1CA1287C00BC6805 /* TeamsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3664D0591CA1287C00BC6805 /* TeamsCell.m */; };
-		3664D05C1CA1287C00BC6805 /* TeamsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3664D05A1CA1287C00BC6805 /* TeamsCell.xib */; };
 		368ACA291CCDED9B00700E45 /* img_1b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 368ACA281CCDED9B00700E45 /* img_1b@2x.png */; };
 		368ACA2B1CCDEDB100700E45 /* img_morebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 368ACA2A1CCDEDB100700E45 /* img_morebg.png */; };
 		368ACA2F1CCDF65500700E45 /* ModificationPhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 368ACA2D1CCDF65500700E45 /* ModificationPhoneVC.m */; };
@@ -209,7 +207,6 @@
 		36F194DD1CD335220050EE6F /* CollectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36F194DB1CD335220050EE6F /* CollectTableViewCell.xib */; };
 		36FF6F451CA3E3D100387203 /* UserProtocolVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FF6F431CA3E3D100387203 /* UserProtocolVC.m */; };
 		36FF6F461CA3E3D100387203 /* UserProtocolVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36FF6F441CA3E3D100387203 /* UserProtocolVC.xib */; };
-		62091BC61C8FC5CB00DB9804 /* SignUpDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62091BC41C8FC5CB00DB9804 /* SignUpDetailViewController.m */; };
 		626DD4541C841FC9006BC53C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4531C841FC9006BC53C /* main.m */; };
 		626DD4571C841FC9006BC53C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 626DD4561C841FC9006BC53C /* AppDelegate.m */; };
 		626DD45D1C841FC9006BC53C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 626DD45B1C841FC9006BC53C /* Main.storyboard */; };
@@ -598,9 +595,6 @@
 		3664D0471CA0FA7300BC6805 /* img_4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_4@3x.png"; sourceTree = "<group>"; };
 		3664D0491CA0FA7300BC6805 /* img_5@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_5@3x.png"; sourceTree = "<group>"; };
 		3664D04B1CA0FA7300BC6805 /* img_6@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_6@3x.png"; sourceTree = "<group>"; };
-		3664D0581CA1287C00BC6805 /* TeamsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamsCell.h; sourceTree = "<group>"; };
-		3664D0591CA1287C00BC6805 /* TeamsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamsCell.m; sourceTree = "<group>"; };
-		3664D05A1CA1287C00BC6805 /* TeamsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TeamsCell.xib; sourceTree = "<group>"; };
 		368ACA281CCDED9B00700E45 /* img_1b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_1b@2x.png"; sourceTree = "<group>"; };
 		368ACA2A1CCDEDB100700E45 /* img_morebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_morebg.png; sourceTree = "<group>"; };
 		368ACA2C1CCDF65500700E45 /* ModificationPhoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationPhoneVC.h; sourceTree = "<group>"; };
@@ -682,9 +676,6 @@
 		36FF6F421CA3E3D100387203 /* UserProtocolVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProtocolVC.h; sourceTree = "<group>"; };
 		36FF6F431CA3E3D100387203 /* UserProtocolVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProtocolVC.m; sourceTree = "<group>"; };
 		36FF6F441CA3E3D100387203 /* UserProtocolVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProtocolVC.xib; sourceTree = "<group>"; };
-		62091BC31C8FC5CB00DB9804 /* SignUpDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpDetailViewController.h; sourceTree = "<group>"; };
-		62091BC41C8FC5CB00DB9804 /* SignUpDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpDetailViewController.m; sourceTree = "<group>"; };
-		62091BC51C8FC5CB00DB9804 /* SignUpDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpDetailViewController.xib; sourceTree = "<group>"; };
 		626DD44E1C841FC9006BC53C /* ledong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ledong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		626DD4521C841FC9006BC53C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		626DD4531C841FC9006BC53C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1495,12 +1486,6 @@
 				EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */,
 				EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */,
 				ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */,
-				3664D0581CA1287C00BC6805 /* TeamsCell.h */,
-				3664D0591CA1287C00BC6805 /* TeamsCell.m */,
-				3664D05A1CA1287C00BC6805 /* TeamsCell.xib */,
-				62091BC31C8FC5CB00DB9804 /* SignUpDetailViewController.h */,
-				62091BC41C8FC5CB00DB9804 /* SignUpDetailViewController.m */,
-				62091BC51C8FC5CB00DB9804 /* SignUpDetailViewController.xib */,
 				3608E2071CA23C3200AC23A4 /* AdressCityVC.h */,
 				3608E2081CA23C3200AC23A4 /* AdressCityVC.m */,
 				3608E2091CA23C3200AC23A4 /* AdressCityVC.xib */,
@@ -2288,7 +2273,6 @@
 				3644A96A1CD0B33F000D0218 /* FansTableViewCell.xib in Resources */,
 				362F49151CD1F1FB000777F0 /* ic_manage@2x.png in Resources */,
 				203416921CF5558E0002D8B5 /* ChooseTeamView.xib in Resources */,
-				3664D05C1CA1287C00BC6805 /* TeamsCell.xib in Resources */,
 				7F8F19351C88098000570B79 /* LoginAndRegistViewController.xib in Resources */,
 				363D6BE71CC76FFB008A169A /* SearchFriendVC.xib in Resources */,
 				362F7E911CC0D61500C91090 /* img_done@2x.png in Resources */,
@@ -2546,10 +2530,8 @@
 				626DD4901C843B30006BC53C /* Dialog.m in Sources */,
 				9040CD161CF2EF2F00C18476 /* ParameterTableViewController.m in Sources */,
 				905516041CEC3CED001C4F51 /* MJRefreshHeader.m in Sources */,
-				3664D05B1CA1287C00BC6805 /* TeamsCell.m in Sources */,
 				905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */,
 				905516171CEC3CED001C4F51 /* SDWebImageDecoder.m in Sources */,
-				62091BC61C8FC5CB00DB9804 /* SignUpDetailViewController.m in Sources */,
 				90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */,
 				361A76621CBCEF66002FE6B2 /* GoodActivTableViewCell.m in Sources */,
 				9055161D1CEC3CED001C4F51 /* UIImage+GIF.m in Sources */,

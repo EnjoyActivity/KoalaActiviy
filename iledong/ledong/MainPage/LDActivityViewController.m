@@ -8,6 +8,7 @@
 
 #import "LDActivityViewController.h"
 #import "LDActivityTableViewCell.h"
+#import "ActiveDetailViewController.h"
 
 static NSString * const locationIdentifier = @"LocationCell";
 
@@ -60,8 +61,8 @@ static NSString * const locationIdentifier = @"LocationCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
@@ -131,29 +132,7 @@ static NSString * const locationIdentifier = @"LocationCell";
     }];
 }
 
-- (void)getCityByProvinceCode:(NSString *)code {
-    NSDictionary * dic = @{
-                           @"ProvinceCode":code
-                           };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        
-        NSArray * result = [resultDic objectForKey:@"result"];
-        locationArray = [result copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.locationTableview reloadData];
-        });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
-    }];
-}
+
 
 
 #pragma mark - UitableViewDataSource
@@ -208,6 +187,14 @@ static NSString * const locationIdentifier = @"LocationCell";
             
         }
     }
+    else
+    {
+        NSDictionary * dic = activityArray[indexPath.row];
+        
+        ActiveDetailViewController * activityVc = [[ActiveDetailViewController alloc] init];
+        activityVc.Id = [[dic objectForKey:@"Id"] intValue];
+        [self.navigationController pushViewController:activityVc animated:YES];
+    }
     
 }
 
@@ -237,20 +224,6 @@ static NSString * const locationIdentifier = @"LocationCell";
     [self requestActivityData:currentPage parameter:dic];
 }
 
-
-- (void)filterUserArea:(NSInteger)row {
-    //ProvinceCode
-    //CityCode
-    //AreaCode
-    NSDictionary * dic= @{
-                          @"ActivityClassId":[NSNumber numberWithInteger:self.activityId],
-                          @"CityCode" :@"1111"
-                          };
-    currentPage = 1;
-    [self.locationTableview setHidden:YES];
-    [self requestActivityData:currentPage parameter:dic];
-    
-}
 
 #pragma mark - ButtonAction
 - (IBAction)backButtonClicked:(UIButton *)sender {
