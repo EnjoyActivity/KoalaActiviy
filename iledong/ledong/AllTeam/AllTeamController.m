@@ -87,12 +87,12 @@ typedef enum listType {
                 if (self.myStartTeamData.count > 0) {
                     self.bgImageView.hidden = YES;
                     self.bgLabel.hidden = YES;
-                    [self.tableView reloadData];
                 }
                 else {
                     self.bgImageView.hidden = NO;
                     self.bgLabel.hidden = NO;
                 }
+                [self.tableView reloadData];
             }
         } fail:^{
             [Dialog simpleToast:@"获取我的团队失败！" withDuration:1.5];
@@ -112,16 +112,14 @@ typedef enum listType {
                 self.myJoinTeamData = [NSMutableArray arrayWithArray:array];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.myJoinTeamData.count > 0) {
-                        self.tableView.hidden = NO;
                         self.bgImageView.hidden = YES;
                         self.bgLabel.hidden = YES;
-                        [self.tableView reloadData];
                     }
                     else {
                         self.bgImageView.hidden = NO;
                         self.bgLabel.hidden = NO;
-                        self.tableView.hidden = YES;
                     }
+                    [self.tableView reloadData];
                 });
             }
          } fail:^{
