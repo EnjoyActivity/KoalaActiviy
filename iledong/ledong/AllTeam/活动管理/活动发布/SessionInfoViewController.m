@@ -58,6 +58,11 @@
     [self addKeyboardNotification];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    if (self.tableView.contentOffset.y == 0)
+        [self.tableView setContentOffset:CGPointMake(0, -64) animated:NO];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [self removeKeyboardNotification];
 }

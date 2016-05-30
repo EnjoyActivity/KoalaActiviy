@@ -16,6 +16,7 @@
 #import "LocationChoiceViewController.h"
 #import "AdressCityVC.h"
 
+#define kCell0              @"cell0"
 #define kCell1              @"cell1"
 #define kCell2              @"cell2"
 #define kCell3              @"cell3"
@@ -207,6 +208,7 @@ typedef enum imagePickerFromType {
     self.nonleagueTableView.delegate = self;
     self.nonleagueTableView.dataSource = self;
     self.nonleagueTableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell0];
     [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell1];
     [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell2];
     [self.nonleagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell3];
@@ -223,6 +225,7 @@ typedef enum imagePickerFromType {
     self.leagueTableView.delegate = self;
     self.leagueTableView.dataSource = self;
     self.leagueTableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell0];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell1];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell2];
     [self.leagueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCell3];
@@ -736,9 +739,16 @@ typedef enum imagePickerFromType {
 #pragma mark - draw cell
 - (UITableViewCell*)drawSection0Cell:(UITableView*)tableView
                            indexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell1 forIndexPath:indexPath];
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCell0 forIndexPath:indexPath];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    UIButton* typeBtn = (UIButton*)[cell.contentView viewWithTag:201];
+    UIButton* personTypeBtn = (UIButton*)[cell.contentView viewWithTag:202];
+    UIButton* teamTypeBtn = (UIButton*)[cell.contentView viewWithTag:203];
+    UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:204];
+    UILabel* teamLabel = (UILabel*)[cell.contentView viewWithTag:205];
+
     if (indexPath.row == 0) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         UITextField* titleTextField = (UITextField*)[cell.contentView viewWithTag:100];
@@ -778,8 +788,7 @@ typedef enum imagePickerFromType {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.text = @"是否为联赛";
         cell.textLabel.textColor = UIColorFromRGB(0x333333);
-        
-        UIButton* typeBtn = (UIButton*)[cell.contentView viewWithTag:201];
+    
         if (!typeBtn) {
             typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, 10, 0, 0)];
             typeBtn.tag = 201;
@@ -797,8 +806,6 @@ typedef enum imagePickerFromType {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.text = @"参加类型";
         cell.textLabel.textColor = UIColorFromRGB(0x999999);
-
-        UILabel* teamLabel = (UILabel*)[cell.contentView viewWithTag:205];
         if (!teamLabel) {
             teamLabel = [[UILabel alloc]initWithFrame:CGRectZero];
             teamLabel.tag = 205;
@@ -810,7 +817,6 @@ typedef enum imagePickerFromType {
         teamLabel.frame = CGRectMake(APP_WIDTH-15-teamLabel.frame.size.width, 0, teamLabel.frame.size.width, teamLabel.frame.size.height);
         teamLabel.center = CGPointMake(teamLabel.center.x, cell.contentView.bounds.size.height/2);
         
-        UIButton* teamTypeBtn = (UIButton*)[cell.contentView viewWithTag:203];
         if (!teamTypeBtn) {
             teamTypeBtn = [[UIButton alloc]initWithFrame:CGRectMake(teamLabel.frame.origin.x-30, 10, 0, 0)];
             teamTypeBtn.tag = 203;
@@ -826,7 +832,6 @@ typedef enum imagePickerFromType {
         [teamTypeBtn sizeToFit];
         teamTypeBtn.center = CGPointMake(teamTypeBtn.center.x, cell.contentView.bounds.size.height/2);
         
-        UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:204];
         if (!personLabel) {
             personLabel = [[UILabel alloc]initWithFrame:CGRectZero];
             personLabel.tag = 204;
@@ -838,7 +843,6 @@ typedef enum imagePickerFromType {
         personLabel.frame = CGRectMake(teamTypeBtn.frame.origin.x-30-personLabel.frame.size.width, 0, personLabel.frame.size.width, personLabel.frame.size.height);
         personLabel.center = CGPointMake(personLabel.center.x, cell.contentView.bounds.size.height/2);
         
-        UIButton* personTypeBtn = (UIButton*)[cell.contentView viewWithTag:202];
         if (!personTypeBtn) {
             personTypeBtn = [[UIButton alloc]initWithFrame:CGRectMake(personLabel.frame.origin.x-30, 10, 0, 0)];
             personTypeBtn.tag = 202;
@@ -865,6 +869,24 @@ typedef enum imagePickerFromType {
     if (indexPath.row == 3)
         lineLabel.hidden = YES;
     
+    ////////////////////////////////////////////////////////////////////////
+    teamTypeBtn.hidden = NO;
+    personLabel.hidden = NO;
+    personTypeBtn.hidden = NO;
+    teamTypeBtn.hidden = NO;
+    typeBtn.hidden = NO;
+    cell.textLabel.hidden = NO;
+    if (indexPath.row != 3) {
+        teamTypeBtn.hidden = YES;
+        personLabel.hidden = YES;
+        personTypeBtn.hidden = YES;
+        teamLabel.hidden = YES;
+    }
+    if (indexPath.row == 0)
+        cell.textLabel.hidden = YES;
+    if (indexPath.row != 2)
+         typeBtn.hidden = YES;
+
     return cell;
 }
 
