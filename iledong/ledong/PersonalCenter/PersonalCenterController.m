@@ -221,6 +221,7 @@
     } else {
         // 进入我的设置
         MySettingViewController *mySettingViewController = [[MySettingViewController alloc] init];
+        mySettingViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:mySettingViewController animated:YES];
     }
 }

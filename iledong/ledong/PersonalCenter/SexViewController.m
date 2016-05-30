@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     self.titleName = @"用户信息完善";
     [super viewDidLoad];
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     [self.maleButton setImage:[UIImage imageNamed:@"ic_male_on"] forState:UIControlStateNormal];
     [self.femaleButton setImage:[UIImage imageNamed:@"ic_female_on"] forState:UIControlStateNormal];
 }

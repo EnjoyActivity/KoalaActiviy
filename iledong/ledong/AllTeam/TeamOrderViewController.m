@@ -18,7 +18,7 @@
     self.titleName = @"提交报名订单";
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     // Do any additional setup after loading the view from its nib.
 }
 

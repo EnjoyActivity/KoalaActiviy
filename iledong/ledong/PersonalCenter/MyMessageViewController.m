@@ -20,7 +20,7 @@
     self.titleName = @"我的消息";
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     
 }
 

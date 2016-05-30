@@ -22,7 +22,7 @@
     self.navigationController.navigationBarHidden = NO;
     self.titleName = @"用户协议";
     [super viewDidLoad];
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",API_BASE_URL,API_USERPROTOCOL_URL]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     self.webView.opaque = NO;//webview加载黑条问题

@@ -24,7 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     self.phoneNum.delegate = self;
     self.putNumber.delegate = self;
     timeNum = 60;
