@@ -118,7 +118,7 @@
         if (indexPath.row == 2) {
             MyWalletViewController *vc = [[MyWalletViewController alloc]init];
             vc.navTitle = @"团队钱包";
-            vc.teamId = self.teamId;
+            vc.teamId = self.teamId.intValue;
             [self.navigationController pushViewController:vc animated:YES];
         }
             
