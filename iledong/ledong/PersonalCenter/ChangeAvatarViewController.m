@@ -42,7 +42,12 @@
     headerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 50, 210 - 32, 100, 100)];
     headerImageView.layer.cornerRadius = 50;
     headerImageView.clipsToBounds = YES;
-    headerImageView.image = _headImage;
+    if (_headImage) {
+         headerImageView.image = _headImage;
+    } else {
+        headerImageView.image = [UIImage imageNamed:@"img_avatar_44"];
+    }
+   
 //    headerImageView.backgroundColor = [UIColor purpleColor];
     
     UIButton *uploadBtn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH/2 - 64, CGRectGetMaxY(headerImageView.frame) + 40, 128, 40)];

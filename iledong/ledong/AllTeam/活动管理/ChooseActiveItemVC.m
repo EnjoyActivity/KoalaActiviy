@@ -117,6 +117,7 @@
     cell.remainNumLabel.text = [NSString stringWithFormat:@"单人剩余 %d   团队剩余 %d",model.maxNum - model.willNum,model.maxApplyNum - model.applyNum];
     cell.distanceLabel.text = @"0.0km";
     [cell.distanceLabel sizeToFit];
+    cell.moneyLabel.text = [NSString stringWithFormat:@"%d",model.entryMoney];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 

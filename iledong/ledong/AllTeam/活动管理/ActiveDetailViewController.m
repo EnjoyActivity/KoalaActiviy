@@ -229,6 +229,11 @@
     contactView.frame = CGRectMake(0,startPos , APP_WIDTH, 160);
     [contactView.infoButton addTarget:self action:@selector(infoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [contactView.reportButton addTarget:self action:@selector(complainBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    if ([[activityInfo objectForKey:@"Constitutor"] isKindOfClass:[NSNull class]]) {
+        contactView.nameLabel.text = @"";
+    } else {
+        contactView.nameLabel.text = [activityInfo objectForKey:@"Constitutor"];
+    }
     startPos += 160;
     
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
