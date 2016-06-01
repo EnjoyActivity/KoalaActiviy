@@ -92,11 +92,11 @@ static NSString * const cityCell = @"cityCell";
 }
 
 - (void)searchCity:(NSString *)keyWord City:(NSString *)city {
-    isSearching = YES;
-    [SVProgressHUD showWithStatus:@"搜索中..."];
     if (keyWord.length == 0) {
         return;
     }
+    isSearching = YES;
+    [SVProgressHUD showWithStatus:@"搜索中..."];
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:keyWord forKey:@"keyword"];
     if (city.length != 0) {
@@ -216,11 +216,13 @@ static NSString * const cityCell = @"cityCell";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-        NSString * title = self.currentCity.titleLabel.text;
-        if ([title isEqualToString:@"全部城市"]) {
-            title = nil;
-        }
-        [self searchCity:self.searchTextField.text City:title];
+    [textField resignFirstResponder];
+    NSString * title = self.currentCity.titleLabel.text;
+    if ([title isEqualToString:@"全部城市"]) {
+        title = nil;
+    }
+    [self searchCity:self.searchTextField.text City:title];
+
     return YES;
 }
 
@@ -236,6 +238,7 @@ static NSString * const cityCell = @"cityCell";
 
 }
 - (IBAction)searchButton:(id)sender {
+    [self.searchTextField resignFirstResponder];
     NSString * title = self.currentCity.titleLabel.text;
     if ([title isEqualToString:@"全部城市"]) {
         title = nil;

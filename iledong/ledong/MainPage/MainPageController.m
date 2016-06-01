@@ -34,8 +34,8 @@ static CGFloat const teamHeight = 280;
     
     
     NSTimer *topAdTimer;
-    NSInteger currentAd;
-    NSMutableArray *topAdImageArray;
+//    NSInteger currentAd;
+    NSArray *topAdImageArray;
     //精彩活动
     NSTimer *activityTimer;
     NSInteger currentActivity;
@@ -94,26 +94,36 @@ static CGFloat const teamHeight = 280;
     
     
     
-    topAdImageArray = [NSMutableArray array];
+    topAdImageArray = [NSArray array];
 
     
     activityArray = [NSMutableArray array];
     teamArray = [NSMutableArray array];
+    
     [self setUpUI];
     //30.6509086063,104.0693664551
-    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
+//    [self requestLocationInfo:30.6509086063 longitude:104.0693664551];
     
     [self requestActivityData];
     [self requestAdData];
     [self requestTeamData:5];
 
-//    [self getLocationInfo];
+    [self getLocationInfo];
  
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (topAdImageArray.count > 0) {
+        [self adTimerStart];
+    }
+    if (activityArray.count > 0) {
+        [self activityTimerStart];
+    }
+    if (teamArray.count > 0) {
+        [self teamTimerStart];
+    }
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
    
@@ -147,11 +157,17 @@ static CGFloat const teamHeight = 280;
         }
         NSArray * resultArray = resultDic[@"result"];
         topAdImageArray = [resultArray copy];
+        
+        if (topAdImageArray.count == 0) {
+            return;
+        }
    
         dispatch_async(dispatch_get_main_queue(), ^{
             [self addAdProgress];
             [self adTimerStart];
             [topAdCollectionView reloadData];
+            NSIndexPath * indexPath = [NSIndexPath indexPathForItem:0 inSection:1];
+            [topAdCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
         });
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
@@ -230,10 +246,12 @@ static CGFloat const teamHeight = 280;
         NSDictionary * dic = (NSDictionary *)responseObject;
         NSInteger code = [[dic objectForKey:@"code"] integerValue];
         if (code != 0) {
+            [FRUtils setAddressInfo:nil];
             return ;
         }
         NSDictionary * result = [dic objectForKey:@"result"];
         if (result == nil) {
+            [FRUtils setAddressInfo:nil];
             return;
         }
         
@@ -243,8 +261,6 @@ static CGFloat const teamHeight = 280;
 
             NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
             [FRUtils setAddressInfo:locationTemp];
-
-            
         });
     
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -257,6 +273,7 @@ static CGFloat const teamHeight = 280;
         
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
 //        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
+        [FRUtils setAddressInfo:nil];
     }];
 }
 
@@ -298,7 +315,7 @@ static CGFloat const teamHeight = 280;
         [self requestLocationInfo:latitude longitude:longitude];
         
     } fail:^(NSError * error) {
-        
+        [FRUtils setAddressInfo:nil];
     }];
 }
 
@@ -317,6 +334,14 @@ static CGFloat const teamHeight = 280;
 
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    if ([collectionView isEqual:topAdCollectionView]) {
+        if (topAdImageArray.count <= 1) {
+            return 1;
+        }
+        return 3;
+    } else if ([collectionView isEqual:activityCollectionView]) {
+        return 1;
+    }
     return 1;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -344,7 +369,8 @@ static CGFloat const teamHeight = 280;
     UIImageView * imageView = (UIImageView *)[topAdCell viewWithTag:2];
     NSString * imgUrl = [NSString stringWithFormat:@"%@%@",API_BASE_URL,topAdImageArray[indexPath.row]];
     NSURL * url = [NSURL URLWithString:imgUrl];
-    [imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"img_1"]];
+    NSString * strIMG = [NSString stringWithFormat:@"img_%ld",indexPath.row+1];
+    [imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:strIMG]];
     return topAdCell;
 }
 
@@ -473,7 +499,7 @@ static CGFloat const teamHeight = 280;
     if ([scrollView isEqual:topAdCollectionView])
     {
         // 计算当前页数索引
-        currentAd = round(scrollView.contentOffset.x / APP_WIDTH);
+//        currentAd = round(scrollView.contentOffset.x / APP_WIDTH);
     }
     else if ([scrollView isEqual:activityCollectionView])
     {
@@ -489,8 +515,26 @@ static CGFloat const teamHeight = 280;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if ([scrollView isEqual:topAdCollectionView])
     {
+        if (!decelerate) {
+//            [self topAdScroll];
+            NSIndexPath * indexPath = [topAdCollectionView indexPathsForVisibleItems].firstObject;
+            if (indexPath.section == 1) {
+                return;
+            }
+            if (indexPath.section == 0) {
+                CGFloat offSet = scrollView.contentOffset.x;
+                CGFloat width = APP_WIDTH*topAdImageArray.count;
+                [topAdCollectionView setContentOffset:CGPointMake(offSet+width, 0) animated:NO];
+            }
+            if (indexPath.section == 2) {
+                CGFloat offSet = scrollView.contentOffset.x;
+                CGFloat width = APP_WIDTH*topAdImageArray.count;
+                [topAdCollectionView setContentOffset:CGPointMake(offSet-width, 0) animated:NO];
+            }
+            
+        }
         [self adTimerStart];
-        [self adProgressMove];
+//        [self adProgressMove];
     }
     else if ([scrollView isEqual:activityCollectionView])
     {
@@ -505,7 +549,24 @@ static CGFloat const teamHeight = 280;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
+    if ([scrollView isEqual:topAdCollectionView]) {
+//         [self topAdScroll];
+        NSIndexPath * indexPath = [topAdCollectionView indexPathsForVisibleItems].firstObject;
+        if (indexPath.section == 1) {
+            return;
+        }
+        if (indexPath.section == 0) {
+            CGFloat offSet = scrollView.contentOffset.x;
+            CGFloat width = APP_WIDTH*topAdImageArray.count;
+            [topAdCollectionView setContentOffset:CGPointMake(offSet+width, 0) animated:NO];
+        }
+        if (indexPath.section == 2) {
+            CGFloat offSet = scrollView.contentOffset.x;
+            CGFloat width = APP_WIDTH*topAdImageArray.count;
+            [topAdCollectionView setContentOffset:CGPointMake(offSet-width, 0) animated:NO];
+        }
+        
+    }
 }
 
 
@@ -518,7 +579,7 @@ static CGFloat const teamHeight = 280;
 {
     if (!topAdTimer)
     {
-        topAdTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(topAdScroll:) userInfo:nil repeats:YES];
+        topAdTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(topAdScroll) userInfo:nil repeats:YES];
     }
     topAdTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow:2.0];
 }
@@ -542,21 +603,43 @@ static CGFloat const teamHeight = 280;
 }
 
 
-- (void)topAdScroll:(NSTimer *)timer
+- (void)topAdScroll
 {
     // 滚动视图内容的跳转
-//    currentAd = ++currentAd % [topAdImageArray count];
-    currentAd ++;
-    currentAd = currentAd %topAdImageArray.count;
-    CGPoint point = CGPointMake(APP_WIDTH * currentAd, 0);
-    [topAdCollectionView setContentOffset:point animated:YES];
-    [self adProgressMove];
+    
+    if (topAdImageArray.count <= 1) {
+        return;
+    }
+    NSIndexPath * currentPath = [topAdCollectionView indexPathsForVisibleItems].lastObject;
+    NSInteger currentRow = currentPath.row;
+    NSInteger section = 1;
+    if (currentRow == topAdImageArray.count - 1) {
+        section = 2;
+        currentRow = 0;
+    }
+    else
+    {
+        currentRow += 1;
+    }
+    
+    NSIndexPath * nextPath = [NSIndexPath indexPathForItem:currentRow inSection:section];
+    
+    [topAdCollectionView scrollToItemAtIndexPath:nextPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+    if (section == 2) {
+        NSIndexPath * indexPathTemp = [NSIndexPath indexPathForItem:currentRow inSection:1];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [topAdCollectionView scrollToItemAtIndexPath:indexPathTemp atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+        });
+
+    }
+    
+    [self adProgressMove:currentRow];
 }
 
-- (void)adProgressMove {
+- (void)adProgressMove:(NSInteger)current {
     NSInteger count = topAdImageArray.count;
     CGFloat width = APP_WIDTH/count;
-    NSInteger current = currentAd%count;
+//    NSInteger current = currentAd%count;
     CGPoint oldPosition = topAdProgressLayer.position;
     CGPoint newPoint = CGPointMake(width*current+width/2, oldPosition.y);
     [self moveAnimation:topAdProgressLayer position:newPoint];
@@ -566,16 +649,16 @@ static CGFloat const teamHeight = 280;
 {
     if (!activityTimer)
     {
-        activityTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(activityScroll:) userInfo:nil repeats:YES];
+        activityTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(activityScroll) userInfo:nil repeats:YES];
     }
     activityTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow:2.0];
 }
 
-- (void)activityScroll:(NSTimer *)timer
+- (void)activityScroll
 {
     // 滚动视图内容的跳转
 //    activPageIndex = ++activPageIndex % [activImageArr count];
-    
+
     currentActivity ++;
     currentActivity = currentActivity % MIN(activityArray.count+1, 3);
     CGFloat xOffset = (180 + 6) * currentActivity;

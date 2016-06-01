@@ -53,6 +53,10 @@
             NSString * str = [NSString stringWithFormat:@"%@ %@",provinceName,cityName];
             [self.currentCityButton setTitle:str forState:UIControlStateNormal];
         }
+        else
+        {
+            [self.currentCityButton setTitle:@"未知城市" forState:UIControlStateNormal];
+        }
         
     }
     self.currentCityButton.enabled = NO;
@@ -110,7 +114,7 @@
             return ;
         }
 
-        self.currentCityButton.enabled = YES;
+
         [self dealProvinceData:[dic objectForKey:@"result"]];
 
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
@@ -158,6 +162,7 @@
          [self.tableView reloadData];
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+     
         [self getCurrentProvince];
     });
 
@@ -167,6 +172,7 @@
     if (self.locationDic == nil) {
         return;
     }
+    self.currentCityButton.enabled = YES;
     NSString * provinceName = [self.locationDic objectForKey:@"province"];
     
     [provinceDic enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSMutableArray * obj, BOOL * _Nonnull stop) {
