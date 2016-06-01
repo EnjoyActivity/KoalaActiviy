@@ -142,6 +142,7 @@
     [cell setSelectManagerBtnClicked:^() {
         ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]initWithPreDictionary:dict];
         VC.teamId = teamId;
+        [tableView deselectRowAtIndexPath:indexPath animated:NO]; //取消选中状态
         [weakSelf.navigationController pushViewController:VC animated:YES];
     }];
 
@@ -150,9 +151,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ActiveDetailViewController* Vc = [[ActiveDetailViewController alloc]init];
-    NSDictionary* dict = self.datas[indexPath.row];
+    NSDictionary* dict = self.datas[indexPath.section];
     NSNumber* activeId = [dict objectForKey:@"Id"];
     Vc.Id = activeId.intValue;
+    [tableView deselectRowAtIndexPath:indexPath animated:NO]; //取消选中状态
     
     [self.navigationController pushViewController:Vc animated:YES];
 }
