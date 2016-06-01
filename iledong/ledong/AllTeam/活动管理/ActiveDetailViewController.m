@@ -180,6 +180,9 @@
     NSInteger days = 0;
     if (![[activityInfo objectForKey:@"ApplyEndTime"] isKindOfClass:[NSNull class]]) {
         days = [self howManyDaysSinceNow:[activityInfo objectForKey:@"ApplyEndTime"]];
+        if (days<0) {
+            days = 0;
+        }
     }
     titleView.timeRemainLabel.text = [NSString stringWithFormat:@"报名剩余 %ld 天",(long)days];
     titleView.personMoneyLabel.text = [NSString stringWithFormat:@"%@",[activityInfo objectForKey:@"EntryMoneyMin"]];

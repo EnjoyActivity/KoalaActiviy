@@ -39,10 +39,12 @@
     [self setupTitleView];
     if (_joinType==2) {
         [self setupChooseTeamView];
+        [self setupTotalMoneyView:[NSString stringWithFormat:@"%d",[[self.activityInfo objectForKey:@"EntryMoneyMax"]intValue]]];
+    } else {
+        [self setupTotalMoneyView:[NSString stringWithFormat:@"%d",[[self.activityInfo objectForKey:@"EntryMoneyMin"]intValue]]];
     }
     [self setupInfoView];
     [self setupPreferentialView];
-    [self setupTotalMoneyView:@"200"];
     [self addKeyboardNotification];
 }
 
