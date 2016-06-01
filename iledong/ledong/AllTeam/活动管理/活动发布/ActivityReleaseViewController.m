@@ -100,13 +100,20 @@ typedef enum imagePickerFromType {
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
-    [self addKeyboardNotification];
     
     [self setupCheckParameterTimer];
 }
 
 - (void)dealloc {
     [self releaseResource];
+    [self removeKeyboardNotification];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self addKeyboardNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
     [self removeKeyboardNotification];
 }
 

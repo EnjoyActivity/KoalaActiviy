@@ -55,12 +55,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self addKeyboardNotification];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    if (self.tableView.contentOffset.y == 0)
-        [self.tableView setContentOffset:CGPointMake(0, -64) animated:NO];
+    [self addKeyboardNotification];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

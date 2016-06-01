@@ -56,7 +56,6 @@
     self.tagArray = [NSMutableArray array];
     [self setupNavigationBar];
     [self layoutSubView];
-    [self addKeyBoardNotification];
     [self setupTapGestureRecognizer];
     [self setupAddressTapGesture];
 }
@@ -65,11 +64,19 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self addKeyBoardNotification];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {
+    [self removeKeyBoardNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
     [self removeKeyBoardNotification];
 }
 
