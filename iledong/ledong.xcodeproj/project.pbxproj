@@ -2215,7 +2215,6 @@
 				TargetAttributes = {
 					626DD44D1C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = V7755W7M2E;
 					};
 					626DD4661C841FC9006BC53C = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -2767,7 +2766,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d3c75de4-6250-46b3-b97e-ee392df908df";
 			};
 			name = Debug;
 		};
@@ -2776,8 +2775,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Microchild Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ledong/ILeDong_PrefixHeader.pch";
@@ -2786,7 +2785,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microchild.iledong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d3c75de4-6250-46b3-b97e-ee392df908df";
 			};
 			name = Release;
 		};
