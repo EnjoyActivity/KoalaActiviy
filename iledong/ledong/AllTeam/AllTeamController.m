@@ -212,7 +212,6 @@ typedef enum listType {
     if (self.tableViewListType == listTypeJoinTeam) {
         cell.personCountLabel.hidden = YES;
         cell.payAttentionCountLabel.hidden = YES;
-        
         cell.teamActiveCountLabel.text = @"审核中";
         cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xE3191A);
     }
@@ -220,21 +219,19 @@ typedef enum listType {
         NSNumber* maxPersonNum = [dict objectForKey:@"PersonNum"];
         cell.personCountLabel.text = [NSString stringWithFormat:@"%d人",maxPersonNum.intValue];
         [cell.personCountLabel sizeToFit];
-        
         NSNumber* livenessNum = [dict objectForKey:@"Liveness"];
         cell.teamActiveCountLabel.text = [NSString stringWithFormat:@"团队活跃度 %d", livenessNum.intValue];
         NSNumber* concernNum  = [dict objectForKey:@"Concern"];
         cell.payAttentionCountLabel.text = [NSString stringWithFormat:@"%d人关注", concernNum.intValue];
         [cell.teamActiveCountLabel sizeToFit];
         [cell.payAttentionCountLabel sizeToFit];
-        
         cell.personCountLabel.hidden = NO;
         cell.payAttentionCountLabel.hidden = NO;
         cell.teamActiveCountLabel.textColor = UIColorFromRGB(0xBABABA);
     }
     cell.teamNameLabel.text = [dict objectForKey:@"Name"];
     [cell.teamNameLabel sizeToFit];
-    
+
     NSString* avatarUrl = [dict objectForKey:@"AvatarUrl"];
     if (avatarUrl.length > 0) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{

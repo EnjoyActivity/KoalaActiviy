@@ -261,6 +261,7 @@
 		900400BA1CF03F0300101D86 /* ic_append@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 900400B91CF03F0300101D86 /* ic_append@2x.png */; };
 		903CE5421CED48A3003099EB /* img_teamavatar_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */; };
 		903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 903CE5441CEDBB76003099EB /* LDDeleteTagView.m */; };
+		903D98DB1CFE7F4700EFDDF4 /* UIView+CoordinatesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 903D98DA1CFE7F4700EFDDF4 /* UIView+CoordinatesView.m */; };
 		9040CD0D1CF2957800C18476 /* CHDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD0C1CF2957800C18476 /* CHDatePickerView.m */; };
 		9040CD101CF2CA0800C18476 /* StepperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD0F1CF2CA0800C18476 /* StepperView.m */; };
 		9040CD161CF2EF2F00C18476 /* ParameterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */; };
@@ -760,6 +761,8 @@
 		903CE5411CED48A3003099EB /* img_teamavatar_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_teamavatar_120@2x.png"; sourceTree = "<group>"; };
 		903CE5431CEDBB76003099EB /* LDDeleteTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDDeleteTagView.h; sourceTree = "<group>"; };
 		903CE5441CEDBB76003099EB /* LDDeleteTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDDeleteTagView.m; sourceTree = "<group>"; };
+		903D98D91CFE7F4700EFDDF4 /* UIView+CoordinatesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CoordinatesView.h"; sourceTree = "<group>"; };
+		903D98DA1CFE7F4700EFDDF4 /* UIView+CoordinatesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CoordinatesView.m"; sourceTree = "<group>"; };
 		9040CD0B1CF2957800C18476 /* CHDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHDatePickerView.h; sourceTree = "<group>"; };
 		9040CD0C1CF2957800C18476 /* CHDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHDatePickerView.m; sourceTree = "<group>"; };
 		9040CD0E1CF2CA0800C18476 /* StepperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepperView.h; sourceTree = "<group>"; };
@@ -1549,6 +1552,8 @@
 		626DD48D1C84386D006BC53C /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				903D98D91CFE7F4700EFDDF4 /* UIView+CoordinatesView.h */,
+				903D98DA1CFE7F4700EFDDF4 /* UIView+CoordinatesView.m */,
 				626DD4941C843E0C006BC53C /* BaseViewController.h */,
 				626DD4951C843E0C006BC53C /* BaseViewController.m */,
 				626DD4911C843BD7006BC53C /* FRUtils.h */,
@@ -2598,6 +2603,7 @@
 				905515EB1CEC3CED001C4F51 /* AFNetworkReachabilityManager.m in Sources */,
 				361A764D1CBCD133002FE6B2 /* HotTeamViewController.m in Sources */,
 				363D6BD21CC764EC008A169A /* SearchTeamVC.m in Sources */,
+				903D98DB1CFE7F4700EFDDF4 /* UIView+CoordinatesView.m in Sources */,
 				905516351CEC3E31001C4F51 /* ActiveViewController.m in Sources */,
 				9055161E1CEC3CED001C4F51 /* UIImage+MultiFormat.m in Sources */,
 				7F8F734A1C8FB5F300CCFE41 /* MyWalletDetailTableViewCell.m in Sources */,

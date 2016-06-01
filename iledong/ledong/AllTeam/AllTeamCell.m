@@ -7,6 +7,7 @@
 //
 
 #import "AllTeamCell.h"
+#import "UIView+CoordinatesView.h"
 
 #define kCellHeight     100
 
@@ -42,11 +43,15 @@
 
 - (void)layoutSubviews {
     self.teamImageView.frame = CGRectMake(0, 0, 100, kCellHeight);
-    CGFloat x = self.teamImageView.frame.origin.x + self.teamImageView.frame.size.width + 10;
-    self.teamNameLabel.frame = CGRectMake(x, 10, self.teamNameLabel.frame.size.width, self.teamNameLabel.frame.size.height);
-    self.personCountLabel.frame = CGRectMake(x, self.teamNameLabel.frame.origin.y+self.teamNameLabel.frame.size.height + 5, self.personCountLabel.frame.size.width, self.personCountLabel.frame.size.height);
-    self.teamActiveCountLabel.frame = CGRectMake(x, kCellHeight-20, self.teamActiveCountLabel.frame.size.width, self.teamActiveCountLabel.frame.size.height);
-    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-80, kCellHeight-20, self.payAttentionCountLabel.frame.size.width, self.payAttentionCountLabel.frame.size.height);
+    CGFloat x = self.teamImageView.orighX + self.teamImageView.width + 10;
+    self.teamNameLabel.frame = CGRectMake(x, 10, self.teamNameLabel.width, self.teamNameLabel.height);
+    self.personCountLabel.frame = CGRectMake(x, self.teamNameLabel.orighY+self.teamNameLabel.height+ 5, self.personCountLabel.width, self.personCountLabel.height);
+    self.teamActiveCountLabel.frame = CGRectMake(x, kCellHeight-20, self.teamActiveCountLabel.width, self.teamActiveCountLabel.height);
+    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-15-self.payAttentionCountLabel.width, kCellHeight-20, self.payAttentionCountLabel.width, self.payAttentionCountLabel.height);
+    
+    if (self.teamNameLabel.width > (APP_WIDTH-self.teamNameLabel.orighX-15)) {
+        self.teamNameLabel.frame = CGRectMake(self.teamNameLabel.orighX, self.teamNameLabel.orighY, APP_WIDTH-self.teamNameLabel.orighX-15, self.teamNameLabel.height);
+    }
 }
 
 @end

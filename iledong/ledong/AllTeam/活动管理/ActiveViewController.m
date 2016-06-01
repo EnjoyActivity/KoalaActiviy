@@ -121,11 +121,13 @@
 //    provinceName = "\U56db\U5ddd\U7701";
 //    tag = "";
 
-    NSDictionary* dict = self.datas[indexPath.row];
+    NSInteger row = indexPath.section;
+    
+    NSDictionary* dict = self.datas[row];
     NSString* cover = [dict objectForKey:@"Cover"];
     NSString* title = [dict objectForKey:@"Title"];
-    NSString* beginTime = [dict objectForKey:@"BeginTime"];
-    NSString* endTime = [dict objectForKey:@"EndTime"];
+    //NSString* beginTime = [dict objectForKey:@"BeginTime"];
+    //NSString* endTime = [dict objectForKey:@"EndTime"];
     NSString* className = [dict objectForKey:@"ClassName"];
     NSString* demand = [dict objectForKey:@"Demand"];
     NSString* cityName = [dict objectForKey:@"cityName"];
@@ -158,19 +160,6 @@
     else {
         cell.activityDesc.text = [NSString stringWithFormat:@"%@|%@", className, cityName];
     }
-
-//    if (indexPath.section == 0) {
-//        cell.activityName.text = @"朝阳区乐动杯足球联赛";
-//        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
-//        cell.activityState.text = @"进行中";
-//        cell.state = activityStateOnGoing;
-//    }
-//    else {
-//        cell.activityName.text = @"朝阳区乐动杯足球联赛";
-//        cell.activityDesc.text = @"足球|北京，多个赛场|04-09(周六)";
-//        cell.activityState.text = @"已结束";
-//        cell.state = activityStateEnd;
-//    }
     [cell.activityName sizeToFit];
     [cell.activityDesc sizeToFit];
     [cell.activityState sizeToFit];
@@ -212,12 +201,14 @@
     NSDictionary* parameter = @{@"token":strToken,@"page":[NSNumber numberWithInteger:1/*pageIndex*/],@"PageSize":[NSNumber numberWithInteger:pageSize],@"ActivityType":@1,
                                 @"TeamId":self.teamId};
     NSString *urlStr = [API_BASE_URL stringByAppendingString:API_QUERY_ACTIVITY_URL];
+    
+    __weak typeof(self)weakSelf = self;
     [HttpClient postJSONWithUrl:urlStr parameters:parameter success:^(id responseObject) {
         NSDictionary* dict = (NSDictionary*)responseObject;
         NSNumber* codeNum = [dict objectForKey:@"code"];
         if (codeNum.intValue == 0) {
-            self.datas = [dict objectForKey:@"result"];
-            [self.tableView reloadData];
+            weakSelf.datas = [dict objectForKey:@"result"];
+            [weakSelf.tableView reloadData];
         }
     } fail:^{
         [Dialog simpleToast:@"查询活动列表失败！" withDuration:1.5];
