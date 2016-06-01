@@ -7,6 +7,7 @@
 //
 
 #import "ActiveTableViewCell.h"
+#import "UIView+CoordinatesView.h"
 
 @interface ActiveTableViewCell ()
 
@@ -26,24 +27,20 @@
 
 - (void)layoutSubviews {
     self.activityImageView.frame = CGRectMake(15, 10, 70, 70);
-    CGFloat x = self.activityImageView.frame.origin.x + self.activityImageView.frame.size.width + 10;
-    self.activityName.frame = CGRectMake(x, 12, self.activityName.frame.size.width, self.activityName.frame.size.height);
-    self.activityDesc.frame = CGRectMake(x, self.activityName.frame.origin.y+self.activityName.frame.size.height+5, self.activityDesc.frame.size.width, self.activityDesc.frame.size.height);
-    self.activityState.frame = CGRectMake(x, self.activityDesc.frame.origin.y+self.activityDesc.frame.size.height+10, self.activityState.frame.size.width, self.activityState.frame.size.height);
+    CGFloat x = self.activityImageView.orighX + self.activityImageView.width + 10;
+    self.activityName.frame = CGRectMake(x, 12, self.activityName.width, self.activityName.height);
+    self.activityDesc.frame = CGRectMake(x, self.activityName.orighY+self.activityName.height+5, self.activityDesc.width, self.activityDesc.height);
+    self.activityState.frame = CGRectMake(x, self.activityDesc.orighY+self.activityDesc.height+10, self.activityState.width, self.activityState.height);
     
     self.mgrBtn.hidden = YES;
     self.lineLabel.hidden = YES;
-    //if (self.state == activityStateOnGoing) {
-        //self.lineLabel.hidden = NO;
-        //self.mgrBtn.hidden = NO;
-        
-        self.lineLabel.frame = CGRectMake(15, self.activityImageView.frame.origin.y+self.activityImageView.frame.size.height+10, APP_WIDTH-15, 0.5);
-        self.mgrBtn.frame = CGRectMake(APP_WIDTH-15-70, self.lineLabel.frame.origin.y+self.lineLabel.frame.size.height+10, 70, self.mgrBtn.frame.size.height);
-   // }
-   // else {
-        
-        
-   // }
+    self.lineLabel.frame = CGRectMake(15, self.activityImageView.orighY+self.activityImageView.height+10, APP_WIDTH-15, 0.5);
+    self.mgrBtn.frame = CGRectMake(APP_WIDTH-15-70, self.lineLabel.orighY+self.lineLabel.height+10, 70, self.mgrBtn.height);
+    
+    if (self.state == activityStateOnGoing) 
+        self.activityState.text = @"进行中";
+    else if (self.state == activityStateEnd)
+        self.activityState.text = @"已结束";
 }
 
 - (void)setSelectManagerBtnClicked:(managerBtnClickedBlock)block {

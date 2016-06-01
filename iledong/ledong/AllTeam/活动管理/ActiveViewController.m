@@ -42,13 +42,20 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.frame = CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT);
     self.tableView.backgroundColor = UIColorFromRGB(0xF2F3F4);
+    
+    [self queryDatas:self.currentPageIndex++];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshDatas) name:@"activeRefreshNotification" object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)refreshDatas {
     [self queryDatas:self.currentPageIndex++];
 }
 
@@ -70,69 +77,42 @@
    // }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *idnetifier = @"activeCell";
     __weak typeof(self) weakSelf = self;
     ActiveTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idnetifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!cell)
         cell = [[NSBundle mainBundle] loadNibNamed:@"ActiveTableViewCell" owner:self options:nil][0];
-    
-    
-    
-//    ActivityClassId = 5;
-//    ActivityType = 1;
-//    ApplyBeginTime = "<null>";
-//    ApplyEndTime = "<null>";
-//    ApplyNum = 0;
-//    BeginTime = "<null>";
-//    ClassName = "\U6a44\U6984\U7403";
-//    ComplainTel = 1;
-//    ConstitutorId = 0;
-//    ConstitutorName = "";
-//    Cover = "";
-//    Demand = 11;
-//    EndTime = "<null>";
-//    EntryMoneyMax = 3;
-//    EntryMoneyMin = 9;
-//    Id = 8;
-//    IsLeague = 1;
-//    JionType = 1;
-//    MaxApplyNum = 0;
-//    MaxNum = 0;
-//    ReadFlag = 0;
-//    ReleaseState = 0;
-//    ReleaseTime = "<null>";
-//    ReleaseUserId = 0;
-//    Tel = 1;
-//    Title = 1;
-//    WillNum = 0;
-//    areaCode = 510104;
-//    areaName = "\U9526\U6c5f\U533a";
-//    cityCode = 510100;
-//    cityName = "\U6210\U90fd\U5e02";
-//    provinceCode = 510000;
-//    provinceName = "\U56db\U5ddd\U7701";
-//    tag = "";
 
-    NSInteger row = indexPath.section;
-    
+    NSInteger row = indexPath.section;  //每个section一个cell
     NSDictionary* dict = self.datas[row];
+    //NSString* constitutorId = [dict objectForKey:@"ConstitutorId"];
     NSString* cover = [dict objectForKey:@"Cover"];
     NSString* title = [dict objectForKey:@"Title"];
-    //NSString* beginTime = [dict objectForKey:@"BeginTime"];
-    //NSString* endTime = [dict objectForKey:@"EndTime"];
+    NSString* endTime = [dict objectForKey:@"EndTime"];
     NSString* className = [dict objectForKey:@"ClassName"];
     NSString* demand = [dict objectForKey:@"Demand"];
     NSString* cityName = [dict objectForKey:@"cityName"];
     NSNumber* isLeague = [dict objectForKey:@"IsLeague"];
     
+    //判断活动状态
+    cell.state = activityStateOnGoing;
+    if ([endTime isKindOfClass:[NSString class]] && endTime.length > 0) {
+        NSDate* currentDate = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+        [formatter setDateFormat:@"yyyy-MM-dd  HH:mm"];
+        NSDate *endDate = [formatter dateFromString:endTime];
+        if ([endDate compare:currentDate] == NSOrderedAscending)
+            cell.state = activityStateEnd;
+    }
+    
+    NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
+    cell.activityImageView.image = [UIImage imageWithContentsOfFile:path];
     if (cover.length > 0) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -148,25 +128,20 @@
             });
         });
     }
-    else {
-        NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
-        cell.activityImageView.image = [UIImage imageWithContentsOfFile:path];
-    }
     
     cell.activityName.text = title;
-    if (isLeague.intValue == 1) {
+    if (isLeague.intValue == 1)
         cell.activityDesc.text = demand;
-    }
-    else {
+    else
         cell.activityDesc.text = [NSString stringWithFormat:@"%@|%@", className, cityName];
-    }
     [cell.activityName sizeToFit];
     [cell.activityDesc sizeToFit];
     [cell.activityState sizeToFit];
     
+    NSString* teamId = self.teamId;
     [cell setSelectManagerBtnClicked:^() {
         ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
-        VC.teamId = self.teamId;
+        VC.teamId = teamId;
         [weakSelf.navigationController pushViewController:VC animated:YES];
     }];
 

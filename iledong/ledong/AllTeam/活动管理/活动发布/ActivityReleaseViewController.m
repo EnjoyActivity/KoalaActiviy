@@ -1590,6 +1590,7 @@ typedef enum imagePickerFromType {
             if (code.intValue == 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"activeRefreshNotification" object:nil];
                     [self.navigationController popViewControllerAnimated:YES];
                 });
             }

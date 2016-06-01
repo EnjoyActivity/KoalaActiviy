@@ -48,11 +48,11 @@ typedef enum listType {
         self.myStartTeamData = [NSMutableArray array];
         self.myJoinTeamData = [NSMutableArray array];
     }
+    
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
  
     [self.tableView registerClass:[AllTeamCell class] forCellReuseIdentifier:kCell];
@@ -60,17 +60,14 @@ typedef enum listType {
     [self initBgImageView];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];//有动画的隐藏
     self.tabBarController.tabBar.hidden = NO;
-    if (self.tableViewListType == listTypeStartTeam) {
+    if (self.tableViewListType == listTypeStartTeam)
         [self updateStartTeamData];
-    } else {
+    else
         [self updateJoinTeamData];
-    }
-    
 }
 
 #pragma mark -- API
@@ -138,9 +135,9 @@ typedef enum listType {
 
 #pragma mark -- UIButtonClick
 - (IBAction)myTeamButton:(id)sender {
-    if (self.tableViewListType == listTypeStartTeam) {
+    if (self.tableViewListType == listTypeStartTeam)
         return;
-    }
+
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
@@ -150,9 +147,9 @@ typedef enum listType {
 }
 
 - (IBAction)TeamAgree:(id)sender {
-    if (self.tableViewListType == listTypeJoinTeam) {
+    if (self.tableViewListType == listTypeJoinTeam)
         return;
-    }
+
     [self.myTeam setBackgroundColor:[UIColor colorWithRed:242/255.0 green:243/255.0 blue:244/255.0 alpha:1]];
     [self.myTeam setTitleColor:[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1] forState:UIControlStateNormal];
     [self.teamAgree setBackgroundColor:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1]];
@@ -163,41 +160,31 @@ typedef enum listType {
 }
 
 //创建团队
-- (IBAction)createTeamButtonClick:(id)sender
-{
-    if ([HttpClient isLogin])
-    {
+- (IBAction)createTeamButtonClick:(id)sender {
+    if ([HttpClient isLogin]) {
         CreateTeamVController *createViewController = [[CreateTeamVController alloc] init];
         [createViewController setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:createViewController animated:YES];
     }
-    else
-    {
+    else {
         [FRUtils presentToLoginViewControllerWithRootViewController:self];
     }
 }
 
 //加入团队
-- (IBAction)joinTeamButtonClick:(id)sender
-{
-    if ([HttpClient isLogin])
-    {
-        //JoinTeamViewController *joinTeamViewController = [[JoinTeamViewController alloc] init];
-        //[joinTeamViewController setHidesBottomBarWhenPushed:YES];
-        
+- (IBAction)joinTeamButtonClick:(id)sender {
+    if ([HttpClient isLogin]) {
         SelectTeamViewController* selectTeamViewController = [[SelectTeamViewController alloc]init];
         [selectTeamViewController setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:selectTeamViewController animated:YES];
     }
-    else
-    {
+    else {
         [FRUtils presentToLoginViewControllerWithRootViewController:self];
     }
 }
 
 #pragma mark -- tableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.tableViewListType == listTypeJoinTeam)
         return self.myJoinTeamData.count;
     else if (self.tableViewListType == listTypeStartTeam)
@@ -247,7 +234,8 @@ typedef enum listType {
             [request setURL:[NSURL URLWithString:avatarUrl]];
             [request setHTTPMethod:@"GET"];
             NSError *error = nil;
-            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+            NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:nil error:&error];
             if (data == nil)
                 return;
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -255,29 +243,29 @@ typedef enum listType {
                 [cell setNeedsLayout];
             });
         });
-    } else {
+    }
+    else {
         NSString* path = [[NSBundle mainBundle]pathForResource:@"img_teamavatar_120@2x" ofType:@"png"];
         cell.teamImageView.image = [UIImage imageWithContentsOfFile:path];
-
     }
     return cell;
 }
 
 //删除某一行
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
+           editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCellEditingStyle result = UITableViewCellEditingStyleNone;
     if ([tableView isEqual:_tableView])
         result = UITableViewCellEditingStyleDelete;
     return result;
 }
 
--(void)setEditing:(BOOL)editing animated:(BOOL)animated {
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete &&
         self.tableViewListType == listTypeJoinTeam) {
         if (indexPath.row < [self.myJoinTeamData count]) {
@@ -287,9 +275,6 @@ typedef enum listType {
     else if (editingStyle == UITableViewCellEditingStyleDelete &&
              self.tableViewListType == listTypeStartTeam) {
         if (indexPath.row < [self.myStartTeamData count]) {
-//            [self exitTeam:self.myStartTeamData[indexPath.row]];
-//            [self.myStartTeamData removeObjectAtIndex:indexPath.row];
-//            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             [self exitTeam:self.myStartTeamData[indexPath.row] listType:listTypeStartTeam tableView:tableView row:indexPath];
         }
     }
@@ -303,9 +288,11 @@ typedef enum listType {
         teamHomeVC.teamId = [dict objectForKey:@"Id"];
     }
     else if (self.tableViewListType == listTypeJoinTeam)  {
-        teamHomeVC.teamType = teamTypeJoin;
-        NSDictionary* dict = self.myJoinTeamData[indexPath.row];
-        teamHomeVC.teamId = [dict objectForKey:@"Id"];
+        //teamHomeVC.teamType = teamTypeJoin;
+        //NSDictionary* dict = self.myJoinTeamData[indexPath.row];
+        //teamHomeVC.teamId = [dict objectForKey:@"Id"];
+        [Dialog simpleToast:@"团队审核中" withDuration:1];
+        return;
     }
 
     [teamHomeVC setHidesBottomBarWhenPushed:YES];
