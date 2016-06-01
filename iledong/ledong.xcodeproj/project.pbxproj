@@ -348,6 +348,7 @@
 		EC34B1301CEEA22E00EBC5DA /* ActivityLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B12F1CEEA22E00EBC5DA /* ActivityLocationCell.xib */; };
 		EC34B1321CEEB02700EBC5DA /* MainSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */; };
 		EC34B1351CEEB41200EBC5DA /* LDMainSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */; };
+		EC4EA2061CFECEBA00EC1CE5 /* LDMainPageNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4EA2051CFECEBA00EC1CE5 /* LDMainPageNetWork.m */; };
 		EC7CB28E1CEEF0C4008258B1 /* LDTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */; };
 		EC7CB2931CEEF19D008258B1 /* LDTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CB2911CEEF19D008258B1 /* LDTeamTableViewCell.m */; };
 		EC7CB2941CEEF19D008258B1 /* LDTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC7CB2921CEEF19D008258B1 /* LDTeamTableViewCell.xib */; };
@@ -921,6 +922,8 @@
 		EC34B1311CEEB02700EBC5DA /* MainSearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainSearchResultCell.xib; sourceTree = "<group>"; };
 		EC34B1331CEEB41200EBC5DA /* LDMainSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainSearchTableViewCell.h; sourceTree = "<group>"; };
 		EC34B1341CEEB41200EBC5DA /* LDMainSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainSearchTableViewCell.m; sourceTree = "<group>"; };
+		EC4EA2041CFECEBA00EC1CE5 /* LDMainPageNetWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageNetWork.h; sourceTree = "<group>"; };
+		EC4EA2051CFECEBA00EC1CE5 /* LDMainPageNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageNetWork.m; sourceTree = "<group>"; };
 		EC7CB28B1CEEF0C4008258B1 /* LDTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamViewController.h; sourceTree = "<group>"; };
 		EC7CB28C1CEEF0C4008258B1 /* LDTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDTeamViewController.m; sourceTree = "<group>"; };
 		EC7CB2901CEEF19D008258B1 /* LDTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDTeamTableViewCell.h; sourceTree = "<group>"; };
@@ -2146,6 +2149,8 @@
 				EC9A931A1CED9D3D00F6009B /* LDLocationManager.m */,
 				ECC5AF4E1CF6A6E200643CE1 /* LDChineseToPinyin.h */,
 				ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */,
+				EC4EA2041CFECEBA00EC1CE5 /* LDMainPageNetWork.h */,
+				EC4EA2051CFECEBA00EC1CE5 /* LDMainPageNetWork.m */,
 			);
 			path = UtilityMethod;
 			sourceTree = "<group>";
@@ -2483,6 +2488,7 @@
 				905516061CEC3CED001C4F51 /* MJRefreshAutoNormalFooter.m in Sources */,
 				362F85E31CABAEDA006FFE61 /* UserBaseInfoViewController.m in Sources */,
 				3644A9641CD0B26C000D0218 /* FansViewController.m in Sources */,
+				EC4EA2061CFECEBA00EC1CE5 /* LDMainPageNetWork.m in Sources */,
 				905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */,
 				903CE5451CEDBB76003099EB /* LDDeleteTagView.m in Sources */,
 				905516331CEC3E31001C4F51 /* ActiveTableViewCell.m in Sources */,
