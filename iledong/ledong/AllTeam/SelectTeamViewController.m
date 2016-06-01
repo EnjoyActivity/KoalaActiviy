@@ -115,6 +115,7 @@
     JoinTeamViewController* Vc = [[JoinTeamViewController alloc]init];
     NSDictionary* dict = self.datas[indexPath.row];
     Vc.teamId = [dict objectForKey:@"Id"];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     [self.navigationController pushViewController:Vc animated:YES];
 }
 
