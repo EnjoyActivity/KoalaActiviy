@@ -96,6 +96,10 @@ typedef enum listType {
             }
         } fail:^{
             [Dialog simpleToast:@"获取我的团队失败！" withDuration:1.5];
+            self.myStartTeamData = nil;
+            self.bgImageView.hidden = NO;
+            self.bgLabel.hidden = NO;
+            [self.tableView reloadData];
         }];
     }
 }
@@ -124,6 +128,10 @@ typedef enum listType {
             }
          } fail:^{
              [Dialog simpleToast:@"获取我申请的团队失败！" withDuration:1.5];
+             self.myJoinTeamData = nil;
+             self.bgImageView.hidden = NO;
+             self.bgLabel.hidden = NO;
+             [self.tableView reloadData];
          }];
     }
 }
@@ -340,7 +348,7 @@ typedef enum listType {
     NSString* path = [[NSBundle mainBundle]pathForResource:@"img_nodata@2x" ofType:@"png"];
     self.bgImageView.image = [UIImage imageWithContentsOfFile:path];
     [self.bgImageView sizeToFit];
-    self.bgImageView.center = CGPointMake(self.tableView.bounds.size.width/2, self.tableView.bounds.size.height/2);
+    self.bgImageView.center = CGPointMake(APP_WIDTH/2, self.tableView.bounds.size.height/2);
     self.bgLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.bgImageView.frame.size.height+self.bgImageView.frame.origin.y+10, 0, 0)];
     [self.tableView addSubview:self.bgLabel];
     self.bgLabel.numberOfLines = 0;
