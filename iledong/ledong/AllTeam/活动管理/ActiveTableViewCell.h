@@ -21,6 +21,7 @@ typedef void (^managerBtnClickedBlock)();
 @property (weak, nonatomic) IBOutlet UILabel *activityName;
 @property (weak, nonatomic) IBOutlet UILabel *activityDesc;
 @property (weak, nonatomic) IBOutlet UILabel *activityState;
+@property (assign, nonatomic)BOOL isManager;
 
 @property (assign, nonatomic)activityState state;
 - (void)setSelectManagerBtnClicked:(managerBtnClickedBlock)block;

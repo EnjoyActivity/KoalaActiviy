@@ -13,7 +13,8 @@
 
 @implementation AllTeamCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
+              reuseIdentifier:(nullable NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self drawUI];
@@ -43,15 +44,11 @@
 
 - (void)layoutSubviews {
     self.teamImageView.frame = CGRectMake(0, 0, 100, kCellHeight);
-    CGFloat x = self.teamImageView.orighX + self.teamImageView.width + 10;
+    CGFloat x = self.teamImageView.endX + 10;
     self.teamNameLabel.frame = CGRectMake(x, 10, self.teamNameLabel.width, self.teamNameLabel.height);
-    self.personCountLabel.frame = CGRectMake(x, self.teamNameLabel.orighY+self.teamNameLabel.height+ 5, self.personCountLabel.width, self.personCountLabel.height);
+    self.personCountLabel.frame = CGRectMake(x, self.teamNameLabel.endY + 5, self.personCountLabel.width, self.personCountLabel.height);
     self.teamActiveCountLabel.frame = CGRectMake(x, kCellHeight-20, self.teamActiveCountLabel.width, self.teamActiveCountLabel.height);
-    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-15-self.payAttentionCountLabel.width, kCellHeight-20, self.payAttentionCountLabel.width, self.payAttentionCountLabel.height);
-    
-    if (self.teamNameLabel.width > (APP_WIDTH-self.teamNameLabel.orighX-15)) {
-        self.teamNameLabel.frame = CGRectMake(self.teamNameLabel.orighX, self.teamNameLabel.orighY, APP_WIDTH-self.teamNameLabel.orighX-15, self.teamNameLabel.height);
-    }
+    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-80, kCellHeight-20, self.payAttentionCountLabel.width, self.payAttentionCountLabel.height);
 }
 
 @end

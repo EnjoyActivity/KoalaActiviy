@@ -18,11 +18,11 @@
     return self.bounds.size.height;
 }
 
-- (CGFloat)orighX {
+- (CGFloat)originX {
     return self.frame.origin.x;
 }
 
-- (CGFloat)orighY {
+- (CGFloat)originY {
     return self.frame.origin.y;
 }
 

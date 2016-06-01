@@ -45,13 +45,14 @@ typedef enum imagePickerFromType {
     @private
     BOOL _keyboardShow;
     BOOL _scrollViewDidScroll;
+    BOOL _isMoidfy;
     CGFloat _mainScrollViewContentSizeheight;
     CGFloat _mainScrollViewoffsetY;
 }
 
 @property (nonatomic, strong)UITableView* leagueTableView;
 @property (nonatomic, strong)UITableView* nonleagueTableView;
-@property (nonatomic, strong)/*UIScrollView*/UIView* headerScrollView;
+@property (nonatomic, strong)UIView* headerScrollView;
 @property (nonatomic, strong)UIView* addImgBtnView;
 @property (nonatomic, assign)imagePickerFromType imgFromType;
 @property (nonatomic, strong)NSMutableArray* coverPhotoImages;
@@ -87,18 +88,27 @@ typedef enum imagePickerFromType {
 
 @implementation ActivityReleaseViewController
 
+- (id)initWithPreDictionary:(NSDictionary*)dict {
+    self = [super init];
+    if (self) {
+        _isMoidfy = YES;
+        [self fillPreParameters:dict];//赋值填充
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = UIColorFromRGB(0xF2F3F4);
     self.joinType = joinTypePerson;
-
-    [self initParameter];
+    if (!_isMoidfy)
+        [self initParameter];
     [self setupNavigationBar];
     [self setupHeaderImgScrollView];
     [self drawNonLeagueTableView];
     [self drawLeagueTableView];
-    
     [self setupCheckParameterTimer];
 }
 
@@ -124,21 +134,67 @@ typedef enum imagePickerFromType {
     [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
+- (void)fillPreParameters:(NSDictionary*)dict {
+    NSNumber* isLeague = [dict objectForKey:@"IsLeague"];
+    NSNumber* jionType = [dict objectForKeyedSubscript:@"JionType"];
+    if (isLeague.intValue == 1)
+        self.gameType = gameTypeLeague;
+    else
+        self.gameType = gameTypenonLeague;
+    if (jionType.intValue == 1)
+        self.joinType = joinTypeTeam;
+    else
+        self.joinType = joinTypePerson;
+    self.phoneNum = [dict objectForKey:@"Tel"];
+    self.complainTelNum = [dict objectForKey:@"ComplainTel"];
+    self.activityDetailText = [dict objectForKey:@"Demand"];
+    self.titleStr = [dict objectForKey:@"Title"];
+    self.corverImgPath = [dict objectForKey:@"Cover"];
+    
+    self.activitySessionArray = [NSMutableArray array];
+    self.timeActivityDict = [NSMutableDictionary dictionary];
+    self.timeSigningUpDict = [NSMutableDictionary dictionary];
+    self.signingUpPersonCountDict = [NSMutableDictionary dictionary];
+    self.moneyDict = [NSMutableDictionary dictionary];
+    self.selectActivityDict = [NSMutableDictionary dictionary];
+    self.activityAddress = [NSMutableDictionary dictionary];
+    NSMutableDictionary* latlngDict = [NSMutableDictionary dictionary];
+    
+    [self.timeActivityDict setValue:[dict objectForKey:@"BeginTime"] forKey:@"beginTime"];
+    [self.timeActivityDict setValue:[dict objectForKey:@"EndTime"] forKey:@"endTime"];
+    [self.timeSigningUpDict setValue:[dict objectForKey:@"ApplyBeginTime"] forKey:@"beginTime"];
+    [self.timeSigningUpDict setValue:[dict objectForKey:@"ApplyEndTime"] forKey:@"endTime"];
+    [self.signingUpPersonCountDict setValue:[dict objectForKey:@"MaxApplyNum"] forKey:@"planCount"];
+    [self.signingUpPersonCountDict setValue:[dict objectForKey:@"WillNum"] forKey:@"lowerLimitCount"];
+    [self.signingUpPersonCountDict setValue:[dict objectForKey:@"MaxNum"] forKey:@"ceilingCount"];
+    [self.signingUpPersonCountDict setValue:[dict objectForKey:@"EntryMoneyMin"] forKey:@"cost"];
+    [self.signingUpPersonCountDict setValue:[dict objectForKey:@"EntryMoneyMax"] forKey:@"margin"];
+    [self.selectActivityDict setValue:[dict objectForKey:@"ClassName"] forKey:@"ClassName"];
+    [self.selectActivityDict setValue:[dict objectForKey:@"ActivityClassId"] forKey:@"Id"];
+    [self.activityAddress setValue:[dict objectForKey:@"provinceName"] forKey:@"province"];
+    [self.activityAddress setValue:[dict objectForKey:@"cityName"] forKey:@"city"];
+    [self.activityAddress setValue:[dict objectForKey:@"areaName"] forKey:@"district"];
+    [self.activityAddress setValue:[dict objectForKey:@"provinceCode"] forKey:@"provinceCode"];
+    [self.activityAddress setValue:[dict objectForKey:@"cityCode"] forKey:@"cityCode"];
+    [self.activityAddress setValue:[dict objectForKey:@"areaCode"] forKey:@"districtCode"];
+    [latlngDict setValue:[dict objectForKey:@""] forKey:@"lng"];    //x
+    [latlngDict setValue:[dict objectForKey:@""] forKey:@"lat"];    //y
+    [self.activityAddress setValue:latlngDict forKey:@"latlng"];
+    //@property (nonatomic, strong)NSMutableArray* activitySessionArray;              //活动场次
+}
+
 - (void)initParameter {
     self.isComplete = NO;
     self.gameType = gameTypenonLeague;
-    
     self.coverPhotoImages = [NSMutableArray array];
     self.detailPhotoImages = [NSMutableArray array];
     self.detailPhotoImages_show = [NSMutableArray array];
     self.activitySessionArray = [NSMutableArray array];
-    
     self.selectActivityDict = [NSMutableDictionary dictionary];
     self.timeSigningUpDict = [NSMutableDictionary dictionary];
     self.timeActivityDict = [NSMutableDictionary dictionary];
     self.signingUpPersonCountDict = [NSMutableDictionary dictionary];
     self.moneyDict = [NSMutableDictionary dictionary];
-    //self.activityAddress = [NSMutableDictionary dictionary];
 }
 
 - (void)releaseResource {
@@ -177,8 +233,7 @@ typedef enum imagePickerFromType {
     self.navigationItem.title = @"发布活动";
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIColor colorWithRed:227/255.0 green:26/255.0 blue:26/255.0 alpha:1] forKey:NSForegroundColorAttributeName];
     self.navigationController.navigationBar.titleTextAttributes = dic;
-    //self.automaticallyAdjustsScrollViewInsets = NO;
-    
+
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnClicked)];
     backItem.tintColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = backItem;
@@ -186,9 +241,7 @@ typedef enum imagePickerFromType {
 
 - (void)setupHeaderImgScrollView {
     self.headerScrollView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 100)];
-    //[self.view addSubview:self.headerScrollView];
     self.headerScrollView.backgroundColor = UIColorFromRGB(0xF2F3F4);
-    
     self.addImgBtnView = [[UIView alloc]initWithFrame:CGRectMake(15, 15, 70, 70)];
     [self.headerScrollView addSubview:self.addImgBtnView];
     self.addImgBtnView.backgroundColor = [UIColor whiteColor];
@@ -243,8 +296,6 @@ typedef enum imagePickerFromType {
     self.leagueTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     self.leagueTableView.hidden = YES;
-    
-    //[self.leagueTableView setTableHeaderView:self.headerScrollView];
 }
 
 #pragma mark - btn clicked 
@@ -301,7 +352,6 @@ typedef enum imagePickerFromType {
 }
 
 - (void)startBtnClicked {
-    //[self saveActivity];
     [self commitActivity];
 }
 
@@ -311,18 +361,9 @@ typedef enum imagePickerFromType {
         self.leagueTableView.hidden = YES;
         self.nonleagueTableView.hidden = NO;
         
-        
         self.leagueTableView.tableHeaderView = nil;
         [self.nonleagueTableView setTableHeaderView:self.headerScrollView];
-        
-//        [self.headerScrollView removeFromSuperview];
-//        self.headerScrollView = nil;
-//        [self setupHeaderImgScrollView];
-//        [self.leagueTableView removeFromSuperview];
-//        self.leagueTableView = nil;
-//        if (!self.nonleagueTableView) {
-//            [self drawNonLeagueTableView];
-//        }
+    
         [self.nonleagueTableView reloadData];
     }
     else {
@@ -332,16 +373,7 @@ typedef enum imagePickerFromType {
         
         self.nonleagueTableView.tableHeaderView = nil;
         [self.leagueTableView setTableHeaderView:self.headerScrollView];
-        
-//        [self.headerScrollView removeFromSuperview];
-//        self.headerScrollView = nil;
-//        [self setupHeaderImgScrollView];
-//        
-//        [self.nonleagueTableView removeFromSuperview];
-//        self.nonleagueTableView = nil;
-//        if (!self.leagueTableView) {
-//            [self drawLeagueTableView];
-//        }
+
         [self.leagueTableView reloadData];
     }
 }
@@ -413,12 +445,10 @@ typedef enum imagePickerFromType {
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if (textView.text.length == 0) {
+    if (textView.text.length == 0)
         self.tipLabel.hidden = NO;
-    }
-    else {
+    else
         self.activityDetailText = textView.text;
-    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -451,9 +481,8 @@ typedef enum imagePickerFromType {
             return 4;
         else if (section == 1)
             return 2;
-        else if (section == 2) {
+        else if (section == 2)
             return self.activitySessionArray.count+1;
-        }
         else if (section == 3)
             return 1;
     }
@@ -537,8 +566,6 @@ typedef enum imagePickerFromType {
             return 45;
         else if (indexPath.section == 7)
             return 150;
-//        else if (indexPath.section == 8)
-//            return 64+50;
     }
     return 50;
 }
@@ -703,41 +730,17 @@ typedef enum imagePickerFromType {
         UIGraphicsEndImageContext();
         UIImage* newImage = smallImage;
 
-        if (weakSelf.imgFromType == imagePickerFromTypeHeader) {
-            if (!weakSelf.corverImgView) {
-                weakSelf.corverImgView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
-            }
-            weakSelf.corverImgView.image = newImage;
-            [weakSelf.headerScrollView addSubview:weakSelf.corverImgView];
-            
-            weakSelf.addImgBtnView.frame = CGRectMake(weakSelf.corverImgView.frame.size.width+weakSelf.corverImgView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
-            //weakSelf.headerScrollView.contentSize = CGSizeMake(weakSelf.addImgBtnView.frame.size.width+weakSelf.addImgBtnView.frame.origin.x + 10, weakSelf.headerScrollView.contentSize.height);
-            
-            weakSelf.coverPhotoImages = nil;
-            weakSelf.coverPhotoImages = [NSMutableArray array];
-            [weakSelf.coverPhotoImages addObject:image];
-            [weakSelf uploadImg:image];
+        if (!weakSelf.corverImgView) {
+            weakSelf.corverImgView = [[UIImageView alloc]initWithFrame:weakSelf.addImgBtnView.frame];
         }
-        else if (weakSelf.imgFromType == imagePickerFromTypeDetail) {
-            [weakSelf.detailPhotoImages addObject:image];
-            [weakSelf.detailPhotoImages_show addObject:newImage];
-            for (UIView* subView in weakSelf.detailImageScrollView.subviews)
-                [subView removeFromSuperview];
-            
-            CGSize newSize;
-            CGFloat x = 15;
-            for (UIImage* tempImage in weakSelf.detailPhotoImages_show) {
-                UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, 0, 65, 65)];
-                imageView.image = tempImage;
-                imageView.center = CGPointMake(imageView.center.x, weakSelf.detailImageScrollView.bounds.size.height/2);
-                [weakSelf.detailImageScrollView addSubview:imageView];
-                newSize = CGSizeMake(imageView.frame.origin.x+imageView.frame.size.width+5, weakSelf.detailImageScrollView.contentSize.height);
-                x += 65 + 10;
-            }
-            weakSelf.detailImageScrollView.contentSize = CGSizeMake(newSize.width, newSize.height);
-            
-            [weakSelf uploadImg:image];
-        }
+        weakSelf.corverImgView.image = newImage;
+        [weakSelf.headerScrollView addSubview:weakSelf.corverImgView];
+        
+        weakSelf.addImgBtnView.frame = CGRectMake(weakSelf.corverImgView.frame.size.width+weakSelf.corverImgView.frame.origin.x+10, weakSelf.addImgBtnView.frame.origin.y, weakSelf.addImgBtnView.frame.size.width, weakSelf.addImgBtnView.frame.size.height);
+        weakSelf.coverPhotoImages = nil;
+        weakSelf.coverPhotoImages = [NSMutableArray array];
+        [weakSelf.coverPhotoImages addObject:image];
+        [weakSelf uploadImg:image];
     }];
 }
 
@@ -874,7 +877,6 @@ typedef enum imagePickerFromType {
     if (indexPath.row == 3)
         lineLabel.hidden = YES;
     
-    ////////////////////////////////////////////////////////////////////////
     teamTypeBtn.hidden = NO;
     personLabel.hidden = NO;
     personTypeBtn.hidden = NO;
@@ -998,10 +1000,9 @@ typedef enum imagePickerFromType {
     NSDictionary* tempDict = [dict objectForKey:@"activityVenue"];
     nameLabel.text = [tempDict objectForKey:@"name"];
     [nameLabel sizeToFit];
-    if (nameLabel.frame.size.width > 150) {
+    if (nameLabel.frame.size.width > 150)
         nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, 150, nameLabel.frame.size.height);
-    }
-    
+
     UILabel* addLabel = (UILabel*)[cell.contentView viewWithTag:101];
     if (!addLabel) {
         addLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, nameLabel.frame.origin.y+nameLabel.frame.size.height+5, 0, 0)];
@@ -1014,10 +1015,9 @@ typedef enum imagePickerFromType {
     NSString* district = [tempDict objectForKey:@"district"];
     addLabel.text = [NSString stringWithFormat:@"%@%@",city, district];
     [addLabel sizeToFit];
-    if (addLabel.frame.size.width > 150) {
+    if (addLabel.frame.size.width > 150)
         addLabel.frame = CGRectMake(addLabel.frame.origin.x, addLabel.frame.origin.y, 150, addLabel.frame.size.height);
-    }
-    
+
     x= imageView.frame.origin.x;
     UILabel* timeLabel = (UILabel*)[cell.contentView viewWithTag:102];
     if (!timeLabel) {
@@ -1029,18 +1029,7 @@ typedef enum imagePickerFromType {
     }
     timeLabel.text = [NSString stringWithFormat:@"报名时间:%@-%@", [dict objectForKey:@"applyBeginTime"], [dict objectForKey:@"applyEndTime"]];
     [timeLabel sizeToFit];
-    
-//    UILabel* personLabel = (UILabel*)[cell.contentView viewWithTag:103];
-//    if (!personLabel) {
-//        personLabel = [[UILabel alloc]initWithFrame:CGRectMake(x, timeLabel.frame.origin.y+timeLabel.frame.size.height+5, 0, 0)];
-//        personLabel.font = [UIFont systemFontOfSize:12.0];
-//        personLabel.tag = 103;
-//        personLabel.textColor = UIColorFromRGB(0x999999);
-//        [cell.contentView addSubview:personLabel];
-//    }
-//    personLabel.text = [NSString stringWithFormat:@"组织者：%@", [dict objectForKey:@"organizers"]];
-//    [personLabel sizeToFit];
-    
+
     UILabel* moneyLabel = (UILabel*)[cell.contentView viewWithTag:104];
     if (!moneyLabel) {
         moneyLabel = [[UILabel alloc]initWithFrame:CGRectMake(APP_WIDTH-80, 0, 0, 0)];
@@ -1197,15 +1186,12 @@ typedef enum imagePickerFromType {
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = UIColorFromRGB(0x333333);
     
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0)
         cell.textLabel.text = @"计划报名数";
-    }
-    else if (indexPath.row == 1) {
+    else if (indexPath.row == 1)
         cell.textLabel.text = @"每队报名人数下限";
-    }
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 2)
         cell.textLabel.text = @"每队报名人数上限";
-    }
 
     StepperView* view = (StepperView*)[cell.contentView viewWithTag:2000];
     if (!view) {
@@ -1216,15 +1202,12 @@ typedef enum imagePickerFromType {
     }
     __weak typeof(self)weakSelf = self;
     [view setCurrentSelectNum:^(NSInteger num) {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0)
             [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"planCount"];
-        }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
             [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"lowerLimitCount"];
-        }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 2)
             [weakSelf.signingUpPersonCountDict setValue:[NSNumber numberWithInteger:num] forKey:@"ceilingCount"];
-        }
     }];
 
     UILabel* lineLabel = (UILabel*)[cell.contentView viewWithTag:1000];
@@ -1402,9 +1385,8 @@ typedef enum imagePickerFromType {
         addLabel.text = self.phoneNum;
     [addLabel sizeToFit];
     CGFloat width = addLabel.frame.size.width;
-    if (addLabel.frame.size.width > 150) {
+    if (addLabel.frame.size.width > 150)
         width = 150;
-    }
     addLabel.frame = CGRectMake(APP_WIDTH-30-width, 0, width, addLabel.frame.size.height);
     addLabel.center = CGPointMake(addLabel.center.x, cell.contentView.bounds.size.height/2);
     
@@ -1435,23 +1417,7 @@ typedef enum imagePickerFromType {
     }
     self.tipLabel.text = @"请输入活动详情";
     [self.tipLabel sizeToFit];
-    
-//    if (!self.detailImageScrollView) {
-//        CGFloat y = textView.frame.origin.y+textView.frame.size.height+5;
-//        self.detailImageScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, y, APP_WIDTH-45, cell.bounds.size.height-y)];
-//        [cell.contentView addSubview:self.detailImageScrollView];
-//    }
-    
-//    UIButton* btn = (UIButton*)[self.detailImageScrollView viewWithTag:102];
-//    if (!btn) {
-//        btn = [[UIButton alloc]initWithFrame:CGRectMake(APP_WIDTH-40, self.detailImageScrollView.frame.origin.y+30, 0, 0)];
-//        btn.tag = 102;
-//        [cell.contentView addSubview:btn];
-//        [btn setImage:[UIImage imageNamed:@"ic_append"] forState:UIControlStateNormal];
-//        [btn sizeToFit];
-//        [btn addTarget:self action:@selector(addDetailImageBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//    }
-    
+
     return cell;
 }
 
@@ -1605,54 +1571,6 @@ typedef enum imagePickerFromType {
             }
         }
        }];
-}
-
-- (void)saveActivity {
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setValue:[HttpClient getTokenStr] forKey:@"token"];
-    if (self.activityId.length > 0)
-        [dict setValue:self.activityId forKey:@"id"];
-    
-    NSString* ActivityClassId = [self.selectActivityDict objectForKey:@"Id"];
-    [dict setValue:[NSNumber numberWithInt:ActivityClassId.intValue] forKey:@"ActivityClassId"];//int
-    [dict setValue:self.titleStr forKey:@"Title"];
-    [dict setValue:self.corverImgPath forKey:@"Cover"];
-    [dict setValue:@1 forKey:@"ActivityType"];  //0:系统活动；1:团队活动
-    [dict setValue:[NSNumber numberWithInt:self.gameType] forKey:@"IsLeague"];
-    [dict setValue:[NSNumber numberWithInt:self.joinType] forKey:@"JionType"];//0 个人 1 团队
-    [dict setValue:self.activityDetailText forKey:@"Demand"];       //参加要求
-    [dict setValue:[NSNumber numberWithInt:self.phoneNum.intValue] forKey:@"Tel"];    //int?
-    [dict setValue:[NSNumber numberWithInt:self.complainTelNum.intValue] forKey:@"ComplainTel"];//int?
-    [dict setValue:[NSNumber numberWithInt:self.teamId.intValue] forKey:@"TeamId"];   //int?
-    [dict setValue:@0 forKey:@"ReleaseState"];//0 未发布 1 已发布
-    //[dict setValue:@0 forKey:@"ReleaseTime"];  //发布时间
-    NSString* beginTime = [self.timeActivityDict objectForKey:@"beginTime"];
-    NSString* endTime = [self.timeActivityDict objectForKey:@"endTime"];
-    [dict setValue:beginTime forKey:@"BeginTime"];
-    [dict setValue:endTime forKey:@"EndTime"];
-    [dict setValue:@510000 forKey:@"ProvinceCode"];
-    [dict setValue:@510100 forKey:@"CityCode"];
-    [dict setValue:@510104 forKey:@"AreaCode"];
-    //[dict setValue:@"" forKey:@"ConstitutorId"];//组织者Id
-
-    NSNumber* minMoneyNum = [self.moneyDict objectForKey:@"cost"];
-    NSNumber* maxMoneyNum = [self.moneyDict objectForKey:@"margin"];
-    [dict setValue:minMoneyNum forKey:@"EntryMoneyMin"];//活动费用最少额
-    [dict setValue:maxMoneyNum forKey:@"EntryMoneyMax"];//活动费用最大额
-    [dict setValue:@0 forKey:@"ReadFlag"];  //0:默认,1:精彩活动,2:推荐活动,4:预留
-    //[dict setValue:@"" forKey:@"tag"];  //活动标签 int?
-
-    NSString *urlStr = [API_BASE_URL stringByAppendingString:API_SAVE_ACTIVITY_URL];
-    [HttpClient postJSONWithUrl:urlStr parameters:dict success:^(id responseObject) {
-        NSDictionary* dict = (NSDictionary*)responseObject;
-        NSNumber* codeNum = [dict objectForKey:@"code"];
-        if (codeNum.intValue == 0) {
-            [Dialog simpleToast:@"创建活动成功" withDuration:1.5];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    } fail:^{
-        [Dialog simpleToast:@"创建活动失败！" withDuration:1.5];
-    }];
 }
 
 - (void)uploadImg:(UIImage*)img {

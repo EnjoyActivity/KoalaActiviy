@@ -12,8 +12,8 @@
 
 @property (assign, nonatomic, readonly)CGFloat width;
 @property (assign, nonatomic, readonly)CGFloat height;
-@property (assign, nonatomic, readonly)CGFloat orighX;
-@property (assign, nonatomic, readonly)CGFloat orighY;
+@property (assign, nonatomic, readonly)CGFloat originX;
+@property (assign, nonatomic, readonly)CGFloat originY;
 @property (assign, nonatomic, readonly)CGFloat endX;
 @property (assign, nonatomic, readonly)CGFloat endY;
 

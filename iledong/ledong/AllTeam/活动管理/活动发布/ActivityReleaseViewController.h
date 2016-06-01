@@ -15,4 +15,6 @@
 @property (nonatomic, strong)NSString* teamId;
 @property (nonatomic, strong)NSString* activityId;
 
+- (id)initWithPreDictionary:(NSDictionary*)dict;
+
 @end

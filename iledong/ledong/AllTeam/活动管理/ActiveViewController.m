@@ -73,7 +73,7 @@
     //    return 140;
     //}
     //else {
-        return 100;
+          return 100;
    // }
 }
 
@@ -140,7 +140,7 @@
     
     NSString* teamId = self.teamId;
     [cell setSelectManagerBtnClicked:^() {
-        ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]init];
+        ActivityReleaseViewController* VC = [[ActivityReleaseViewController alloc]initWithPreDictionary:dict];
         VC.teamId = teamId;
         [weakSelf.navigationController pushViewController:VC animated:YES];
     }];

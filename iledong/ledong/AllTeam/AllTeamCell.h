@@ -16,5 +16,4 @@
 @property (nonatomic, strong)UILabel* teamActiveCountLabel;
 @property (nonatomic, strong)UILabel* payAttentionCountLabel;
 
-
 @end
