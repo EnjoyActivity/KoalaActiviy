@@ -129,12 +129,21 @@
         NSLog(@"登陆成功！");
         [FRUtils queryUserInfoFromWeb:^{
             if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    [[HttpClient shareHttpClient] hiddenMessageHUD];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
+                });
             } else {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    [[HttpClient shareHttpClient] hiddenMessageHUD];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
+                });
             }
-        }failBlock:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        }failBlock:^{
+            [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];
+        }];
     } fail:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [Dialog simpleToast:@"登录失败，请检查网络！" withDuration:1.5];

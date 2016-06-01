@@ -80,6 +80,7 @@ typedef enum : NSUInteger
 + (NSString*)getinterest;//爱好
 + (NSString*)getBirthday;
 + (UIImage*)getHeaderImage;
++ (BOOL)getIsFirstLogin;
 
 //userLocation
 + (NSString*)getAddressDetail;//详细地址
@@ -98,6 +99,7 @@ typedef enum : NSUInteger
 + (void)setBirthday:(NSString*)birth;
 + (void)setToken:(NSString *)token;
 + (void)setHeaderImage:(UIImage*)headerImage;
++ (void)setIsFirstLogin:(BOOL)isFirstLogin;
 
 + (void)setAddressDetail:(NSString *)detail;
 + (void)setAddressInfo:(NSDictionary *)addressInfo;

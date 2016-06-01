@@ -11,5 +11,6 @@
 @interface ActiveDetailViewController : BaseViewController
 
 @property (nonatomic,assign) int Id;
+@property (nonatomic,assign) NSString *constitutorName;
 
 @end

@@ -85,6 +85,7 @@
     ActiveDetailViewController *vc = [[ActiveDetailViewController alloc]init];
     ActiveItemModel *model = [data objectAtIndex:indexPath.row];
     vc.Id = model.activityId;
+    vc.constitutorName = model.constitutorName;
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

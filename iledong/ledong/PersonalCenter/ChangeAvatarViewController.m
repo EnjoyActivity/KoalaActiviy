@@ -123,6 +123,7 @@
 }
 
 - (void)doneBtnClick:(UIButton*)sender {
+    [FRUtils setIsFirstLogin:NO];
     if (sender.tag == 100) {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -146,6 +147,7 @@
         //缓存头像
         [FRUtils setHeaderImage:_headImage];
 
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshHeaderImage" object:_headImage];
         if (_isGuide) {
             [self.navigationController popToRootViewControllerAnimated:YES];

@@ -230,10 +230,15 @@
     [contactView.infoButton addTarget:self action:@selector(infoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [contactView.reportButton addTarget:self action:@selector(complainBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     if ([[activityInfo objectForKey:@"Constitutor"] isKindOfClass:[NSNull class]]) {
-        contactView.nameLabel.text = @"";
+        if (self.constitutorName) {
+            contactView.nameLabel.text = self.constitutorName;
+        } else {
+            contactView.nameLabel.text = @"";
+        }
     } else {
         contactView.nameLabel.text = [activityInfo objectForKey:@"Constitutor"];
     }
+    contactView.headImageView.image = [UIImage imageNamed:@"img_avatar_44"] ;
     startPos += 160;
     
     UILabel *sepLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, startPos, APP_WIDTH - 36, 0.5)];
@@ -327,7 +332,8 @@
     [chooseFormView.signUpBtn addTarget:self action:@selector(signUpInChooseForm:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.cancelBtn addTarget:self action:@selector(cancelBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [chooseFormView.okBtn addTarget:self action:@selector(okBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+    chooseFormView.moneyPerPeronLabel.text = [NSString stringWithFormat:@"%d元/人",[[activityInfo objectForKey:@"EntryMoneyMin"]intValue]];
+    chooseFormView.moneyPerTeamLabel.text = [NSString stringWithFormat:@"%d元/队",[[activityInfo objectForKey:@"EntryMoneyMax"]intValue]];
     maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, APP_HEIGHT)];
     maskView.backgroundColor = [UIColor blackColor];
     maskView.alpha = 0.5;
@@ -351,6 +357,7 @@
     }
     SignUpViewController *vc = [[SignUpViewController alloc]init];
     vc.joinType = _joinType;
+    vc.activityInfo = [NSDictionary dictionaryWithDictionary:activityInfo];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -359,6 +366,7 @@
     [chooseFormView removeFromSuperview];
     SignUpViewController *vc = [[SignUpViewController alloc]init];
     vc.joinType = _joinType;
+    vc.activityInfo = [NSDictionary dictionaryWithDictionary:activityInfo];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

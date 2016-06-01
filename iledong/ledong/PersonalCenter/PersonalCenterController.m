@@ -60,15 +60,8 @@
         LoginAndRegistViewController *loginView = [[LoginAndRegistViewController alloc]init];
         loginView.isPersonalCenterPage = YES;
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
-        [self presentViewController:nav animated:YES completion:nil];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
-//    else {
-//        if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
-//            [self showGuide:nil];
-////            [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
-////            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
-//        }
-//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -115,15 +108,8 @@
             [self refreshUserInfo:nil];
             if (![FRUtils getNickName]||[FRUtils getNickName].length == 0||[[FRUtils getNickName] isEqualToString:[FRUtils getPhoneNum]]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    ChangeGenderViewController *vc = [[ChangeGenderViewController alloc]init];
-                    vc.isGuide = YES;
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:NO];
+                    [self showGuide:nil];
                 });
-                
-//                    [self showGuide:nil];
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowGuideNotification" object:nil];
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshUserinfo" object:nil];
                 }
         }failBlock:nil];
     }

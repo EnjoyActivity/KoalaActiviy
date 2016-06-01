@@ -11,5 +11,6 @@
 @interface SignUpViewController : BaseViewController
 
 @property (nonatomic,assign) int joinType;//报名类型 1为个人 2为团队
+@property (nonatomic,strong) NSDictionary *activityInfo;
 
 @end

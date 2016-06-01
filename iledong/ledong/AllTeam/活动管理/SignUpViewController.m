@@ -68,6 +68,14 @@
     startPos += 100;
     if (_joinType == 2) {
         startPos += 9;
+        titleView.signTypeLabel.text = @"团队报名（11人以上）";
+        titleView.moneyLabel.text = [NSString stringWithFormat:@"%@",[self.activityInfo objectForKey:@"EntryMoneyMax"]];
+        titleView.moneyUnitLabel.text = @"元/队";
+        
+    } else {
+        titleView.signTypeLabel.text = @"个人报名";
+        titleView.moneyLabel.text = [NSString stringWithFormat:@"%@",[self.activityInfo objectForKey:@"EntryMoneyMin"]];
+        titleView.moneyUnitLabel.text = @"元/人";
     }
     [scrollView addSubview:titleView];
 }

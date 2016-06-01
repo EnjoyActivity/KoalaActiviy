@@ -83,8 +83,6 @@
         {
             [FRUtils simpleToast:[responseObject objectForKey:@"msg"] withDuration:kDuration];
         }
-        
-        [[HttpClient shareHttpClient] hiddenMessageHUD];
     }
     failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
