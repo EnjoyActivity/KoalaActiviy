@@ -12,8 +12,6 @@
 #import "ParameterTableViewController.h"
 #import "ContactTypeViewController.h"
 #import "SessionInfoViewController.h"
-#import "ActivityAddressViewController.h"//废弃
-#import "LocationChoiceViewController.h"
 #import "AdressCityVC.h"
 
 #define kCell0              @"cell0"

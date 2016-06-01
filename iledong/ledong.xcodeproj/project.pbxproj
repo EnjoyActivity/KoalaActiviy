@@ -266,7 +266,6 @@
 		9040CD101CF2CA0800C18476 /* StepperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD0F1CF2CA0800C18476 /* StepperView.m */; };
 		9040CD161CF2EF2F00C18476 /* ParameterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */; };
 		90467B501CF446B20086FE5E /* SessionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */; };
-		90467B531CF45A320086FE5E /* ActivityAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90467B521CF45A320086FE5E /* ActivityAddressViewController.m */; };
 		904D484E1CF5969C006338C1 /* SelectTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 904D484D1CF5969C006338C1 /* SelectTeamViewController.m */; };
 		905515E81CEC3CED001C4F51 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9055155E1CEC3CED001C4F51 /* AFHTTPRequestOperation.m */; };
 		905515E91CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 905515601CEC3CED001C4F51 /* AFHTTPRequestOperationManager.m */; };
@@ -339,8 +338,6 @@
 		9055163A1CEC70C5001C4F51 /* img_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905516391CEC70C5001C4F51 /* img_nodata@2x.png */; };
 		9063BBCC1CF30C7D0057289D /* ContactTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */; };
 		90F22DEE1CEF4F1B00736D6C /* ic_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */; };
-		90FADECB1CF684B000961294 /* GeographicInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECA1CF684B000961294 /* GeographicInfoViewController.m */; };
-		90FADECE1CF694D500961294 /* LocationChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FADECD1CF694D500961294 /* LocationChoiceViewController.m */; };
 		90FADED01CF69EE100961294 /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90FADECF1CF69EE100961294 /* ScanViewController.xib */; };
 		90FB7D651CEEA8250055B493 /* AllTeamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D641CEEA8250055B493 /* AllTeamCell.m */; };
 		90FB7D681CEEE3E40055B493 /* TeamManagerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90FB7D671CEEE3E40055B493 /* TeamManagerTableViewController.m */; };
@@ -771,8 +768,6 @@
 		9040CD151CF2EF2F00C18476 /* ParameterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParameterTableViewController.m; sourceTree = "<group>"; };
 		90467B4E1CF446B20086FE5E /* SessionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionInfoViewController.h; sourceTree = "<group>"; };
 		90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionInfoViewController.m; sourceTree = "<group>"; };
-		90467B511CF45A320086FE5E /* ActivityAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityAddressViewController.h; sourceTree = "<group>"; };
-		90467B521CF45A320086FE5E /* ActivityAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityAddressViewController.m; sourceTree = "<group>"; };
 		904D484C1CF5969C006338C1 /* SelectTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectTeamViewController.h; sourceTree = "<group>"; };
 		904D484D1CF5969C006338C1 /* SelectTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectTeamViewController.m; sourceTree = "<group>"; };
 		9055155D1CEC3CED001C4F51 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -912,10 +907,6 @@
 		9063BBCA1CF30C7D0057289D /* ContactTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTypeViewController.h; sourceTree = "<group>"; };
 		9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTypeViewController.m; sourceTree = "<group>"; };
 		90F22DED1CEF4F1B00736D6C /* ic_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_location@2x.png"; sourceTree = "<group>"; };
-		90FADEC91CF684B000961294 /* GeographicInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeographicInfoViewController.h; sourceTree = "<group>"; };
-		90FADECA1CF684B000961294 /* GeographicInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeographicInfoViewController.m; sourceTree = "<group>"; };
-		90FADECC1CF694D500961294 /* LocationChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChoiceViewController.h; sourceTree = "<group>"; };
-		90FADECD1CF694D500961294 /* LocationChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChoiceViewController.m; sourceTree = "<group>"; };
 		90FADECF1CF69EE100961294 /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		90FB7D631CEEA8250055B493 /* AllTeamCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeamCell.h; sourceTree = "<group>"; };
 		90FB7D641CEEA8250055B493 /* AllTeamCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeamCell.m; sourceTree = "<group>"; };
@@ -2120,12 +2111,6 @@
 				9063BBCB1CF30C7D0057289D /* ContactTypeViewController.m */,
 				90467B4E1CF446B20086FE5E /* SessionInfoViewController.h */,
 				90467B4F1CF446B20086FE5E /* SessionInfoViewController.m */,
-				90467B511CF45A320086FE5E /* ActivityAddressViewController.h */,
-				90467B521CF45A320086FE5E /* ActivityAddressViewController.m */,
-				90FADEC91CF684B000961294 /* GeographicInfoViewController.h */,
-				90FADECA1CF684B000961294 /* GeographicInfoViewController.m */,
-				90FADECC1CF694D500961294 /* LocationChoiceViewController.h */,
-				90FADECD1CF694D500961294 /* LocationChoiceViewController.m */,
 			);
 			path = "活动发布";
 			sourceTree = "<group>";
@@ -2455,7 +2440,6 @@
 				905516021CEC3CED001C4F51 /* MJRefreshComponent.m in Sources */,
 				362F85FA1CABCAE3006FFE61 /* CreateTeamVController.m in Sources */,
 				3627C2F71CA8C7E400A5D7EB /* SearchViewController.m in Sources */,
-				90467B531CF45A320086FE5E /* ActivityAddressViewController.m in Sources */,
 				626DD4961C843E0C006BC53C /* BaseViewController.m in Sources */,
 				905515F41CEC3CED001C4F51 /* ELCAssetTablePicker.m in Sources */,
 				361A76521CBCD1F7002FE6B2 /* HotTeamTableViewCell.m in Sources */,
@@ -2593,7 +2577,6 @@
 				20B63E5E1CEDC02B00D5C551 /* SBJsonTokeniser.m in Sources */,
 				36B2C1D61CBB7F72001D842B /* UserNameViewController.m in Sources */,
 				36E3E1F91CC46E4700294509 /* AffirmPayViewController.m in Sources */,
-				90FADECB1CF684B000961294 /* GeographicInfoViewController.m in Sources */,
 				2054E9091CF4096000CD3FDD /* SessionTableViewCell.m in Sources */,
 				905515FD1CEC3CED001C4F51 /* MBProgressHUD+Add.m in Sources */,
 				9055160B1CEC3CED001C4F51 /* MJRefreshGifHeader.m in Sources */,
@@ -2618,7 +2601,6 @@
 				905515EA1CEC3CED001C4F51 /* AFHTTPSessionManager.m in Sources */,
 				905516131CEC3CED001C4F51 /* MKAnnotationView+WebCache.m in Sources */,
 				2054C1C71CEEFF7200FF7FDD /* TradeDetailTableViewCell.m in Sources */,
-				90FADECE1CF694D500961294 /* LocationChoiceViewController.m in Sources */,
 				7F8F191D1C87D68A00570B79 /* MySettingViewController.m in Sources */,
 				905516111CEC3CED001C4F51 /* UIScrollView+MJRefresh.m in Sources */,
 				905516121CEC3CED001C4F51 /* UIView+MJExtension.m in Sources */,
