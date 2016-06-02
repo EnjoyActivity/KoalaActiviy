@@ -48,7 +48,9 @@
     self.teamNameLabel.frame = CGRectMake(x, 10, self.teamNameLabel.width, self.teamNameLabel.height);
     self.personCountLabel.frame = CGRectMake(x, self.teamNameLabel.endY + 5, self.personCountLabel.width, self.personCountLabel.height);
     self.teamActiveCountLabel.frame = CGRectMake(x, kCellHeight-20, self.teamActiveCountLabel.width, self.teamActiveCountLabel.height);
-    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-80, kCellHeight-20, self.payAttentionCountLabel.width, self.payAttentionCountLabel.height);
+    self.payAttentionCountLabel.frame = CGRectMake(APP_WIDTH-15-self.payAttentionCountLabel.width, kCellHeight-20, self.payAttentionCountLabel.width, self.payAttentionCountLabel.height);
+    if (self.teamNameLabel.endX > APP_WIDTH-15)
+        self.teamNameLabel.frame = CGRectMake(x, 10, APP_WIDTH-15-x, self.teamNameLabel.height);
 }
 
 @end
