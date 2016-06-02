@@ -230,9 +230,6 @@
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
     label.backgroundColor = RGB(242, 243, 244, 1);
-    //    label.text = @"";
-    //    label.textColor = RGB(227, 26, 26, 1);
-    //    label.font = [UIFont systemFontOfSize:12];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"最近活动"];
     
     //设置字体颜色
@@ -240,7 +237,7 @@
     [text addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(0, text.length)];
     //设置缩进、行距
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.headIndent = 20;//缩进
+//    style.headIndent = 20;//缩进
     style.firstLineHeadIndent = 20;
     //    style.lineSpacing = 10;//行距
     [text addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
