@@ -31,7 +31,7 @@ typedef enum teamType {
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIView *middleView;
-@property (weak, nonatomic) IBOutlet UIView *ActiveView;
+//@property (weak, nonatomic) IBOutlet UIView *ActiveView;
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 
 @property (assign,nonatomic)teamType teamType;

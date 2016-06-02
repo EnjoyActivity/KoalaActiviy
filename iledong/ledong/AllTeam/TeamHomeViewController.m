@@ -37,8 +37,10 @@
     self.headerImage.image = [FRUtils circleImage:[UIImage imageNamed:@"user02_44"] withParam:1];
     [self setButton];
     
-    CGFloat hight = self.headerImage.frame.size.height + self.middleView.frame.size.height + self.ActiveView.frame.size.height + self.footerView.frame.size.height + 90;
+    CGFloat hight = self.headerImage.frame.size.height + self.middleView.frame.size.height + self.tableView.frame.size.height + self.footerView.frame.size.height;
     self.scrollView.contentSize = CGSizeMake(APP_WIDTH, hight);
+    self.tableView.backgroundColor = RGB(242, 243, 244, 1);
+    self.tableView.tableFooterView = [[UIView alloc]init];
     [self refreshUI];
     [self queryTeamInfo];
     [self queryTeamActivity];
@@ -80,7 +82,7 @@
     if (_teamType == teamTypeCreate) {
         UIButton *memberButton = [UIButton buttonWithType:UIButtonTypeCustom];
         memberButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        memberButton.frame =_focusButton.frame;
+        memberButton.frame = CGRectMake(_focusButton.frame.origin.x, _focusButton.frame.origin.y, APP_WIDTH/2 - 2, _focusButton.frame.size.height);//_focusButton.frame;
         [memberButton setTitle:@"我是成员 " forState:UIControlStateNormal];
         [memberButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [memberButton addTarget:self action:@selector(memberBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -93,7 +95,7 @@
         
         UIButton *chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         chatButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        chatButton.frame = _applyJoinButton.frame;
+        chatButton.frame = CGRectMake(APP_WIDTH/2+2, _applyJoinButton.frame.origin.y, APP_WIDTH/2 - 2, _applyJoinButton.frame.size.height);//_applyJoinButton.frame;
         [chatButton setTitle:@"聊天" forState:UIControlStateNormal];
         [chatButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [chatButton addTarget:self action:@selector(chatBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -223,6 +225,27 @@
     } fail:^{
         [Dialog simpleToast:@"获取团队信息失败！" withDuration:1.5];
     }];
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, APP_WIDTH, 40)];
+    label.backgroundColor = RGB(242, 243, 244, 1);
+    //    label.text = @"";
+    //    label.textColor = RGB(227, 26, 26, 1);
+    //    label.font = [UIFont systemFontOfSize:12];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"最近活动"];
+    
+    //设置字体颜色
+    [text addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153, 1) range:NSMakeRange(0, text.length)];
+    [text addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(0, text.length)];
+    //设置缩进、行距
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.headIndent = 20;//缩进
+    style.firstLineHeadIndent = 20;
+    //    style.lineSpacing = 10;//行距
+    [text addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+    label.attributedText = text;
+    return label;
 }
 
 - (void)queryTeamActivity {
