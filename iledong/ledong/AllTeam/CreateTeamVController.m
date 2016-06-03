@@ -446,7 +446,10 @@
         [Dialog toast:@"请设置团队头像"];
         return;
     }
-    
+    if (!_addressDict||![_addressDict objectForKey:@"provinceCode"]||![_addressDict objectForKey:@"cityCode"]||![_addressDict objectForKey:@"districtCode"]) {
+        [Dialog toast:@"请设置地点"];
+        return;
+    }
     int maxPersonNum = [self.maxCountTextField.text intValue];
     BOOL isNeedaudit = self.switchCtl.on;
     NSMutableString* tag = [NSMutableString string];
