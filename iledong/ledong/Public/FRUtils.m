@@ -495,6 +495,7 @@ static FRUtils *instance = nil;
     }
     
     NSString *avatar = [result objectForKey:@"AvatarUrl"];
+//    BOOL avatarChanged = ![avatar isEqualToString:[FRUtils getAvatarUrl]];
     if (!avatar||[avatar isKindOfClass:[NSNull class]]||avatar.length == 0) {
         [FRUtils setAvatarUrl:@""];
     } else {
@@ -507,10 +508,10 @@ static FRUtils *instance = nil;
         }
         NSURL *aUrl = [NSURL URLWithString:[FRUtils getAvatarUrl]];
         NSString *fileName = [headerImageDirectory stringByAppendingString:[NSString stringWithFormat:@"%@%@",[FRUtils getPhoneNum],@".png"]];
-        if (![fileManager fileExistsAtPath:fileName]) {
-            NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
-            [imgData writeToFile:fileName atomically:NO];
-        }
+//        if (![fileManager fileExistsAtPath:fileName]) {
+        NSData *imgData = [NSData dataWithContentsOfURL:aUrl];
+        [imgData writeToFile:fileName atomically:NO];
+//        }
     }
     int sex = [[result objectForKey:@"Sex"]intValue];
     [FRUtils setGender:sex];
