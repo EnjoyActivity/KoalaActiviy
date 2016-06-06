@@ -17,6 +17,8 @@
 #import "LDLocationManager.h"
 #import "TeamHomeViewController.h"
 
+#import "LDMainPageNetWork.h"
+
 static NSString * const topAdCellIdentifier = @"TopAdCell";
 static NSString * const activityCellIdentifier = @"ActivityCell";
 static NSString * const hotTeamIdentifier = @"hotTeamCell";
@@ -39,12 +41,12 @@ static CGFloat const teamHeight = 280;
     //精彩活动
     NSTimer *activityTimer;
     NSInteger currentActivity;
-    NSMutableArray * activityArray;
+    NSArray * activityArray;
     //热门团队
     
     NSTimer *teamTimer;
     NSInteger currentTeam;
-    NSMutableArray * teamArray;
+    NSArray * teamArray;
     
     UIScrollView * mainScrollView;
     
@@ -97,8 +99,8 @@ static CGFloat const teamHeight = 280;
     topAdImageArray = [NSArray array];
 
     
-    activityArray = [NSMutableArray array];
-    teamArray = [NSMutableArray array];
+    activityArray = [NSArray array];
+    teamArray = [NSArray array];
     
     [self setUpUI];
     //30.6509086063,104.0693664551
@@ -109,7 +111,8 @@ static CGFloat const teamHeight = 280;
     [self requestTeamData:5];
 
     [self getLocationInfo];
- 
+
+    
 }
 
 
@@ -147,62 +150,35 @@ static CGFloat const teamHeight = 280;
 #pragma mark - netWork 
 
 - (void)requestAdData {
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"Config/FeaturesImages" parameters:@{} success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSArray * resultArray = resultDic[@"result"];
-        topAdImageArray = [resultArray copy];
-        
+    [[LDMainPageNetWork defaultInstance] postPath:MGetAd parameter:nil success:^(id result) {
+        topAdImageArray  = (NSArray *)result;
         if (topAdImageArray.count == 0) {
-            return;
-        }
-   
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self addAdProgress];
-            [self adTimerStart];
-            [topAdCollectionView reloadData];
-            NSIndexPath * indexPath = [NSIndexPath indexPathForItem:0 inSection:1];
-            [topAdCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-        });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self addAdProgress];
+                [self adTimerStart];
+                [topAdCollectionView reloadData];
+                NSIndexPath * indexPath = [NSIndexPath indexPathForItem:0 inSection:1];
+                [topAdCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+            });
+    } fail:^(NSError *error) {
         
     }];
-    
 }
 
 - (void)requestActivityData {
-//    NSString * token =[HttpClient getTokenStr];
-//    if (token.length == 0) {
-//        [activityCollectionView reloadData];
-//        return;
-//    }
-    
-//    NSDictionary * dic = @{
-//                           @"token":token
-//                           };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"ActivityClass/GetActivityClass" parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        activityArray = [resultDic[@"result"] copy];
+
+    [[LDMainPageNetWork defaultInstance] postPath:MGetActivityClass parameter:nil success:^(id result) {
+        activityArray = (NSArray *)result;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self addActivityProgress];
             [self activityTimerStart];
             [activityCollectionView reloadData];
         });
+
         
-    }
-    failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
@@ -211,25 +187,14 @@ static CGFloat const teamHeight = 280;
     NSDictionary * dic = @{
                            @"count":[NSNumber numberWithInt:count]
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [requestManager GET:@"Team/GetHotTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            [hotTeamCollectionView reloadData];
-            return ;
-        }
-        NSArray * resultArr = [resultDic objectForKey:@"result"];
-        teamArray = [resultArr copy];
+    [[LDMainPageNetWork defaultInstance] postPath:MGetHotTeam parameter:dic success:^(id result) {
+        teamArray = (NSArray *)result;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self addTeamProgress];
             [self teamTimerStart];
             [hotTeamCollectionView reloadData];
         });
-        
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
@@ -240,29 +205,21 @@ static CGFloat const teamHeight = 280;
                            @"lng":[NSNumber numberWithDouble:longitude],
                            @"lat":[NSNumber numberWithDouble:latitude]
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"map/Geolocate" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * dic = (NSDictionary *)responseObject;
-        NSInteger code = [[dic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            [FRUtils setAddressInfo:nil];
-            return ;
-        }
-        NSDictionary * result = [dic objectForKey:@"result"];
-        if (result == nil) {
+    [[LDMainPageNetWork defaultInstance] postPath:MGetLocation parameter:dic success:^(id result) {
+        NSDictionary * resultDic = (NSDictionary *)result;
+        if (resultDic == nil) {
             [FRUtils setAddressInfo:nil];
             return;
         }
         
-        locationInfo = [result objectForKey:@"addressComponent"];
+        locationInfo = [resultDic objectForKey:@"addressComponent"];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-            NSDictionary * locationTemp = [result objectForKey:@"addressComponent"];
+            
+            NSDictionary * locationTemp = [resultDic objectForKey:@"addressComponent"];
             [FRUtils setAddressInfo:locationTemp];
         });
-    
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             cityCode = [locationInfo objectForKey:@"citycode"];
             NSString * city = [locationInfo objectForKey:@"city"];
@@ -271,8 +228,8 @@ static CGFloat const teamHeight = 280;
             [locationButton setFrame:CGRectMake(18, 15, size.width, 20)];
         });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-//        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
+
+    } fail:^(NSError *error) {
         [FRUtils setAddressInfo:nil];
     }];
 }
@@ -449,7 +406,7 @@ static CGFloat const teamHeight = 280;
 //    activityVC.locationDic = locationInfo;
     activityVC.cityCode = cityCode;
     activityVC.isHot = YES;
-    
+
     [self.navigationController pushViewController:activityVC animated:YES];
 }
 

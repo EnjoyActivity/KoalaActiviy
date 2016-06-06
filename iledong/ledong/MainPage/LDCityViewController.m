@@ -7,6 +7,7 @@
 //
 
 #import "LDCityViewController.h"
+#import "LDMainPageNetWork.h"
 
 static NSString * const cityCell = @"cityCell";
 
@@ -68,17 +69,8 @@ static NSString * const cityCell = @"cityCell";
     NSDictionary * dic = @{
                            @"ProvinceCode":code
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        cityArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] getPath:MGetCity parameter:dic success:^(id result) {
+        cityArray = (NSArray *)result;
         currentCityDic = [cityArray firstObject];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString * name = [currentCityDic objectForKey:@"Name"];
@@ -86,8 +78,8 @@ static NSString * const cityCell = @"cityCell";
             [self.cityTableView reloadData];
         });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
+    } fail:^(NSError *error) {
+        
     }];
 }
 
@@ -102,25 +94,15 @@ static NSString * const cityCell = @"cityCell";
     if (city.length != 0) {
         [dic setObject:city forKey:@"region"];
     }
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"Map/SuggestAddress" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * dic = (NSDictionary *)responseObject;
-        NSInteger code = [[dic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
+    [[LDMainPageNetWork defaultInstance] getPath:MSearchCity parameter:dic success:^(id result) {
         [SVProgressHUD dismiss];
-        NSArray * result = [dic objectForKey:@"result"];
-        resultArray = [result copy];
-        
-        
+        resultArray = (NSArray *)result;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.cityTableView reloadData];
         });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-         [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+    } fail:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
     }];
 }
 

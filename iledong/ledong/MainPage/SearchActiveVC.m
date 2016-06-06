@@ -11,6 +11,9 @@
 #import "SearchTableViewCell.h"
 #import "ActiveDetailViewController.h"
 
+#import "LDMainPageNetWork.h"
+#import "LDSearchHistory.h"
+
 static NSString * const historyCell = @"HistoryCell";
 static NSString * const activityCell = @"sActivityCell";
 static NSString * const hotSearchCell = @"hotSearchCell";
@@ -32,7 +35,9 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     historyArray = [NSMutableArray array];
-    [historyArray addObjectsFromArray:[self getSearchHistory]];
+    NSArray * historyTemp = [[LDSearchHistory defaultInstance] getSearchHitory:activityHistory];
+    [historyArray addObjectsFromArray:historyTemp];
+    
     resultArray = [NSMutableArray array];
     hotSearchArray = [NSMutableArray array];
     [self setUpUI];
@@ -71,26 +76,16 @@ static NSString * const hotSearchCell = @"hotSearchCell";
                            @"PageSize":[NSNumber numberWithInt:10],
                            @"tag":keyWord
                            };
+     [[LDMainPageNetWork defaultInstance] postPath:MQueryActivity parameter:dic success:^(id result) {
+         resultArray = [(NSArray *)result copy];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
+             [self.resultTableView reloadData];
+         });
+     } fail:^(NSError *error) {
+         
+     }];
     
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"error"];
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        resultArray = [result copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
-            [self.resultTableView reloadData];
-        });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
-    }];
 }
 
 - (void)requestHotSearch {
@@ -99,51 +94,16 @@ static NSString * const hotSearchCell = @"hotSearchCell";
                            @"pagesize":[NSNumber numberWithInt:6],
                            @"ownertype":[NSNumber numberWithInt:0]
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Other/GetKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        hotSearchArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] postPath:MGetHotSearch parameter:dic success:^(id result) {
+        hotSearchArray = [(NSArray *)result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
         });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
     
-}
-#pragma mark - SearchHistory
-- (NSString *)getPlistPath {
-    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/activityHistory.plist"];
-    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
-    if (history == nil) {
-        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
-        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
-        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
-    }
-    
-    return plistPath;
-}
-
-- (NSArray *)getSearchHistory {
-    NSString * path = [self getPlistPath];
-    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
-    return arrayTemp;
-}
-
-- (void)addSearchHistory {
-    NSString * path = [self getPlistPath];
-    if (historyArray.count > 20) {
-        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
-    }
-    [historyArray writeToFile:path atomically:YES];
 }
 
 #pragma mark - buttonAction
@@ -156,9 +116,10 @@ static NSString * const hotSearchCell = @"hotSearchCell";
 {
     [historyArray removeAllObjects];
     [self.historyTableView reloadData];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] removeHistory:activityHistory];
     
 }
+
 
 - (IBAction)cancelButtonClicked:(id)sender {
 //    self.textField.text = nil;
@@ -178,7 +139,7 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     searchKeyWord = textField.text;
     [textField resignFirstResponder];
     [historyArray insertObject:searchKeyWord atIndex:0];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:activityHistory Array:@[searchKeyWord]];
     
     [self requestWithKeyWord:searchKeyWord];
     [self.resultTableView setHidden:NO];
@@ -298,7 +259,8 @@ static NSString * const hotSearchCell = @"hotSearchCell";
     self.textField.text = searchKeyWord;
     [self.resultTableView setHidden:NO];
     [historyArray insertObject:searchKeyWord atIndex:0];
-    [self addSearchHistory];
+//    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:activityHistory Array:@[searchKeyWord]];
     
     [self requestWithKeyWord:searchKeyWord];
 }

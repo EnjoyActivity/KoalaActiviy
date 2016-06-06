@@ -13,6 +13,8 @@
 #import "ActiveDetailViewController.h"
 #import "TeamHomeViewController.h"
 
+#import "LDMainPageNetWork.h"
+
 
 static NSString * historyCell = @"HistoryCell";
 static NSString * activityCell = @"sActivityCell";
@@ -81,23 +83,14 @@ static NSString * friendCell = @"ActivityCell";
                            @"tag":keyWord
                            };
     
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"error"];
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        self.activityArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryActivity parameter:dic success:^(id result) {
+        self.activityArray = [(NSArray *)result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
         });
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
+    } fail:^(NSError *error) {
+        
     }];
 }
 
@@ -108,22 +101,14 @@ static NSString * friendCell = @"ActivityCell";
                            @"IsHot":[NSNumber numberWithBool:NO],
                            @"KeyWord":keyWord
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSDictionary * data = [resultDic objectForKey:@"result"];
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryTeams parameter:dic success:^(id result) {
+        NSDictionary * data = (NSDictionary *)result;
         NSArray * resultArr = [data objectForKey:@"Data"];
         self.activityArray  = [resultArr copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
         });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }

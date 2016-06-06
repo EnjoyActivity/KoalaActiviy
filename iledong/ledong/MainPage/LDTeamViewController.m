@@ -9,6 +9,7 @@
 #import "LDTeamViewController.h"
 #import "LDTeamTableViewCell.h"
 #import "TeamHomeViewController.h"
+#import "LDMainPageNetWork.h"
 
 static NSInteger const hotButtonTag = 101;
 static NSInteger const categoryButtonTag = 102;
@@ -51,7 +52,7 @@ static NSString * const teamCell = @"teamCell";
     currentPage = 1;
     teamArray = [NSMutableArray array];
     [self setUpUI];
-    [self requestTeamData:currentPage parameter:nil];
+    [self requestTeamData:currentPage];
     if (self.cityCode) {
         [self getAreaByCityCode:self.cityCode];
     }
@@ -73,7 +74,7 @@ static NSString * const teamCell = @"teamCell";
 
 #pragma mark - NetWork
 
-- (void)requestTeamData:(NSInteger)pageIndex parameter:(NSDictionary *)dic {
+- (void)requestTeamData:(NSInteger)pageIndex{
     NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc] init];
     [parameterDic setValue:[NSNumber numberWithInt:1] forKey:@"Page"];
     [parameterDic setValue:[NSNumber numberWithInt:20] forKey:@"PageSize"];
@@ -85,19 +86,8 @@ static NSString * const teamCell = @"teamCell";
         [parameterDic setValue:areaCode forKey:@"AreaCode"];
     }
     
-    if (dic) {
-        [parameterDic setValuesForKeysWithDictionary:dic];
-    }
-    NSURL * url = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
-    [manager POST:@"Team/QueryTeams" parameters:parameterDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            [teamtableView reloadData];
-            return ;
-        }
-        NSDictionary * dic = [resultDic objectForKey:@"result"];
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryTeams parameter:parameterDic success:^(id result) {
+        NSDictionary * dic = (NSDictionary*)result;
         NSInteger topalPage = [[dic objectForKey:@"TotalPage"] integerValue];
         NSArray * resultArr = [dic objectForKey:@"Data"];
         if (pageIndex == 1) {
@@ -110,7 +100,7 @@ static NSString * const teamCell = @"teamCell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [teamtableView reloadData];
         });
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
@@ -123,49 +113,15 @@ static NSString * const teamCell = @"teamCell";
     NSDictionary * dic = @{
                            @"CityCode":cityCode
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/GetAreas" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        locationArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] getPath:MGetArea parameter:dic success:^(id result) {
+        locationArray = (NSArray *)result;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.locationTableview reloadData];
         });
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
-
-
-- (void)getCityByProvinceCode:(NSString *)code {
-    NSDictionary * dic = @{
-                           @"ProvinceCode":code
-                           };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/GetCitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        
-        NSArray * result = [resultDic objectForKey:@"result"];
-        locationArray = [result copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.locationTableview reloadData];
-        });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        
-    }];
-}
-
 
 #pragma mark - TabledataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -187,7 +143,7 @@ static NSString * const teamCell = @"teamCell";
             label.text = str;
         }
         else {
-            NSString * str = indexPath.row == _activityArray.count ? @"全部活动":[_activityArray[indexPath.row] valueForKey:@"ClassName"];
+            NSString * str = indexPath.row == _activityArray.count ? @"全部类别":[_activityArray[indexPath.row] valueForKey:@"ClassName"];
             label.text = str;
         }
         return cell;
@@ -254,7 +210,7 @@ static NSString * const teamCell = @"teamCell";
         str = [area objectForKey:@"Name"] ;
     }
     
-    [self requestTeamData:currentPage parameter:nil];
+    [self requestTeamData:currentPage];
     UIButton * button = (UIButton *)[filterView viewWithTag:areaButtonTag];
     [button setTitle:str forState:UIControlStateNormal];
 }
@@ -276,7 +232,7 @@ static NSString * const teamCell = @"teamCell";
         str =[dic objectForKey:@"ClassName"];
     }
     
-    [self requestTeamData:currentPage parameter:nil];
+    [self requestTeamData:currentPage];
     
     UIButton * button = (UIButton *)[filterView viewWithTag:categoryButtonTag];
     [button setTitle:str forState:UIControlStateNormal];
@@ -312,7 +268,7 @@ static NSString * const teamCell = @"teamCell";
         case hotButtonTag:
         {
             currentPage = 1;
-            [self requestTeamData:currentPage parameter:nil];
+            [self requestTeamData:currentPage];
             [self.locationTableview setHidden:YES];
         }
             break;
@@ -343,6 +299,7 @@ static NSString * const teamCell = @"teamCell";
     teamtableView.dataSource = self;
     teamtableView.backgroundColor = [UIColor whiteColor];
     [teamtableView registerNib:[UINib nibWithNibName:@"LDTeamTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:teamCell];
+    teamtableView.tableFooterView =[UIView new];
 
     [self.view addSubview:teamtableView];
     

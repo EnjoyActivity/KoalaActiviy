@@ -19,6 +19,10 @@
 #import "TeamHomeViewController.h"
 #import "LDSearchMoreViewController.h"
 
+#import "LDMainPageNetWork.h"
+#import "LDSearchHistory.h"
+
+
 static NSString * historyCell = @"HistoryCell";
 static NSString * activityCell = @"sActivityCell";
 static NSString * teamCell   = @"ActivityCell";
@@ -30,9 +34,9 @@ static NSString * friendCell = @"ActivityCell";
     NSArray *sectionTitleArray;
     
     NSMutableArray * historyArray;
-    NSMutableArray * activityArray;
-    NSMutableArray * teamArray;
-    NSMutableArray * friendArray;
+    NSArray * activityArray;
+    NSArray * teamArray;
+    NSArray * friendArray;
     
     NSString * searchkeyWord;
 }
@@ -46,7 +50,9 @@ static NSString * friendCell = @"ActivityCell";
 {
     [super viewDidLoad];
     
-    historyArray = [NSMutableArray arrayWithArray:[self getSearchHistory]];
+    NSArray * historyTemp = [[LDSearchHistory defaultInstance] getSearchHitory:mainHistory];
+    
+    historyArray = [NSMutableArray arrayWithArray:historyTemp];
     
     [self setUpUI];
   
@@ -56,9 +62,9 @@ static NSString * friendCell = @"ActivityCell";
     sectionTitleArray = @[@"活动",@"团队",@"好友"];
 
     
-    activityArray = [NSMutableArray array];
-    teamArray =[NSMutableArray array];
-    friendArray = [NSMutableArray array];
+    activityArray = [NSArray array];
+    teamArray =[NSArray array];
+    friendArray = [NSArray array];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,24 +96,13 @@ static NSString * friendCell = @"ActivityCell";
                            @"PageSize":[NSNumber numberWithInt:10],
                            @"tag":keyWord
                            };
-    
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Activity/QueryActivitys" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [resultDic[@"code"] integerValue];
-        if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"error"];
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        activityArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryActivity parameter:dic success:^(id result) {
+        activityArray = (NSArray *)result;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
         });
+    } fail:^(NSError *error) {
         
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"搜索失败"];
     }];
 }
 
@@ -118,52 +113,19 @@ static NSString * friendCell = @"ActivityCell";
                            @"IsHot":[NSNumber numberWithBool:NO],
                            @"KeyWord":keyWord
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSDictionary * data = [resultDic objectForKey:@"result"];
-        NSArray * resultArr = [data objectForKey:@"Data"];
+    
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryTeams parameter:dic success:^(id result) {
+        NSDictionary * dic = (NSDictionary *)result;
+        NSArray * resultArr = [dic objectForKey:@"Data"];
         teamArray  = [resultArr copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
         });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
 
-- (NSString *)getPlistPath {
-    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/mainHistory.plist"];
-    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
-    if (history == nil) {
-        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
-        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
-        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
-    }
-    
-    return plistPath;
-}
-
-- (NSArray *)getSearchHistory {
-    NSString * path = [self getPlistPath];
-    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
-    return arrayTemp;
-}
-
-- (void)addSearchHistory {
-    NSString * path = [self getPlistPath];
-    if (historyArray.count > 20) {
-        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
-    }
-    [historyArray writeToFile:path atomically:YES];
-}
 
 #pragma mark - UITextFieldDelegate
 
@@ -176,7 +138,7 @@ static NSString * friendCell = @"ActivityCell";
     searchkeyWord = textField.text;
     
     [historyArray insertObject:searchkeyWord atIndex:0];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:mainHistory Array:@[searchkeyWord]];
     [self requestActivityData:searchkeyWord];
     [self requestTeamData:searchkeyWord];
     
@@ -429,7 +391,7 @@ static NSString * friendCell = @"ActivityCell";
 - (IBAction)clearSearchButtonClick:(id)sender
 {
     [historyArray removeAllObjects];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] removeHistory:mainHistory];
     [self.tableView reloadData];
     
 }

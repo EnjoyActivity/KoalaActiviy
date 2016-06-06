@@ -10,6 +10,9 @@
 #import "HistoryTableViewCell.h"
 #import "ActiveDetailViewController.h"
 
+#import "LDMainPageNetWork.h"
+#import "LDSearchHistory.h"
+
 
 static NSString * const historyCell = @"HistoryCell";
 static NSString * const hotSearchCell = @"hotSearchCell";
@@ -32,7 +35,8 @@ static NSString * const teamCell = @"ActivityCell";
     [super viewDidLoad];
     historyArray = [NSMutableArray array];
     resultArray = [NSMutableArray array];
-    [historyArray addObjectsFromArray:[self getSearchHistory]];
+    NSArray * historyTemp = [[LDSearchHistory defaultInstance] getSearchHitory:teamHistory];
+    [historyArray addObjectsFromArray:historyTemp];
     
     hotSearchArray = [NSMutableArray array];
   
@@ -65,24 +69,16 @@ static NSString * const teamCell = @"ActivityCell";
                            @"PageSize":[NSNumber numberWithInt:100],
                            @"IsHot":[NSNumber numberWithBool:NO],
                            @"KeyWord":keyWord
-                           };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Team/QueryTeams" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSDictionary * data = [resultDic objectForKey:@"result"];
-        NSArray * result = [data objectForKey:@"Data"];
-        resultArray  = [result copy];
+                           };    
+    [[LDMainPageNetWork defaultInstance] postPath:MQueryTeams parameter:dic success:^(id result) {
+        NSDictionary * data = (NSDictionary *)result;
+        NSArray * array = [data objectForKey:@"Data"];
+        resultArray  = [array copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.resultCountLabel.text = [NSString stringWithFormat:@"相关搜索结果%lu个",(unsigned long)resultArray.count];
             [self.resultTableView reloadData];
         });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
 }
@@ -94,53 +90,18 @@ static NSString * const teamCell = @"ActivityCell";
                            @"pagesize":[NSNumber numberWithInt:6],
                            @"ownertype":[NSNumber numberWithInt:1]
                            };
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager POST:@"Other/GetKeywords" parameters:dic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * resultDic = (NSDictionary *)responseObject;
-        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            return ;
-        }
-        NSArray * result = [resultDic objectForKey:@"result"];
-        hotSearchArray = [result copy];
+    [[LDMainPageNetWork defaultInstance] postPath:MGetHotSearch parameter:dic success:^(id result) {
+        hotSearchArray = [(NSArray*)result copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
         });
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } fail:^(NSError *error) {
         
     }];
     
 }
 
 
-- (NSString *)getPlistPath {
-    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/teamHistory.plist"];
-    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
-    if (history == nil) {
-        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
-        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
-        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
-    }
-    
-    return plistPath;
-}
-
-- (NSArray *)getSearchHistory {
-    NSString * path = [self getPlistPath];
-    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
-    return arrayTemp;
-}
-
-- (void)addSearchHistory {
-    NSString * path = [self getPlistPath];
-    if (historyArray.count > 20) {
-        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
-    }
-    [historyArray writeToFile:path atomically:YES];
-}
 #pragma mark - ButtonAction
 - (IBAction)cancelButtonClicked:(id)sender {
 //    [self.textField resignFirstResponder];
@@ -156,7 +117,7 @@ static NSString * const teamCell = @"ActivityCell";
 }
 - (IBAction)clearSearchHistory:(id)sender {
     [historyArray removeAllObjects];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] removeHistory:teamHistory];
     [self.contentTableView reloadData];
 }
 
@@ -170,7 +131,8 @@ static NSString * const teamCell = @"ActivityCell";
     searchKeyWord = textField.text;
     [textField resignFirstResponder];
     [historyArray insertObject:searchKeyWord atIndex:0];
-    [self addSearchHistory];
+//    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:teamHistory Array:@[searchKeyWord]];
     
     [self requestTeamData:searchKeyWord];
 //    self.contentView.hidden = YES;
@@ -283,7 +245,8 @@ static NSString * const teamCell = @"ActivityCell";
     self.textField.text = searchKeyWord;
     [self.resultTableView setHidden:NO];
     [historyArray insertObject:searchKeyWord atIndex:0];
-    [self addSearchHistory];
+//    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:teamHistory Array:@[searchKeyWord]];
     
     [self requestTeamData:searchKeyWord];
 }

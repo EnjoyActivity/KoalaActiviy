@@ -372,6 +372,7 @@
 		ECCEF65E1CF54B660048BD99 /* MainPageTeamMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF65D1CF54B660048BD99 /* MainPageTeamMoreCell.xib */; };
 		ECCEF6621CF58A970048BD99 /* LDMainPageTeamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */; };
 		ECCEF6631CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */; };
+		ECD3E2A51CFFCB1500856932 /* LDSearchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD3E2A41CFFCB1500856932 /* LDSearchHistory.m */; };
 		ECF6E20C1CF49176001ABE14 /* LDTeamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */; };
 /* End PBXBuildFile section */
 
@@ -956,6 +957,8 @@
 		ECCEF65F1CF58A970048BD99 /* LDMainPageTeamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDMainPageTeamTableViewCell.h; sourceTree = "<group>"; };
 		ECCEF6601CF58A970048BD99 /* LDMainPageTeamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDMainPageTeamTableViewCell.m; sourceTree = "<group>"; };
 		ECCEF6611CF58A970048BD99 /* LDMainPageTeamTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDMainPageTeamTableViewCell.xib; sourceTree = "<group>"; };
+		ECD3E2A31CFFCB1500856932 /* LDSearchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDSearchHistory.h; sourceTree = "<group>"; };
+		ECD3E2A41CFFCB1500856932 /* LDSearchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDSearchHistory.m; sourceTree = "<group>"; };
 		ECF6E20B1CF49176001ABE14 /* LDTeamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LDTeamViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2151,6 +2154,8 @@
 				ECC5AF4F1CF6A6E200643CE1 /* LDChineseToPinyin.m */,
 				EC4EA2041CFECEBA00EC1CE5 /* LDMainPageNetWork.h */,
 				EC4EA2051CFECEBA00EC1CE5 /* LDMainPageNetWork.m */,
+				ECD3E2A31CFFCB1500856932 /* LDSearchHistory.h */,
+				ECD3E2A41CFFCB1500856932 /* LDSearchHistory.m */,
 			);
 			path = UtilityMethod;
 			sourceTree = "<group>";
@@ -2617,6 +2622,7 @@
 				20B63E601CEDC02B00D5C551 /* SBJsonWriter.m in Sources */,
 				905516161CEC3CED001C4F51 /* SDWebImageCompat.m in Sources */,
 				20B63E551CEDC02B00D5C551 /* NSObject+SBJson.m in Sources */,
+				ECD3E2A51CFFCB1500856932 /* LDSearchHistory.m in Sources */,
 				905516031CEC3CED001C4F51 /* MJRefreshFooter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

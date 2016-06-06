@@ -9,6 +9,8 @@
 #import "SearchFriendVC.h"
 #import "HistoryTableViewCell.h"
 
+#import "LDSearchHistory.h"
+
 static NSString * const historyCell = @"HistoryCell";
 static NSString * const friendCell = @"ActivityCell";
 
@@ -27,7 +29,8 @@ static NSString * const friendCell = @"ActivityCell";
     [super viewDidLoad];
     historyArray = [NSMutableArray array];
     resultArray = [NSMutableArray array];
-    [historyArray addObjectsFromArray:[self getSearchHistory]];
+    NSArray * historyTemp = [[LDSearchHistory defaultInstance] getSearchHitory:friendHistory];
+    [historyArray addObjectsFromArray:historyTemp];
     [self setUpUI];
 
 }
@@ -70,37 +73,10 @@ static NSString * const friendCell = @"ActivityCell";
 }
 
 
-- (NSString *)getPlistPath {
-    NSString * docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSString * plistPath = [docPath stringByAppendingPathComponent:@"searchHistory/friendHistory.plist"];
-    NSArray * history = [NSArray arrayWithContentsOfFile:plistPath];
-    if (history == nil) {
-        NSString * pathTemp = [docPath stringByAppendingPathComponent:@"searchHistory"];
-        [[NSFileManager defaultManager] createDirectoryAtPath:pathTemp withIntermediateDirectories:nil attributes:nil error:nil];
-        [[NSFileManager defaultManager] createFileAtPath:docPath contents:nil attributes:nil];
-    }
-    
-    return plistPath;
-}
-
-- (NSArray *)getSearchHistory {
-    NSString * path = [self getPlistPath];
-    NSArray * arrayTemp = [NSArray arrayWithContentsOfFile:path];
-    return arrayTemp;
-}
-
-- (void)addSearchHistory {
-    NSString * path = [self getPlistPath];
-    if (historyArray.count > 20) {
-        [historyArray removeObjectsInRange:NSMakeRange(20, historyArray.count-20)];
-    }
-    [historyArray writeToFile:path atomically:YES];
-}
-
 #pragma mark - ButtonClicked
 - (IBAction)clearSearchHistory:(id)sender {
     [historyArray removeAllObjects];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] removeHistory:friendHistory];
     [self.contentTableView reloadData];
     
 }
@@ -126,7 +102,7 @@ static NSString * const friendCell = @"ActivityCell";
     }
     [textField resignFirstResponder];
     [historyArray insertObject:textField.text atIndex:0];
-    [self addSearchHistory];
+    [[LDSearchHistory defaultInstance] addSearchHistory:teamHistory Array:@[textField.text]];
     
     [self requestWithKeyWord:textField.text];
     [self.resultTableView setHidden:NO];

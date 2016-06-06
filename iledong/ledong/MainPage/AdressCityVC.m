@@ -12,6 +12,7 @@
 #import "LDChineseToPinyin.h"
 #import "LDCityViewController.h"
 
+#import "LDMainPageNetWork.h"
 
 @interface AdressCityVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
@@ -104,21 +105,11 @@
 #pragma mark - NetWork
 
 - (void)requestCityData {
-    NSURL * baseUrl = [NSURL URLWithString:API_BASE_URL];
-    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:@"other/getprovinces" parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSDictionary * dic = (NSDictionary *)responseObject;
-        NSInteger code = [[dic objectForKey:@"code"] integerValue];
-        if (code != 0) {
-            [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
-            return ;
-        }
-
-
-        [self dealProvinceData:[dic objectForKey:@"result"]];
-
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD showErrorWithStatus:@"获取城市信息失败"];
+    [[LDMainPageNetWork defaultInstance] getPath:MGetProvince parameter:nil success:^(id result) {
+        NSArray * array = (NSArray *)result;
+        [self dealProvinceData:array];
+    } fail:^(NSError *error) {
+        
     }];
 }
 

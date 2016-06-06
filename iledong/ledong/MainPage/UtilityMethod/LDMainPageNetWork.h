@@ -8,13 +8,38 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^requestSuccess)(NSArray *);
-typedef void(^requestError)(NSError*);
+#pragma mark - netWorkPath
+
+#define MGetProvince  @"other/getprovinces"
+#define MGetCity  @"other/GetCitys"
+#define MGetArea @"other/GetAreas"
+#define MSearchCity @"Map/SuggestAddress"
+#define MQueryActivity @"Activity/QueryActivitys"
+#define MQueryTeams @"Team/QueryTeams"
+#define MGetHotSearch @"Other/GetKeywords"
+#define MGetAd @"Config/FeaturesImages"
+#define MGetActivityClass @"ActivityClass/GetActivityClass"
+#define MGetHotTeam @"Team/GetHotTeams"
+#define MGetLocation @"map/Geolocate"
+
+typedef void(^requestSuccess)(id result);
+typedef void(^requestError)(NSError* error);
+
+#pragma mark - init
 
 @interface LDMainPageNetWork : NSObject
 
 + (instancetype)defaultInstance;
 
+#pragma mark - MainPageRequest
+- (void)postPath:(NSString *)path
+       parameter:(NSDictionary *)parameter
+         success:(requestSuccess)successed
+            fail:(requestError)errored;
 
-+ (void)getMainPageAd:(requestSuccess)successed requestError:(requestError)failed;
+- (void)getPath:(NSString *)path
+       parameter:(NSDictionary *)parameter
+         success:(requestSuccess)successed
+            fail:(requestError)errored;
+
 @end
