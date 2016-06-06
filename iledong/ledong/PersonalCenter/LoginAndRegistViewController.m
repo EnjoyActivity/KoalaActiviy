@@ -51,6 +51,7 @@
 {
     if (_isPersonalCenterPage) {
         [AppDelegate showMainView];
+        return;
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
