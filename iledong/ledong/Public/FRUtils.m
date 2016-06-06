@@ -448,10 +448,15 @@ static FRUtils *instance = nil;
 }
 
 + (void)saveUserInfo:(id)json {
+    if (!json) {
+        return;
+    }
     NSDictionary* temp = (NSDictionary*)json;
     
     NSDictionary *result = [temp objectForKey:@"result"];
-    
+    if (!result) {
+        return;
+    }
     NSString *nickName = [result objectForKey:@"NickName"];
     if (!nickName||[nickName isKindOfClass:[NSNull class]]||nickName.length == 0) {
         [FRUtils setNickName:@""];
@@ -513,8 +518,12 @@ static FRUtils *instance = nil;
         [imgData writeToFile:fileName atomically:NO];
 //        }
     }
-    int sex = [[result objectForKey:@"Sex"]intValue];
-    [FRUtils setGender:sex];
+    NSInteger sex = [[result objectForKey:@"Sex"]integerValue];
+    if (!sex) {
+        [FRUtils setGender:0];
+    } else {
+        [FRUtils setGender:score];
+    }
 }
 
 
